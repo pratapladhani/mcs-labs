@@ -4,7 +4,7 @@ Create an intelligent agent in Copilot that delivers contextual, multi-part answ
 
 ---
 
-## Lab Details
+## 🧭 Lab Details
 
 - **Level**: 100  
 - **Persona**: Basic Maker  
@@ -13,14 +13,14 @@ Create an intelligent agent in Copilot that delivers contextual, multi-part answ
 
 ---
 
-## Prerequisites
+## ✅ Prerequisites
 
 - Access to Microsoft 365 Copilot or Copilot Chat  
 - Ability to create a Copilot agent  
 
 ---
 
-## Summary of Targets
+## 🎯 Summary of Targets
 
 In this lab, you’ll create a Copilot agent in Microsoft 365 Copilot Chat designed to assist users with questions about Copilot agents. The agent will act as a learning companion or teacher, grounded in official Microsoft documentation.
 
@@ -33,7 +33,7 @@ By the end of the lab, your agent will be able to:
 
 ---
 
-## Use Case
+## 💼 Use Case
 
 **Create and share an agent in Copilot Chat**  
 Use Copilot Studio agent builder to create a declarative agent and obtain a shareable link.
@@ -43,13 +43,13 @@ Use Copilot Studio agent builder to create a declarative agent and obtain a shar
 
 ---
 
-## Summary of Learnings
+## 🧠 Summary of Learnings
 
 > Mastery is not a destination but a journey—a joyful path where every step brings growth, discovery, and endless possibilities.
 
 ---
 
-## Step-by-Step Instructions
+## 🛠️ Step-by-Step Instructions
 
 1. Navigate to [Microsoft 365 Copilot home page](https://copilot.cloud.microsoft/?auth=2&home=1)  
    _Note: if you see ‘coming soon’ try again in a few minutes._
@@ -135,7 +135,7 @@ What are the differences between Microsoft 365 Copilot and Copilot Chat?
 
 ---
 
-## Test Your Understanding
+## 🧪 Test Your Understanding
 
 **Key Takeaways:**
 
@@ -151,7 +151,7 @@ What are the differences between Microsoft 365 Copilot and Copilot Chat?
 
 ---
 
-## Challenge
+## 🚀 Challenge
 
 - Define your agent’s tone and personality  
 - Choose grounding sources (internal/public)  
@@ -160,7 +160,7 @@ What are the differences between Microsoft 365 Copilot and Copilot Chat?
 
 ---
 
-## Summary of Learnings
+## 🔁 Summary of Learnings
 
 > True learning comes from doing, questioning, and reflecting—so let’s put your skills to the test.
 
@@ -173,7 +173,7 @@ What are the differences between Microsoft 365 Copilot and Copilot Chat?
 
 ---
 
-## Conclusions & Recommendations
+## 📌 Conclusions & Recommendations
 
 > [!IMPORTANT]  
 > To maximize your Copilot agent’s impact:
@@ -187,7 +187,7 @@ By following these principles, your agent will not only deliver accurate content
 
 ---
 
-## Glossary
+## 📚 Glossary
 
 | Term | Definition |
 |------|------------|
@@ -203,4 +203,4 @@ By following these principles, your agent will not only deliver accurate content
 
 ---
 
-> We want your feedback! 🚀
+> 💬 **We want your feedback!** 🚀
