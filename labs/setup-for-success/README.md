@@ -20,13 +20,28 @@ Application Lifecycle Management (ALM) ensures that your solutions evolve safely
 
 ## 🧠 Core Concepts Overview
 
-| Concept                   | Why it matters                                                                                                                                                                                                                                                                                                     |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Solution**              | A standard way in Microsoft Power Platform to package and ship components—including Microsoft Copilot Studio agent components like topics, knowledge sources, and tools—across environments alongside flows, prompts, environment variables, connections references, and any other solution-aware component types. |
-| **Publisher**             | A metadata element that identifies the creator of solution components. Using a custom publisher improves traceability and supports cleaner prefixes in naming conventions.                                                                                                                                         |
-| **Environment variables** | Replace hardcoded values with configurable parameters that adapt to each environment (e.g., dev/test/prod) during solution deployment.                                                                                                                                                                             |
-| **Connection references** | Allow connectors in your agents, flows, or apps, to reuse connection settings across environments without manual reconfiguration.                                                                                                                                                                                  |
-| **Source control**        | Use Git integration with Azure DevOps to track your entire agent configuration in a code repository, track changes, ease collaboration, and setup processes to merge cross-team contributions efficiently.                                                                                                         |
+| Concept               | Why it matters |
+|-----------------------|----------------|
+| **Solution**             | A standard way in Microsoft Power Platform to package and ship components—including Microsoft Copilot Studio agent components like topics, knowledge sources, and tools—across environments alongside flows, prompts, environment variables, connection references, and any other solution-aware component types. |
+| **Publisher**            | A metadata element that identifies the creator of solution components. Using a custom publisher improves traceability and supports cleaner prefixes in naming conventions. |
+| **Environment**          | A workspace in Power Platform where apps, agents, and data reside. ALM best practices often involve using multiple environments (e.g., dev, test, prod) to manage lifecycle stages. |
+| **Environment variable** | A reusable setting (like a URL, API key, or ID) that can vary between environments without modifying individual components. Supports automation and portability. |
+| **Connection reference** | An abstraction that links connectors (e.g., SharePoint, Dataverse) to credentials and environment-specific settings—allowing reuse and cleaner ALM processes. |
+| **Managed solution**     | A read-only version of a solution used for deployment to downstream environments. Managed solutions support clean, controlled updates and prevent direct changes. |
+| **Unmanaged solution**   | Editable solution used in development. Changes can be versioned and exported for deployment. Should not be used in test or production. |
+| **Solution-aware**       | A component or setting that is part of a solution and can be deployed with it across environments. Not all Copilot Studio settings are solution-aware. |
+| **Source control**       | The practice of tracking and managing changes to your assets over time. Git integration with Azure DevOps or GitHub enables auditing, collaboration, and versioning. |
+| **CI/CD**                | Continuous Integration / Continuous Deployment. Automates the process of testing and deploying solutions using tools like Azure DevOps pipelines or GitHub Actions. |                                                                                                     |
+---
+
+## 📄 Documentation and Additional Training Links
+
+* [ALM overview - Microsoft Power Platform](https://learn.microsoft.com/power-platform/alm/alm-overview)
+* [Publish and deploy your agent](https://learn.microsoft.com/copilot-studio/publish-deploy)
+* [Webinar: Microsoft Copilot Studio ALM](https://aka.ms/MCSALMWebinar)
+* [Environment variables in solutions](https://learn.microsoft.com/power-apps/maker/data-platform/environmentvariables)
+* [Connection references in a solution](https://learn.microsoft.com/power-apps/maker/data-platform/create-connection-reference)
+* [Dataverse Git integration overview](https://learn.microsoft.com/power-platform/alm/git-version-control)
 
 ---
 
@@ -46,23 +61,6 @@ In this lab, you'll configure your ALM foundation for working with Microsoft Cop
 * Add environment variables and connection references for better portability.
 * Learn how to source control your Microsoft Copilot Studio project in a Git repo.
 * Understand which Microsoft Copilot Studio settings require manual post-deployment steps.
-
----
-
-## 📘 Glossary
-
-| Term                 | Definition                                                                                                                                                                                                                                                                                                           |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Solution             | A container in Power Platform that groups related components (like agents, flows, environment variables) for better organization, deployment, and lifecycle management. Microsoft Copilot Studio agents (including topics, knowledge, tools) are solution-aware components that can be deployed across environments. |
-| Publisher            | A label associated with your solution components. Using a custom publisher helps track ownership and apply consistent naming prefixes.                                                                                                                                                                               |
-| Environment          | A workspace in Power Platform where apps, agents, and data reside. ALM best practices often involve multiple environments (e.g., dev, test, prod) for structured deployments.                                                                                                                                        |
-| Environment variable | A reusable setting (like a URL or key) that can vary between environments without modifying individual components.                                                                                                                                                                                                   |
-| Connection reference | An abstraction that links connectors (e.g., SharePoint, Dataverse) to credentials and environment-specific settings—allowing reuse and cleaner ALM processes.                                                                                                                                                        |
-| Managed solution     | A read-only version of a solution used for deployment to downstream environments (test, prod). Managed solutions support clean, controlled updates.                                                                                                                                                                  |
-| Unmanaged solution   | Editable solutions used in development environments. Changes in unmanaged solutions can be exported, versioned, and eventually deployed as managed.                                                                                                                                                                  |
-| Solution-aware       | A component or setting that is included in a solution and can be moved across environments as part of it. Not all Microsoft Copilot Studio settings are solution-aware.                                                                                                                                              |
-| Source control       | The practice of tracking and managing changes to your assets over time. In Power Platform, Git integration with Azure DevOps or GitHub helps enable collaboration, auditing, and automation.                                                                                                                         |
-| CI/CD                | A practice of automating the build, testing, and deployment of solutions using tools like Azure DevOps pipelines or GitHub Actions.                                                                                                                                                                                  |
 
 ---
 
@@ -93,7 +91,7 @@ In this section, you’ll learn how to access the Solutions area of Microsoft Co
 1. Navigate to the [Copilot Studio home page](https://aka.ms/MCSStart).
 2. Ensure you are in the expected environment by checking the environment name in the top-right corner.
 3. Go to the Solutions menu (left-hand nav under the ellipsis `...`) and select **New solution**.
-4. Provide a display name. Avoid tying the name to an environment or development stage (e.g., avoid 'DEV' or 'POC'). Use a descriptive name like your project name. For this lab, use **Workshop Agents**.
+4. Provide a display name. Avoid tying the name to an environment or development stage (e.g., avoid 'DEV' or 'POC'). Use a descriptive name like your project name. For this lab, use `Workshop Agents`.
 5. If this is your first time creating a solution in this environment, create a new **Publisher**. This can be your organization’s name. Choose a prefix used in technical names.
 6. Set this solution as your **preferred solution** to ensure all new components default to it.
 7. Click **Create** when ready.
