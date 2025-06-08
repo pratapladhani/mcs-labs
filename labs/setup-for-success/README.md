@@ -20,18 +20,19 @@ Application Lifecycle Management (ALM) ensures that your solutions evolve safely
 
 ## 🎓 Core Concepts Overview
 
-| Concept               | Why it matters |
-|-----------------------|----------------|
-| **Solution**             | A standard way in Microsoft Power Platform to package and ship components—including Microsoft Copilot Studio agent components like topics, knowledge sources, and tools—across environments alongside flows, prompts, environment variables, connection references, and any other solution-aware component types. |
-| **Publisher**            | A metadata element that identifies the creator of solution components. Using a custom publisher improves traceability and supports cleaner prefixes in naming conventions. |
-| **Environment**          | A workspace in Power Platform where no-code, low-code, or pro-code artifacts—such as agents, flows, and data—reside. ALM best practices typically involve multiple environments (e.g., dev, test, prod) to manage lifecycle stages. For admins, environments also provide governance controls to limit what makers can do, which connectors or knowledge sources can be used, and how assets are secured and deployed. |
+| Concept | Why it matters |
+|---------|----------------|
+| **Solution** | A standard way in Microsoft Power Platform to package and ship components—including Microsoft Copilot Studio agent components like topics, knowledge sources, and tools—across environments alongside flows, prompts, environment variables, connection references, and any other solution-aware component types. |
+| **Publisher** | A metadata element that identifies the creator of solution components. Using a custom publisher improves traceability and supports cleaner prefixes in naming conventions. |
+| **Environment** | A workspace in Power Platform where no-code, low-code, or pro-code artifacts—such as agents, flows, and data—reside. ALM best practices typically involve multiple environments (e.g., dev, test, prod) to manage lifecycle stages. For admins, environments also provide governance controls to limit what makers can do, which connectors or knowledge sources can be used, and how assets are secured and deployed. |
 | **Environment variable** | A reusable setting (like a URL, API key, or ID) that can vary between environments without modifying individual components. Supports automation and portability. For secrets, use the Secret data type to retrieve values securely from Azure Key Vault. |
-| **Connection reference** | An abstraction that links connectors (e.g., SharePoint, Dataverse, SerciceNow, etc.) to credentials and environment-specific settings—allowing reuse and cleaner ALM processes. |
-| **Managed solution**     | A read-only version of a solution used for deployment to downstream environments. Managed solutions support clean, controlled, and incremental updates, can be uninstalled, and prevent direct modifications to components in the target environment. |
-| **Unmanaged solution**   | Editable solution used in development. Changes can be versioned and exported for deployment. Should not be used in test or production. |
-| **Solution-aware**       | A component or setting that is part of a solution and can be deployed with it across environments. Not all Microsoft Copilot Studio settings are solution-aware. |
-| **Source control**       | The practice of tracking and managing changes to your assets over time. Git integration with Azure DevOps enables auditing, collaboration, and versioning. |
-| **CI/CD**                | Continuous Integration / Continuous Deployment. Automates the process of testing and deploying solutions using tools like Azure DevOps pipelines or GitHub Actions. |                                                                                                     |
+| **Connection reference** | An abstraction that links connectors (e.g., SharePoint, Dataverse, ServiceNow, etc.) to credentials and environment-specific settings—allowing reuse and cleaner ALM processes. |
+| **Managed solution** | A read-only version of a solution used for deployment to downstream environments. Managed solutions support clean, controlled, and incremental updates, can be uninstalled, and prevent direct modifications to components in the target environment. |
+| **Unmanaged solution** | Editable solution used in development. Changes can be versioned and exported for deployment. Should not be used in test or production. |
+| **Solution-aware** | A component or setting that is part of a solution and can be deployed with it across environments. Not all Copilot Studio settings are solution-aware. |
+| **Source control** | The practice of tracking and managing changes to your assets over time. Git integration with Azure DevOps enables auditing, collaboration, and versioning. |
+| **CI/CD** | Continuous Integration / Continuous Deployment. Automates the process of testing and deploying solutions using tools like Azure DevOps pipelines or GitHub Actions. |                                                                                          
+
 ---
 
 ## 📄 Documentation and Additional Training Links
@@ -67,12 +68,12 @@ In this lab, you'll configure your ALM foundation for working with Microsoft Cop
 
 ## 🧩 Use Cases Covered
 
-| Step | Use Case                                               | Value added                                                                                                                                                                             | Effort |
-| ---- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 1    | [Create a solution and custom publisher](#-use-case-1-create-a-solution-and-custom-publisher)                 | Structure your success – Group, manage, and deploy all your agent assets with clarity and control.                                                                                      | 5 min  |
-| 2    | [Create environment variables and connection references](#-use-case-2-create-environment-variables-and-connection-references) | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 5 min  |
-| 3    | [Set up Git source control](#-use-case-3-set-up-git-source-control)                              | Track and evolve – Use Git to version, review, and automate deployment of your agent assets.                                                                                            | 10 min |
-                                                                                | 10 min |
+| Step | Use Case | Value added | Effort |
+|------|----------|-------------|--------|
+| 1 | [Create a solution and custom publisher](#-use-case-1-create-a-solution-and-custom-publisher) | Structure your success – Group, manage, and deploy all your agent assets with clarity and control. | 5 min |
+| 2 | [Create environment variables and connection references](#-use-case-2-create-environment-variables-and-connection-references) | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 5 min |
+| 3 | [Set up Git source control](#-use-case-3-set-up-git-source-control) | Track and evolve – Use Git to version, review, and automate deployment of your agent assets. | 10 min |
+
 ---
 
 ## 🛠️ Instructions by Use Case
