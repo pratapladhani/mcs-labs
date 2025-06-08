@@ -69,10 +69,10 @@ In this lab, you'll configure your ALM foundation for working with Microsoft Cop
 
 | Step | Use Case                                               | Value added                                                                                                                                                                             | Effort |
 | ---- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 1    | Create a solution and custom publisher                 | Structure your success – Group, manage, and deploy all your agent assets with clarity and control.                                                                                      | 5 min  |
-| 2    | Create environment variables and connection references | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 5 min  |
-| 3    | Set up Git source control                              | Track and evolve – Use Git to version, review, and automate deployment of your agent assets.                                                                                            | 10 min |
-
+| 1    | [Create a solution and custom publisher](#-use-case-1-create-a-solution-and-custom-publisher)                 | Structure your success – Group, manage, and deploy all your agent assets with clarity and control.                                                                                      | 5 min  |
+| 2    | [Create environment variables and connection references](#-use-case-2-create-environment-variables-and-connection-references) | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 5 min  |
+| 3    | [Set up Git source control](#-use-case-3-set-up-git-source-control)                              | Track and evolve – Use Git to version, review, and automate deployment of your agent assets.                                                                                            | 10 min |
+                                                                                | 10 min |
 ---
 
 ## 🛠️ Instructions by Use Case
