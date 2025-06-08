@@ -88,28 +88,33 @@ Set up your development environment by creating a solution and custom publisher 
 
 ---
 
-#### Step 1: Open the Solutions area
+#### Open the Solutions area
 
 1. Go to the [Copilot Studio home page](https://aka.ms/MCSStart).
 2. Confirm you are in the correct environment (top-right corner).
+
+#### Name the solution
+
 3. In the left navigation (under the `...` menu), select **Solutions** → **New solution**.
-
-#### Step 2: Name the solution
-
 4. Enter a display name.
 
-   * Avoid names like `DEV`, `POC`, or anything tied to a phase.
-   * Use a descriptive, project-based name.
-   * For this lab, enter: `Workshop Agents`.
+> [!TIP]
+>  * Avoid names like `DEV`, `POC`, or anything tied to a lifecycle phase.
+>  * Use a descriptive, project-based name.
+>  * For example, if this specific to this training and lab, use `Training Workshop Agents`
 
-#### Step 3: Create a custom publisher
+#### Create a custom publisher
 
 5. If this is your first solution, click **+ Publisher** to create one.
 
-   * Use your organization’s name.
-   * Define a short prefix for use in technical names.
+> [!TIP]
+>  * You may use your organization’s name.
+>  * Define a short prefix for use in technical names.
 
-#### Step 4: Set and create
+> [!IMPORTANT]
+> Avoid using the default publisher or the default solution. Custom publishers ensure cleaner component names and better ALM hygiene.
+
+#### Set and create
 
 6. Mark this solution as your **preferred solution** (so new assets go into it by default).
 7. Click **Create**.
