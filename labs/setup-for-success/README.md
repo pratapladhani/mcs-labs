@@ -80,23 +80,41 @@ In this lab, you'll configure your ALM foundation for working with Microsoft Cop
 
 ### 🧱 Use Case #1: Create a solution and custom publisher
 
-Use a structured container to group all agent components for better lifecycle management.
+Create a structured container to manage all your Copilot Studio agent components across environments.
 
-**Summary of tasks**
+#### Objective
 
-In this section, you’ll learn how to access the Solutions area of Microsoft Copilot Studio, create a new solution, create a new publisher, and set the solution as default.
+Set up your development environment by creating a solution and custom publisher in Microsoft Copilot Studio.
 
-**Scenario:** Properly set up your development environment so you can later package and deploy your agents across environments.
+---
 
-#### Step-by-step instructions
+#### Step 1: Open the Solutions area
 
-1. Navigate to the [Copilot Studio home page](https://aka.ms/MCSStart).
-2. Ensure you are in the expected environment by checking the environment name in the top-right corner.
-3. Go to the Solutions menu (left-hand nav under the ellipsis `...`) and select **New solution**.
-4. Provide a display name. Avoid tying the name to an environment or development stage (e.g., avoid 'DEV' or 'POC'). Use a descriptive name like your project name. For this lab, use `Workshop Agents`.
-5. If this is your first time creating a solution in this environment, create a new **Publisher**. This can be your organization’s name. Choose a prefix used in technical names.
-6. Set this solution as your **preferred solution** to ensure all new components default to it.
-7. Click **Create** when ready.
+1. Go to the [Copilot Studio home page](https://aka.ms/MCSStart).
+2. Confirm you are in the correct environment (top-right corner).
+3. In the left navigation (under the `...` menu), select **Solutions** → **New solution**.
+
+#### Step 2: Name the solution
+
+4. Enter a display name.
+
+   * Avoid names like `DEV`, `POC`, or anything tied to a phase.
+   * Use a descriptive, project-based name.
+   * For this lab, enter: `Workshop Agents`.
+
+#### Step 3: Create a custom publisher
+
+5. If this is your first solution, click **+ Publisher** to create one.
+
+   * Use your organization’s name.
+   * Define a short prefix for use in technical names.
+
+#### Step 4: Set and create
+
+6. Mark this solution as your **preferred solution** (so new assets go into it by default).
+7. Click **Create**.
+
+---
 
 #### Test your understanding
 
