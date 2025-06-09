@@ -4,11 +4,28 @@ Build agents with confidence. Deploy with control. Master the lifecycle of your 
 
 ---
 
+## 🤔 Why Start with ALM?
+
+**New to Power Platform or Copilot Studio?** You might be eager to start building agents right away, but taking a few minutes to set up Application Lifecycle Management (ALM) first will save you hours of headaches later!
+
+Think of ALM as preparing your kitchen before cooking a complex meal:
+- **Without ALM**: Ingredients scattered across counters, no recipe plan, impromptu grocery trips mid-cooking
+- **With ALM**: Ingredients organized, recipe prepared, everything measured and ready
+
+**Common beginner challenges solved by ALM:**
+- "I built something great in dev, but can't easily move it to production"
+- "Someone changed my agent and now it's broken - who did it and how do I fix it?"
+- "I need to update my agent but I'm afraid of breaking what works"
+- "My team members keep overwriting each other's changes"
+
+**The 5-minute ALM setup in this lab prevents all these problems!**
+
+---
 
 ## 🧭 Lab Details
 
-| Level | Persona | Duration   | Purpose                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ----- | ------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Level | Persona | Duration | Purpose |
+| ----- | ------- | -------- | ------- |
 | 200   | Maker   | 20 minutes | After completing this lab, participants will be able to apply Application Lifecycle Management (ALM) best practices to their Microsoft Copilot Studio solutions. They will know how to structure their work using solutions and publishers, configure environment variables and connection references for deployment readiness, and set up Git-based source control using Azure DevOps—all without writing code. |
 
 ---
@@ -16,6 +33,13 @@ Build agents with confidence. Deploy with control. Master the lifecycle of your 
 ## 🌐 Introduction
 
 Application Lifecycle Management (ALM) ensures that your solutions evolve safely and efficiently as they move from development to production. This lab will walk you through the foundational best practices of ALM in Microsoft Copilot Studio—from structuring your solution to managing configurations and source control.
+
+**Real-world example:** Imagine you've built a great customer service agent in your development environment. Without proper ALM:
+1. Moving to production means manually recreating all your work
+2. If something breaks, you can't easily roll back to a working version
+3. When multiple team members make changes, work gets overwritten
+
+With the ALM practices in this lab, you'll avoid these pitfalls and set yourself up for success!
 
 ---
 
