@@ -4,6 +4,14 @@ Build agents with confidence. Deploy with control. Master the lifecycle of your 
 
 ---
 
+## 🧭 Lab Details
+
+| Level | Persona | Duration | Purpose |
+| ----- | ------- | -------- | ------- |
+| 200   | Maker   | 20 minutes | After completing this lab, participants will be able to apply Application Lifecycle Management (ALM) best practices to their Microsoft Copilot Studio solutions. They will know how to structure their work using solutions and publishers, configure environment variables and connection references for deployment readiness, and set up Git-based source control using Azure DevOps—all without writing code. |
+
+---
+
 ## 🤔 Why Start with ALM?
 
 **New to Power Platform or Copilot Studio?** You might be eager to start building agents right away, but taking a few minutes to set up Application Lifecycle Management (ALM) first will save you hours of headaches later!
@@ -18,15 +26,7 @@ Think of ALM as preparing your kitchen before cooking a complex meal:
 - "I need to update my agent but I'm afraid of breaking what works"
 - "My team members keep overwriting each other's changes"
 
-**The 5-minute ALM setup in this lab prevents all these problems!**
-
----
-
-## 🧭 Lab Details
-
-| Level | Persona | Duration | Purpose |
-| ----- | ------- | -------- | ------- |
-| 200   | Maker   | 20 minutes | After completing this lab, participants will be able to apply Application Lifecycle Management (ALM) best practices to their Microsoft Copilot Studio solutions. They will know how to structure their work using solutions and publishers, configure environment variables and connection references for deployment readiness, and set up Git-based source control using Azure DevOps—all without writing code. |
+**The few minutes ALM setup in this lab prevents all these problems!**
 
 ---
 
@@ -118,22 +118,27 @@ Set up your development environment by creating a solution and custom publisher 
 1. Go to the [Copilot Studio home page](https://aka.ms/MCSStart).
 2. Confirm you are in the correct environment (top-right corner).
 
-#### Name the solution
+#### Create a solution
 
-3. In the left navigation (under the `...` menu), select **Solutions** → **New solution**.
-4. Enter a display name.
+3. In the left navigation (under the `...` menu), select **Solutions**
+
+    ![alt text](images/solutions.png)
+
+4. Select **New solution**.
+5. Enter a display name.
 
 > [!TIP]
->  * Avoid names like `DEV`, `POC`, or anything tied to a lifecycle phase.
+>  * Avoid names like `DEV`, `TEST`, `PROD`, `POC`, `MVP` or anything tied to a project lifecycle phase.
 >  * Use a descriptive, project-based name.
->  * For example, if this specific to this training and lab, use `Training Workshop Agents`
+>  * For example, if this is specific to this training and lab, use `Training Workshop Agents`
 
-#### Create a custom publisher
+#### Create a publisher
 
-5. If this is your first solution, click **+ Publisher** to create one.
+6. If this is your first solution, click **+ New publisher** to create one.
 
 > [!TIP]
 >  * You may use your organization’s name.
+>  * While the **Display name** may contain spaces, the **Name** can't contain special characters and spaces.
 >  * Define a short prefix for use in technical names.
 
 > [!IMPORTANT]
@@ -141,8 +146,12 @@ Set up your development environment by creating a solution and custom publisher 
 
 #### Set and create
 
-6. Mark this solution as your **preferred solution** (so new assets go into it by default).
-7. Click **Create**.
+7. Check **Set as your preferred solution** (so any new component goes into it by default).
+8. Click **Create**.
+
+---
+
+####  🏅 Congratulations! You've created your solution!
 
 ---
 
@@ -156,8 +165,8 @@ Set up your development environment by creating a solution and custom publisher 
 
 **Lessons learned & troubleshooting tips:**
 
-* Avoid names like “DEV” or “Test” in your solution name—they’re misleading.
-* If save fails, ensure publisher prefix is unique and valid.
+* Avoid names like `Dev` or `Test` in your solution name—they’re misleading.
+* If save fails, ensure publisher name is unique and valid.
 * Keep solution names business-focused, not technical-phase focused.
 
 **Challenge: Apply this to your own use case**
@@ -170,7 +179,7 @@ Set up your development environment by creating a solution and custom publisher 
 
 ### 🧩 Use Case #2: Create environment variables and connection references
 
-Add reusable variables for URLs, keys, or other settings that differ across environments, along with connection references to external systems.
+Add reusable variables for URLs, API keys, or other settings that differ across environments, along with connection references to external systems.
 
 **Summary of tasks**
 
@@ -181,38 +190,55 @@ In this section, you’ll learn how to create environment variables and connecti
 #### Step-by-step instructions
 
 1. Open the solution you created in Use Case #1.
-2. Select **New**, then go to **More** and choose **Environment variable**.
+2. Select **+ New**, then go to **More** and choose **Environment variable**.
+
+![alt text](images/environment-variable-connection-reference.png)
+
 3. In **Name**, enter: `Custom Knowledge Endpoint`
 4. In **Data Type**, select **Text**.
-5. For the value, use: [https://aka.ms/MCSWorkshopLabAssets](https://aka.ms/MCSWorkshopLabAssets)
+5. Leave **Default Value** blank, but under **Current Value**, select **+ New Value**. For the value, use: [https://aka.ms/MCSWorkshopLabAssets](https://aka.ms/MCSWorkshopLabAssets)
+
+> [!TIP]
+>  * Notice how, under **Advanced**, you can set whether the current value can follow through with your solution deployment, or if it should be reset each time the solution is deployed to a new environment
+
 6. Click **Save**.
 
-> 💡 **Pro Tip:** Environment variables can also be of type **Secret** to retrieve secure values like API keys from Azure Key Vault at runtime.
+> [!TIP]
+>  * Environment variables can also be of type **Secret** to retrieve secure values like API keys from Azure Key Vault at runtime.
 
 7. In the solution, select **New**, then go to **More** and choose **Connection reference**.
-8. Use the connector name (e.g., **MSN Weather**) as the name. Optionally, prefix with your project name (e.g., `[MCS Training] MSN Weather`).
+8. Use the connector name (e.g., `MSN Weather`) as the name. Optionally, prefix with your project name (e.g., `[MCS Training] MSN Weather`).
 9. Select the connector (e.g., **MSN Weather**).
 10. In the connection dropdown, choose **New connection** if none exists.
 11. Log in through Power Apps in a new tab if needed, then return to Copilot Studio.
-12. Refresh and select the newly created connection.
-13. If the **Create** button is grayed out, type an extra character in the display name field.
+12. Above the **Connection** dropdown, select **Refresh** and choose the newly created connection.
+
+> [!TIP]
+>  * If the **Create** button is grayed out, it's just because you pasted the display name. Type an extra character in the display name field and remove it to be able to create. 
+
 14. Repeat steps for the following connectors:
 
-    * Microsoft Dataverse
-    * SharePoint
-    * ServiceNow (Basic Authentication, values provided in [https://aka.ms/MCSWorkshopLabAssets](https://aka.ms/MCSWorkshopLabAssets))
+    * `Microsoft Dataverse`.
+    * `SharePoint`.
+    * `ServiceNow` (Basic Authentication, values provided in [https://aka.ms/MCSWorkshopLabAssets](https://aka.ms/MCSWorkshopLabAssets). Make sure to scroll down in the connection creation screen to be able to set the instance).
+
+---
+
+####  🏅 Congratulations! You've created environment variables and connection references!
+
+---
 
 #### Test your understanding
 
-* Did you use meaningful names for environment variables and connections?
-* Can you easily identify which settings change per environment?
-* Are your connections reusable for CI/CD automation?
+* Do you understand the value of using **environment variables** instead of hardcoding values like URLs, API keys, or record IDs?
+* Do you see the importance of using **descriptive, well-scoped names** for environment variables (e.g. `Base API URL`, `Support Team Email`)?
+* Have you identified **which variables should change across environments** (e.g. dev, test, prod)?
 
 **Challenge: Apply this to your own use case**
 
-* What settings in your agent should vary between environments?
-* How will you name variables and references to avoid confusion across teams?
-* Try creating a **Secret**-type variable referencing a value in Azure Key Vault.
+* List the environment variables your agent needs (e.g. external API base URLs, system emails, etc.).
+* Define clear naming conventions to help your team manage them consistently.
+* Try creating a **Secret**-type environment variable that securely references a value in Azure Key Vault (e.g. an API key or client secret).
 
 ---
 
