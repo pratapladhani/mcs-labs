@@ -12,6 +12,22 @@ Build agents with confidence. Deploy with control. Master the lifecycle of your 
 
 ---
 
+## 📚 Table of Contents
+
+- [Why Start with ALM?](#-why-start-with-alm)
+- [Introduction](#-introduction)
+- [Core Concepts Overview](#-core-concepts-overview)
+- [Documentation and Additional Training Links](#-documentation-and-additional-training-links)
+- [Prerequisites](#-prerequisites)
+- [Summary of Targets](#-summary-of-targets)
+- [Use Cases Covered](#-use-cases-covered)
+- [Instructions by Use Case](#️-instructions-by-use-case)
+  - [Use Case #1: Create a solution and custom publisher](#-use-case-1-create-a-solution-and-custom-publisher)
+  - [Use Case #2: Create environment variables and connection references](#-use-case-2-create-environment-variables-and-connection-references)
+  - [Use Case #3: Set up Git source control](#-use-case-3-set-up-git-source-control)
+
+---
+
 ## 🤔 Why Start with ALM?
 
 **New to Power Platform or Copilot Studio?** You might be eager to start building agents right away, but taking a few minutes to set up Application Lifecycle Management (ALM) first will save you hours of headaches later!
@@ -95,7 +111,7 @@ In this lab, you'll configure your ALM foundation for working with Microsoft Cop
 
 | Step | Use Case | Value added | Effort |
 |------|----------|-------------|--------|
-| 1 | [Create a solution and custom publisher](#-use-case-1-create-a-solution-and-custom-publisher) | Structure your success – Group, manage, and deploy all your agent assets with clarity and control. | 5 min |
+| 1 | [Create a solution and custom publisher](#-use-case-1-create-a-solution-and-custom-publisher) | Structure your success – Group, manage, and deploy all your agent components with clarity and control. | 5 min |
 | 2 | [Create environment variables and connection references](#-use-case-2-create-environment-variables-and-connection-references) | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 5 min |
 | 3 | [Set up Git source control](#-use-case-3-set-up-git-source-control) | Track and evolve – Use Git to version, review, and automate deployment of your agent assets. | 10 min |
 
@@ -103,15 +119,29 @@ In this lab, you'll configure your ALM foundation for working with Microsoft Cop
 
 ## 🛠️ Instructions by Use Case
 
-### 🧱 Use Case #1: Create a solution and custom publisher
+---
 
-Create a structured container to manage all your Copilot Studio agent components across environments.
+## 🧱 Use Case #1: Create a solution and custom publisher
 
-#### Objective
+Use a structured container to group all agents components for better lifecycle management.
+
+| Use case | Value added | Estimated effort |
+|----------|-------------|------------------|
+| Create a solution and custom publisher | Structure your success – Group, manage, and deploy all your agent components with clarity and control. | 5 minutes |
+
+**Summary of tasks**
+
+In this section, you'll learn how to access the Solutions area of Copilot Studio, create a new solution, new publisher, and set the solution as default.
+
+**Scenario:** Properly setup your development environment so that you can later easily package and deploy your agents to other environments.
+
+### Objective
 
 Set up your development environment by creating a solution and custom publisher in Microsoft Copilot Studio.
 
 ---
+
+### Step-by-step instructions
 
 #### Open the Solutions area
 
@@ -151,11 +181,11 @@ Set up your development environment by creating a solution and custom publisher 
 
 ---
 
-####  🏅 Congratulations! You've created your solution!
+###  🏅 Congratulations! You've created your solution!
 
 ---
 
-#### Test your understanding
+### Test your understanding
 
 **Key takeaways:**
 
@@ -177,17 +207,23 @@ Set up your development environment by creating a solution and custom publisher 
 
 ---
 
-### 🧩 Use Case #2: Create environment variables and connection references
+---
 
-Add reusable variables for URLs, API keys, or other settings that differ across environments, along with connection references to external systems.
+## 🧩 Use Case #2: Create environment variables and connection references
+
+Use reusable variables and connection abstractions for seamless multi-environment deployments.
+
+| Use case | Value added | Estimated effort |
+|----------|-------------|------------------|
+| Create environment variables and connection references | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 5 minutes |
 
 **Summary of tasks**
 
-In this section, you’ll learn how to create environment variables and connection references in your solution.
+In this section, you'll learn how to create environment variables and connection references in your solution.
 
-**Scenario:** Configure your environment by anticipating future values that will differ across development, testing, and production deployments.
+**Scenario:** Configure your environment by anticipating future elements that will need to be updated as your solution moves from development to production.
 
-#### Step-by-step instructions
+### Step-by-step instructions
 
 1. Open the solution you created in Use Case #1.
 2. Select **+ New**, then go to **More** and choose **Environment variable**.
@@ -224,11 +260,11 @@ In this section, you’ll learn how to create environment variables and connecti
 
 ---
 
-####  🏅 Congratulations! You've created environment variables and connection references!
+###  🏅 Congratulations! You've created environment variables and connection references!
 
 ---
 
-#### Test your understanding
+### Test your understanding
 
 * Do you understand the value of using **environment variables** instead of hardcoding values like URLs, API keys, or record IDs?
 * Do you see the importance of using **descriptive, well-scoped names** for environment variables (e.g. `Base API URL`, `Support Team Email`)?
@@ -242,38 +278,77 @@ In this section, you’ll learn how to create environment variables and connecti
 
 ---
 
-### 🔄 Use Case #3: Set up Git source control
+</details>
+
+---
+
+## 🔄 Use Case #3: Set up Git source control
 
 Connect your solution to Azure DevOps Git to track changes and prepare for CI/CD—no code required.
 
+| Use case | Value added | Estimated effort |
+|----------|-------------|------------------|
+| Set up Git source control | Track and evolve – Use Git to version, review, and automate deployment of your agent assets. | 10 minutes |
+
 **Summary of tasks**
 
-In this section, you’ll learn how to create a new project in Azure DevOps, initialize a branch, and connect it to your Copilot Studio environment.
+In this section, you'll learn how to create a new project in Azure DevOps, how to instantiate the main branch, and how to connect it to your developer environment.
 
 **Scenario:** You want to track changes to your Copilot Studio agents in source control, collaborate with your team, and prepare for automated deployment pipelines.
 
-#### Step-by-step instructions
+### Step-by-step instructions
 
-1. Navigate to [Azure DevOps](https://aka.ms/MCSWorkshopADO) and log in.
+### Setting up Azure DevOps
 
-   > First-time users may need to confirm their user’s fictitious name and country.
-2. Create a project with your fictitious user's name.
-3. Select **Create project**.
-4. After project creation, go to **Repos** → **Branches**.
-5. Select **Initialize** to create the `main` branch with a README or .gitignore.
+1. Navigate to [Azure DevOps](https://aex.dev.azure.com/me?mkt=en-US) and log in.
 
+> [!TIP]
+>  * First-time users may need to confirm their user’s fictitious name and country.
+
+2. Enter the existing **organization**.
+3. Set new **project name**, use the same name as your fictitious user's name. Keep the options by default (e.g, Private).
+4. Select **+ Create project**.
+5. After project creation, go to **Repos** → **Branches**.
+6. Select **Initialize** (at the bottom) to create the `main` branch with a README or .gitignore.
+
+   ![alt text](images/azure-devops-initialize-branch.png) 
+    
 > 🎉 You’ve set up the Git repo! Now return to Microsoft Copilot Studio.
 
-6. Go back to [Microsoft Copilot Studio](https://aka.ms/MCSStart) and open the **Solutions** page.
-7. In the menu, select **Connect to Git**.
-8. Set **Connection type** to `Solution`.
-9. Choose the **CopilotStudioTraining** organization and your newly created project.
-10. Set the **Root Git folder** to `Solutions`.
-11. Select **Next**, then pick the solution created in Use Case #1.
-12. When prompted for the branch, select **Create new branch** and name it `dev`.
-13. Click **Save** and then **Connect**.
+### Connecting Microsoft Copilot Studio to Git
 
-#### Test your understanding
+7. Go back to [Microsoft Copilot Studio](https://aka.ms/MCSStart) and open the **Solutions** page (still behind the `...` menu).
+8. In the menu, select **Connect to Git**.
+9. Set **Connection type** to `Solution`.
+10. Choose your **organization** and your newly created **project** and **repository**.
+11. Set the **Root Git folder** to `Solutions`.
+12. Select **Next**, then pick the solution created in Use Case #1.
+
+![alt text](images/connect-to-git.png)
+
+13. When prompted for the branch, select **Create new branch** and name it `dev`.
+14. Click **Save** and then **Connect**.
+
+### Observing the Git integration from Microsoft Copilot Studio
+
+15. Now, let's see this action. **Open the solution** you created in Use Case #1.
+16. In the left-hand navigation, navigate to **Source control**.
+17. **See** how the various components you have added to your solution are now ready to be committed to your source control. If don't see them all, select **Refresh** as they get detected and added.
+18. When ready, select **Commit**, add a comment describing the changes you're introducing (e.g., `New environment variables and connection references`).
+
+![alt text](images/commit.png)
+
+19. Once committed, you can **navigate** to your commit in Azure DevOps and see the introduced, updated, or deleted components.
+
+   ![alt text](images/ado-commit.png)
+
+---
+
+###  🏅 Congratulations! You've set up Git source control!
+
+---
+
+### Test your understanding
 
 * Can you see your solution files in Azure DevOps?
 * Can you track history and commit changes?
@@ -284,3 +359,36 @@ In this section, you’ll learn how to create a new project in Azure DevOps, ini
 * Explore branching strategies (e.g., main/dev/feature).
 * How will your team review and merge changes?
 * How could this integrate with deployment pipelines later?
+
+---
+
+## 🏆 Summary of learnings
+
+True learning comes from doing, questioning, and reflecting—so let's put your skills to the test.
+
+To maximize the impact of your ALM setup in Copilot Studio:
+
+* **Use solutions as your foundation** – Keep all your components within a solution to simplify lifecycle management and ensure clean deployment.
+* **Name wisely** – Adopt a consistent naming convention and always use a custom publisher to avoid default clutter.
+* **Plan for portability** – Use environment variables and connection references to ensure your agent configurations adapt across dev, test, and production.
+* **Document post-deployment steps** – Track settings that aren't part of the solution (e.g., authentication, channels, sharing) so nothing is missed.
+* **Leverage source control** – Use Git integration to track, audit, and collaborate—setting the stage for CI/CD without complex tooling.
+* **Automate where it counts** – Consider using pipelines with Azure DevOps or GitHub for streamlined, repeatable deployments.
+
+---
+
+### Conclusions and recommendations
+
+**ALM golden rules:**
+
+* Work in the context of solutions.
+* Create separate solutions only if you need to deploy components independently.
+* Use a custom publisher and prefix to maintain clarity and traceability.
+* Use environment variables for settings and secrets that change across environments.
+* Export and deploy solutions as managed, unless you're setting up a dev environment.
+* Avoid customizing outside of dev.
+* Consider automating ALM for source control and CI/CD pipelines.
+
+By following these principles, you'll establish a robust, scalable foundation for managing Copilot agents and Power Platform assets across their full lifecycle.
+
+---
