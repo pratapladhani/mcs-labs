@@ -8,7 +8,7 @@ Create an intelligent agent in Copilot that delivers contextual, multi-part answ
 
 | Level | Persona | Duration | Purpose |
 | ----- | ------- | -------- | ------- |
-| 100   | Basic Maker | 15 minutes | Learn to create and share a Copilot agent in Microsoft 365 Copilot Chat that uses instructions, websites, and prompts to answer questions about Microsoft Copilot. |
+| 100   | Basic Maker | 15 minutes | After completing this lab, attendees will be able to create and share a Copilot agent in Microsoft 365 Copilot Chat that uses their instructions, websites, and prompts to help answer questions about Microsoft Copilot. |
 
 ---
 
@@ -16,6 +16,7 @@ Create an intelligent agent in Copilot that delivers contextual, multi-part answ
 
 - [Introduction](#-introduction)
 - [Core Concepts Overview](#-core-concepts-overview)
+- [Documentation and Additional Training Links](#-documentation-and-additional-training-links)
 - [Prerequisites](#-prerequisites)
 - [Summary of Targets](#-summary-of-targets)
 - [Use Cases Covered](#-use-cases-covered)
@@ -30,24 +31,34 @@ Create an intelligent agent in Copilot that delivers contextual, multi-part answ
 
 In this lab, you'll create a Copilot agent in Microsoft 365 Copilot Chat designed to assist users with questions about Copilot agents. The agent will act as a learning companion or teacher, grounded in official Microsoft documentation.
 
-> [!TIP]  
-> **Tagline**: Build smarter support, faster – Design a tailored agent that understands your audience and delivers answers grounded in trusted Microsoft documentation.
-
 ---
 
 ## 🎓 Core Concepts Overview
 
 | Concept | Why it matters |
 |---------|----------------|
-| **Agent** | Customized assistant created in Copilot Studio |
-| **Microsoft 365 Copilot** | Enterprise AI tool grounded in Microsoft Graph data ($30/user/month) with premium features like Office integration and enterprise data grounding |
-| **Copilot Chat** | GPT-based AI experience using public web data, similar to ChatGPT, can use organizational data with pay-as-you-go Azure subscription |
-| **Declarative Agent** | Simple, scoped tasks that use Copilot core for instruction-based behavior |
-| **Custom Engine Agent** | Advanced agent with its own engine, not Copilot-native, complex agents with external orchestration |
-| **Grounding** | Anchoring answers in defined data sources like Microsoft documentation |
-| **Instruction** | Configuration that defines agent behavior and tone |
-| **Prompt** | Suggested questions shown in chat UI |
-| **Web Search Toggle** | Allows/disables use of general web content in responses |
+| **Agent** | A customized digital assistant. Agents can answer questions, retrieve information, and guide users through tasks based on configured instructions, prompts, and knowledge sources. |
+| **Microsoft 365 Copilot** | An enterprise AI assistant integrated into Teams and Office applications. It uses organization data the employee has access to (emails, meetings, documents) and supports enhanced capabilities and agent extensibility ($30/user/month). |
+| **Copilot Chat** | A web-based AI experience included in Microsoft 365 that leverages large language models and generative AI to answer user questions using public web data and configured agents. Unlike Microsoft 365 Copilot, it is not grounded in organizational data by default, but it be through a pay-as-you-go model (pay per use). |
+| **Copilot agent** | An agent that is available as part of the Copilot experience (Microsoft 365 Copilot or Copilot Chat, so, employee-facing). |
+| **Declarative Agent** | A simple type of Copilot agent, typically built using the Copilot Studio agent builder. Declarative agents are configured through instructions, prompts, and knowledge sources. It runs on the Copilot platform and is ideal for scoped, instructional, or informational use cases. |
+| **Custom Engine Agent** | An advanced type of Copilot agent, with its own orchestration, knowledge base, and execution engine. It doesn't rely on Copilot and can even run outside Microsoft 365, offering more control and customization. |
+| **Grounding** | The process of anchoring an agent's responses to specific data sources (like websites, SharePoint sites, or files) to ensure accuracy and minimize hallucinations. |
+| **Instruction** | A short configuration that defines how your agent behaves—tone, personality, priorities, and what it should or shouldn't do in certain scenarios. |
+| **Prompt** | Predefined user questions or suggestions shown in the chat interface to guide user interaction with the agent. |
+| **Web Search** | A setting that allows you to enable or disable the use of general web content for generating answers. Turning it off forces the agent to rely solely on defined knowledge sources. |
+| **Code interpreter** | An advanced AI feature that can write and run code in real time to perform tasks like data analysis, file handling, and chart generation using tools like Python and matplotlib. |
+| **Image generator** | An AI tool that creates original images from text prompts, using neural networks trained on large datasets to understand styles and semantics. |
+| **Organization knowledge sources (Microsoft Graph connectors)** | Connectors that ingest external data into the Microsoft index, integrating line‑of‑business content—such as unstructured (e.g., ServiceNow knowledge articles) and structured data (e.g.,Salesforce opportunities) into Microsoft 365, enriching search and Copilot experiences by making the data discoverable, searchable, and usable for semantic reasoning. |
+
+---
+
+## 📄 Documentation and Additional Training Links
+
+* [Overview of Microsoft 365 Copilot Chat](https://learn.microsoft.com/en-us/copilot/chat)
+* [What is Microsoft 365 Copilot?](https://learn.microsoft.com/en-us/microsoft-365-copilot)
+* [Declarative Agents for Microsoft 365 Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-declarative-agent)
+* [Use the Copilot Studio Agent Builder to Build Agents](https://learn.microsoft.com/en-us/copilot-studio/agent-builder)
 
 ---
 
@@ -63,9 +74,9 @@ In this lab, you'll create a Copilot agent in Microsoft 365 Copilot Chat designe
 By the end of the lab, your agent will be able to:
 
 - Explain the differences between Microsoft 365 Copilot and Copilot Chat  
-- Clarify Declarative vs. Custom Engine Agents  
-- Guide users on how to create and use Copilot agents  
-- Provide answers based on trusted Microsoft documentation  
+- Clarify the distinction between Declarative Agents and Custom Engine Agents  
+- Guide users on how to create and use Copilot agents effectively  
+- Provide accurate and helpful answers based on trusted documentation sources  
 
 ---
 
@@ -73,7 +84,7 @@ By the end of the lab, your agent will be able to:
 
 | Step | Use Case | Value added | Effort |
 |------|----------|-------------|--------|
-| 1 | [Create and configure your Copilot agent](#-use-case-1-create-and-configure-your-copilot-agent) | Build a teaching-style agent grounded in Microsoft documentation that helps users learn about Copilot effectively | 15 min |
+| 1 | [Create and configure your Copilot agent](#-use-case-1-create-and-configure-your-copilot-agent) | Design a tailored agent that understands your audience and delivers answers grounded in trusted Microsoft documentation | 15 min |
 
 ---
 
@@ -83,17 +94,17 @@ By the end of the lab, your agent will be able to:
 
 ## 🤖 Use Case #1: Create and configure your Copilot agent
 
-Create and share an agent in Copilot Chat using Copilot Studio agent builder to create a declarative agent and obtain a shareable link.
+Use Copilot Studio agent builder to create a declarative agent and obtain a shareable link.
 
 | Use case | Value added | Estimated effort |
 |----------|-------------|------------------|
-| Create and configure your Copilot agent | Build a teaching-style agent grounded in Microsoft documentation that helps users learn about Copilot effectively | 15 minutes |
+| Create an agent in Copilot Chat | Design a tailored agent that understands your audience and delivers answers grounded in trusted Microsoft documentation | 10 minutes |
 
 **Summary of tasks**
 
-In this section, you'll learn how to navigate to Copilot, create an agent with specific instructions and tone, configure grounding sources, and test your agent.
+In this section, you'll create a Copilot agent in Microsoft 365 Copilot Chat, grounded on Microsoft documentation, to help users understand Copilot capabilities.
 
-**Scenario:** Create a teacher-style agent that helps users learn about Copilot, including differences between Microsoft 365 Copilot and Copilot Chat, agent types, and how to use Copilot Studio agent builder.
+**Scenario:** Build a learning-focused AI assistant that can answer questions about Copilot agents, clarify key distinctions (like M365 Copilot vs. Copilot Chat, or Declarative vs. Custom Engine agents), and guide users with accurate, contextual responses.
 
 ### Objective
 
@@ -105,97 +116,101 @@ Create, configure, and share a Copilot agent that serves as a knowledgeable guid
 
 #### Navigate to Microsoft 365 Copilot
 
-1. Navigate to [Microsoft 365 Copilot home page](https://copilot.cloud.microsoft/?auth=2&home=1)  
+1. Navigate to [Microsoft 365 Copilot home page](https://m365.cloud.microsoft/chat/?auth=2&home=1)  
    _Note: if you see 'coming soon' try again in a few minutes._
 
-2. Go to the **Copilot** tab.
+2. Go to the **Chat** tab.
 
 > [!TIP]  
-> Microsoft 365 Copilot and Copilot Chat are designed for B2E (Business-to-Employee) use. Users can toggle between Work (M365 Copilot) and Web (Copilot Chat) experiences.  
+> Microsoft 365 Copilot and Copilot Chat are meant for internal, employee experiences – B2E (Business-to-Employee). When a user has access to both, they see a toggle in the user interface to switch between the Work (Microsoft 365 Copilot) and Web experiences (Copilot Chat).
+>
+> ![alt text](images/m365-copilot.png)
 >  
-> Microsoft 365 Copilot is a licensed offering ($30/user/month) with premium features:
-> - Integration with Office apps  
-> - Enterprise data grounding (Outlook, Teams, SharePoint)  
-> - Advanced capabilities (image generation, code interpreter)  
+> **Microsoft 365 Copilot** is a per-user license ($30/user/mo.) with premium features:
+> - Advanced agents like the research and analysts Frontier ones, grounded on enterprise data and using the latest reasoning models
+> - Surface areas (e.g., integration with Office applications)
+> - Knowledge sources (e.g., your enterprise data from Outlook, Teams or SharePoint)
 >  
-> Copilot Chat is a web-grounded experience, similar to ChatGPT, and can use organizational data with a pay-as-you-go Azure subscription.  
+> **Copilot Chat** can be seen as a free enterprise equivalent to ChatGPT. It uses the same underlying models and can use data from the Web to generate answers to user queries.
+> - Copilot Chat can leverage premium capabilities like organization-tenant grounding for answers when tied to a pay-as-you-go Azure subscription.
 >  
-> Copilot agents come in two types:
-> - **Declarative agents**: Simple, scoped tasks, use Copilot core  
-> - **Custom engine agents**: Complex, external orchestration
+> Two types of agents can be surfaced in Microsoft 365 Copilot or Copilot Chat:
+> - **Declarative agents**: Use Copilot as their core. They simply scope their tasks with specific instructions, pre-defined prompts, knowledge sources, and actions. Ideal for simple scoped knowledge retrieval or task-specific use-cases.
+> - **Custom engine agents**: Don't use Copilot at their core – they come with their own orchestration, knowledge, skills, etc. and they can run on a different platform than Microsoft Copilot. Ideal for more advanced or complex use-cases.
 
 #### Test the basic experience
 
-3. If licensed, ensure you're in the **Web** tab (or you only have Web access if no toggle is visible).
+3. If you have Microsoft 365 Copilot license, make sure you are in the **Web** tab (if you don't see any tab for Work/Web, this means you only have access to Copilot Chat).
 
 4. Test the experience:
 ```
-
-What are the top things to do around Düsseldorf in May?
-
+Upcoming features in Microsoft Copilot Studio roadmap
 ```
+![alt text](images/simple-copilot-search.png)
 
 5. Select **Start a new chat** to reset.
 
 #### Create your agent
 
-6. Select **Create an agent**  
-   _Note: if missing, refresh with Ctrl + F5._
+6. On the side pane, expand **Agents** and select **Create agent**  
 
-7. Describe the agent:
+> [!TIP]  
+> * If you don't see **Create agent**, try refreshing with Ctrl + F5. You user account may still be provisionning services.
+
+7. Notice that you can explore existing **templates**. But for this lab, when prompted to **describe the agent**, reply with:
+
 ```
-
 I want to build a teacher-style agent that helps users learn about Copilot, including the differences between Microsoft 365 Copilot and Copilot Chat, Declarative Agents vs. Custom Engine Agents, and how to use the Copilot Studio agent builder. The agent should ask questions to validate and reinforce user understanding, encourage exploration, and act as a knowledgeable guide grounded in Microsoft documentation.
-
 ```
 
-8. Choose tone:
+8. **Confirm** the suggested agent name.
+
+9. If asked about how the agent should interact with users, **reply** with:
+
 ```
-
-Friendly, personal, and emphatic tone. You can use irony and emojis when appropriate.
-
+Yes, the agent should ask follow-up questions, provide quizzes, or offer additional resources, as appropriate
 ```
 
 #### Configure grounding sources
 
-9. Provide websites:
-```
+10. When asked about publicly accessible websites as knowledge sources, **paste** these URLs:
 
+```
 https://learn.microsoft.com/en-us/microsoft-365-copilot
-https://learn.microsoft.com/en-us/copilot](https://learn.microsoft.com/en-us/copilot
-
+https://learn.microsoft.com/en-us/copilot
 ```
 
-10. Suggest prompt updates:
+
+11. When asked for other modifications, you can **instruct** it to tweak the suggestion prompts:
+
 ```
-
-* Microsoft 365 Copilot vs. Copilot Chat
-* Declarative vs. Custom Engine Agents
-* Copilot agents governance
-* Pay-as-you-go options for Copilot Chat
-
+Your tone should be friendly, personal, and emphatic. You can make jokes, use subtle irony and emojis when appropriate.
 ```
 
 #### Finalize configuration
 
-11. In **Configure**:
-    - Enable Code Interpreter and Image Generator  
-    - Add more sources if needed  
+12. Now let's head over to the **Configure** tab. Notice how all of your previous interactions have led to the creation of your agent, its name, description, instructions, knowledge sources and starter prompts. Feel free to tweak them!
 
-12. Use the test pane, then select **Create**.
+13. Fix any issue like max character limit for start prompt titles.
+
+14. You can test your agent in the test pane. When ready, select **Create**.
+
+![alt text](images/agent-builder.png)
 
 #### Share and test your agent
 
-13. Copy the agent link and share.
+15. You can use the generated link to share your agents with other users.
 
-14. Test your agent:
+16. Select **Go to agent**.
+
+17. Try your agent by selecting one of the prompts or by pasting this:
+
 ```
-
 What are the differences between Microsoft 365 Copilot and Copilot Chat?
-
 ```
 
-15. To edit existing agents: **Create an agent** > **My agents**
+> [!IMPORTANT]  
+> If you need to update a declarative agent, go to **Create agent** then navigate to **My agents** in the breadcrumbs.
 
 ---
 
@@ -207,48 +222,51 @@ What are the differences between Microsoft 365 Copilot and Copilot Chat?
 
 **Key takeaways:**
 
-- Microsoft 365 Copilot vs. Copilot Chat – one is grounded in Microsoft 365 data, the other in web data  
-- Declarative vs. Custom Engine Agents – scoped vs. orchestrated use cases  
-- Grounding in trusted documentation = better answers  
-- Well-designed agents prompt exploration, not just provide answers  
+- **Copilot Chat vs. Microsoft 365 Copilot** – Understand which is which: one is grounded in your Microsoft 365 data, the other in the web
+- **Agent types matter** – Declarative agents are simple and instruction-based; Custom Engine agents are complex and fully orchestrated
+- **Documentation is your friend** – Grounding agents on trusted content ensures more reliable, relevant answers
+- **Teaching through prompting** – A well-designed agent doesn't just answer—it encourages exploration and deeper learning
 
-> [!TIP]  
-> - Use short, clear prompt titles  
-> - Check grounding if answers are generic  
-> - Web search toggle affects response sources  
+**Lessons learned & troubleshooting tips:**
+
+- Use clear, short prompt titles to encourage user engagement
+- If your agent gives generic responses, double-check the grounding sources and whether web search is disabled
+- Remember: you can always revise prompts, tone, or behavior by editing the agent settings later
 
 **Challenge: Apply this to your own use case**
 
-- Define your agent's tone and personality  
-- Choose grounding sources (internal/public)  
-- Add test questions for validation  
-- Try building a second agent on another Copilot topic (governance, licensing, etc.)
+- What tone and personality would you give an agent aimed at helping your team or department?
+- Which public websites or internal resources would you use to ground its responses?
+- What kind of test questions could your agent ask to validate users' understanding?
+- Take it further: Create a second agent focused on a different Copilot-related topic (e.g., governance, licensing models, or use case design) and experiment with how tone, grounding, and prompts shape the learning experience.
 
 ---
 
 ## 🔁 Summary of Learnings
 
-> True learning comes from doing, questioning, and reflecting—so let's put your skills to the test.
+> Mastery is not a destination but a journey—a joyful path where every step brings growth, discovery, and endless possibilities.
 
-- Understand Microsoft 365 Copilot vs. Copilot Chat  
-- Know agent types and appropriate use cases  
-- Define clear agent intent, tone, and instructional strategy  
-- Use validated grounding sources  
-- Design prompts that teach and challenge  
-- Test and iterate based on feedback  
+Now that you've built your own learning-focused agent, take a moment to evaluate your understanding and extend your thinking:
+
+- **Distinguish Copilot experiences** – Reflect on how Microsoft 365 Copilot and Copilot Chat differ in purpose, data grounding, and licensing
+- **Identify agent types** – Revisit the key differences between Declarative and Custom Engine agents, and when to use each
+- **Define agent intent** – Ensure your agent has a clear purpose, tone, and instructional strategy aligned with your audience
+- **Reinforce grounding strategy** – Validate that your knowledge sources support accurate, relevant answers without relying on general AI knowledge
+- **Design for learning** – Structure prompts that do more than answer—they challenge, guide, and deepen user understanding
+- **Test and iterate** – Use test scenarios to assess your agent's performance and refine its behavior based on real feedback
 
 ---
 
 ## 📌 Conclusions & Recommendations
 
 > [!IMPORTANT]  
-> To maximize your Copilot agent's impact:
-> - Keep prompts purposeful and refined  
-> - Keep sources up to date  
-> - Use a friendly tone with clear intent  
-> - Disable generic AI if accuracy is critical  
-> - Include reflective prompts to reinforce learning  
+> To maximize the impact of your teacher-style Copilot agent:
+> - **Keep prompts purposeful** – Regularly review and refine your agent's prompts to ensure they drive engagement, reinforce key concepts, and spark deeper inquiry
+> - **Update grounding sources** – Maintain accurate, up-to-date documentation links so your agent reflects the latest guidance from Microsoft
+> - **Balance tone and clarity** – Use a friendly, empathic voice while ensuring the message remains clear, helpful, and aligned to your learning objectives
+> - **Disable generic AI when needed** – Rely on curated sources to reduce hallucinations and keep answers focused on trusted content
+> - **Encourage reflection** – Add prompts that ask users to think critically or apply what they've learned to practical scenarios
 
-By following these principles, your agent will not only deliver accurate content—it will support meaningful learning experiences within the Microsoft 365 Copilot ecosystem.
+By applying these practices, your Copilot agent will not only deliver accurate information—it will help users grow their knowledge, challenge their thinking, and explore the full potential of the Microsoft 365 Copilot ecosystem.
 
 ---
