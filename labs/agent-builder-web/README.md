@@ -264,7 +264,6 @@ Now that you've built your own learning-focused agent, take a moment to evaluate
 > - **Keep prompts purposeful** – Regularly review and refine your agent's prompts to ensure they drive engagement, reinforce key concepts, and spark deeper inquiry
 > - **Update grounding sources** – Maintain accurate, up-to-date documentation links so your agent reflects the latest guidance from Microsoft
 > - **Balance tone and clarity** – Use a friendly, empathic voice while ensuring the message remains clear, helpful, and aligned to your learning objectives
-> - **Disable generic AI when needed** – Rely on curated sources to reduce hallucinations and keep answers focused on trusted content
 > - **Encourage reflection** – Add prompts that ask users to think critically or apply what they've learned to practical scenarios
 
 By applying these practices, your Copilot agent will not only deliver accurate information—it will help users grow their knowledge, challenge their thinking, and explore the full potential of the Microsoft 365 Copilot ecosystem.
