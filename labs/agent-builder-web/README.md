@@ -29,7 +29,7 @@ Create an intelligent agent in Copilot that delivers contextual, multi-part answ
 
 ## 🌐 Introduction
 
-In this lab, you'll create a Copilot agent in Microsoft 365 Copilot Chat designed to assist users with questions about Copilot agents. The agent will act as a learning companion or teacher, grounded in official Microsoft documentation.
+In this lab, you'll create a Copilot agent in Microsoft 365 Copilot Chat with Microsoft Copilot Studio agent builder. This agent will be designed to assist users with questions about Copilot agents. The agent will act as a learning companion or teacher, grounded in official Microsoft documentation.
 
 ---
 
