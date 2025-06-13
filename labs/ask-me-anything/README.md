@@ -144,20 +144,39 @@ Create a new agent with SharePoint knowledge integration that provides grounded,
 
 ### Step-by-step instructions
 
-1. Navigate to the Copilot Studio home page at https://aka.ms/MCSStart
+1. Navigate to the Copilot Studio home page at [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com/)
+
 2. Go to the Solutions menu (located in the left-hand menu under the ellipsis …)
+
 3. Select the solution you had created
+
 4. Select **New**, and choose **Agent**
+
 5. Select **Skip to configure**
-6. Name your agent **Ask Me Anything**
+
+6. Name your agent `Ask Me Anything`
+
 7. Click **Create**
+
 8. Go to **Knowledge**
-9. Select **SharePoint**, and paste the URL: `https://copilotstudiotraining.sharepoint.com/Shared%20Documents/`
-10. Choose **Add**
-11. Test your agent with the question: "What's the Northwind Health Plus Benefits plan?"
+
+  ![alt text](images/knowledge-sharepoint.png)
+
+9. Select **SharePoint**, and paste the SharePoint Knowledge URL and select **Add**.
+
+> [!IMPORTANT]
+>  * For configuration, use the provided values in the **Lab Resources** (specific per training).
+
+10. Choose **Add**  
+
+11. Test your agent with this question: 
+
+``` 
+What's the Northwind Health Plus Benefits plan?
+```
 
 > [!TIP]
-> Notice how relevant it is, and how the citations are accurate. This demonstrates the power of grounded AI responses.
+> - Notice how relevant it is, and how the citations are accurate. This demonstrates the power of grounded AI responses.
 
 ---
 
@@ -192,12 +211,21 @@ Suggest things your agent can do to your end-users through carefully crafted pro
 ### Step-by-step instructions
 
 1. Go to the **overview** tab for your agent
+
 2. Add suggested prompts:
-   - **Ask me about benefits**: "What's the Northwind Health Plus Benefits plan?"
-   - **Ask me about policies**: "What's the leave policy in France?"
-   - **Help fill out meeting notes**: "Capture and structure meeting notes"
-   - **Check on an incident**: "What's the status of INC0007001?"
-3. Save the prompts
+
+| Title                     | Prompt                                           |
+|---------------------------|--------------------------------------------------|
+| `Ask me about benefits`     | `What's the Northwind Health Plus Benefits plan?` |
+| `Ask me about policies`     | `What's the leave policy in Germany?`              |
+| `Help fill out meeting notes` | `Capture and structure meeting notes`            |
+| `Check on an incident`      | `What's the status of INC0007001?`                |
+
+
+3. **Save** the prompts
+
+> [!TIP]
+> - Prompts are visibile to the end-user when the agent is deployed as a Copilot agent.
 
 ---
 
@@ -229,15 +257,34 @@ Make the agent available in Microsoft 365 Copilot for your users.
 ### Step-by-step instructions
 
 1. Go to the agent and select **Publish**
+
 2. Go to **Channels**
+
 3. Select **Teams and Microsoft 365 Copilot**
-4. Select **Add Channel**
-5. Select **See agent in Microsoft 365** (Note: don't select "See agent in Teams")
-6. Give it a few tries/minutes the first time you deploy to Microsoft 365 Copilot so it deploys correctly. Once ready, select **Add**
+
+4. Select **Add channel** (at the bottom right corner)
+
+5. Select **See agent in Microsoft 365** 
+
+  ![alt text](images/m365-copilot-channel.png)
+
+6. In the **M365 Copilot** experience, the agent description will pop up. Select **Add**
+
+> [!TIP]
+> - You may need to give it a few tries/minutes the first time you deploy to Microsoft 365 Copilot so it deploys correctly. 
+> - If this doesn't work, try in Teams instead:
+>   - Choose **See agents in Teams** instead. If you can
+>   - In the new window, if prompted *This site is trying to open Microsoft Teams*, select **Cancel**, and the select **use the web app instead**
+
 7. Test the agent with the benefits prompt
 
-> [!IMPORTANT]
-> Give it a few tries/minutes the first time you deploy to Microsoft 365 Copilot so it deploys correctly.
+> [!TIP]
+> If deploying to Teams,  prompts won't be available, so paste the below question:
+> 
+> ``` 
+> What's the Northwind Health Plus Benefits plan?
+> ```
+
 
 ---
 

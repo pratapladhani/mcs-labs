@@ -145,7 +145,8 @@ Set up your development environment by creating a solution and custom publisher 
 
 #### Open the Solutions area
 
-1. Go to the [Copilot Studio home page](https://aka.ms/MCSStart).
+1. Go to the [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com/).
+
 2. Confirm you are in the correct environment (top-right corner).
 
 #### Create a solution
@@ -155,6 +156,7 @@ Set up your development environment by creating a solution and custom publisher 
     ![alt text](images/solutions.png)
 
 4. Select **New solution**.
+
 5. Enter a display name.
 
 > [!TIP]
@@ -226,13 +228,19 @@ In this section, you'll learn how to create environment variables and connection
 ### Step-by-step instructions
 
 1. Open the solution you created in Use Case #1.
+
 2. Select **+ New**, then go to **More** and choose **Environment variable**.
 
 ![alt text](images/environment-variable-connection-reference.png)
 
 3. In **Name**, enter: `Custom Knowledge Endpoint`
+
 4. In **Data Type**, select **Text**.
-5. Leave **Default Value** blank, but under **Current Value**, select **+ New Value**. For the value, use: [https://aka.ms/MCSWorkshopLabAssets](https://aka.ms/MCSWorkshopLabAssets)
+
+5. Leave **Default Value** blank, but under **Current Value**, select **+ New Value**. 
+
+> [!IMPORTANT]
+>  * For configuration, use the provided values in the **Lab Resources** (specific per training).
 
 > [!TIP]
 >  * Notice how, under **Advanced**, you can set whether the current value can follow through with your solution deployment, or if it should be reset each time the solution is deployed to a new environment
@@ -243,16 +251,21 @@ In this section, you'll learn how to create environment variables and connection
 >  * Environment variables can also be of type **Secret** to retrieve secure values like API keys from Azure Key Vault at runtime.
 
 7. In the solution, select **New**, then go to **More** and choose **Connection reference**.
+
 8. Use the connector name (e.g., `MSN Weather`) as the name. Optionally, prefix with your project name (e.g., `[MCS Training] MSN Weather`).
+
 9. Select the connector (e.g., **MSN Weather**).
+
 10. In the connection dropdown, choose **New connection** if none exists.
+
 11. Log in through Power Apps in a new tab if needed, then return to Copilot Studio.
+
 12. Above the **Connection** dropdown, select **Refresh** and choose the newly created connection.
 
 > [!TIP]
 >  * If the **Create** button is grayed out, it's just because you pasted the display name. Type an extra character in the display name field and remove it to be able to create. 
 
-14. Repeat steps for the following connectors:
+13. Repeat steps for the following connectors:
 
     * `Microsoft Dataverse`.
     * `SharePoint`.
@@ -306,9 +319,13 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 >  * First-time users may need to confirm their user’s fictitious name and country.
 
 2. Enter the existing **organization**.
+
 3. Set new **project name**, use the same name as your fictitious user's name. Keep the options by default (e.g, Private).
+
 4. Select **+ Create project**.
+
 5. After project creation, go to **Repos** → **Branches**.
+
 6. Select **Initialize** (at the bottom) to create the `main` branch with a README or .gitignore.
 
    ![alt text](images/azure-devops-initialize-branch.png) 
@@ -318,22 +335,31 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 ### Connecting Microsoft Copilot Studio to Git
 
 7. Go back to [Microsoft Copilot Studio](https://aka.ms/MCSStart) and open the **Solutions** page (still behind the `...` menu).
+
 8. In the menu, select **Connect to Git**.
+
 9. Set **Connection type** to `Solution`.
+
 10. Choose your **organization** and your newly created **project** and **repository**.
+
 11. Set the **Root Git folder** to `Solutions`.
+
 12. Select **Next**, then pick the solution created in Use Case #1.
 
 ![alt text](images/connect-to-git.png)
 
 13. When prompted for the branch, select **Create new branch** and name it `dev`.
+
 14. Click **Save** and then **Connect**.
 
 ### Observing the Git integration from Microsoft Copilot Studio
 
 15. Now, let's see this action. **Open the solution** you created in Use Case #1.
+
 16. In the left-hand navigation, navigate to **Source control**.
+
 17. **See** how the various components you have added to your solution are now ready to be committed to your source control. If don't see them all, select **Refresh** as they get detected and added.
+
 18. When ready, select **Commit**, add a comment describing the changes you're introducing (e.g., `New environment variables and connection references`).
 
 ![alt text](images/commit.png)
