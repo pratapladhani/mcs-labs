@@ -710,7 +710,7 @@ Use this tool to help users with meeting notes
 11. In the **Instructions**, just below **UploadedNotes**, paste:
 
   ```
-  Using the content of the uploaded document, populate the following Adaptive Card with:
+  Using the content of the uploaded document, populate the following JSON record (for the schema, only string properties, no arrays, except for Data and time) with:
   - Title of the meeting
   - Description/summary
   - Date and time
@@ -718,64 +718,17 @@ Use this tool to help users with meeting notes
   - Action items / next steps
 
   {
-    "type": "AdaptiveCard",
-    "version": "1.5",
-    "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
-    "body": [
-      {
-        "type": "TextBlock",
-        "text": "Please review and confirm the meeting minutes",
-        "weight": "Bolder",
-        "size": "Medium"
-      },
-      {
-        "type": "Input.Text",
-        "id": "meetingTitle",
-        "label": "Meeting title",
-        "value": "Title of the meeting"
-      },
-      {
-        "type": "Input.Text",
-        "id": "attendees",
-        "label": "Attendees",
-        "value": "List of attendees"
-      },
-      {
-        "type": "Input.Text",
-        "id": "date",
-        "label": "Date and time",
-        "value": "date"
-      },
-      {
-        "type": "Input.Text",
-        "id": "summary",
-        "label": "Meeting summary",
-        "isMultiline": true,
-        "value": "Description/summary"
-      },
-      {
-        "type": "Input.Text",
-        "id": "nextSteps",
-        "label": "Next steps",
-        "isMultiline": true,
-        "value": "Action items / next steps"
-      }
-    ],
-    "actions": [
-      {
-        "type": "Action.Submit",
-        "title": "Confirm minutes"
-      }
-    ]
+  "MeetingTitle": "Title of the meeting",
+  "MeetingSummary": "Description/summary",
+  "MeetingDateTime": "Date and time",
+  "MeetingAttendees": "List of attendees",
+  "MeetingActions": "Action items / next steps"
   }
   ```
 
 12. Change the **Output** to `JSON`
 
 13. **Test** your prompt
-
-> [!TIP]
-> What we're doing here is catching multiple birds with one stone. We first ask the AI to analyze the content of the file (this could also be a picture of handwritten notes), we then ask it to structure them (title, description, actions, dates, etc.) and we ask it to output it as an Adaptive Card JSON, so that we can immediately use it in a subsequent step that we will use to ask the user to validate the AI version of the notes, or to edit them before submitting them.
 
 14. **Save** your prompt
 
@@ -785,29 +738,103 @@ Use this tool to help users with meeting notes
 
 15. In the **Prompt** node, choose the `File` variable as the input for **UploadedNotes**.
 
-16. **Create** a new variable for the output of the prompt node, and rename it `MeetingAINotesCard`
+16. **Create** a new variable for the output of the prompt node, and rename it `MeetingAINotes`
 
 17. Add a new node, **Ask with Adaptive Card**
 
-18. Go to **Adaptive Card** node property.
+18. Go to **Adaptive Card** node **properties**.
 
-20. Toggle from **JSON card** to `Formula card`
+19. Select **Edit adaptive card**.
+
+20. In the **Card payload editor**, paste the below **JSON**:
+
+    ```json
+    {
+        "type": "AdaptiveCard",
+        "version": "1.5",
+        "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+            {
+                "type": "TextBlock",
+                "text": "Please review and confirm the meeting minutes",
+                "weight": "Bolder",
+                "size": "Medium"
+            },
+            {
+                "type": "Input.Text",
+                "id": "meetingTitle",
+                "label": "Meeting title",
+                "value": "<Replace with MeetingTitle>"
+            },
+            {
+                "type": "Input.Text",
+                "id": "attendees",
+                "label": "Attendees",
+                "value": "<Replace with MeetingAttendees>"
+            },
+            {
+                "type": "Input.Text",
+                "id": "date",
+                "label": "Date and time",
+                "value": "<Replace with MeetingDateTime>"
+            },
+            {
+                "type": "Input.Text",
+                "id": "summary",
+                "label": "Meeting summary",
+                "isMultiline": true,
+                "value": "<Replace with MeetingSummary>"
+            },
+            {
+                "type": "Input.Text",
+                "id": "nextSteps",
+                "label": "Next steps",
+                "isMultiline": true,
+                "value": "<Replace with MeetingActions>"
+            }
+        ],
+        "actions": [
+            {
+                "type": "Action.Submit",
+                "title": "Confirm minutes"
+            }
+        ]
+    }
+    ```
+
+20. Select **Save** and **Close**.
 
 > [!TIP]
-> - This allows to use Power Fx to reference other variables, and so, to create dynamic Adaptive Cards.
-> - Notice how, if you had remained with the JSON option, the Adaptive Card editor offers a visual editor to create your own Adaptive Card experience with a no-code/low-code editor.
+> Notice how the Adaptive Card editor offers a visual editor to create your own Adaptive Card experience with a no-code/low-code editor.
 
-21. **Replace** the entire content for the formula with
+21. We now need to make the card dynamic to reference the content that was returned from the prompt. Toggle from **JSON card** to **Formula card**.
 
-    ```
-    Topic.MeetingAINotesCard.structuredOutput
-    ```
+22. **Expand** the formula for more screen real estate.
 
-21. **Save** your topic
-22. Test your agent – you can reuse the same Meeting Minutes.pdf: "Please upload your meeting notes"
+23. For each `"<Replace with ...>"`, **replace** with the matching `Topic.MeetingAINotes.structuredOutput.<property>` variable. 
+  
+    Don't forget to remove the double quotes.
+
+    ![alt text](images/adaptive-card-formula.png)
+
+24. **Save** your topic
+
+25. Add a new **Message** node, and paste:
+
+  ```
+  Thank you! I've successfully logged your meeting notes in our systems.
+  ```
+
+26. **Test** your agent. Try to modify the content directly in the adaptive card before selecting **Confirm minutes**.
+
+  ```
+  Please help me with my meeting notes
+  ```
+
+![alt text](images/meeting-notes-adaptive-card.png)
 
 > [!IMPORTANT]
-> Note: the lab ends here, but imagine storing these in system of record, for example Dataverse, as a next step, after the user has confirmed the content.
+> Note: the lab ends here, but imagine storing these in system of records, for example Dataverse, as a next step, after the user has confirmed the content.
 
 ---
 
