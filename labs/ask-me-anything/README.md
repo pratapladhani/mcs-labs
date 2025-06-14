@@ -317,40 +317,138 @@ In this section, you'll learn different techniques to help prioritize the right 
 
 Let's start by asking for the user country at the beginning of the conversation. In many situations, this can be obtained from context, either passed from a web page to the agent, or by making an initial call (for example to the Entra ID connector) to get more information about the logged-in user and their location.
 
-1. In your 'Ask Me Anything' agent, go to **Topics**, and **System topics**
-2. Open the **Conversation Start** topic
-3. Right after the trigger, add a **Question node**: "What is your country?"
-4. Configure **France**, **Germany**, **India**, **USA** as options for the user
-5. Select the **Var1** variable, rename it to **Country**, and make it **Global**
-6. Click **Save**
+#### Setting an office location in Entra ID
 
-With these steps, users need to pick a country at each conversation start. This can be automated, for example the page the agent is embedded in could pass that variable as context, or if the user is logged in, a call to the Entra ID details of the user could retrieve additional information on their location.
+1. Start by assigning an office location to your user. Use the **Employee Office Location Request Form** to select a **country** in the list. This will update your user's Office location property in Entra ID.
 
-7. Go to the **Topics** tab, and create a new topic named **Leave policy**
-8. Provide this description for the trigger: "Use this tool for questions about leave policy and time off"
-9. Add a new node: **Advanced > Generative answer**
-10. For input, select the **Activity.Text** system variable
-11. Go to the properties of the **Create generative answers** node
-12. Select **Search only selected sources** (there should be none selected)
-13. Under classic data, for SharePoint, toggle **Manual input** to **Formula**
-14. Select the **…** and go to the **formula** tab
-15. Use this formula to make the SharePoint URL dynamic based on the country selected by the user:
-    ```
-    [ "https://copilotstudiotraining.sharepoint.com/Shared Documents/Leave policies/" & Global.Country ]
-    ```
-16. Select **Insert** once done, then **Save** your topic
-17. Refresh the test pane, select any country, and ask: "What's the leave policy?"
+> [!IMPORTANT]
+> To access this form, use the provided values in the **Lab Resources** (specific per training).
 
-Try multiple times and validate that the results are correct for the different countries.
+#### Getting the office location of the logged-in user at the start of the conversation
+
+2. Now, in your 'Ask Me Anything' agent, go to the **Topics** tab, and then to the **System topics** tab.
+
+3. Open the **Conversation Start** topic
+
+4. At the beginning of the topic, right after the **Trigger**, add a new node **(+)** and choose **Add a tool**.
+
+5. Go the **Connector** tab, and search for `Microsoft Entra ID Get user`
+
+6. Select the **Get user** connector action and **Submit**.
+
+  ![alt text](images/add-tool-connector.png)
+
+> [!IMPORTANT]
+> - If you don't see the **Get user** action, select another of the Microsoft Entra ID actions, such as **Create user**  and **Submit**.
+> - Then in the topic command bar, select `...` and **Open code editor**.
+> - Update `CreateUser` to `GetUser` in both **operationId** and **variable**.
+> - Select **Close code editor**.
+> - In the **Get user** node, select `...` and **Refresh** 
+
+7. In the **Get user** node, select `...` and **Properties** 
+
+8. Toggle the **End user authentication** to **Copilot author authentication**.
+
+9. In the **Inputs** tab, for **User Id or Principal Name**, select `...`, go the the **System** tab, and select **User.Id**.
+
+![alt text](images/select-user-id.png)
+
+10. **Save**
+
+11. Test if everything is working as expected by **refreshing** the conversation test pane. Because the Conversation Start topic automatically start at the beginning of every conversation, the **Get user** action of the **Microsoft Entra ID** connector gets triggered.
+
+12. To see what values are returned from the connector, enter the **Variables** pane in the topic command bar. Go the **Test** to see the variable values at runtime (i.e., as you are testing in the conversation test pane).
+  
+  ![alt text](images/variables-pane.png)
+
+13. Select **Value** under the **GetUser** record, and **expand** it to see if the expected value was returned.
+
+![alt text](images/user-record-entra-id.png)
+
+14. Because we will need to use that variable value in other parts and topics of the agent, select the **GetUser** variable and make it **Global**.
+
+![alt text](images/set-global-variable.png)
+
+15. **Save**
+
+#### Dynamically filtering the searched SharePoint site with the office location
+
+16. Go to the **Topics** tab, select **+ Add a topic** and choose **From blank**
+
+17. Update the topic name from **Untitled** to `Leave policy`
+
+18. Under **Describe what this topic does** paste: 
+
+```
+Use this tool for questions about leave policy, time off, etc.
+```
+
+19. Add a new node: **Advanced > Generative answers**
+
+20. For input,  select `...`, go to the **System** tab and choose the **Activity.Text** variable/
 
 > [!TIP]
-> **PRO TIPS:**
-> • There are multiple ways to do knowledge prioritization. You could add to your agent instructions your Country global variable, and instruct the agent to "Always ground your HR questions knowledge search with the user location: {Global.Country}"
-> • If formulas are too much code, you could also use condition nodes and configure different branches based on the selected country.
+> The **Activity.Text** variable is super useful because it captures the last message/text the user has typed in or selected when interacting with the agent.
 
-18. For convenience for the rest of the lab, you can go back to **Conversation Start**, and add, right after the trigger, a **Set a variable value** node, to set the **Global.Country** to a default value of your choice.
+![alt text](images/activity-text.png)
 
-That way, because it already has a value, the question will be skipped (you can play with the question behavior to decide whether a question should be skipped or not when a value already exists or is detected for the variable).
+21. Go to the **properties** of the **Create generative answers** node
+
+22. Select **Search only selected sources** and **don't select anything**
+
+> [!TIP]
+> This means that none of the knowledge sources that are configured at the top level of your agent will be used.
+
+23. Expand **Classic data**, for **SharePoint** (not Public websites!), toggle **Manual input** to **Formula**
+
+24. Select the `...` and go to the **formula** tab
+
+25. Paste the **SharePoint classic data formula**
+
+> [!IMPORTANT]
+> - Use the formula provided in the **Lab Resources** (specific per training).
+> - Notice how the formula concatenates the SharePoint URL with the office location, effectively using context to target the correct source and location for the content.
+
+  ![alt text](images/sharepoint-formulas.png)
+
+26. Select **Insert** once done, then **Save** your topic
+
+27. **Refresh** the test pane and ask:
+
+```
+What's the leave policy?
+```
+
+28. **Verify** that the leave policy used to generate this answer is the one matching the country you selected.
+
+> [!TIP]
+> If formulas are too much code, you could also use condition nodes and configure different branches based on the selected country.
+
+#### Influence knowledge searches with instructions 
+
+29. You can also influence how knowledge searches are performed by updating your agent instructions. Go to the **Overview** tab and go to **Instructions**
+
+30. **Paste** the below line
+
+```
+Include the user country () in knowledge search queries (e.g., "<question> in <country>?")
+```
+
+31. We need to set the variable value in-between the parenthesis. **Type** `/` and select **Power Fx**.
+
+  ![alt text](instructions-formula.png)
+
+31. **Type** `Global.GetUser.officeLocation` and select **Insert**
+
+32. **Test**
+
+```
+What benefits do employees get?
+```
+
+33. Notice how the query is **rewritten** to take into account the **variables** you provided, like country, **augmenting the chances** of returning the correct results for summarization.
+
+![alt text](images/rewritten-search-query.png)
 
 ---
 
@@ -381,25 +479,53 @@ In this section, you'll configure the connection to ServiceNow to retrieve incid
 
 ### Step-by-step instructions
 
-1. Go to the agent
-2. Go to **Tools**, and **Add tool**
-3. Select **ServiceNow** and choose **List records**
-4. Select **Add to agent**
-5. Open **List records**
-6. Under **Additional details**, change **Authentication** to **Agent author authentication**
-7. Rename to **Get ServiceNow ticket details**
-8. Change description to "Gets the details of an incident using its incident number"
-9. For **Record Type**, set a **Custom value** and choose **Incident**
-10. Add input: **Query**
-    Click **Customize** and use this for Description:
-    "The output of this variable is the concatenation of numberCONTAINS and the incident number. E.g., 'numberCONTAINSINC0007001'. Only the incident number should be prompted and obtained from the user (e.g., INC0007001)"
-11. Add input: **Limit**
-    Select **Custom Value** and set **1**
-12. Click **Save**
-13. Test your agent with a question: "what's the status of case INC0000059"
+1. Go to your Ask Me Anything agent
+
+2. Go to the **Tools** tab, and **+ Add a tool**
+
+3. Search for  `ServiceNow List records`
+
+4. Select **Add and configure**
+
+5. **Rename** to `Get ServiceNow ticket details`
+
+8. Change **description** to `Gets the details of an incident using its incident number`
 
 > [!TIP]
-> Notice how the agent automatically formats the user response in a user-friendly way.
+> The description will help the AI know when to use that tool, so it's important to have clear instructions WHEN and WHEN NOT to use this tool.
+
+9. Under **Additional details**, change **Authentication** to **Copilot author authentication**
+
+> [!IMPORTANT]
+> In production scenarios, you may want to use the user context when making the connection to ServiceNow. Here, your context (as the author) is used by end-users of your agent when searching for incidens.
+
+9. For **Record Type**, set a **Custom value** and choose `Incident`
+
+10. Select **+ Add input** and choose **Query**
+
+11. Select **Customize** and use this for **Description**:
+
+    ```
+    The output of this variable is the concatenation of numberCONTAINS and the incident number. E.g., 'numberCONTAINSINC0007001'. Only the incident number should be prompted and obtained from the user (e.g., INC0007001)
+    ```
+
+> [!TIP]
+> Again, these instructions will be used by AI to understand how determine how to pass that information to the ServiceNow connector. In this case, how to use the very specific OData formatting of ServiceNow queries.
+
+12. Select **+ Add input** and choose **Limit**
+
+13. Select **Custom Value** and set **1**
+
+12. Select **Save**
+
+13. **Test** your agent with a question:
+
+    ```
+    Can you share an update for cases INC0000059 and INC0000060? It's been quite a while since I've opened them... thanks!!
+    ```
+
+> [!TIP]
+> Notice how the agent automatically uses the tool twice for both searches, and creates a user-friendly response.
 
 ---
 
@@ -430,11 +556,16 @@ In this section, you'll configure any third-party knowledge to enrich knowledge 
 
 ### Step-by-step instructions
 
-1. Go to the agent
-2. Go to **Topics**, add a new topic
-3. Call your topic **Custom Knowledge**
-4. Go to **More …** and open **Code editor**
+1. Open your Ask Me Anything agent
+
+2. Go to the **Topics** tab, select **+ Add a topic** and choose **From blank**
+
+3. Name your topic `Custom Knowledge`
+
+4. In the topic command bar, select `...` and **Open code editor**.
+
    Replace with the below YAML code:
+
    ```yaml
    kind: AdaptiveDialog
    beginDialog:
@@ -444,13 +575,19 @@ In this section, you'll configure any third-party knowledge to enrich knowledge 
    inputType: {}
    outputType: {}
    ```
-   Once done, click **Save** and **Close the code editor**
+
+   Once done, select **Close code editor**
 
 5. Add a new node > **Advanced**, **Send HTTP request**
-6. For **URL**, choose the **Custom Knowledge Endpoint** environment variable you had created
-7. **Method**: Post
-8. **Response data type**: Table
-9. **Edit Schema**:
+
+6. For **URL**, select `...`, go the **Environment** tab, and choose the **Custom Knowledge Endpoint**  variable you had created.
+
+7. **Method**: `Post`
+
+8. **Response data type**: `Table`
+
+9. **Edit schema**:
+
    ```yaml
    kind: Table
    properties:
@@ -459,18 +596,29 @@ In this section, you'll configure any third-party knowledge to enrich knowledge 
      Title: String
      URL: String
    ```
-10. **Edit Headers and body**
-11. **Body**: JSON content
-12. Change **Edit JSON** to **Edit formula** and paste the below:
+
+10. **Edit** Headers and body
+
+11. For **Body** toggle from `No content` to `JSON content`
+
+12. **Toggle** from `Edit JSON` to `Edit formula` and paste the below:
+
     ```json
     {
         SearchQuery: System.Activity.Text
     }
     ```
-13. **Save response as** KnowledgeResults variable
-14. Add a **Set a variable value** node
-15. Select **System** > **SearchResults**
-16. **To value formula**:
+
+13. Under **Save response as**, select **Create a new variable**, select the variable name that was created (e.g., **Var1**) and rename it `KnowledgeResults`.
+
+![alt text](images/http-request.png)
+
+14. Add a new node, **Variable management** > **Set a variable value**
+
+15. Under **Set variable**, go to the **System** tab and choose **SearchResults**
+
+16. Under **To value**, select `...`, go to the **Formula** tab, and paste:
+
     ```
     ForAll(
         Topic.KnowledgeResults,
@@ -481,8 +629,23 @@ In this section, you'll configure any third-party knowledge to enrich knowledge 
         }
     )
     ```
+
+> [!TIP]
+> What we're doing here with this formula is slightly transforming the content we receive from the HTTP request to the expected format that will allow to augment the search results, whenever Knowledge is invoked by the generative orchestration.
+
 17. **Save**
-18. Test: "How do I update the vendor information for an accounts payable invoice?"
+
+18. **Test**:
+
+    ```
+    How do I update the vendor information for an accounts payable invoice?
+    ```
+
+> [!TIP]
+> Notice how the knowledge step returned results that contain citations to a fictitious knowledge base.
+
+
+  ![alt text](images/custom-knowledge-source.png)
 
 ---
 
@@ -513,107 +676,132 @@ In this section, you'll learn how to upload files and run files through a prompt
 
 ### Step-by-step instructions
 
-1. Go to the agent
-2. Go to **Topics**, add a new topic
-3. Call your topic **Meeting Notes**
-4. Describe what the topic does: "Help with meeting notes"
-5. Add a **Question node**: "Please upload your meeting notes"
-   **Identify**: File
-   Rename variable as **File**
+1. Open your Ask Me Anything agent
 
-6. Add a new node > **Add a tool** > **New prompt**
-7. **Name**: Meeting AI Notes
-8. Add **Content**: **Image or Document**
-   As a sample, use Meeting Minutes.pdf from aka.ms/MCSWorkshopLabAssets
-9. In the instructions, add:
-   ```
-   Using the content in the document, create an output JSON file with these different string properties (each of them are a single text string)
+2. Go to the **Topics** tab, select **+ Add a topic** and choose **From blank**
 
-   - title
-   - description of the meeting
-   - date and time
-   - attendees
-   - actions
-   ```
-10. **Output**: JSON
-11. **Test and Save** the prompt
-12. Choose the **File** variable as Input
-13. Name the output variable as **MeetingAINotes**
-14. Add a new node, **Ask with Adaptive Card**
-15. Go to **Edit adaptive card**
-16. In the **Card payload editor**, paste:
-    ```json
-    {
-      "type": "AdaptiveCard",
-      "version": "1.5",
-      "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
-      "body": [
-        {
-          "type": "TextBlock",
-          "text": "Please review and confirm the meeting minutes",
-          "weight": "Bolder",
-          "size": "Medium"
-        },
-        {
-          "type": "Input.Text",
-          "id": "meetingTitle",
-          "label": "Meeting title",
-          "value": "title"
-        },
-        {
-          "type": "Input.Text",
-          "id": "attendees",
-          "label": "Attendees",
-          "value": "attendees"
-        },
-        {
-          "type": "Input.Text",
-          "id": "date",
-          "label": "Date",
-          "value": "date"
-        },
-        {
-          "type": "Input.Text",
-          "id": "summary",
-          "label": "Meeting summary",
-          "isMultiline": true,
-          "value": "description"
-        },
-        {
-          "type": "Input.Text",
-          "id": "nextSteps",
-          "label": "Next steps",
-          "isMultiline": true,
-          "value": "actions"
-        }
-      ],
-      "actions": [
-        {
-          "type": "Action.Submit",
-          "title": "Confirm minutes"
-        }
-      ]
-    }
+3. Name your topic `Meeting Notes`
+
+4. Under **Describe what this topic does** paste: 
+
+```
+Use this tool to help users with meeting notes
+```
+
+5. Add a **Question** node: `Sure, I can help you with that! Please upload your meeting notes`
+
+   Under **Identify**, select `File`
+
+   Rename the **Save user response as** variable from **Var1** to `File`
+
+6. Add a new node, **Add a tool**, **New prompt**
+
+7. Change the **Name** to `Meeting AI Notes`
+
+8. Switch the **Model** to `GPT-4o`
+
+9. Select **+ Add content**, and choose **Image or Document**
+
+> [!IMPORTANT]
+> As a sample, use the **Meeting Minutes.pdf** file provided in the **Lab Resources** (specific per training).
+
+10. **Rename** the input to `UploadedNotes`
+
+11. In the **Instructions**, just below **UploadedNotes**, paste:
+
+  ```
+  Using the content of the uploaded document, populate the following Adaptive Card with:
+  - Title of the meeting
+  - Description/summary
+  - Date and time
+  - List of attendees
+  - Action items / next steps
+
+  {
+    "type": "AdaptiveCard",
+    "version": "1.5",
+    "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+    "body": [
+      {
+        "type": "TextBlock",
+        "text": "Please review and confirm the meeting minutes",
+        "weight": "Bolder",
+        "size": "Medium"
+      },
+      {
+        "type": "Input.Text",
+        "id": "meetingTitle",
+        "label": "Meeting title",
+        "value": "Title of the meeting"
+      },
+      {
+        "type": "Input.Text",
+        "id": "attendees",
+        "label": "Attendees",
+        "value": "List of attendees"
+      },
+      {
+        "type": "Input.Text",
+        "id": "date",
+        "label": "Date and time",
+        "value": "date"
+      },
+      {
+        "type": "Input.Text",
+        "id": "summary",
+        "label": "Meeting summary",
+        "isMultiline": true,
+        "value": "Description/summary"
+      },
+      {
+        "type": "Input.Text",
+        "id": "nextSteps",
+        "label": "Next steps",
+        "isMultiline": true,
+        "value": "Action items / next steps"
+      }
+    ],
+    "actions": [
+      {
+        "type": "Action.Submit",
+        "title": "Confirm minutes"
+      }
+    ]
+  }
+  ```
+
+12. Change the **Output** to `JSON`
+
+13. **Test** your prompt
+
+> [!TIP]
+> What we're doing here is catching multiple birds with one stone. We first ask the AI to analyze the content of the file (this could also be a picture of handwritten notes), we then ask it to structure them (title, description, actions, dates, etc.) and we ask it to output it as an Adaptive Card JSON, so that we can immediately use it in a subsequent step that we will use to ask the user to validate the AI version of the notes, or to edit them before submitting them.
+
+14. **Save** your prompt
+
+    ![alt text](images/prompt.png)
+
+14. **Save** the topic.
+
+15. In the **Prompt** node, choose the `File` variable as the input for **UploadedNotes**.
+
+16. **Create** a new variable for the output of the prompt node, and rename it `MeetingAINotesCard`
+
+17. Add a new node, **Ask with Adaptive Card**
+
+18. Go to **Adaptive Card** node property.
+
+20. Toggle from **JSON card** to `Formula card`
+
+> [!TIP]
+> - This allows to use Power Fx to reference other variables, and so, to create dynamic Adaptive Cards.
+> - Notice how, if you had remained with the JSON option, the Adaptive Card editor offers a visual editor to create your own Adaptive Card experience with a no-code/low-code editor.
+
+21. **Replace** the entire content for the formula with
+
     ```
-
-    > [!TIP]
-    > Notice how the Adaptive Card editor offers a visual editor to create your own Adaptive Card experience with a no-code/low-code editor.
-
-17. **Save and Close**
-
-    At that point, your Adaptive Card is in a static JSON format. In order to reference variables and make it dynamic, you need to make it a formula.
-
-18. Toggle **JSON card** to **Formula**
-19. Expand the formula to full screen
-20. Replace each dynamic value, with the corresponding variable.
-    For example, replace "attendees" with `Topic.MeetingAINotes.structuredOutput.attendees`
-    
-    Use IntelliSense suggestions by typing "Topic." to be suggested the Topic variables, "Global." to be suggested the global variables, "System." to be suggested the system variables, and "Env." to be suggested the environment variables.
-
-    > [!TIP]
-    > Notice how your variables don't need quotes.
-
-    Do this for the values of "title", "attendees", "date", "description", "actions"
+    Topic.MeetingAINotesCard.structuredOutput
+    ```
 
 21. **Save** your topic
 22. Test your agent – you can reuse the same Meeting Minutes.pdf: "Please upload your meeting notes"
