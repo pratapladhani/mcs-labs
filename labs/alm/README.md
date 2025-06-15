@@ -69,6 +69,7 @@ With Power Platform pipelines, this becomes an automated, governed process with 
 | **Power Platform pipelines** | Democratized ALM automation that brings CI/CD capabilities into the service in a manner that's approachable for all makers, admins, and developers. Significantly reduces effort and domain knowledge previously required for healthy ALM processes. |
 | **Pipeline stages** | Sequential deployment environments (Development → Test → Production) that solutions must pass through in order, preventing bypass of QA processes and ensuring proper validation at each stage. |
 | **Service principal deployments** | Option to deploy using service principal identity instead of the requesting maker's identity for consistent ownership and automation scenarios. |
+| **Pipeline host** | The environment where pipeline configuration and deployment artifacts are stored. Automatically exports and stores both managed and unmanaged solutions for every deployment. |
 | **Solution artifacts** | Exported solutions that remain unchanged throughout the pipeline, ensuring the same tested artifact moves through all stages without tampering or modification. |
 | **Managed vs Unmanaged Solutions** | Managed solutions are read-only deployments for downstream environments (test/prod). Unmanaged solutions are editable and used only in development. |
 | **Solution-aware vs Non-solution-aware** | Some Copilot Studio settings travel with solutions, others require manual post-deployment configuration. Understanding this distinction is critical for successful deployments. |
@@ -79,17 +80,19 @@ With Power Platform pipelines, this becomes an automated, governed process with 
 ## 📄 Documentation and Additional Training Links
 
 * [Overview of pipelines in Power Platform](https://learn.microsoft.com/power-platform/alm/pipelines)
-* [Export and import agents using solutions](https://learn.microsoft.com/microsoft-copilot-studio/authoring-solutions-import-export)
+* [Set up pipelines in Power Platform](https://learn.microsoft.com/power-platform/alm/set-up-pipelines)
+* [Deploy solutions using pipelines](https://learn.microsoft.com/power-platform/alm/run-pipeline)
+* [Copilot Studio deployment guide](https://learn.microsoft.com/copilot-studio/publish-deploy)
 * [Extend pipelines in Power Platform](https://learn.microsoft.com/power-platform/alm/extend-pipelines)
 * [Managed environments and governance](https://learn.microsoft.com/power-platform/admin/managed-environment-overview)
-* [Overview of Git integration in Power Platform](https://learn.microsoft.com/en-us/power-platform/alm/git-integration/overview)
 
 ---
 
 ## ✅ Prerequisites
 
-* Completion of the [Set yourself up for success](https://github.com/microsoft/mcs-labs/tree/main/labs/setup-for-success) lab with a solution containing environment variables and connection references.
-* Access to multiple Power Platform environments (DEV, TEST, PROD). These are provided in the lab setup.
+* Completion of the "Set yourself up for success" lab with a solution containing environment variables and connection references.
+* Access to multiple Power Platform environments (DEV, TEST, PROD) with appropriate security roles.
+* System Administrator or **Deployment Pipeline Administrator** security role to configure pipelines.
 * Azure DevOps project with Git integration already established.
 * TEST and PROD environments must be enabled as **Managed Environments** (enforced in lab setup).
 
@@ -101,6 +104,7 @@ In this lab, you'll implement a complete ALM deployment process for Microsoft Co
 
 * Create and configure Power Platform pipelines for automated deployment across environments.
 * Deploy solutions from DEV to TEST and PROD environments using managed solutions.
+* Understand delegated deployments and approval workflows.
 * Identify and complete post-deployment configuration steps for non-solution-aware settings.
 * Experience the benefits of Managed Environment governance in preventing unauthorized customizations.
 * Commit changes to source control and understand the structure of unpacked solutions.
