@@ -23,7 +23,7 @@ Let AI do the work and automate processes more easily than ever with autonomous 
 - [Use Cases Covered](#-use-cases-covered)
 - [Instructions by Use Case](#️-instructions-by-use-case)
   - [Use Case #1: Create and Configure an Autonomous Agent](#-use-case-1-create-and-configure-an-autonomous-agent)
-  - [Use Case #2: Add Knowledge and Tools Integration](#-use-case-2-add-knowledge-and-tools-integration)
+  - [Use Case #2: Add Knowledge and Tools Integration](#-use-case-2-add-knowledge-and-tools)
 
 ---
 
@@ -60,8 +60,8 @@ After implementing autonomous agents, the same company now handles 80% of routin
 | Concept | Why it matters |
 |---------|----------------|
 | **Autonomous Agents** | Enable 24/7 automated responses to user inquiries, reducing manual workload and improving response times while maintaining consistency in support quality |
-| **Email Triggers** | Automatically detect and process incoming support emails, ensuring no request goes unnoticed and enabling immediate response initiation |
-| **Knowledge Integration** | Connect agents to your existing documentation and knowledge bases, ensuring responses are accurate, up-to-date, and aligned with your organization's information |
+| **Triggers** | Events, as simple as "Email received", that trigger autonomous agents to then automatically detect and process the content and context initially provided |
+| **Knowledge** | Connect agents to your existing documentation and knowledge sources, ensuring responses are accurate, up-to-date, and aligned with your organization's information |
 | **ServiceNow Integration** | Provide real-time ticket status updates and incident details directly within email responses, eliminating the need for manual system lookups |
 | **Multi-language Support** | Automatically detect and respond in the user's preferred language, improving global support accessibility and user experience |
 
@@ -104,7 +104,7 @@ In this lab, you'll build a complete autonomous support agent that transforms ho
 | Step | Use Case | Value added | Effort |
 |------|----------|-------------|--------|
 | 1 | [Create and Configure an Autonomous Agent](#-use-case-1-create-and-configure-an-autonomous-agent) | Establishes the foundation for automated email processing with intelligent trigger configuration | 10 min |
-| 2 | [Add Knowledge and Tools Integration](#-use-case-2-add-knowledge-and-tools-integration) | Connects external knowledge sources and ServiceNow integration for comprehensive automated responses | 10 min |
+| 2 | [Add Knowledge and Tools](#-use-case-2-add-knowledge-and-tools) | Connects external knowledge sources and ServiceNow integration for comprehensive automated responses | 10 min |
 
 ---
 
@@ -138,7 +138,7 @@ Create an autonomous agent that automatically triggers when new support emails a
 
 1. Navigate to the Copilot Studio home page at https://copilotstudio.microsoft.com/
 
-2. Go to the **Solutions** menu (located in the left-hand menu under the ellipsis **…**)
+2. Go to the **Solutions** menu (located in the left-hand menu under the ellipsis `...`)
 
 3. Select the solution you had created previously for your labs
 
@@ -146,9 +146,9 @@ Create an autonomous agent that automatically triggers when new support emails a
 
 5. Select **Skip to configure** to bypass the initial setup wizard
 
-6. Name your agent **Autonomous Support Agent**
+6. Name your agent `Autonomous Support Agent`
 
-7. Click **Create** to establish your new agent
+7. Select **Create**.
 
 > [!TIP]
 > Choose a descriptive name that clearly identifies the agent's purpose for easier management in larger environments.
@@ -157,14 +157,18 @@ Create an autonomous agent that automatically triggers when new support emails a
 
 8. In the **Overview** tab, scroll down to the triggers section and click **Add a new Trigger**
 
-9. Search for and select **When a new email arrives (V3)**
+9. Search and select `When a new email arrives (V3)` (**Office 365 Outlook**)
 
-10. Click **Next**, then **Continue**, then **Next**, and finally **Create trigger**
+10. Select **Next**, then **Continue**
 
-> [!IMPORTANT]
+10. Rename the trigger to `When a support email arrives`
+
+11. Select **Next**, and finally **Create trigger**
+
+> [!TIP]
 > This trigger configuration determines which emails activate your agent. You can refine filters later to target specific email addresses or subject patterns.
 
-11. The trigger is now configured and will automatically activate your agent when new emails arrive
+12. The trigger is now configured. After you **publish** your agent, it will automatically activate your agent when new emails arrive
 
 ---
 
@@ -196,7 +200,7 @@ Create an autonomous agent that automatically triggers when new support emails a
 
 ---
 
-## 🔄 Use Case #2: Add Knowledge and Tools Integration
+## 🔄 Use Case #2: Add Knowledge and Tools
 
 Transform your basic agent into a comprehensive support system by adding knowledge sources and ServiceNow integration for complete automated responses.
 
@@ -214,11 +218,11 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 #### Adding Knowledge Sources
 
-1. Navigate to the **Knowledge** section in your agent configuration
+1. Navigate to the **Knowledge** tab in your agent and select **+ Add knowledge**
 
-2. Select **Website** as your knowledge source type
+2. Choose **Public website** as your knowledge source type
 
-3. Add this URL: `https://support.servicenow.com/` and confirm ownership for better results
+3. **Add** this URL: `https://support.servicenow.com/` and confirm ownership for better results
 
 > [!TIP]
 > You can add multiple knowledge sources including SharePoint sites, documents, and other websites relevant to your support topics.
@@ -227,75 +231,98 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 4. Go to **Tools** and click **Add tool**
 
-5. Search for and select **ServiceNow**, then choose **List records**
+5. Search for `ServiceNow List records` and select **List records**
 
-6. Click **Add to agent** to integrate the ServiceNow connector
+6. Select **Add and configure**
 
-7. Open the **List records** tool configuration
+> [!TIP]
+> You may need to set the connection again for the buttons to be available.
 
-8. Rename the tool to **Get ServiceNow ticket details**
+7. Rename the tool to `Get ServiceNow ticket details`
 
-9. Change the description to: "Gets the details of an incident using its incident number"
+8. Update the description to: `Gets the details of an incident using its incident number`
 
-10. Under **Additional details**, change **Authentication** to **Agent author authentication**
+> [!TIP]
+> The description helps the AI know when to use this tool and what it does.
 
-11. For **Record Type**, set a **Custom value** and choose **Incident**
+10. Under **Additional details**, change **Authentication** to **Copilot author authentication**
 
-12. Add input parameter **Query** and click **Customize**:
-    - Description: "The output of this variable is the concatenation of numberCONTAINS and the incident number. E.g., 'numberCONTAINSINC0007001'. Only the incident number should be prompted and obtained from the user (e.g., INC0007001)"
+11. For **Record Type**, set a **Custom value** and choose `Incident`
 
-13. Add input parameter **Limit** with **Custom Value** set to **1**
+12. Select **+ Add input** and choose **Query**
 
-14. Click **Save** to preserve your ServiceNow tool configuration
+13. Select **Customize** and use this for **Description**:
+
+    ```
+    The output of this variable is the concatenation of numberCONTAINS and the incident number. E.g., 'numberCONTAINSINC0007001'. Only the incident number should be prompted and obtained from the user (e.g., INC0007001)
+    ```
+
+> [!TIP]
+> These instructions will be used by AI to understand how determine how to pass that information to the ServiceNow connector. In this case, how to use the very specific OData formatting of ServiceNow queries.
+
+14. Select **+ Add input** and choose **Limit**
+
+15. Select **Custom Value** and set **1**
+
+16. Select **Save**
 
 #### Setting Up Email Response Capabilities
 
-15. Return to **Tools** and click **Add**
+17. Return to the **Tools** tab, and select **+ Add a tool**
 
-16. Search for **Send an email (V2)** from Office 365 Outlook and select it
+18. Search for `Send an email (V2)` from **Office 365 Outlook** and select it
 
-17. Click **Add to agent**
+19. Select **Add and configure**
 
-18. Open **Send an email (V2)** and rename it to **Reply to email**
+20. Update its name to `Reply to email`
 
-19. Update the description to: "Use this operation to reply to the email received"
+21. Update the description to: `Use this operation to reply to the email received`
 
-20. Under **Additional details**, set authentication to **Agent author authentication**
+22. Under **Additional details**, set authentication to **Copilot author authentication**
 
-21. Customize the **To** input description: "Email address of the email received from"
+23. **Customize** the **To** input to set its **Description** to:
 
-22. Customize the **Body** input description: "Content of the email in HTML format so that it renders nicely to the user, with URLs and line breaks. If there are URLs from citations, they should be relevantly added as part of the answer directly, instead of being appended at the end of the answer."
+    ```
+    Use the "from" email of the triggering received email.
+    ```
 
-23. Click **Save** to finalize the email tool configuration
+23. **Customize** the **Subject** input to set its **Description** to:
+
+    ```
+    Use the original subject of the triggering received email.
+    ```
+
+23. **Customize** the **Body** input to set its **Description** to:
+
+    ```
+    Write the email body using minimal HTML that renders well in Outlook. Use <p> for paragraphs, <br> for line breaks, <ul>/<ol> for bullet points, and <table> for simple tables if needed. All URLs must be formatted as HTML links using <a href="...">, not left as plain text. Do not use Markdown syntax like [1] or reference-style links. Do not include full HTML documents or tags like <html> or <head>. The HTML must be valid as a JSON string: escape double quotes (") and avoid unescaped special characters.
+    ```
+
+24. Click **Save** to finalize the tool configuration
 
 #### Configuring Agent Instructions and AI Settings
 
-24. Navigate to **Overview** and then **Instructions**
+28. Navigate to **Overview** and then **Instructions**
 
-25. Add the following comprehensive instructions:
+29. **Paste** the following comprehensive instructions:
 ```
-Understand and isolate each question from the received email body.
-
-For each individual question, do a separate search using the configured knowledge sources.
-
-If a ticket ID is mentioned, for example INC0000059, check if an update is available using Get ServiceNow ticket details.
-
-Once you have gathered knowledge and ticket information, reply to the original email using Reply to email. Include the citations as clickable URLs. Use the same language as the initial user email (e.g., if the questions are in French, reply in French, etc.)
+1. Understand and isolate each question from the received email body.
+2. For each individual question, do a separate **knowledge search** using the configured knowledge sources.
+3. If a ticket ID is mentioned, for example INC0000059, check if an update is available using the <Get ServiceNow ticket details> tool.
+4. Once you have gathered knowledge and ticket information, use the <Reply to email> tool to reply to the original email received. Your reply should use the same language as the initial user email (e.g., if the questions are in French, reply in French, etc.)
 ```
 
 > [!IMPORTANT]
-> Use `/` to insert tools in your instructions when referencing specific tool names.
+> For each of the placeholder <...> in the description, use `/` to insert the tools you  just configured in your instructions.
 
-26. Go to **Settings** > **Generative AI** > Enable **deep reasoning** > Click **Save** > **Close Settings**
+![alt text](images/instructions-and-tools.png)
 
-> [!TIP]
-> Deep reasoning enables advanced AI models to better analyze complex scenarios and determine the best actions to take.
-
-27. Click **Publish** to activate your fully configured agent
+30. **Publish** your agent to activate it
 
 #### Testing Your Complete Agent
 
-28. Send a test email to your configured email address (preferably from a different email address):
+31. **Send** a test email to your ficitious user email address (preferably from a different email address):
+
 ```
 Hi!
 
@@ -308,7 +335,33 @@ Much appreciated.
 Thanks!
 ```
 
-29. Monitor your trigger activation and agent response to verify the complete workflow
+32. Make sure you **receive** the email in your **inbox**, in [outlook.office.com](https://outlook.office.com/mail/)
+
+> [!TIP]
+> You don't need to repeat the original trigger event to make more tests. In the **Test** pane, you can select `...`, choose **Test trigger** and then select the desired trigger and from there, decide to execute a past trigger again.
+> 
+> ![alt text](images/test-trigger.png)
+
+33. Check the execution of your  autonomus agent by going to the **Activity** tab. Select the **Refresh** icon until you see the execution.
+
+34. Check the emails in your **Sent** folder in Outlook to see the actual reply the user autonomously sent.
+
+> [!TIP]
+> - Agents can be both conversational and autonomous. Meaning that they can be triggered by an email (such as an email received) or by an end-user simply using a chat or voice interface. 
+> - If the agent is purely autonomous, you can safely **delete** the default custom topics that are useless to it:
+>   - Goodbye
+>   - Greeting
+>   - Start Over
+>   - Thank you
+> - You can also **disable** the system topics that it won't need:
+>   - Conversation start
+>   - Conversational boosting
+>   - End of conversation
+>   - Escalate
+>   - Fallback
+>   - Multiple topics matched
+
+![alt text](images/autonomous-agent-plan.png)
 
 ---
 
@@ -323,7 +376,6 @@ Thanks!
 * **Knowledge Integration** – Your agent can now access external documentation to provide accurate, up-to-date information
 * **ServiceNow Connectivity** – Ticket status lookups are automated, providing users with real-time incident updates
 * **Intelligent Email Responses** – The agent composes professional responses with proper formatting, citations, and multi-language support
-* **Deep Reasoning** – Advanced AI capabilities help the agent make better decisions in complex scenarios
 
 **Challenge: Apply this to your own use case**
 

@@ -267,11 +267,15 @@ In this section, you'll learn how to create environment variables and connection
 
 13. Repeat steps for the following connectors:
 
-    * `Microsoft Dataverse`.
-    * `SharePoint`.
-    * `Microsoft Entra ID`.
-    * `ServiceNow` (Basic Authentication, values provided in [https://aka.ms/MCSWorkshopLabAssets](https://aka.ms/MCSWorkshopLabAssets). Make sure to scroll down in the connection creation screen to be able to set the instance).
+    * `Microsoft Copilot Studio`
+    * `Microsoft Dataverse`
+    * `Microsoft Entra ID`
+    * `Office 365 Outlook`    
+    * `ServiceNow`
+    * `SharePoint`
 
+> [!IMPORTANT]
+>  * For **ServiceNow** configuration values, such as *authentication type*, *username*, *password*, and *instance*, use the provided values in the **Lab Resources** (specific per training).
 ---
 
 ###  🏅 Congratulations! You've created environment variables and connection references!
