@@ -221,6 +221,7 @@ In this section, you'll learn how to [LIST 2-3 KEY TASKS].
 
 <!-- 
 AUTHOR GUIDANCE:
+- Any time a user can copy/paste something, include the string in a `code` block. For long strongs or when there are multiple lines, use ``` blocks.
 - Break instructions into logical sections with clear headers
 - Use numbered steps for sequential actions
 - Include screenshots for complex UI navigation
