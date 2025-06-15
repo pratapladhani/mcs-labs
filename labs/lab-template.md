@@ -198,6 +198,7 @@ In this section, you'll learn how to [LIST 2-3 KEY TASKS].
 #### [LOGICAL SECTION 1]
 
 1. [SPECIFIC ACTION WITH CLEAR NAVIGATION INSTRUCTIONS]
+
 2. [SPECIFIC ACTION WITH EXPECTED RESULTS]
 
     ![alt text](images/[SCREENSHOT-FILENAME].png)
@@ -210,6 +211,7 @@ In this section, you'll learn how to [LIST 2-3 KEY TASKS].
 #### [LOGICAL SECTION 2]
 
 4. [NEXT LOGICAL STEP]
+
 5. [CONFIGURATION OR INPUT INSTRUCTION]
 
 > [!IMPORTANT]
@@ -282,6 +284,7 @@ In this section, you'll learn how to [LIST 2-3 KEY TASKS].
 ### Step-by-step instructions
 
 1. [FIRST STEP BUILDING ON USE CASE 1]
+
 2. [CONFIGURATION STEP WITH SPECIFIC VALUES]
 
 ![alt text](images/[SCREENSHOT-FILENAME].png)
@@ -362,3 +365,4 @@ AUTHOR GUIDANCE:
 -->
 
 ---
+  
