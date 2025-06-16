@@ -270,6 +270,7 @@ In this section, you'll learn how to create environment variables and connection
     * `Microsoft Copilot Studio`
     * `Microsoft Dataverse`
     * `Microsoft Entra ID`
+    * `Microsoft Teams`
     * `Office 365 Outlook`    
     * `ServiceNow`
     * `SharePoint`
@@ -324,6 +325,11 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 >  * First-time users may need to confirm their user’s fictitious name and country.
 
 2. Enter the existing **organization**.
+
+> [!IMPORTANT]
+> If an existing organization has been setup for your, find it in **Lab Resources** (specific per training).
+
+---
 
 3. Set new **project name**, use the same name as your fictitious user's name. Keep the options by default (e.g, Private).
 

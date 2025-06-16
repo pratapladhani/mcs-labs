@@ -279,14 +279,12 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 
 7. Search for `MSN Weather` and select **Get current weather** action.
 
-8. Select **Add to agent**.
+8. Select **Add and configure**.
 
 > [!TIP]
 > - You may need to select the connection so that the buttons are not grayed out.
 
-9. Once added, open the **Get current weather** tool.
-
-10. Under **Additional details**, set **Authentication** to **Copilot author authentication**.
+9. Under **Additional details**, set **Authentication** to **Copilot author authentication**.
 
 > [!CAUTION]
 > - When using **Copilot author authentication**, the end-user of the agent isn't prompted to use its own context and connection to connect to the service. Instead, it's using the context and connection of the person who has configured the agent.
@@ -299,7 +297,8 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 12. Under **Inputs**, for **Location**, customize the value and set description:
 
     ```
-    The location for the weather query. Valid inputs are City, State, Country.
+    The location for the weather query. Valid inputs are City, State, Country. 
+    Always include city and country, and state only for locations where appropriate (e.g., in the US)
     ```
 
 > [!TIP]
@@ -390,7 +389,7 @@ In this section, you'll customize built-in system topics to improve user interac
 
    - `What caused the fall of the Roman Empire?`
    - `Who is the current CEO of the company that owns GitHub? Where did they earn their MBA? What's the average rent for a one-bedroom apartment near that campus? What's the air quality index in that area today?`
-   - `What’s the origin of the internet? What’s the temperature right now at the place where it all started?`
+   - `What's the temperature in the city that hosted the last Olympic Games?`
 
     ![alt text](images/conversation-start.png)
 

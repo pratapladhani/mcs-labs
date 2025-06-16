@@ -26,7 +26,7 @@ Empower employees with answers that matter – Build an intelligent agent that c
   - [Use Case #2: Configure Suggested Prompts](#-use-case-2-configure-suggested-prompts)
   - [Use Case #3: Deploy to Microsoft 365 Copilot](#-use-case-3-deploy-to-microsoft-365-copilot)
   - [Use Case #4: Knowledge Prioritization Techniques](#-use-case-4-knowledge-prioritization-techniques)
-  - [Use Case #5: Add ServiceNow Incidents](#-use-case-5-add-servicenow-incidents)
+  - [Use Case #5: Create a child IT Support Agent](#-use-case-5-create-a-child-it-support-agent)
   - [Use Case #6: Add Custom Knowledge](#-use-case-6-add-custom-knowledge)
   - [Use Case #7: AI Summary and Review of Meeting Notes](#-use-case-7-ai-summary-and-review-of-meeting-notes)
 
@@ -112,7 +112,7 @@ In this lab, you'll build a comprehensive "Ask me anything" agent that serves as
 | 2 | [Configure Suggested Prompts](#-use-case-2-configure-suggested-prompts) | Guides users toward the agent's best capabilities through strategic prompt suggestions | 3 min |
 | 3 | [Deploy to Microsoft 365 Copilot](#-use-case-3-deploy-to-microsoft-365-copilot) | Makes the agent available in Microsoft 365 Copilot for seamless user access | 5 min |
 | 4 | [Knowledge Prioritization Techniques](#-use-case-4-knowledge-prioritization-techniques) | Implements context-aware knowledge routing for personalized and relevant responses | 8 min |
-| 5 | [Add ServiceNow Incidents](#-use-case-5-add-servicenow-incidents) | Integrates real-time incident management for comprehensive support capabilities | 5 min |
+| 5 | [Use Case #5: Create a child IT Support Agent](#-use-case-5-create-a-child-it-support-agent) | Discover how scoping for knowledge and tools can also be done through the multi-agent capabilitis. | 5 min |
 | 6 | [Add Custom Knowledge](#-use-case-6-add-custom-knowledge) | Extends knowledge base with custom HTTP endpoints for enterprise system integration | 7 min |
 | 7 | [AI Summary and Review of Meeting Notes](#-use-case-7-ai-summary-and-review-of-meeting-notes) | Automates document analysis with human review workflows for accuracy and approval | 7 min |
 
@@ -385,7 +385,7 @@ Use this tool for questions about leave policy, time off, etc.
 
 19. Add a new node: **Advanced > Generative answers**
 
-20. For input,  select `...`, go to the **System** tab and choose the **Activity.Text** variable/
+20. For input,  select `...`, go to the **System** tab and choose the **Activity.Text** variable.
 
 > [!TIP]
 > The **Activity.Text** variable is super useful because it captures the last message/text the user has typed in or selected when interacting with the agent.
@@ -431,12 +431,12 @@ What's the leave policy?
 30. **Paste** the below line
 
 ```
-Include the user country () in knowledge search queries (e.g., "<question> in <country>?")
+Include the user country () in knowledge search queries (e.g., "<question> in <country>?") that are HR related.
 ```
 
 31. We need to set the variable value in-between the parenthesis. **Type** `/` and select **Power Fx**.
 
-  ![alt text](instructions-formula.png)
+  ![alt text](images/instructions-formula.png)
 
 31. **Type** `Global.GetUser.officeLocation` and select **Insert**
 
@@ -463,47 +463,76 @@ What benefits do employees get?
 
 ---
 
-## 🔄 Use Case #5: Add ServiceNow Incidents
+## 🔄 Use Case #5: Create a child IT Support Agent
 
-Integrate real-time incident management for comprehensive support capabilities.
+Integrate real-time incident management for comprehensive support capabilities and demonstrate agent scoping techniques.
 
 | Use case | Value added | Estimated effort |
 |----------|-------------|------------------|
-| Add ServiceNow Incidents | Integrates real-time incident management for comprehensive support capabilities | 5 minutes |
+| Add ServiceNow Incidents | Integrates real-time incident management for comprehensive support capabilities with agent scoping best practices | 8 minutes |
 
 **Summary of tasks**
 
-In this section, you'll configure the connection to ServiceNow to retrieve incident details.
+In this section, you'll configure the connection to ServiceNow to retrieve incident details, and learn how to scope agent capabilities for specific domains. This demonstrates how specialized tools can be integrated to create domain-specific expertise within your agent.
 
-**Scenario:** Employees need quick access to their ServiceNow incident status without navigating to the ServiceNow portal, improving productivity and reducing support burden.
+**Scenario:** Employees need quick access to their ServiceNow incident status without navigating to the ServiceNow portal. By integrating ServiceNow directly into your agent, you're creating a specialized IT support capability that showcases agent scoping - where specific tools and knowledge are targeted for particular use cases, improving productivity and reducing support burden.
+
+### Understanding Agent Scoping with ServiceNow Integration
+
+This use case demonstrates **agent scoping** principles:
+- **Specialized Tools**: ServiceNow integration provides domain-specific capabilities
+- **Contextual Routing**: IT-related queries automatically leverage ServiceNow tools
+- **Unified Experience**: Users get comprehensive support from a single agent interface
 
 ### Step-by-step instructions
 
+#### Create a child agent
+
 1. Go to your Ask Me Anything agent
 
-2. Go to the **Tools** tab, and **+ Add a tool**
+2. Go to the **Agents** tab, and **+ Add an agent**
 
-3. Search for  `ServiceNow List records`
+3. Update its **name** to `IT Support Agent`
+
+4. Update its **description** to `Use this agent for any ask for action or knowledge related to IT.`
+
+#### Add knowledge to the child agent
+
+5. Select **+ Add** in the **Knowledge** section of the child agent
+
+6. Select **ServiceNow**
+
+7. Choose the **ServiceNow** connection in **Created by my admin**
+
+8. Select **Add**
+
+#### Add ServiceNow ticket details
+
+9. Go to your Ask Me Anything agent
+
+10. Go to the **Tools** tab, and **+ Add a tool**
+
+11. Search for  `ServiceNow List records`
 
 4. Select **Add and configure**
 
 5. **Rename** to `Get ServiceNow ticket details`
 
-8. Change **description** to `Gets the details of an incident using its incident number`
+6. Change **description** to `Gets the details of an incident using its incident number. Use this tool when users ask about ServiceNow tickets, incident status, or IT support requests.`
 
 > [!TIP]
-> The description will help the AI know when to use that tool, so it's important to have clear instructions WHEN and WHEN NOT to use this tool.
+> The description will help the AI know when to use that tool, so it's important to have clear instructions WHEN and WHEN NOT to use this tool. This is a key aspect of agent scoping - being specific about tool usage.
 
-9. Under **Additional details**, change **Authentication** to **Copilot author authentication**
+7. Under **Additional details**, change **Authentication** to **Copilot author authentication**
 
 > [!IMPORTANT]
-> In production scenarios, you may want to use the user context when making the connection to ServiceNow. Here, your context (as the author) is used by end-users of your agent when searching for incidens.
+> In production scenarios, you may want to use the user context when making the connection to ServiceNow. Here, your context (as the author) is used by end-users of your agent when searching for incidents.
 
-9. For **Record Type**, set a **Custom value** and choose `Incident`
+8. For **Record Type**, set a **Custom value** and choose `Incident`
 
-10. Select **+ Add input** and choose **Query**
+9. Select **+ Add input** and choose **Query**
 
-11. Select **Customize** and use this for **Description**:
+10. Select **Customize** and use this for **Description**:
 
     ```
     The output of this variable is the concatenation of numberCONTAINS and the incident number. E.g., 'numberCONTAINSINC0007001'. Only the incident number should be prompted and obtained from the user (e.g., INC0007001)
@@ -512,20 +541,37 @@ In this section, you'll configure the connection to ServiceNow to retrieve incid
 > [!TIP]
 > Again, these instructions will be used by AI to understand how determine how to pass that information to the ServiceNow connector. In this case, how to use the very specific OData formatting of ServiceNow queries.
 
-12. Select **+ Add input** and choose **Limit**
+11. Select **+ Add input** and choose **Limit**
 
-13. Select **Custom Value** and set **1**
+12. Select **Custom Value** and set **1**
 
-12. Select **Save**
+13. Select **Save**
 
-13. **Test** your agent with a question:
+#### Test your IT Support Agent 
+
+28. **Test** your agent:
 
     ```
-    Can you share an update for cases INC0000059 and INC0000060? It's been quite a while since I've opened them... thanks!!
+    Hey couple of IT issues: first, my USB port is no longer working on my PC... what can I do? While you're here, can you also share an update for cases INC0000059 and INC0000060? It's been quite a while since I've opened them... thanks!!
     ```
 
 > [!TIP]
-> Notice how the agent automatically uses the tool twice for both searches, and creates a user-friendly response.
+> Notice how the agent automatically:
+> - Uses the appropriate ServiceNow tool based on the query type
+> - Handles multiple tickets in a single request
+> - Creates user-friendly responses with proper formatting
+> - Combines ServiceNow data with other knowledge sources when needed
+
+  ![alt text](images/multi-agent-servicenow.png)
+
+29. **Observe** how your agent now demonstrates scoped capabilities:
+    - **Tool Selection**: Automatically chooses the right ServiceNow tool based on user intent
+    - **Context Preservation**: Maintains conversation flow while using specialized tools
+    - **Domain Expertise**: Provides IT-specific guidance and next steps
+    - **Unified Experience**: Seamlessly integrates ServiceNow capabilities with other knowledge sources
+
+> [!IMPORTANT]
+> This integration showcases how agents can be scoped for specific domains while maintaining a unified user experience. The ServiceNow knowledge and tools are automatically triggered for IT-related queries, demonstrating intelligent capability routing within a single agent.
 
 ---
 
