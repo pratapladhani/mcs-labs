@@ -8,7 +8,7 @@ Empower sellers with timely insights – Build an autonomous Copilot Studio agen
 
 | Level | Persona | Duration   | Purpose                                                                                                                                                                                                                                                                                                    |
 | ----- | ------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 200   | Maker   | 45 minutes | After completing this lab, participants will have created an autonomous agent that periodically scans for large opportunities in Salesforce, searches for relevant news, uses Copilot Studio's Deep Reasoning feature to assess relevance, and emails structured HTML reports using Microsoft 365 Outlook. |
+| 200   | Maker   | 60 minutes | After completing this lab, participants will have created an autonomous agent that periodically scans for large opportunities in Salesforce, searches for relevant news, uses Copilot Studio's Deep Reasoning feature to assess relevance, and emails structured HTML reports using Microsoft 365 Outlook. |
 
 ---
 
@@ -20,7 +20,6 @@ Empower sellers with timely insights – Build an autonomous Copilot Studio agen
 - [Documentation and Additional Training Links](#-documentation-and-additional-training-links)
 - [Prerequisites](#-prerequisites)
 - [Summary of Targets](#-summary-of-targets)
-- [Use Cases Covered](#-use-cases-covered)
 - [Instructions by Use Case](#️-instructions-by-use-case)
 
 ---
@@ -101,10 +100,10 @@ In this lab, you will build an autonomous news assistant agent that:
 | Step | Use Case                                                                                                                                  | Value added                                                                    | Effort |
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------ |
 | 1    | [Create and Configure an Autonomous Agent](#-use-case-1-create-and-configure-an-autonomous-agent)                                         | Establishes the agent framework and automated trigger for continuous operation | 10 min |
-| 2    | [Add a Tool to Fetch High-Value Opportunities from Salesforce](#-use-case-2-add-a-tool-to-fetch-high-value-opportunities-from-salesforce) | Enables data-driven insights by sourcing relevant CRM records                  | 5 min  |
-| 3    | [Analyze Opportunities Using Web Search and Deep Reasoning](#-use-case-3-analyze-opportunities-using-web-search-and-deep-reasoning)       | Enriches understanding of each opportunity using external signals              | 5 min  |
+| 2    | [Add a Tool to Fetch High-Value Opportunities from Salesforce](#-use-case-2-add-a-tool-to-fetch-high-value-opportunities-from-salesforce) | Enables data-driven insights by sourcing relevant CRM records                  | 10 min |
+| 3    | [Analyze Opportunities Using Web Search and Deep Reasoning](#-use-case-3-analyze-opportunities-using-web-search-and-deep-reasoning)       | Enriches understanding of each opportunity using external signals              | 10 min |
 | 4    | [Store Content Using Topics and Global Variables](#-use-case-4-store-content-using-topics-and-global-variables)                           | Maintains precise context for downstream steps and output accuracy             | 15 min |
-| 5    | [Create and Send a Structured HTML Report via Email](#-use-case-5-create-and-send-a-structured-html-report-via-email)                     | Delivers clear, actionable summaries to stakeholders                           | 10 min |
+| 5    | [Create and Send a Structured HTML Report via Email](#-use-case-5-create-and-send-a-structured-html-report-via-email)                     | Delivers clear, actionable summaries to stakeholders                           | 15 min |
 
 ---
 
@@ -182,7 +181,7 @@ In this lab, you will build an autonomous news assistant agent that:
 
   | Use case                                                     | Value added                                                                       | Estimated effort |
   | ------------------------------------------------------------ | --------------------------------------------------------------------------------- | ---------------- |
-  | Add a Tool to Fetch High-Value Opportunities from Salesforce | Enables the agent to access relevant CRM data for further reasoning and reporting | 5 minutes        |
+  | Add a Tool to Fetch High-Value Opportunities from Salesforce | Enables the agent to access relevant CRM data for further reasoning and reporting | 10 minutes       |
 
   **Summary of tasks**
 
@@ -239,7 +238,7 @@ In this lab, you will build an autonomous news assistant agent that:
 
   | Use case                                                  | Value added                                                       | Estimated effort |
   | --------------------------------------------------------- | ----------------------------------------------------------------- | ---------------- |
-  | Analyze opportunities using web search and Deep Reasoning | Enriches understanding of each opportunity using external signals | 5 minutes        |
+  | Analyze opportunities using web search and Deep Reasoning | Enriches understanding of each opportunity using external signals | 10 minutes       |
 
   **Summary of tasks**
 
@@ -424,11 +423,11 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 | Use case                                           | Value added                                                     | Estimated effort |
 | -------------------------------------------------- | --------------------------------------------------------------- | ---------------- |
-| Create and send a structured HTML report via email | Ensures timely delivery of insights in a usable, branded format | 10 minutes       |
+| Create and send a structured HTML report via email | Ensures timely delivery of insights in a usable, branded format | 15 minutes       |
 
 ---
 
- **Objective** Create two topics that store search and analysis results in global variables.
+ **Objective** Configure HTML templating and email delivery for your autonomous agent.
 
   > [!IMPORTANT] Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
 
@@ -533,7 +532,7 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 
 
-8. Replace **your-custom-domain** in the HTML content you pasted with a custom domain pointing at your SalesForce org. \
+8. Replace **your-custom-domain** in the HTML content with a custom domain pointing at your Salesforce org.
 
 
 > [!IMPORTANT] The HTML template functions as a **one-shot example** that guides the agent’s generation process. When the agent is asked to produce an HTML report, it will refer to this template to determine how to format the content, structure the sections, and organize links.
@@ -560,7 +559,6 @@ Automate the final step: format relevant news into a clean, branded email for ac
 16. Click **Add and configure**.
 
 17. Configure the following settings:
-
    - **Name**: `Send a summary report`
    - **Description**: `Sends a summary report on account news.`
 
@@ -578,7 +576,7 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 21. Click **Save** to finalize the tool.
 
-22. Now that you've created the report template and configured the email tool, you’ll guide the agent to use them as part of its orchestration.
+22. Now that you've created the report template and configured the email tool, you'll guide the agent to use them as part of its orchestration.
 
 23. Navigate to your agent and go to the **Overview** tab.
 
@@ -594,19 +592,18 @@ Automate the final step: format relevant news into a clean, branded email for ac
    - For `Global.reportTemplate`, use **PowerFX** > `Global.reportTemplate`
    - For `Send a summary report`, use **Tool** > *Send a summary report* (select it from the list)
 
-26. Save your agent’s instructions. The instructions should appears as follows:
+26. Save your agent's instructions. The instructions should appear as follows:
  ![Instructions After Topics](images/final-instructions.png)
 
-27.  Navigate to the **Triggers** section and click **Test trigger** on the `Analyze Opportunities` trigger.
+27. Navigate to the **Triggers** section and click **Test trigger** on the `Analyze Opportunities` trigger.
 
-28.  Once the agent finishes executing, verify:
-
+28. Once the agent finishes executing, verify:
    - It retrieved opportunities from Salesforce
    - It matched them to relevant news using Deep Reasoning
    - It populated the `Global.reportTemplate` with relevant content
    - It invoked the **Send a summary report** tool and sent an email to your test address
 
-30. A successful autonomous run of your new agent, should appear as follows:
+29. A successful autonomous run of your new agent should appear as follows:
     ![Instructions After Topics](images/final-run.png)
 
 ---
