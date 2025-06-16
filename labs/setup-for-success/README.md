@@ -319,17 +319,15 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 ### Setting up Azure DevOps
 
-1. Navigate to [Azure DevOps](https://aex.dev.azure.com/me?mkt=en-US) and log in.
+1. **Navigate** to the Azure DevOps organizatin that was created for the training, and log in.
+
+> [!IMPORTANT]
+> Find it in Azure DevOps link in the **Lab Resources** (specific per training).
 
 > [!TIP]
 >  * First-time users may need to confirm their user’s fictitious name and country.
 
 2. Enter the existing **organization**.
-
-> [!IMPORTANT]
-> If an existing organization has been setup for your, find it in **Lab Resources** (specific per training).
-
----
 
 3. Set new **project name**, use the same name as your fictitious user's name. Keep the options by default (e.g, Private).
 
