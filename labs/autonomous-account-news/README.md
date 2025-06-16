@@ -133,7 +133,8 @@ In this lab, you will build an autonomous news assistant agent that:
     - **Deep Reasoning (preview)**
     - **Use information from the Web**
 
-  > [!NOTE] These settings allow your agent to retrieve and analyze news content in real time using Deep Reasoning.
+  > [!NOTE]  
+  > These settings allow your agent to retrieve and analyze news content in real time using Deep Reasoning.
 
   **Creating the Agent and Solution Setup**
 
@@ -203,7 +204,8 @@ In this lab, you will build an autonomous news assistant agent that:
 
   5. Choose an existing Salesforce connection or add a new one.
 
-  > [!IMPORTANT] Create the connection using a Salesforce user with a license and permission to access Opportunity records.
+  > [!IMPORTANT]  
+  > Create the connection using a Salesforce user with a license and permission to access Opportunity records.
 
   6. Click **Add and configure**.
 
@@ -211,13 +213,15 @@ In this lab, you will build an autonomous news assistant agent that:
     - **Name:** `Get Opportunity records from Salesforce`
     - **Description:** `This operation gets Opportunity records from Salesforce.`
 
-  > [!IMPORTANT] Clear and specific tool names and descriptions help the Orchestrator understand the tool's purpose. Names can even be more influential than descriptions.
+  > [!IMPORTANT]  
+  > Clear and specific tool names and descriptions help the Orchestrator understand the tool's purpose. Names can even be more influential than descriptions.
 
   8. Click **Additional details**.
 
   9. Under **Authentication**, select **Copilot author authentication**.
 
-  > [!IMPORTANT] Always use Copilot author authentication for autonomous agents. This option allows tools to run without requiring user interaction.
+  > [!IMPORTANT]  
+  > Always use Copilot author authentication for autonomous agents. This option allows tools to run without requiring user interaction.
 
   10. Under **Inputs**, click **Add input** and select **Filter Query**.
 
@@ -286,7 +290,8 @@ In this lab, you will build an autonomous news assistant agent that:
 
   **Objective** Create two topics that store search and analysis results in global variables.
 
-  > [!IMPORTANT] Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
+  > [!IMPORTANT]  
+  > Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
 
   #### Step-by-step instructions
 
@@ -300,7 +305,8 @@ In this lab, you will build an autonomous news assistant agent that:
   8. Under **Name**, enter `searchResults`
   9. Under **Description**, enter `A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs`
 
-  > [!IMPORTANT] The description will guide the agent to populate this variable with a structured JSON format. You don't need to enforce a specific schema—just ensure it's easy for the agent to interpret in downstream steps.
+  > [!IMPORTANT]  
+  > The description will guide the agent to populate this variable with a structured JSON format. You don't need to enforce a specific schema—just ensure it's easy for the agent to interpret in downstream steps.
 
   10. In the authoring canvas, click on **(+)** to add a node. Select **Variable management** and then **Set a variable value**. Create a global variable and name it `searchResults`. To assign a value to the newly created variable, select `Topic.searchResults`
   11. Click **Save**
@@ -429,7 +435,8 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
  **Objective** Configure HTML templating and email delivery for your autonomous agent.
 
-  > [!IMPORTANT] Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
+  > [!IMPORTANT]  
+  > Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
 
 #### Step-by-step instructions
 
@@ -534,10 +541,10 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 8. Replace **your-custom-domain** in the HTML content with a custom domain pointing at your Salesforce org.
 
-
-> [!IMPORTANT] The HTML template functions as a **one-shot example** that guides the agent’s generation process. When the agent is asked to produce an HTML report, it will refer to this template to determine how to format the content, structure the sections, and organize links.
->
-> The agent will also extract useful signals from the template — for instance, it may use the Salesforce domain structure (e.g., `your-custom-domain.lightning.force.com`) to dynamically generate opportunity links for each retrieved opportunity
+  > [!IMPORTANT]  
+  > The HTML template functions as a **one-shot example** that guides the agent's generation process. When the agent is asked to produce an HTML report, it will refer to this template to determine how to format the content, structure the sections, and organize links.
+  >
+  > The agent will also extract useful signals from the template — for instance, it may use the Salesforce domain structure (e.g., `your-custom-domain.lightning.force.com`) to dynamically generate opportunity links for each retrieved opportunity
 
 9. Save the **Conversation start** topic
 
@@ -566,7 +573,8 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 19. Under **Authentication**, select **Copilot author authentication**.
 
-> [!IMPORTANT] Always use Copilot author authentication for autonomous agents. This allows tools to run without user interaction.
+  > [!IMPORTANT]  
+  > Always use Copilot author authentication for autonomous agents. This allows tools to run without user interaction.
 
 20. Under **Inputs**, click **Add input**, then:
 
