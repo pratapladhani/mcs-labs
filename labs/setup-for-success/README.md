@@ -308,6 +308,9 @@ In this section, you'll learn how to create environment variables and connection
 
 ## 🔄 Use Case #3: Set up Git source control
 
+> [!TIP]
+> This lab is optional and won't block your progress in future labs.
+
 Connect your solution to Azure DevOps Git to track changes and prepare for CI/CD—no code required.
 
 | Use case | Value added | Estimated effort |
