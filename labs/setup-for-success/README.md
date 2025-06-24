@@ -8,7 +8,7 @@ Build agents with confidence. Deploy with control. Master the lifecycle of your 
 
 | Level | Persona | Duration | Purpose |
 | ----- | ------- | -------- | ------- |
-| 200   | Maker   | 20 minutes | After completing this lab, participants will be able to apply Application Lifecycle Management (ALM) best practices to their Microsoft Copilot Studio solutions. They will know how to structure their work using solutions and publishers, configure environment variables and connection references for deployment readiness, and set up Git-based source control using Azure DevOps—all without writing code. |
+| 200   | Maker   | 30 minutes | After completing this lab, participants will be able to apply Application Lifecycle Management (ALM) best practices to their Microsoft Copilot Studio solutions. They will know how to structure their work using solutions and publishers, configure environment variables and connection references for deployment readiness, and set up Git-based source control using Azure DevOps—all without writing code. |
 
 ---
 
@@ -127,7 +127,7 @@ Use a structured container to group all agents components for better lifecycle m
 
 | Use case | Value added | Estimated effort |
 |----------|-------------|------------------|
-| Create a solution and custom publisher | Structure your success – Group, manage, and deploy all your agent components with clarity and control. | 5 minutes |
+| Create a solution and custom publisher | Structure your success – Group, manage, and deploy all your agent components with clarity and control. | 10 minutes |
 
 **Summary of tasks**
 
@@ -217,7 +217,7 @@ Use reusable variables and connection abstractions for seamless multi-environmen
 
 | Use case | Value added | Estimated effort |
 |----------|-------------|------------------|
-| Create environment variables and connection references | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 5 minutes |
+| Create environment variables and connection references | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 15 minutes |
 
 **Summary of tasks**
 
@@ -252,7 +252,7 @@ In this section, you'll learn how to create environment variables and connection
 
 7. In the solution, select **New**, then go to **More** and choose **Connection reference**.
 
-8. Use the connector name (e.g., `MSN Weather`) as the name. Optionally, prefix with your project name (e.g., `[MCS Training] MSN Weather`).
+8. Use the connector name (e.g., `MSN Weather`) as the name. Optionally, prefix with your project name.
 
 9. Select the connector (e.g., **MSN Weather**).
 
@@ -272,11 +272,16 @@ In this section, you'll learn how to create environment variables and connection
     * `Microsoft Entra ID`
     * `Microsoft Teams`
     * `Office 365 Outlook`    
+    * `Salesforce`        
     * `ServiceNow`
     * `SharePoint`
 
 > [!IMPORTANT]
->  * For **ServiceNow** configuration values, such as *authentication type*, *username*, *password*, and *instance*, use the provided values in the **Lab Resources** (specific per training).
+>  * For **Salesforce** configuration values, use the provided values in the **Lab Resources** (specific per training).
+>  * For **ServiceNow** configuration values, use the provided values in the **Lab Resources** (specific per training).
+>  * For **ServiceNow**'s `Instance` configuration, be sure to scroll down in the connection screen.
+
+
 ---
 
 ###  🏅 Congratulations! You've created environment variables and connection references!
@@ -319,23 +324,21 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 ### Setting up Azure DevOps
 
-1. **Navigate** to the Azure DevOps organizatin that was created for the training, and log in.
+1. **Navigate** to the Azure DevOps organization that was created for the training, and log in.
 
 > [!IMPORTANT]
-> Find it in Azure DevOps link in the **Lab Resources** (specific per training).
+> Find it in **Azure DevOps Organization** link in the **Lab Resources** (specific per training).
 
 > [!TIP]
 >  * First-time users may need to confirm their user’s fictitious name and country.
 
-2. Enter the existing **organization**.
+2. Create a new project by setting a **project name**. Use the same name as your fictitious user's name. Keep the options by default (e.g, Private).
 
-3. Set new **project name**, use the same name as your fictitious user's name. Keep the options by default (e.g, Private).
+3. Select **+ Create project**.
 
-4. Select **+ Create project**.
+4. After project creation, go to **Repos** → **Branches**.
 
-5. After project creation, go to **Repos** → **Branches**.
-
-6. Select **Initialize** (at the bottom) to create the `main` branch with a README or .gitignore.
+5. Select **Initialize** (at the bottom) to create the `main` branch with a README or .gitignore.
 
    ![alt text](images/azure-devops-initialize-branch.png) 
     
@@ -343,37 +346,37 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 ### Connecting Microsoft Copilot Studio to Git
 
-7. Go back to [Microsoft Copilot Studio](https://aka.ms/MCSStart) and open the **Solutions** page (still behind the `...` menu).
+6. Go back to [Microsoft Copilot Studio](https://aka.ms/MCSStart) and open the **Solutions** page (still behind the `...` menu).
 
-8. In the menu, select **Connect to Git**.
+7. In the menu, select **Connect to Git**.
 
-9. Set **Connection type** to `Solution`.
+8. Set **Connection type** to `Solution`.
 
-10. Choose your **organization** and your newly created **project** and **repository**.
+9. Choose your **organization** and your newly created **project** and **repository**.
 
-11. Set the **Root Git folder** to `Solutions`.
+10. Set the **Root Git folder** to `Solutions`.
 
-12. Select **Next**, then pick the solution created in Use Case #1.
+11. Select **Next**, then pick the solution created in Use Case #1.
 
 ![alt text](images/connect-to-git.png)
 
-13. When prompted for the branch, select **Create new branch** and name it `dev`.
+12. When prompted for the branch, select **Create new branch** and name it `dev`.
 
-14. Click **Save** and then **Connect**.
+13. Click **Save** and then **Connect**.
 
 ### Observing the Git integration from Microsoft Copilot Studio
 
-15. Now, let's see this action. **Open the solution** you created in Use Case #1.
+14. Now, let's see this action. **Open the solution** you created in Use Case #1.
 
-16. In the left-hand navigation, navigate to **Source control**.
+15. In the left-hand navigation, navigate to **Source control**.
 
-17. **See** how the various components you have added to your solution are now ready to be committed to your source control. If don't see them all, select **Refresh** as they get detected and added.
+16. **See** how the various components you have added to your solution are now ready to be committed to your source control. If don't see them all, select **Refresh** as they get detected and added.
 
-18. When ready, select **Commit**, add a comment describing the changes you're introducing (e.g., `New environment variables and connection references`).
+17. When ready, select **Commit**, add a comment describing the changes you're introducing (e.g., `New environment variables and connection references`).
 
 ![alt text](images/commit.png)
 
-19. Once committed, you can **navigate** to your commit in Azure DevOps and see the introduced, updated, or deleted components.
+18. Once committed, you can **navigate** to your commit in Azure DevOps and see the introduced, updated, or deleted components.
 
    ![alt text](images/ado-commit.png)
 
