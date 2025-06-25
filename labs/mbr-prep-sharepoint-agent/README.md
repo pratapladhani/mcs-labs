@@ -303,6 +303,8 @@ Create, configure, test, and deploy a conversational MBR agent that leverages Sh
 
 18. **Select** or **search** the SharePoint site you created in the previous steps from the list of options
 
+> [!IMPORTANT] Only sites where the user has **Edit** permissions can be used. Otherwise, an error will be displayed.
+
 ![Select the SharePoint Site](./assets/sharepoint-dropdown.jpeg)
 
 19. Select **Deploy**
