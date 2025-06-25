@@ -119,6 +119,19 @@ Create, configure, and share a Copilot agent that serves as a knowledgeable guid
 1. Navigate to [Microsoft 365 Copilot home page](https://m365.cloud.microsoft/chat/?auth=2&home=1)  
    _Note: if you see 'coming soon' try again in a few minutes._
 
+> [!IMPORTANT]
+> - If the Microsoft 365 Copilot URL is `https://copilot.cloud.microsoft/` or if the Copilot pane is on the right-hand side, this means you're on the **wrong** page.
+> 
+>   ![alt text](images/wrong-copilot-page.png)
+> 
+> - To fix this, **close** the tab, then **go back to the SharePoint** page. Select the app launcher, and choose **Microsoft 365 Copilot** from there.
+>
+>   ![alt text](images/app-launcher.png)
+>
+> - The Copilot pane should be on the left-hand side of the page, and the URL should be `https://m365.cloud.microsoft/`. If you see this, you're on the right page:
+>
+>   ![alt text](images/correct-copilot-page.png)
+
 2. Go to the **Chat** tab.
 
 > [!TIP]  
