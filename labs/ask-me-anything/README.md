@@ -264,11 +264,17 @@ Make the agent available in Microsoft 365 Copilot for your users.
 
 4. Select **Add channel** (at the bottom right corner)
 
-5. Select **See agent in Microsoft 365** 
+5. **Close** the channel pane
 
-  ![alt text](images/m365-copilot-channel.png)
+6. **Publish** the agent again.
 
-6. In the **M365 Copilot** experience, the agent description will pop up. Select **Add**
+7. Select **Teams and Microsoft 365 Copilot** channel tile
+
+8. Select **See agent in Microsoft 365** 
+
+   ![alt text](images/m365-copilot-channel.png)
+
+9. In the **Microsoft 365 Copilot** experience, the agent description will pop up. Select **Add**
 
 > [!TIP]
 > - You may need to give it a few tries/minutes the first time you deploy to Microsoft 365 Copilot so it deploys correctly. 
@@ -276,7 +282,7 @@ Make the agent available in Microsoft 365 Copilot for your users.
 >   - Choose **See agents in Teams** instead. If you can
 >   - In the new window, if prompted *This site is trying to open Microsoft Teams*, select **Cancel**, and the select **use the web app instead**
 
-7. Test the agent with the benefits prompt
+10. Test the agent with the benefits prompt
 
 > [!TIP]
 > If deploying to Teams,  prompts won't be available, so paste the below question:
@@ -284,7 +290,6 @@ Make the agent available in Microsoft 365 Copilot for your users.
 > ``` 
 > What's the Northwind Health Plus Benefits plan?
 > ```
-
 
 ---
 
@@ -347,7 +352,7 @@ Let's start by asking for the user country at the beginning of the conversation.
 
 7. In the **Get user** node, select `...` and **Properties** 
 
-8. Toggle the **End user authentication** to **Copilot author authentication**.
+8. Toggle the **End user authentication** to **Agent author authentication**.
 
 9. In the **Inputs** tab, for **User Id or Principal Name**, select `...`, go the the **System** tab, and select **User.Id**.
 
@@ -436,6 +441,9 @@ Include the user country () in knowledge search queries (e.g., "<question> in <c
 
 31. We need to set the variable value in-between the parenthesis. **Type** `/` and select **Power Fx**.
 
+> [!TIP]
+> Note: the UX may differ. In that case, use the **{x}** dropdown to select **Global.GetUser.officeLocation**, and **Save** your instructions.
+
   ![alt text](images/instructions-formula.png)
 
 31. **Type** `Global.GetUser.officeLocation` and select **Insert**
@@ -492,29 +500,41 @@ This use case demonstrates **agent scoping** principles:
 
 2. Go to the **Agents** tab, and **+ Add an agent**
 
-3. Update its **name** to `IT Support Agent`
-
-4. Update its **description** to `Use this agent for any ask for action or knowledge related to IT.`
+3. Update 
+    - Its **Name** to: `IT Support Agent`
+    - Its **Description** to:
+      ```
+      Use this agent for queries related to IT (e.g., knowledge base frequently asked questions, incident updates, etc.) 
+      The agent can multiple multiple questions and queries at once.
+      ```
+    - Its **Instructions** to:
+      ```
+      Use knowledge for problem/how-to/questions.
+      Use the Get ServiceNow ticket details tool to get the status of incidents.
+      ```
 
 #### Add knowledge to the child agent
 
-5. Select **+ Add** in the **Knowledge** section of the child agent
+4. Select **+ Add** in the **Knowledge** section of the child agent
 
-6. Select **ServiceNow**
+5. Select **ServiceNow**
 
-7. Choose the **ServiceNow** connection in **Created by my admin**
+6. Choose the **ServiceNow** connection in **Created by my admin**
 
-8. Select **Add**
+7. Select **Add**
 
 #### Add ServiceNow ticket details
 
-9. Go to your Ask Me Anything agent
+1. Go to your Ask Me Anything agent
 
-10. Go to the **Tools** tab, and **+ Add a tool**
+2. Go to the **Tools** tab, and **+ Add a tool**
 
-11. Search for  `ServiceNow List records`
+3. Search for  `ServiceNow List records`
 
-4. Select **Add and configure**
+4. Select **Add to Agent**, then **Save** your child agent, and scroll down to the **Tools** section and select the **List records** tool you just added.
+
+> [!TIP]
+> In case of issues, refresh the page.
 
 5. **Rename** to `Get ServiceNow ticket details`
 
@@ -552,13 +572,13 @@ This use case demonstrates **agent scoping** principles:
 28. **Test** your agent:
 
     ```
-    Hey couple of IT issues: first, my USB port is no longer working on my PC... what can I do? While you're here, can you also share an update for cases INC0000059 and INC0000060? It's been quite a while since I've opened them... thanks!!
+    My USB port is no longer working on my PC... what can I do? While you're here, can you also share an update for case INC0000059? It's been quite a while since I've opened them... thanks!!
     ```
 
 > [!TIP]
 > Notice how the agent automatically:
 > - Uses the appropriate ServiceNow tool based on the query type
-> - Handles multiple tickets in a single request
+> - Handles multiple tickets in a single request (e.g., if you ask for both cases INC0000059 and INC0000060)
 > - Creates user-friendly responses with proper formatting
 > - Combines ServiceNow data with other knowledge sources when needed
 
