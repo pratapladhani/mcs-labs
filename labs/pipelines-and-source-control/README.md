@@ -144,6 +144,9 @@ Create a deployment pipeline that automates solution deployment across environme
 
 #### Get a TEST and PROD environments
 
+> [!TIP]
+> If you haven't done so already, you need to request TEST and PROD environments to be created for your user. This is a one-time setup step that will allow you to create pipelines for deployment.
+
 1. **Start** by requesting TEST and PROD envrionments to be created for your user. Use the **Environments Request Form** to request these environments to be automatically created for you. This will then take a couple of minutes to provision and to show up.
 
 > [!IMPORTANT]
