@@ -1,6 +1,7 @@
-# Create an MBR Agent
+# Create a Monthly Business Review (MBR) Agent
 
 This guide provides step-by-step instructions for creating an MBR (Monthly Business Review) Agent, which is designed to streamline the preparation process for MBRs. By following the guide, users will learn how to query resources and obtain quick answers, ultimately enhancing efficiency and organization for business reviews. It's a valuable tool for anyone looking to optimize their workflow and ensure they are well-prepared for important business discussions. 
+
 ---
 
 ## 🧭 Lab Details
@@ -85,34 +86,34 @@ In this lab, you'll build a conversational MBR agent that streamlines how manage
 ---
 ## 🛠️ Instructions
 
-1\. Go to [portal.office.com](https://portal.office.com) and select `SharePoint`
+1\. Go to [m365.cloud.microsoft/apps/](https://m365.cloud.microsoft/apps/?from=PortalHome&auth=2) and select **SharePoint**
 
 ![SharePoint](./assets/select-sharepoint.jpeg)
 
 
-2\. Select `Create Site`
+2\. Select **Create Site**
 
 ![Create Site](./assets/create-site.png)
 
 
-3\. Select `Team Site`
+3\. Select **Team Site**
 
 ![Team Site](./assets/team-site.png)
 
 
-4\. Select `Standard team`
+4\. Select **Standard team**
 
 ![Standard Team](./assets/select-template.png)
 
-5\. Select `Use Template`
+5\. Select **Use Template**
 
 ![Use Template](./assets/use-template.png)
 
-6\. Put `MBR` in the Site Name and Select `Next`
+6\. Put `MBR - <Your User Name>` in the Site Name and Select **Next**
 
 ![Create Site](./assets/site-name.png)
 
-7\. Click `Finish`
+7\. Click **Finish**
 
 ![Select Finish](./assets/select-finish-site-creation.jpeg)
 
@@ -132,113 +133,103 @@ In this lab, you'll build a conversational MBR agent that streamlines how manage
 
 ![Select Open](./assets/select-sample-files.jpeg)
 
-12\. Open a new browser tab and navigate to [copilotstudio.microsoft.com](copilotstudio.microsoft.com). Select `Create`
+12\. Open a new browser tab and navigate to [copilotstudio.microsoft.com](copilotstudio.microsoft.com). Select **Create**
 
 ![Select Create](./assets/create-agent.jpeg)
 
 
-13\. Select `New agent`
+13\. Select **New agent**
 
 ![Select New Agent](./assets/new-agent.jpeg)
 
-14\. In the `Name` field type `MBR Agent`. In the `Description` field type,  `This agent helps in preparing for Monthly Business Reviews. It queries MBR resources and provides quick answers`
+14\. Select **Skip to configure** 
+
+15\. In the **Name** field type `MBR Agent`. In the **Description** field type,  `This agent helps in preparing for Monthly Business Reviews. It queries MBR resources and provides quick answers`
 
 ![Fill out Agent Details](./assets/agent-name.jpeg)
 
+16\. Select `...` to go into **Edit advanced settings**. Make sure the agent is created as part of one of your **solutions**.
 
-15\. Select `Create`
+17\. Select **Create**
 
 ![Select Create](./assets/create-button.jpeg)
 
-
-16\. Select `Add knowledge`
+18\. Select **Add knowledge**
 
 ![Select Add Knowledge](./assets/add-knowledge.jpeg)
 
-
-17\. Select `SharePoint`
+19\. Select **SharePoint**
 
 ![Select SharePoint](./assets/sharepoint-knowledge.jpeg)
 
-18\. Paste the url of your SharePoint site in the text input
+20\. **Paste** the URL of your SharePoint site in the text input
 
 ![Paste SharePoint URL](./assets/sharepoint-url.jpeg)
 
-19\. Select `Add`
+21\. Select **Add**
 
 ![Select Add Knowledge](./assets/add-sp-knowledge1.jpeg)
 
-
-20\. Select `Add` again
+22\. Select **Add** again
 
 ![Select Add](./assets/add-knowledge2.jpeg)
 
-
-21\. Now we need to test our agent to see if it returns answers from our knowledge. Click in the text box in the testing panel.
+23\. Now we need to test our agent to see if it returns answers from our knowledge. 
 
 ![Test Panel](./assets/empty-test-panel.jpeg)
 
-
-22\. Type `what deals are currently in the negotiation stage?` and press the `Return` key
+24. Type `what deals are currently in the negotiation stage?` and send the message.
 
 ![Test the agent](./assets/test1.jpeg)
 
-23\. Review the answer in the test window and notice the logic in the Activity Pane on the left hand side
+25\. **Review** the answer in the test window and notice the logic in the Activity Pane on the left hand side
 
 ![Review the answer](./assets/review-answer.jpeg)
 
-24\. Now that we know the agent is working, we need to publish our changes by selecting the `Publish` button in the upper right hand corner.
+26\. Now that we know the agent is working, we need to publish our changes by selecting the **Publish** button in the upper right hand corner.
 
 ![Select Publish](./assets/publish.jpeg)
 
-25\. Now it's time to deploy our agent to SharePoint. Select the `Channels` tab.
+27\. Now it's time to deploy our agent to SharePoint. Select the **Channels** tab.
 
 ![Select Channels](./assets/channels-tab.jpeg)
 
-
-26\. Select `SharePoint`
+28\. Select **SharePoint**
 
 ![Select SharePoint](./assets/channels-sharepoint.jpeg)
 
-27\. Select the SharePoint site you created in the previous steps from the list of options
+29\. Select the SharePoint site you created in the previous steps from the list of options
 
 ![Select the SharePoint Site](./assets/sharepoint-dropdown.jpeg)
 
-28\. Select `Deploy`
+30\. Select **Deploy**
 
 ![Select Deploy](./assets/deploy.jpeg)
 
-29\. Select the `...` next to the Deployed text and select `Copy Site Url`. Open a new browser tab and paste in the URL.
+31\. Select the `...` next to the Deployed text and select **Copy Site Url**. Open a new browser tab and paste in the URL.
 
 ![Select Copy Site URL](./assets/copy-url.jpeg)
 
-30\. Select the `Documents` library on the left hand navigation.
+32\. Select the **Documents*** library on the left hand navigation.
 
 ![Select Documents](./assets/select-document-library.jpeg)
 
-
-31\. Select the `MBR Agent` from the library
+33\. Select the **MBR Agent** from the library
 
 ![Select MBR Agent](./assets/doc-mbr-agent.jpeg)
 
-32\. Your agent will open up on the right hand side. Test it out by typing `What are the top 3 blockers?` in the text input and pressing `Return`
+34\. Your agent will open up on the right hand side. Test it out by typing `What are the top 3 blockers?` in the text input and pressing `Return`
 
 ![Testing the agent](./assets/deployed-test1.jpeg)
 
-
-33\. Review the answer and note that it provides links to the referenced documents.
+35\. Review the answer and note that it provides links to the referenced documents.
 
 ![Review the first test](./assets/deployed-review1.jpeg)
 
-
-34\. Perform another test by typing `Which reps requested additional pre-sales support?` and pressing `Return`
+36\. Perform another test by typing `Which reps requested additional pre-sales support?` and pressing `Return`
 
 ![Testing the agent](./assets/deployed-test2.jpeg)
 
-
-35\. Review your response. Congratulations! You've built and deployed your SharePoint MBR Agent!
+37\. Review your response. Congratulations! You've built and deployed your SharePoint MBR Agent!
 
 ![Review the second test results](./assets/dpeloyed-review2.jpeg)
-
-
-
