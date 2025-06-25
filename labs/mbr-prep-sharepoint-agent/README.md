@@ -105,9 +105,6 @@ In this lab, you'll build a conversational MBR agent that streamlines how manage
 
 ## 📁 Use Case #1: Create SharePoint site and upload MBR documents
 
-> [!IMPORTANT]
-> **For training participants:** If you are following this lab as part of a guided training session, the MBR documents have already been uploaded to SharePoint at the location specified in your **Lab Resources**. You can skip this use case and proceed directly to [Use Case #2](#-use-case-2-build-and-deploy-mbr-agent).
-
 Set up a dedicated SharePoint site with MBR documents that will serve as the knowledge source for your agent.
 
 [!IMPORTANT]
@@ -165,6 +162,9 @@ Create a SharePoint site with MBR documents that will serve as the knowledge sou
 
 #### Upload MBR documents
 
+> [!IMPORTANT]
+> **For training participants:** If you are following this lab as part of a guided training session, the MBR documents have already been uploaded to SharePoint at the location specified in your **Lab Resources**. You can skip this use case and proceed directly to [Use Case #2](#-use-case-2-build-and-deploy-mbr-agent).
+
 8. Navigate to the [sample files folder](/assets/sample-files/) and download the sample files
 
 9. Select `Documents` in the left navigation
@@ -195,11 +195,6 @@ Create a SharePoint site with MBR documents that will serve as the knowledge sou
 * **Document organization** – Proper file structure enables better agent knowledge extraction
 * **Access permissions** – SharePoint security ensures only authorized users can access sensitive MBR data
 
-**Lessons learned & troubleshooting tips:**
-
-* Use consistent naming conventions for MBR files to improve agent understanding
-* Ensure files are in supported formats (PowerPoint, Word, Excel, PDF)
-* Verify permissions allow the agent to access the document library
 
 **Challenge: Apply this to your own use case**
 
@@ -306,7 +301,7 @@ Create, configure, test, and deploy a conversational MBR agent that leverages Sh
 
 ![Select SharePoint](./assets/channels-sharepoint.jpeg)
 
-18. Select the SharePoint site you created in the previous steps from the list of options
+18. **Select** or **search** the SharePoint site you created in the previous steps from the list of options
 
 ![Select the SharePoint Site](./assets/sharepoint-dropdown.jpeg)
 
