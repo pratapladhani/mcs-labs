@@ -165,7 +165,7 @@ Create a SharePoint site with MBR documents that will serve as the knowledge sou
 > [!IMPORTANT]
 > **For training participants:** If you are following this lab as part of a guided training session, the MBR documents have already been uploaded to SharePoint at the location specified in your **Lab Resources**. You can skip this use case and proceed directly to [Use Case #2](#-use-case-2-build-and-deploy-mbr-agent).
 
-8. Navigate to the [sample files folder](/assets/sample-files/) and download the sample files
+8. Navigate to the [sample files folder](./assets/) and download the sample files
 
 9. Select `Documents` in the left navigation
 
