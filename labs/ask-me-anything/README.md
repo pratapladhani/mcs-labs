@@ -500,6 +500,8 @@ This use case demonstrates **agent scoping** principles:
 
 2. Go to the **Agents** tab, and **+ Add an agent**
 
+    ![alt text](images/add-agent.png)
+
 3. Update 
     - Its **Name** to: `IT Support Agent`
     - Its **Description** to:
