@@ -525,11 +525,11 @@ This use case demonstrates **agent scoping** principles:
 
 7. Select **Add**
 
-#### Add ServiceNow ticket details
+#### Add ServiceNow ticket details as a Tool to the child agent
 
-1. Go to your Ask Me Anything agent
+1. Still within the **IT Support Agent** 
 
-2. Go to the **Tools** tab, and **+ Add a tool**
+2. Scroll down to **Tools** and **+ Add a tool**
 
 3. Search for  `ServiceNow List records`
 
