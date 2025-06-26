@@ -414,6 +414,11 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 9. Name your organization (you can leave the default name) and select **Continue**.'
 
+> [!IMPORTANT]
+> If you're landing into an error message page, follow these steps:
+> 1. Go to [aex.dev.azure.com](https://aex.dev.azure.com/).
+> 2. If prompted, create new organization if prompted
+
 10. Create a new project by setting a **project name**. For example `Agents`
 
 11. Select **+ Create project**.
