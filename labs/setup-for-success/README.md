@@ -406,6 +406,12 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 5. Under **Subscription / Program**, select **Visual Studio Dev Essentials**
 
+> [!IMPORTANT]
+> If you're landing into a **Something went wrong!** error, follow these steps:
+> 1. Go to [aex.dev.azure.com](https://aex.dev.azure.com/).
+> 2. If prompted, create new organization (you can leave the default name) if prompted
+> 3. Skip to step 10.
+
 6. Select **Azure DevOps** to open the Azure DevOps portal.
 
 7. In the **Benefits** tab, for **Azure DevOps**, select **Get started**.
@@ -414,10 +420,6 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 9. Name your organization (you can leave the default name) and select **Continue**.'
 
-> [!IMPORTANT]
-> If you're landing into an error message page, follow these steps:
-> 1. Go to [aex.dev.azure.com](https://aex.dev.azure.com/).
-> 2. If prompted, create new organization if prompted
 
 10. Create a new project by setting a **project name**. For example `Agents`
 
