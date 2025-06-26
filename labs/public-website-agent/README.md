@@ -284,10 +284,10 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 > [!TIP]
 > - You may need to select the connection so that the buttons are not grayed out.
 
-9. Under **Additional details**, set **Authentication** to **Copilot author authentication**.
+9. Under **Additional details**, set **Authentication** to **Agent author authentication**.
 
 > [!CAUTION]
-> - When using **Copilot author authentication**, the end-user of the agent isn't prompted to use its own context and connection to connect to the service. Instead, it's using the context and connection of the person who has configured the agent.
+> - When using **Agent author authentication**, the end-user of the agent isn't prompted to use its own context and connection to connect to the service. Instead, it's using the context and connection of the person who has configured the agent.
 > - Only use author authentication for actions that don't need user-specific data, as using the credentials from someone else can expose to data exfiltration risks.
 > - Use user authentication for role-based access scenarios
 > - Always review security implications of authentication choices
