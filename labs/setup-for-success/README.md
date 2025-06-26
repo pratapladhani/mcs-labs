@@ -447,7 +447,7 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 19. Select **Next**, then pick the solution created in Use Case #1.
 
-![alt text](images/connect-to-git.png)
+      ![alt text](images/connect-to-git.png)
 
 20. When prompted for the branch, select **Create new branch** and name it `dev`.
 
