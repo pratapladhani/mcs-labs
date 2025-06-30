@@ -163,12 +163,16 @@ Create an autonomous agent that automatically triggers when new support emails a
 
 10. Rename the trigger to `When a support email arrives`
 
-11. Select **Next**, and finally **Create trigger**
+11. Select **Next**, 
+
+12. In the **Subject Filter (Optional)** field, enter `Support` to filter emails that contain the word "Support" in the subject line.
+
+13. Finally **Create trigger**
 
 > [!TIP]
 > This trigger configuration determines which emails activate your agent. You can refine filters later to target specific email addresses or subject patterns.
 
-12. The trigger is now configured. After you **publish** your agent, it will automatically activate your agent when new emails arrive
+14. The trigger is now configured. After you **publish** your agent, it will automatically activate your agent when new emails arrive
 
 ---
 
