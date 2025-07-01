@@ -130,7 +130,7 @@ You are a Sales Admin Assistant. Your job is to help sales managers track revenu
 > [!TIP]
 > If you can't see the files you just opened, an alternative approach is just to **paste** and **add** the SharePoint URL of the Sales folder.
 > 
->    ![alt text](image.png)![alt text](images/sharepoint-url-fallback.png)
+>    ![alt text](images/sharepoint-url-fallback.png)
 
 6. Under **capabilities**, enable:
    - **Code interpreter** (for data analysis and chart generation)
