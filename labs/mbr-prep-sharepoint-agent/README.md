@@ -107,8 +107,6 @@ In this lab, you'll build a conversational MBR agent that streamlines how manage
 
 Set up a dedicated SharePoint site with MBR documents that will serve as the knowledge source for your agent.
 
-[!IMPORTANT]
-
 | Use case | Value added | Estimated effort |
 |----------|-------------|------------------|
 | Create SharePoint site and upload MBR documents | Establish centralized document repository for MBR data that the agent can access | 10 minutes |

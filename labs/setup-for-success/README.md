@@ -254,6 +254,9 @@ In this section, you'll learn how to create environment variables and connection
 
 8. Use the connector name (e.g., `MSN Weather`) as the name. Optionally, prefix with your project name.
 
+> [!TIP]
+> In other locales, the connector name may be localized. For example, in French, it would be `MSN Météo`.
+
 9. Select the connector (e.g., **MSN Weather**).
 
 10. In the connection dropdown, choose **New connection** if none exists.
@@ -435,7 +438,7 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 ### Connecting Microsoft Copilot Studio to Git
 
-14. Go back to [Microsoft Copilot Studio](https://aka.ms/MCSStart) and open the **Solutions** page (still behind the `...` menu).
+14. Go back to [Microsoft Copilot Studio](https://copilotstudio.microsoft.com) and open the **Solutions** page (still behind the `...` menu).
 
 15. In the menu, select **Connect to Git**.
 
