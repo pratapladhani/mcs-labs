@@ -131,6 +131,10 @@ Create, configure, and share a Copilot agent that serves as a knowledgeable guid
 > - The Copilot pane should be on the left-hand side of the page, and the URL should be `https://m365.cloud.microsoft/`. If you see this, you're on the right page:
 >
 >   ![alt text](images/correct-copilot-page.png)
+> 
+> - Make sure the **logged in user** is the fictitious one used in the lab. If you need your normal work user account, **select** the name and toggle to the fictitious user account.
+>
+>   ![alt text](images/logged-in-user.png)
 
 2. Go to the **Chat** tab.
 
@@ -168,7 +172,7 @@ Upcoming features in Microsoft Copilot Studio roadmap
 6. On the side pane, expand **Agents** and select **Create agent**  
 
 > [!TIP]  
-> * If you don't see **Create agent**, try refreshing with Ctrl + F5. You user account may still be provisionning services.
+> If you don't see **Create agent**, try refreshing with Ctrl + F5. You user account may still be provisionning services.
 
 7. Notice that you can explore existing **templates**. But for this lab, when prompted to **describe the agent**, reply with:
 
@@ -176,28 +180,37 @@ Upcoming features in Microsoft Copilot Studio roadmap
 I want to build a teacher-style agent that helps users learn about Copilot, including the differences between Microsoft 365 Copilot and Copilot Chat, Declarative Agents vs. Custom Engine Agents, and how to use the Copilot Studio agent builder. The agent should ask questions to validate and reinforce user understanding, encourage exploration, and act as a knowledgeable guide grounded in Microsoft documentation.
 ```
 
-8. **Confirm** the suggested agent name.
+> [!TIP]  
+> From here, you will find that the conversational creation experience might differ from the below step-by-step instructions, as it's using generative AI and it is by nature non-deterministic. The core concepts remain the same, but the UI may change slightly. Just adjust to the questions and options presented to you.
 
-9. If asked about how the agent should interact with users, **reply** with:
+8. *If* asked about how the agent should handle **questions that are directly related to Copilot**, reply with:
 
 ```
-Yes, the agent should ask follow-up questions, provide quizzes, or offer additional resources, as appropriate
+It shouldn't answer questions that are not related to Microsoft 365 Copilot, Copilot Chat, or Copilot Studio
 ```
 
-#### Configure grounding sources
+9. *If* asked about how should the agent should handle **situations where the user provides incorrect information or demonstrates a misunderstanding**, reply with:
 
-10. When asked about publicly accessible websites as knowledge sources, **paste** these URLs:
+```
+Guide them towards the correct solution based on your knowledge
+```
+
+10. When asked about **publicly accessible websites** as knowledge sources, **paste** these URLs:
 
 ```
 https://learn.microsoft.com/en-us/microsoft-365-copilot
 https://learn.microsoft.com/en-us/copilot
 ```
 
+> [!TIP]  
+> You can set URLs with up to 2 levels of depth for grounding. E.g., https://www.domain.com/level1/level2. Just like folders in a file system. That way, all pages under that URL will be used as grounding sources. E.g., https://www.domain.com/level1/level2/page1.html, https://www.domain.com/level1/level2/page2.html, etc.
+
+#### Configure grounding sources
 
 11. When asked for other modifications, you can **instruct** it to tweak the suggestion prompts:
 
 ```
-Your tone should be friendly, personal, and emphatic. You can make jokes, use subtle irony and emojis when appropriate.
+The name of the agent should be Copilot Teacher. Your tone should be friendly, personal, and emphatic. You can make jokes, use subtle irony and emojis when appropriate.
 ```
 
 #### Finalize configuration
@@ -222,8 +235,13 @@ Your tone should be friendly, personal, and emphatic. You can make jokes, use su
 What are the differences between Microsoft 365 Copilot and Copilot Chat?
 ```
 
+> [!TIP]
+>  If your training tenant is getting throttled because of lack of AI capacity (to prioritize production workloads), you may see a message like this: `Sorry, I wasn't able to respond to that. Is there something else I can help with?`. It's OK, just test your agent while configuring it, and not after you created it. You may try again later.
+
+>   ![alt text](images/copilot-error.png)
+
 > [!IMPORTANT]  
-> If you need to update a declarative agent, go to **Create agent** then navigate to **My agents** in the breadcrumbs.
+> If you need to update a declarative agent, select `...` next to the agent name and select **Edit**, or go to **Create agent** then navigate to **My agents** in the breadcrumbs.
 
 ---
 

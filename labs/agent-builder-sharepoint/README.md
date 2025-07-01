@@ -126,7 +126,12 @@ You are a Sales Admin Assistant. Your job is to help sales managers track revenu
    - Add each of the 2 files you had opened in the previous use case.
 
     ![alt text](images/knowledge-files.png)
-   
+
+> [!TIP]
+> If you can't see the files you just opened, an alternative approach is just to **paste** and **add** the SharePoint URL of the Sales folder.
+> 
+>    ![alt text](image.png)![alt text](images/sharepoint-url-fallback.png)
+
 6. Under **capabilities**, enable:
    - **Code interpreter** (for data analysis and chart generation)
    - **Image generator** (for creating visual content)
@@ -166,12 +171,17 @@ What are the key guidelines in our sales policy regarding customer discounts?
 4. **Start a new chat** and test the **code interpreter** capability with a data analysis request:
 
 ```
-Graph the sales for the last 2 years with a breakdown per product line and quarter
+Analyze sales data for the last 2 years with a breakdown per product line and quarter. Use data from Sales.xlsx.
 ```
+
+5. When offered to get a visual chart of this breakdown, **confirm**.
+
+![alt text](images/sales-data-analysis.png)
 
 ![alt text](images/code-interpreter.png)
 
-5. **Observe** how the agent:
+
+6. **Observe** how the agent:
    - Accesses your Excel data from SharePoint
    - Uses code interpreter to process the data
    - Generates dynamic charts and visualizations
@@ -179,7 +189,7 @@ Graph the sales for the last 2 years with a breakdown per product line and quart
 
 #### Test image generation
 
-6. **Start a new chat** and test the **image generation** capability with a relevantrequest:
+7. **Start a new chat** and test the **image generation** capability with a relevantrequest:
 
 ```
 Create a badge for the first place of our sales context for 2026
