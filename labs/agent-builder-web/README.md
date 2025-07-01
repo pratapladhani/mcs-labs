@@ -176,8 +176,8 @@ Yes, the agent should ask follow-up questions, provide quizzes, or offer additio
 10. When asked about publicly accessible websites as knowledge sources, **paste** these URLs:
 
 ```
-https://learn.microsoft.com/en-us/microsoft-365-copilot
 https://learn.microsoft.com/en-us/copilot
+https://learn.microsoft.com/en-us/microsoft-copilot-studio
 ```
 
 
