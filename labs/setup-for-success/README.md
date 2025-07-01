@@ -254,6 +254,9 @@ In this section, you'll learn how to create environment variables and connection
 
 8. Use the connector name (e.g., `MSN Weather`) as the name. Optionally, prefix with your project name.
 
+> [!TIP]
+> In other locales, the connector name may be localized. For example, in French, it would be `MSN Météo`.
+
 9. Select the connector (e.g., **MSN Weather**).
 
 10. In the connection dropdown, choose **New connection** if none exists.
@@ -281,6 +284,13 @@ In this section, you'll learn how to create environment variables and connection
 >  * For **ServiceNow** configuration values, use the provided values in the **Lab Resources** (specific per training).
 >  * For **ServiceNow**'s `Instance` configuration, be sure to scroll down in the connection screen.
 
+#### Get a TEST and PROD environments
+
+14. In anticipation of future labs where we will deploy  customizations from `DEV` to `TEST` to `PROD`, **request** TEST and PROD envrionments to be created for your user. Use the **Environments Request Form** to request these environments to be automatically created for you. This will then take a couple of minutes to provision and to show up.
+
+> [!IMPORTANT]
+> - To access this form, use the provided URL in the **Lab Resources** (specific per training).
+> - This operation will fail if you already have more than 1 environment of type *developer*, as each user is limited to 3 environments of this type (to keep things simple for the labs, the test and production environment use a developer type, and not sandbox/production). 
 
 ---
 
@@ -324,6 +334,8 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 **Scenario:** You want to track changes to your Copilot Studio agents in source control, collaborate with your team, and prepare for automated deployment pipelines.
 
 ### Step-by-step instructions
+
+<!--- Old instructions
 
 ### Setting up Azure DevOps
 
@@ -382,6 +394,81 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 18. Once committed, you can **navigate** to your commit in Azure DevOps and see the introduced, updated, or deleted components.
 
    ![alt text](images/ado-commit.png)
+
+-->
+
+### Setting up Azure DevOps
+
+1. **Navigate** to [my.visualstudio.com/subscriptions](https://my.visualstudio.com/subscriptions)
+
+2. If not already signed in, **log in** with your fictitious user account.
+
+3. Select **Join Visual Studio Dev Essentials**
+
+4. **Confirm** 
+
+5. Under **Subscription / Program**, select **Visual Studio Dev Essentials**
+
+> [!IMPORTANT]
+> If you're landing into a **Something went wrong!** error, follow these steps:
+> 1. Go to [aex.dev.azure.com](https://aex.dev.azure.com/).
+> 2. If prompted, create new organization (you can leave the default name) if prompted
+> 3. Skip to step 10.
+
+6. Select **Azure DevOps** to open the Azure DevOps portal.
+
+7. In the **Benefits** tab, for **Azure DevOps**, select **Get started**.
+
+8. When prompted, select **Continue**.
+
+9. Name your organization (you can leave the default name) and select **Continue**.'
+
+
+10. Create a new project by setting a **project name**. For example `Agents`
+
+11. Select **+ Create project**.
+
+12. After project creation, go to **Repos** → **Branches**.
+
+13. Select **Initialize** (at the bottom) to create the `main` branch with a README or .gitignore.
+
+   ![alt text](images/azure-devops-initialize-branch.png) 
+    
+> 🎉 You’ve set up the Git repo! Now return to Microsoft Copilot Studio.
+
+### Connecting Microsoft Copilot Studio to Git
+
+14. Go back to [Microsoft Copilot Studio](https://copilotstudio.microsoft.com) and open the **Solutions** page (still behind the `...` menu).
+
+15. In the menu, select **Connect to Git**.
+
+16. Set **Connection type** to `Solution`.
+
+17. Choose your **organization** and your newly created **project** and **repository**.
+
+18. Set the **Root Git folder** to `Solutions`.
+
+19. Select **Next**, then pick the solution created in Use Case #1.
+
+      ![alt text](images/connect-to-git.png)
+
+20. When prompted for the branch, select **Create new branch** and name it `dev`.
+
+21. Click **Save** and then **Connect**.
+
+### Observing the Git integration from Microsoft Copilot Studio
+
+22. Now, let's see this action. **Open the solution** you created in Use Case #1.
+
+23. In the left-hand navigation, navigate to **Source control**.
+
+24. **See** how the various components you have added to your solution are now ready to be committed to your source control. If don't see them all, select **Refresh** as they get detected and added.
+
+25. When ready, select **Commit**, add a comment describing the changes you're introducing (e.g., `New environment variables and connection references`).
+
+![alt text](images/commit.png)
+
+26. Once committed, you can **navigate** to your commit in Azure DevOps and see the introduced, updated, or deleted components.
 
 ---
 

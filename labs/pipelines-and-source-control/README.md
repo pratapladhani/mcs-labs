@@ -144,6 +144,9 @@ Create a deployment pipeline that automates solution deployment across environme
 
 #### Get a TEST and PROD environments
 
+> [!TIP]
+> If you haven't done so already, you need to request TEST and PROD environments to be created for your user. This is a one-time setup step that will allow you to create pipelines for deployment.
+
 1. **Start** by requesting TEST and PROD envrionments to be created for your user. Use the **Environments Request Form** to request these environments to be automatically created for you. This will then take a couple of minutes to provision and to show up.
 
 > [!IMPORTANT]
@@ -164,7 +167,7 @@ Create a deployment pipeline that automates solution deployment across environme
 
 #### Configure pipeline basics
 
-6. Enter a **Name** for your pipeline (e.g., `Copilot Studio Agents Deployment`).
+6. Enter a **Name** for your pipeline, e.g., `<your user name> Pipeline`.
 
 7. Set a **Description** to explain the pipeline's purpose (e.g., `Automated deployment of agents from DEV through TEST to PROD`).
 
@@ -189,8 +192,11 @@ Create a deployment pipeline that automates solution deployment across environme
 > [!TIP]
 > - The wizard then makes sure that each environment variable has a value set in the target environment, and that all connection references are valid. If any of these checks fail, you will be prompted to fix them before proceeding.
 
-> [!IMPORTANT]
-> - Due to the nature of the preview environments, pipelines may not work as expected. It is best to set these up using environments deployed in a non-early release cycle channel, and they also must be located in the same region.
+14. **Repeat** the operation for the PROD stage.
+
+15. In Copilot Studio, **switch** to either the TEST and PROD environment.
+
+16. **See** what the agents look like in each environment. When entering a topic, see how customizations are locked because the solution is managed.
 
 ---
 

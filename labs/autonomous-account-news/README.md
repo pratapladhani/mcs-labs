@@ -127,32 +127,26 @@ In this lab, you will build an autonomous news assistant agent that:
 
   #### Step-by-step instructions
 
-  1. Open your agent and go to **Settings**.
-
-  2. Under the **Generative AI** tab, enable:
-    - **Deep Reasoning (preview)**
-    - **Use information from the Web**
-
-  > [!NOTE]  
-  > These settings allow your agent to retrieve and analyze news content in real time using Deep Reasoning.
-
   **Creating the Agent and Solution Setup**
 
-  3. Navigate to the Copilot Studio home page at https://copilotstudio.microsoft.com.
+  1. Navigate to the Copilot Studio home page at https://copilotstudio.microsoft.com.
 
-  4. Go to the **Solutions** menu (left-hand menu under the ellipsis **…**).
+  2. Go to the **Solutions** menu (left-hand menu under the ellipsis **…**).
 
-  5. Select the solution you created for this lab.
+  3. Select the solution you created for this lab.
 
-  6. Select **New**, then choose **Agent**.
+  4. Select **New**, then choose **Agent**.
 
-  7. Select **Skip to configure** to bypass the setup wizard.
+  > [!TIP]
+  > If you have set one of your solutions as the default solution, you can also create a new agent directly from Copilot Studio's home page by clicking **New agent**. It will automatically create the agent in your default solution.
 
-  8. Name your agent: `Account News Assistant`.
+  5. Select **Skip to configure** to bypass the setup wizard.
 
-  9. Click **Create** to establish your new agent.
+  6. Name your agent: `Account News Assistant`.
 
-  **Adding a Recurring Trigger**
+  7. Click **Create** to establish your new agent.
+
+  #### Adding a Recurring Trigger
 
   1.  In the agent's **Overview** tab, scroll to the **Triggers** section.
 
@@ -162,13 +156,14 @@ In this lab, you will build an autonomous news assistant agent that:
 
   4.  Click **Next**.
 
-  5.  Set the trigger interval as desired (e.g., daily or weekly).
+  5.  Set the trigger interval as desired (e.g., once a day).
 
   6.  Under **Additional instructions to the agent when it's invoked by this trigger**, clear any default content and replace it with: `Analyze Opportunities`.
 
   7.  Click **Next** and **Create** the trigger.
 
-  The instruction "Analyze Opportunities" functions similarly to a conversational instruction. When triggered, the agent will try to follow this directive using its orchestration logic—factoring in global instructions and tool definitions (covered in later steps).
+  > [!TIP]
+  > The instruction *Analyze Opportunities* functions similarly to a conversational instruction. When triggered, the agent will try to follow this directive using its orchestration logic—factoring in global instructions and tool definitions (covered in later steps).
 
   ---
 
@@ -196,39 +191,46 @@ In this lab, you will build an autonomous news assistant agent that:
 
   1. Navigate to **Tools** in the top-level menu.
 
-  2. Click **+ Add a tool**.
+  2. Select **+ Add a tool**.
 
-  3. In the search bar, type `Salesforce`.
+  3. Search and select `Get Opportunity records from Salesforce`.
 
-  4. Select **Get Opportunity records** from Salesforce.
-
-  5. Choose an existing Salesforce connection or add a new one.
+  4. Choose an existing Salesforce connection or add a new one.
 
   > [!IMPORTANT]  
   > Create the connection using a Salesforce user with a license and permission to access Opportunity records.
 
-  6. Click **Add and configure**.
+  5. Select **Add and configure**.
 
-  7. Configure the following settings:
-    - **Name:** `Get Opportunity records from Salesforce`
-    - **Description:** `This operation gets Opportunity records from Salesforce.`
+  6. Configure the following settings:
+    - **Name:** `Get Opportunity records`
+    - **Description:** `This operation gets Opportunity records`
 
   > [!IMPORTANT]  
   > Clear and specific tool names and descriptions help the Orchestrator understand the tool's purpose. Names can even be more influential than descriptions.
 
-  8. Click **Additional details**.
+  7. Select **Additional details**.
 
-  9. Under **Authentication**, select **Copilot author authentication**.
+  8. Under **Authentication**, select **Agent author authentication**.
 
   > [!IMPORTANT]  
-  > Always use Copilot author authentication for autonomous agents. This option allows tools to run without requiring user interaction.
+  > Always use Agent author authentication for autonomous agents. This option allows tools to run without requiring user interaction.
 
-  10. Under **Inputs**, click **Add input** and select **Filter Query**.
+  9. Under **Inputs**, click **Add input** and select **Filter Query**.
+     - **Fill using**: `Set a custom value`.
+     - **Value**:
 
-  11. Click **Save** to finalize the tool configuration.
+        ```
+        Amount gt 300000 and IsClosed eq false
+        ```
+
+  10. Click **Save** to finalize the tool configuration.
 
   12. To test your tool is correctly configured, you can type `Get opportunities` in the test canvas. Your agent should retrieve high-value opportunities based on the configured threshold.
    ![alt text](images/test-get-opptys.png)
+
+ > [!IMPORTANT]  
+  > If you are getting an error messagen like `The connector 'Salesforce' returned an HTTP error with code 401`, **create a new connection** on the Tool, and re-use the same credentials provided in Lab Resources. This error indicates that the connection is not valid or has expired. **Select** the new connection in the dropdown, **Save** and **Test** again.
 
   ---
 
@@ -296,113 +298,196 @@ In this lab, you will build an autonomous news assistant agent that:
   #### Step-by-step instructions
 
   1. In your agent, navigate to the **Topics** section.
-  2. Click **+ Add a topic**.
+
+  2. Click **+ Add a topic**, and choose **From blank**.
+
   3. Name the topic: `Log Search Results`.
+
   4. Under **Describe what this topic does**, enter `Use this to log search results`.
+
   5. Click on **Details** and then **Input**
+
   6. Click on **Create a new variable**
+
   7. Under **Variable data type** select **String** 
+
   8. Under **Name**, enter `searchResults`
-  9. Under **Description**, enter `A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs`
+
+  9. Under **Description**, enter 
+  
+      ```
+      A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
+      The JSON object should contain:
+      - Opportunity IDs
+      - Search results related to those opportunities
+      - Citation names and URLs
+      ```
 
   > [!IMPORTANT]  
   > The description will guide the agent to populate this variable with a structured JSON format. You don't need to enforce a specific schema—just ensure it's easy for the agent to interpret in downstream steps.
 
-  10. In the authoring canvas, click on **(+)** to add a node. Select **Variable management** and then **Set a variable value**. Create a global variable and name it `searchResults`. To assign a value to the newly created variable, select `Topic.searchResults`
+  10. In the authoring canvas: 
+      - Select on **(+)** to add a node. 
+      - Select **Variable management** and then **Set a variable value**.
+      - For **Set variable**, create a new variable, make it **Global**, and name it `searchResults`. 
+      - In **To value** select `Topic.searchResults`
+
+      ![alt text](images/log-search-results.png)
+  
   11. Click **Save**
-  12. You can also copy and paste the YAML content below into your agent using the code editor. 
 
-  ```yaml
-  kind: AdaptiveDialog
-  inputs:
-    - kind: AutomaticTaskInput
-      propertyName: searchResults
-      description: A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
-      shouldPromptUser: true
-  modelDescription: Use this to log search results
-  beginDialog:
-    kind: OnRecognizedIntent
-    id: main
-    intent: {}
-    actions:
-      - kind: SetVariable
-        id: setVariable_VvUl2b
-        variable: `Global.searchResults`
-        value: =Topic.searchResults
-  inputType:
-    properties:
-      searchResults:
-        displayName: searchResults
-        description: A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
-        type: String
-  outputType: {}
-  ```
+  > [!TIP]  
+  > You can also copy and paste the YAML content below into your agent using the code editor. 
+  > 
+  > ```yaml
+  > kind: AdaptiveDialog
+  > inputs:
+  >   - kind: AutomaticTaskInput
+  >     propertyName: searchResults
+  >     description: |-
+  >       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
+  >       The JSON object should contain:
+  >       - Opportunity IDs
+  >       - Search results related to those opportunities
+  >       - Citation names and URLs
+  >     shouldPromptUser: true
+  > 
+  > modelDescription: Use this to log search results
+  > beginDialog:
+  >   kind: OnRecognizedIntent
+  >   id: main
+  >   intent: {}
+  >   actions:
+  >     - kind: SetVariable
+  >       id: setVariable_J3g8bd
+  >       variable: Global.searchResults
+  >       value: =Topic.searchResults
+  > 
+  > inputType:
+  >   properties:
+  >     searchResults:
+  >       displayName: searchResults
+  >       description: |-
+  >         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
+  >         The JSON object should contain:
+  >         - Opportunity IDs
+  >         - Search results related to those opportunities
+  >         - Citation names and URLs
+  >       type: String
+  > 
+  > OutputType: {}
+  > ```
 
-  13. Click **+ Add a topic** again.
+  13. In **Topics**, select **+ Add a topic**, and choose **From blank** again.
+
   14. Name the topic: `Log Relevant News for Search Results`
+
   15. Under **Describe what this topic does**, enter `Use this to log relevant news for opportunities`
+
   16. Click on **Details** and then **Input**
+
   17. Click on **Create a new variable**
+
   18. Under **Variable data type**, select **String**
+
   19. Under **Name**, enter `relevantNewsForOpportunities`
-  20. Under **Description**, enter `A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity`
-  21. In the authoring canvas, click on **(+)** to add a node. Select **Variable management** and then **Set a variable value**. Create a global variable and name it `relevantNewsForOpportunities`. To assign a value to the newly created variable, select `Topic.relevantNewsForOpportunities`
+
+  20. Under **Description**, enter 
+  
+      ```
+      A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
+      The JSON object should contain:
+      - Opportunity IDs
+      - Relevant news summaries
+      - Relevance explanations
+      ```
+
+  21. In the authoring canvas: 
+      - Select on **(+)** to add a node. 
+      - Select **Variable management** and then **Set a variable value**.
+      - For **Set variable**, create a new variable, make it **Global**, and name it `relevantNewsForOpportunities`. 
+      - In **To value** select `Topic.relevantNewsForOpportunities`
+
   22. Click **Save**
+
   23. You can copy and paste the YAML content below into your agent using the code editor. 
 
-  ```yaml
-  kind: AdaptiveDialog
-  inputs:
-    - kind: AutomaticTaskInput
-      propertyName: relevantNewsForOpportunities
-      description: A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
-      shouldPromptUser: true
-  modelDescription: Use this to log relevant news for opportunities
-  beginDialog:
-    kind: OnRecognizedIntent
-    id: main
-    intent: {}
-    actions:
-      - kind: SetVariable
-        id: setVariable_qdeQsK
-        variable: Global.relevantNewsForOpportunities
-        value: =Topic.relevantNewsForOpportunities
-  inputType:
-    properties:
-      relevantNewsForOpportunities:
-        displayName: relevantNewsForOpportunities
-        description: A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
-        type: String
-  outputType: {}
-  ```
+  > [!TIP]  
+  > You can also copy and paste the YAML content below into your agent using the code editor. 
+  > 
+  > ```yaml
+  > kind: AdaptiveDialog
+  > inputs:
+  >   - kind: AutomaticTaskInput
+  >     propertyName: relevantNewsForOpportunities
+  >     description: |-
+  >       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
+  >       The JSON object should contain:
+  >       - Opportunity IDs
+  >       - Relevant news summaries
+  >       - Relevance explanations
+  >     shouldPromptUser: true
+  > 
+  > modelDescription: Use this to log relevant news for opportunities
+  > beginDialog:
+  >   kind: OnRecognizedIntent
+  >   id: main
+  >   intent: {}
+  >   actions:
+  >     - kind: SetVariable
+  >       id: setVariable_5ZOEWA
+  >       variable: Global.relevantNewsForOpportunities
+  >       value: =Topic.relevantNewsForOpportunities
+  > 
+  > inputType:
+  >   properties:
+  >     searchResults:
+  >       displayName: relevantNewsForOpportunities
+  >       description: |-
+  >         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
+  >         The JSON object should contain:
+  >         - Opportunity IDs
+  >         - Relevant news summaries
+  >         - Relevance explanations
+  >       type: String
+  > 
+  > OutputType: {}
+  > ```
 
   24. Click **Save**.
 
-  25. Add instructions to your agent. Navigate to the **Overview** tab and locate the **Instructions** section. Paste the following instructions there to guide the agent's orchestration:
+#### Add instructions to your agent. 
+  
+  25. Navigate to the **Overview** tab and locate the **Instructions** section. Paste the following instructions there to guide the agent's orchestration:
 
   ```
   Follow these steps to analyze opportunities:
 
-  1. Fetch opportunities using {Get Opportunity records} from Salesforce 
+  1. Fetch opportunities using <Get Opportunity records> from Salesforce 
   2. Execute a separate knowledge search for news on each opportunity
-  3. Log all search results for each opportunity using {Log Search Results}. Invoke {Log Search Results} only once.
+  3. Log all search results for each opportunity using <Log Search Results>. Invoke <Log Search Results> only once.
   4. Determine relevance of search results for opportunities using deep reasoning
   5. Use Log relevant news for opportunities to log your findings. The base input for Log relevant news for opportunities should be {Global.searchResults} with determined relevance added
   ```
 
+> [!TIP]
+> If instructions don't offer the "/" option to reference topics, tools or variables, you can skip step 26-30 and continue with the next steps. You can always come back to this later.
+
   26. To increase orchestration accuracy, you will now replace names of topics, tools and variables with references. References can be added to instructions by typing **/** and selecting the appropriate object from the drop-down menu.
 
-  27. In the instructions, select `{Get Opportunity records}`. Type **/** and in the drop-down menu, under **Tool**, select **Get Opportunity records**. The previous text in curly brackets should be replaced by a visual reference to the tool.
+  27. In the instructions, select `<Get Opportunity records>`. Type **/** and in the drop-down menu, under **Tool**, select **Get Opportunity records**. The previous text in curly brackets should be replaced by a visual reference to the tool.
 
-  28. Repeat the same action for the topic `{Log Search Results}`. Type **/** and in the drop-down menu, under **Topic**, select **Log Search Results** to insert a visual reference to the topic, replacing `{Log Search Results}`.
+  28. Repeat the same action for the topic `<Log Search Results>`. Type **/** and in the drop-down menu, under **Topic**, select **Log Search Results** to insert a visual reference to the topic, replacing `<Log Search Results>`.
 
-  29. Insert a reference to one of the global variable you created earlier. Type **/** and in the drop-down menu and select **PowerFX**. In the formula box, type `Global.searchResults`. A visual reference to the global variable should be added to the instructions.
+  29. Insert a reference to one of the global variable you created earlier. Type **/** and in the drop-down menu and select **Power Fx**. In the formula box, type `Global.searchResults`. A visual reference to the global variable should be added to the instructions.
+
   30. The instructions should now appear as follows:
-![Instructions After Topics](images/instructions-after-topics.png)
+
+      ![Instructions After Topics](images/instructions-after-topics.png)
 
   31.  To test your configuration so far, invoke the trigger you created in Use Case #1. Navigate to the **Overview** tab, scroll to **Triggers**, and click **Test trigger** next to **Analyze opportunities**. A test run should appear as follows:
-   ![Instructions After Topics](images/test-run-after-topics.png)
-
+    
+        ![Instructions After Topics](images/test-run-after-topics.png)
 
 1.   Optionally, validate that the inputs for your topics were populated correctly:
       - In the **Log Search Results** topic, confirm that the input named `searchResults` contains a JSON object with:
@@ -440,18 +525,25 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 #### Step-by-step instructions
 
-1. Navigate to the **Topics** section.
-2. Open the **Conversation start** topic.
+1. Navigate to the **Topics** tab.
+
+2. In the **System** tab, open the **Conversation start** topic.
+
 3. In the **authoring canvas**, add a **Set a variable value** node.
-4. Create a global variable named `reportTemplate`.
-5. In the **To value** field, click the **fx** button to open the formula editor.
-6. Select the **Formula** tab.
-7. Paste the following HTML content as a string:
-   - Wrap the entire HTML in double quotes: `"..."`
-   - Escape each inner quote as double double-quotes: `""`
+
+4. Create a **global** variable named `reportTemplate`.
+
+5. In the **To value** field, select **Formula** to open the formula editor.
+
+6. Paste the following HTML content as a string:
+
+> [!NOTE]
+> To avoid errors, we:
+>   - Wrapped the entire HTML in double quotes: `"..."`
+>   - Escaped each inner quote as double double-quotes: `""`
 
 ```
-<!DOCTYPE html>
+"<!DOCTYPE html>
 <html>
 <head>
   <style>
@@ -505,41 +597,42 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
   <h2>📰 Opportunity News Summary Report</h2>
 
-  <div class="card">
-    <div class="opportunity-name">Microsoft AI Infrastructure Expansion</div>
-    <div class="news-summary">
+  <div class=""card"">
+    <div class=""opportunity-name"">Microsoft AI Infrastructure Expansion</div>
+    <div class=""news-summary"">
       Microsoft has launched new AI infrastructure powered by NVIDIA H100 GPUs, PCIe Gen5, and DDR5 memory. The company has expanded Azure OpenAI Service to new global regions and shared enterprise use cases such as KPMG and Mercedes-Benz. The platform emphasizes responsible AI and performance at scale.
     </div>
-    <div class="relevance">📌 This may indicate increased cloud infrastructure investment, creating opportunities for high-performance compute and service engagement.</div>
-    <div class="section-title">🔗 Salesforce Opportunity:</div>
-    <a class="link" href="https://microsoft-1f4-dev-ed.develop.lightning.force.com/lightning/r/Opportunity/006WS00000BGOjFYAX/view" target="_blank">View opportunity in Salesforce</a>
-    <div class="section-title">📰 News Articles:</div>
-    <a class="link" href="https://azure.microsoft.com/en-us/blog/scale-generative-ai-with-new-azure-ai-infrastructure-advancements-and-availability/" target="_blank">Microsoft Blog: Scale Generative AI</a>
-    <a class="link" href="https://azure.microsoft.com/en-us/solutions/high-performance-computing/ai-infrastructure" target="_blank">Azure AI Infrastructure Overview</a>
-    <a class="link" href="https://techcommunity.microsoft.com/t5/azure-ai/azure-openai-service-expands-to-five-new-regions/ba-p/3849827" target="_blank">Azure OpenAI Service Expansion</a>
+    <div class=""relevance"">📌 This may indicate increased cloud infrastructure investment, creating opportunities for high-performance compute and service engagement.</div>
+    <div class=""section-title"">🔗 Salesforce Opportunity:</div>
+    <a class=""link"" href=""https://microsoft-1f4-dev-ed.develop.lightning.force.com/lightning/r/Opportunity/006WS00000BGOjFYAX/view"" target=""_blank"">View opportunity in Salesforce</a>
+    <div class=""section-title"">📰 News Articles:</div>
+    <a class=""link"" href=""https://azure.microsoft.com/en-us/blog/scale-generative-ai-with-new-azure-ai-infrastructure-advancements-and-availability/"" target=""_blank"">Microsoft Blog: Scale Generative AI</a>
+    <a class=""link"" href=""https://azure.microsoft.com/en-us/solutions/high-performance-computing/ai-infrastructure"" target=""_blank"">Azure AI Infrastructure Overview</a>
+    <a class=""link"" href=""https://techcommunity.microsoft.com/t5/azure-ai/azure-openai-service-expands-to-five-new-regions/ba-p/3849827"" target=""_blank"">Azure OpenAI Service Expansion</a>
   </div>
 
-  <div class="card">
-    <div class="opportunity-name">Google Global Backbone Expansion</div>
-    <div class="news-summary">
+  <div class=""card"">
+    <div class=""opportunity-name"">Google Global Backbone Expansion</div>
+    <div class=""news-summary"">
       Google is expanding its software-defined global network to improve reliability, speed, and AI-era scalability. The backbone promises up to 40% better performance than public internet and spans multiple continents, supporting services like Gmail, YouTube, and Google Cloud.
     </div>
-    <div class="relevance">📌 Suggests infrastructure modernization that may align with proposed solutions in the opportunity.</div>
-    <div class="section-title">🔗 Salesforce Opportunity:</div>
-    <a class="link" href="https://your-custom-domain.lightning.force.com/lightning/r/Opportunity/006WS00000BGSlCYAX/view" target="_blank">View opportunity in Salesforce</a>
-    <div class="section-title">📰 News Articles:</div>
-    <a class="link" href="https://cloud.google.com/blog/products/networking/google-global-network-technology-deep-dive" target="_blank">Google Blog: Global Network Deep Dive</a>
-    <a class="link" href="https://research.google/teams/global-networking/" target="_blank">Google Research: Global Networking</a>
-    <a class="link" href="https://www.datacenterknowledge.com/networking/google-and-level-3-interconnect-network-backbones" target="_blank">Network Backbone Analysis</a>
+    <div class=""relevance"">📌 Suggests infrastructure modernization that may align with proposed solutions in the opportunity.</div>
+    <div class=""section-title"">🔗 Salesforce Opportunity:</div>
+    <a class=""link"" href=""https://your-custom-domain.lightning.force.com/lightning/r/Opportunity/006WS00000BGSlCYAX/view"" target=""_blank"">View opportunity in Salesforce</a>
+    <div class=""section-title"">📰 News Articles:</div>
+    <a class=""link"" href=""https://cloud.google.com/blog/products/networking/google-global-network-technology-deep-dive"" target=""_blank"">Google Blog: Global Network Deep Dive</a>
+    <a class=""link"" href=""https://research.google/teams/global-networking/"" target=""_blank"">Google Research: Global Networking</a>
+    <a class=""link"" href=""https://www.datacenterknowledge.com/networking/google-and-level-3-interconnect-network-backbones"" target=""_blank"">Network Backbone Analysis</a>
   </div>
 
 </body>
-</html>
+</html>"
 ```
 
-
-
 8. Replace **your-custom-domain** in the HTML content with a custom domain pointing at your Salesforce org.
+
+  > [!IMPORTANT]
+  > Use the **Salesforce custom domain** value provided in the **Lab Resources** (specific per training).
 
   > [!IMPORTANT]  
   > The HTML template functions as a **one-shot example** that guides the agent's generation process. When the agent is asked to produce an HTML report, it will refer to this template to determine how to format the content, structure the sections, and organize links.
@@ -550,8 +643,6 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 
 10. Now that your agent has a preloaded HTML template, configure an Outlook email tool to deliver the report.
-
-
 
 11. Navigate to **Tools** in the top-level menu.
 
@@ -571,14 +662,14 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 18. Click **Additional details**.
 
-19. Under **Authentication**, select **Copilot author authentication**.
+19. Under **Authentication**, select **Agent author authentication**.
 
   > [!IMPORTANT]  
-  > Always use Copilot author authentication for autonomous agents. This allows tools to run without user interaction.
+  > Always use Agent author authentication for autonomous agents. This allows tools to run without user interaction.
 
-20. Under **Inputs**, click **Add input**, then:
+20. Under **Inputs**:
 
-    - Add a **Manual input** named `To` with your target test email (we will use a hard-coded email in this lab)
+    - For `To`, set **Fill using** to **Custom value**, with your current user email (we will use a hard-coded email in this lab)
     - Leave **Subject** and **Body** as **Dynamically fill with AI**
     - Click **Customize** next to **Body**, and under **Description**, enter `HTML report`
 
@@ -591,16 +682,19 @@ Automate the final step: format relevant news into a clean, branded email for ac
 24. In the **Instructions** section, add the following steps:
 
 ```
-6. Send an HTML report of the data in {Global.relevantNewsForOpportunities}. Use {Global.reportTemplate} as a template for the report, and Send a summary report to send it.
+6. Send an HTML report of the data in {Global.relevantNewsForOpportunities}. Use {Global.reportTemplate} as a template for the report, and <Send a summary report> to send it.
 ```
+
+> [!TIP]
+> If instructions don't offer the "/" option to reference topics, tools or variables, you can skip step 25 and continue with the next steps. You can always come back to this later.
 
 25. Highlight the tools and variables and use the `/` shortcut to insert references:
 
-   - For `Global.relevantNewsForOpportunities`, use **PowerFX** > `Global.relevantNewsForOpportunities`
-   - For `Global.reportTemplate`, use **PowerFX** > `Global.reportTemplate`
-   - For `Send a summary report`, use **Tool** > *Send a summary report* (select it from the list)
+   - For `Global.relevantNewsForOpportunities`, use **Power Fx** > `Global.relevantNewsForOpportunities`
+   - For `Global.reportTemplate`, use **Power Fx** > `Global.reportTemplate`
+   - For `<Send a summary report>`, use **Tool** > *Send a summary report* (select it from the list)
 
-26. Save your agent's instructions. The instructions should appear as follows:
+26. **Save** your agent's instructions. The instructions should appear as follows:
  ![Instructions After Topics](images/final-instructions.png)
 
 27. Navigate to the **Triggers** section and click **Test trigger** on the `Analyze Opportunities` trigger.
@@ -613,6 +707,8 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 29. A successful autonomous run of your new agent should appear as follows:
     ![Instructions After Topics](images/final-run.png)
+
+    ![alt text](images/opportunity-news-email.png)
 
 ---
 

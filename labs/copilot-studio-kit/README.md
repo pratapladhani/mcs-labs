@@ -1,9 +1,6 @@
-# Testin| Level | Persona | Duration | Purpose |
-| ----- | ------- | -------- | ------- |
-| 200 | | 2 | [Execute and Analyze Test Results](#-use-case-2-execute-and-analyze-test-results) | Delivers actionable insights for agent performance optimization | 20 min |
-| 3 | [Explore Advanced Kit Features](#-use-case-3-explore-advanced-kit-features) | Discovers comprehensive toolkit capabilities for enhanced agent development | 20 min |eveloper/Maker | 60 minutes | After completing this lab, participants will be able to configure automated testing for Copilot Studio agents, create comprehensive test suites, analyze agent performance through systematic validation, and explore the full ecosystem of Power CAT tools for agent development. Gain expertise in quality assurance practices and advanced tooling for AI-powered conversational agents. |opilot Studio Agents with Power CAT Kit - Automate Quality Assurance for AI Agents
+# Deliver high-quality, scalable agents with Copilot Studio Kit
 
-Build confidence in your AI agents through automated testing and validation workflows.
+Automate quality assurance for your Copilot Studio agents with the Copilot Studio Kit. In this lab, you'll configure and run automated test scenarios, validate agent behavior using multiple test types, and gain actionable insights through analytics. You'll also explore advanced tools like conversation KPIs, UI customization, and governance dashboards—equipping you to ship high-quality, secure, and scalable AI agents with confidence.
 
 ---
 

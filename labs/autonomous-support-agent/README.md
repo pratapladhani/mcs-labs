@@ -163,12 +163,16 @@ Create an autonomous agent that automatically triggers when new support emails a
 
 10. Rename the trigger to `When a support email arrives`
 
-11. Select **Next**, and finally **Create trigger**
+11. Select **Next**, 
+
+12. In the **Subject Filter (Optional)** field, enter `Support` to filter emails that contain the word "Support" in the subject line.
+
+13. Finally **Create trigger**
 
 > [!TIP]
 > This trigger configuration determines which emails activate your agent. You can refine filters later to target specific email addresses or subject patterns.
 
-12. The trigger is now configured. After you **publish** your agent, it will automatically activate your agent when new emails arrive
+14. The trigger is now configured. After you **publish** your agent, it will automatically activate your agent when new emails arrive
 
 ---
 
@@ -245,7 +249,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 > [!TIP]
 > The description helps the AI know when to use this tool and what it does.
 
-10. Under **Additional details**, change **Authentication** to **Copilot author authentication**
+10. Under **Additional details**, change **Authentication** to **Agent author authentication**
 
 11. For **Record Type**, set a **Custom value** and choose `Incident`
 
@@ -278,7 +282,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 21. Update the description to: `Use this operation to reply to the email received`
 
-22. Under **Additional details**, set authentication to **Copilot author authentication**
+22. Under **Additional details**, set authentication to **Agent author authentication**
 
 23. **Customize** the **To** input to set its **Description** to:
 
@@ -300,6 +304,54 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 24. Click **Save** to finalize the tool configuration
 
+#### Setting Up Teams Capabilities
+
+25. Return to the **Tools** tab, and select **+ Add a tool**
+
+26. Search for `Create a chat` from **Microsoft Teams** and select it
+
+27. Select **Add and configure**
+
+28. Update its name to `Create a Teams chat`
+
+29. Update the description to: `Create a Teams chat with the user who has sent the email.`
+
+30. Under **Additional details**, set authentication to **Agent author authentication**
+
+31. **Customize** the **Members to add** input to set its **Description** to:
+
+    ```
+    Only use the "from" email of the triggering received email. There should be only one user to add. E.g., henry.jammes@copilotstudiotraining.onmicrosoft.com
+    ```
+32. Click **Save** to finalize the tool configuration
+
+33. Return to the **Tools** tab, and select **+ Add a tool**
+
+34. Search for `Post message in a chat or channel` from **Microsoft Teams** and select it
+
+35. Select **Add and configure**
+
+36. Update its name to `Send a Teams message`
+
+37. Update the description to: `Send a Teams message in the chat conversation that was created with the user.`
+
+38. Under **Additional details**, set authentication to **Agent author authentication**
+
+31. For the **Inputs**:
+    - For **Post as**, select **Custom value** and set it to `User`
+    - For **Post in**, select **Custom value** and set it to `Group chat`
+    - For **Group chat**, leave **Dynamically fill with AI**, but set this description in **Customize**:
+        ```
+        Conversation ID of the Teams chat that was created.
+        The format should be similar to this: 19:3d4da799-6a66-4f70-9057-ada103025953_5f22554b-fd15-4676-8c82-dc6122af2a80@unq.gbl.spaces
+        ```    
+    - For **Message**, leave **Dynamically fill with AI**, but set this description in **Customize**:
+        ```
+        Polite message greeting the user and telling them you have replied to their email. Provide a one phrase summary of the response you provided to their query. Finish by offering to schedule a call if they to talk through it if they'd like.
+        ```     
+
+32. Click **Save** to finalize the tool configuration
+
 #### Configuring Agent Instructions and AI Settings
 
 28. Navigate to **Overview** and then **Instructions**
@@ -307,13 +359,18 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 29. **Paste** the following comprehensive instructions:
 ```
 1. Understand and isolate each question from the received email body.
-2. For each individual question, do a separate **knowledge search** using the configured knowledge sources.
-3. If a ticket ID is mentioned, for example INC0000059, check if an update is available using the <Get ServiceNow ticket details> tool.
-4. Once you have gathered knowledge and ticket information, use the <Reply to email> tool to reply to the original email received. Your reply should use the same language as the initial user email (e.g., if the questions are in French, reply in French, etc.)
+For each individual question, do a separate **knowledge search** using the configured knowledge sources.
+2. If a ticket ID is mentioned, for example INC0000059, check if an update is available using the <Get ServiceNow ticket details> tool.
+3. Once you have gathered knowledge and ticket information, use the <Reply to email> tool to reply to the original email received. Your reply should use the same language as the initial user email (e.g., if the questions are in French, reply in French, etc.)`
+4. Use the <Create a Teams chat> tool to create a Teams conversation with the user
+5. Use the <Send a Teams message> tool to send a message to the user
 ```
 
 > [!IMPORTANT]
 > For each of the placeholder <...> in the description, use `/` to insert the tools you  just configured in your instructions.
+
+> [!TIP]
+> Note: the UX may differ and you don't have that option, leave the description as-is.
 
 ![alt text](images/instructions-and-tools.png)
 
@@ -321,19 +378,23 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 #### Testing Your Complete Agent
 
-31. **Send** a test email to your ficitious user email address (preferably from a different email address):
+31. **Send** a test email to your ficitious user email by using the **Send Support Email** form. 
 
-```
-Hi!
-
-I hope you're doing well!
-
-I had a couple of questions - what are the steps again to reset your Now Support user password?
-Also, was wondering if you had an update on my cases INC0000059 and INC0000055
-
-Much appreciated.
-Thanks!
-```
+> [!IMPORTANT]
+> To access this form, use the provided values in the **Lab Resources** (specific per training).
+>
+> The email should contain something like this:
+>   ```
+>   Hi!
+>   
+>   I hope you're doing well!
+>   
+>   I had a couple of questions - what are the steps again to reset your Now Support user password?
+>   Also, was wondering if you had an update on my cases INC0000059 and INC0000055
+>   
+>   Much appreciated.
+>   Thanks!
+>   ```
 
 32. Make sure you **receive** the email in your **inbox**, in [outlook.office.com](https://outlook.office.com/mail/)
 
