@@ -536,7 +536,7 @@ This use case demonstrates **agent scoping** principles:
 4. Select **Add to Agent**, then **Save** your child agent, and scroll down to the **Tools** section and select the **List records** tool you just added.
 
 > [!TIP]
-> In case of issues, refresh the page.
+> In case of issues, refresh the page with CTRL + F5.
 
 5. **Rename** to `Get ServiceNow ticket details`
 
@@ -545,7 +545,7 @@ This use case demonstrates **agent scoping** principles:
 > [!TIP]
 > The description will help the AI know when to use that tool, so it's important to have clear instructions WHEN and WHEN NOT to use this tool. This is a key aspect of agent scoping - being specific about tool usage.
 
-7. Under **Additional details**, change **Authentication** to **Agent author authentication**
+7. Under **Additional details**, change **Authentication** to **No, pass through tool owner's credentials**
 
 > [!IMPORTANT]
 > In production scenarios, you may want to use the user context when making the connection to ServiceNow. Here, your context (as the author) is used by end-users of your agent when searching for incidents.
@@ -786,11 +786,11 @@ Use this tool to help users with meeting notes
   - Action items / next steps
 
   {
-  "MeetingTitle": "Title of the meeting",
-  "MeetingSummary": "Description/summary",
-  "MeetingDateTime": "Date and time",
-  "MeetingAttendees": "List of attendees",
-  "MeetingActions": "Action items / next steps"
+    "MeetingTitle": "Title of the meeting",
+    "MeetingSummary": "Description/summary",
+    "MeetingDateTime": "Date and time",
+    "MeetingAttendees": "List of attendees",
+    "MeetingActions": "Action items / next steps"
   }
   ```
 

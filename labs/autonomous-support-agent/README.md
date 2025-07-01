@@ -249,7 +249,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 > [!TIP]
 > The description helps the AI know when to use this tool and what it does.
 
-10. Under **Additional details**, change **Authentication** to **Agent author authentication**
+10. Under **Additional details**, change **Authentication** to **No, pass through tool owner's credentials**
 
 11. For **Record Type**, set a **Custom value** and choose `Incident`
 
@@ -282,7 +282,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 21. Update the description to: `Use this operation to reply to the email received`
 
-22. Under **Additional details**, set authentication to **Agent author authentication**
+22. Under **Additional details**, set authentication to **No, pass through tool owner's credentials**
 
 23. **Customize** the **To** input to set its **Description** to:
 
@@ -316,7 +316,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 29. Update the description to: `Create a Teams chat with the user who has sent the email.`
 
-30. Under **Additional details**, set authentication to **Agent author authentication**
+30. Under **Additional details**, set authentication to **No, pass through tool owner's credentials**
 
 31. **Customize** the **Members to add** input to set its **Description** to:
 
@@ -335,7 +335,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 37. Update the description to: `Send a Teams message in the chat conversation that was created with the user.`
 
-38. Under **Additional details**, set authentication to **Agent author authentication**
+38. Under **Additional details**, set authentication to **No, pass through tool owner's credentials**
 
 31. For the **Inputs**:
     - For **Post as**, select **Custom value** and set it to `User`

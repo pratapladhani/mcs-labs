@@ -211,10 +211,10 @@ In this lab, you will build an autonomous news assistant agent that:
 
   7. Select **Additional details**.
 
-  8. Under **Authentication**, select **Agent author authentication**.
+  8. Under **Authentication**, select **No, pass through tool owner's credentials**.
 
   > [!IMPORTANT]  
-  > Always use Agent author authentication for autonomous agents. This option allows tools to run without requiring user interaction.
+  > Always use No, pass through tool owner's credentials for autonomous agents. This option allows tools to run without requiring user interaction.
 
   9. Under **Inputs**, click **Add input** and select **Filter Query**.
      - **Fill using**: `Set a custom value`.
@@ -662,10 +662,10 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 18. Click **Additional details**.
 
-19. Under **Authentication**, select **Agent author authentication**.
+19. Under **Authentication**, select **No, pass through tool owner's credentials**.
 
   > [!IMPORTANT]  
-  > Always use Agent author authentication for autonomous agents. This allows tools to run without user interaction.
+  > Always use No, pass through tool owner's credentials for autonomous agents. This allows tools to run without user interaction.
 
 20. Under **Inputs**:
 
