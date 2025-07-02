@@ -140,8 +140,6 @@ Configure your agent to properly track conversation outcomes by implementing the
 
 2. Go to the **Topics** tab, display **All**, and select **End of conversation**.
 
-    ![End of conversation topic selection](images/end-of-conversation-topic.png)
-
 3. Explore what the topic is doing.
 
 > [!TIP]
