@@ -75,7 +75,7 @@ Implementing an automation agent would enable advisors to securely and instantly
 
 * Access to Microsoft Copilot Studio with appropriate licensing
 * Access to Microsoft Power Automate with appropriate licensing
-* Access to a US-based environment
+* Access to an environment with CUA feature enabled
 * Office 365 environment with Outlook integration enabled
 
 ---
@@ -96,9 +96,9 @@ In this lab, you'll build an autonomous portfolio lookup agent that retrieves po
 
 | Step | Use Case | Value added | Effort |
 |------|----------|-------------|--------|
-| 1 | Setup your hosted virtual machine and enable CUA | Provides a consistent, isolated environment for Computer use tool to run on. | 10 min (+ 30 min waiting time) |
-| 2 | Create and Configure an Autonomous Agent | Establishes the foundation for automated email processing with intelligent trigger configuration | 10 min |
-| 3 | Add Computer Use and Email Connector | Enables automated data retrieval from a legacy internal system lacking API connectivity, without requiring backend access or system modifications, by implementing a non-intrusive integration layer. Delivers comprehensive, automated email responses containing only the specifically requested data. | 10 min |
+| 1 | [Setup your hosted virtual machine and enable CUA](#-use-case-1-setup-your-hosted-virtual-machine-and-enable-cua) | Provides a consistent, isolated environment for Computer use tool to run on. | 10 min (+ 30 min waiting time) |
+| 2 | [Create and Configure an Autonomous Agent](#-use-case-2-create-and-configure-an-autonomous-agent) | Establishes the foundation for automated email processing with intelligent trigger configuration | 10 min |
+| 3 | [Add Computer Use and Email Connector](#️-use-case-3-add-computer-use-and-email-connector) | Enables automated data retrieval from a legacy internal system lacking API connectivity, without requiring backend access or system modifications, by implementing a non-intrusive integration layer. Delivers comprehensive, automated email responses containing only the specifically requested data. | 10 min |
 
 ---
 
@@ -128,74 +128,42 @@ Learn how to provision, configure, and activate a hosted machine in Power Automa
 
 ### Step-by-step instructions
 
-#### Navigating to the environment with CUA enabled
+#### Creating the hosted machine in the CUA-enabled environment
 
-1. Navigate to the Power Automate home page at https://make.powerautomate.com/
-2. From the environment picker on the top right of the page select the PROD – your_username environment
-
-> [!TIP]
-> If you haven't done so already, you need to request TEST and PROD environments to be created for your user. This is a one-time setup step that will allow you to test the CUA feature. Use the Environments Request Form to request these environments to be automatically created for you. This will then take a couple of minutes to provision and to show up.
-
-> [!IMPORTANT]
-> To access this form, use the provided URL in the Lab Resources (specific per training). This operation will fail if you already have more than 1 environment of type developer, as each user is limited to 3 environments of this type.
-
-#### Creating the hosted machine
-
-1. In the Power Automate home page, select More from the left-hand menu and then Machines
-2. Select +New > Hosted machine
-3. In the hosted machine creation wizard:
-    a. Enter the name Computer use machine
-    b. Select Next
-    c. Select the Default Windows 11 Image
-    d. Select Next > Next > Create.
+1. Navigate to the Power Automate home page of the CUA-enabled environment at https://make.preview.powerautomate.com/environments/3120a1d0-b55f-e665-b9d2-257e145e150e/home
+2. Select **More** from the left-hand menu and then **Machines**
+3. Select **+New > Hosted machine**
+4. In the hosted machine creation wizard:
+    1. Enter the name `Your_UserName hosted machine`
+    2. Select **Next**
+    3. Select the **Default Windows 11 Image**
+    4. Select **Next > Next > Create**
 
 > [!IMPORTANT]
 > The machine may take over 30 minutes to become accessible. You may choose to proceed with another lab in the meantime and return later.
 
-#### Configuring the machine to prepare it for Computer use to run
+#### Configuring the machine to prepare it for Computer use
 
-4. On the newly created hosted machine, select Open in browser
-5. Sign in with your training user’s credentials
-6. In the In Session Settings window select Connect
-7. In the Sign in to Cloud PC window select Sign In
-8. In the Allow remote desktop connection? popup select Yes
-9. Open Microsoft Edge and ensure the New tab window opens up
-10. Sign out from the hosted machine
+5. On the newly created hosted machine, select **Open in browser**
+6. Sign in with your training user’s credentials
+7. In the **In Session Settings** window select **Connect**
+8. In the **Sign in to Cloud PC** window select **Sign In**
+9. In the **Allow remote desktop connection?** popup select **Yes**
+10. Wait for the machine to sign in, and open the **Microsoft Edge** browser to ensure the **New tab** window opens up
+> [!TIP]
+> This step is needed to ensure that when Computer use opens the browser to perform web related tasks, it encounters the New tab window.
+11. Sign out from the hosted machine
 
-#### Enabling Computer use
+#### Enabling the machine for Computer use
 
-1. Go back to the hosted machine in Power Automate and select Settings.
-2. Turn on the Enable for computer use setting.
-3. On the popup, select Activate.
-4. Select Save.
+1. Go back to the hosted machine in Power Automate and select **Settings**.
+2. **Turn on** the **Enable for computer use** setting.
+3. On the popup, select **Activate**.
+4. Select **Save**.
 
 ---
 
 ###  🏅 Congratulations! You've completed Use Case #1!
-
----
-
-### Test your understanding
-
-**Key takeaways:**
-
-* **Hosted machines** – Provide a secure, isolated environment for automation
-* **CUA model** – Enables GUI-based automation for legacy systems
-* **Environment setup** – Critical for successful agent execution
-
-**Lessons learned & troubleshooting tips:**
-
-* If the hosted machine does not appear, verify your environment selection and licensing
-* If you cannot connect, check your credentials and network access
-* Allow sufficient time for machine provisioning
-
-**Challenge: Apply this to your own use case**
-
-* What other business processes could benefit from hosted machine automation?
-* How would you ensure security and compliance when using hosted machines?
-* Try setting up a hosted machine for a different automation scenario
-
----
 
 ---
 
@@ -223,45 +191,28 @@ Learn how to create and configure an autonomous agent that listens for specific 
 
 #### Creating the Agent and Solution Setup
 
-1. Navigate to the Copilot Studio home page at https://copilotstudio.microsoft.com/
-2. From the Environment picker on the top right part of the window switch to Environment PROD – your_username
-3. Select Create > +New Agent
-4. Select Skip to configure to bypass the initial setup wizard
-5. Name your agent Autonomous Portfolio Lookup Agent
-6. Select Create.
+1. Navigate to the Copilot Studio home page at https://copilotstudio.preview.microsoft.com/environments/3120a1d0-b55f-e665-b9d2-257e145e150e/
+2. Select **Create > +New Agent**
+3. Select **Skip to configure** to bypass the initial setup wizard
+4. Name your agent `Your_UserName Portfolio Lookup Agent`
+5. Select **Create**.
+
+#### Enabling generative orchestration
+6. In the **Overview** tab, **Enable** the **Use generative AI to determine how best to respond to users and events.** in the **Orchestration** section
 
 #### Configuring Email Triggers
 
-8. In the Overview tab, scroll down to the triggers section and click +Add trigger
-9. Search and select When a new email arrives (V3) (Office 365 Outlook)
-10. Select Next
-11. Rename the trigger to When a portfolio lookup email arrives
-12. Select Next
-13. In the Subject Filter (Optional) field, enter Portfolio to filter emails that contain the word "Portfolio" in the subject line.
-14. Finally Create trigger
-
-> [!TIP]
-> The trigger is now configured. As soon as you publish your agent, it will automatically activate your agent when new emails arrive
+7. Scroll down to the triggers section and click **+Add trigger**
+8. Search and select `When a new email arrives (V3) (Office 365 Outlook)`
+9. Select **Next**
+10. Rename the trigger to `Your_UserName - When a portfolio lookup email arrives`
+11. Select **Next**
+12. In the **Subject Filter (Optional)** field, enter `Portfolio` to filter emails that contain the word "Portfolio" in the subject line.
+13. Finally **Create trigger**
 
 ---
 
 ###  🏅 Congratulations! You've completed Use Case #2!
-
----
-
-### Test your understanding
-
-* How does the agent know when to activate?
-* What are the benefits of using email triggers for automation?
-* How could you extend this agent to handle other types of requests?
-
-**Challenge: Apply this to your own use case**
-
-* What other triggers could you use to automate business processes?
-* How would you design an agent to handle multiple types of incoming requests?
-* Imagine a scenario where the agent must process attachments—how would you approach this?
-
----
 
 ---
 
@@ -289,99 +240,105 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 #### Configuring the Computer use tool
 
-1. Navigate to Tools in the top-level menu.
-2. Select + Add a tool.
-3. Select + New tool.
-4. Select Computer use
-5. Select Create to create a new connection to the agent machine and select:
-    a. Agent machine: Computer use machine.
-    b. Domain and username: Enter the email address of your demo account.
-    c. Password: Enter the password of your demo account.
-6. Select Create
-7. After you set up the connection, select Add and configure.
+1. Navigate to **Tools** in the top-level menu
+2. Select **+ Add a tool**
+3. Select **+ New tool**
+4. Select **Computer use**
+5. Select **Create** to create a new connection to the agent machine and select:
+    1. Agent machine: `Your_UserName hosted machine`
+    2. Domain and username: Enter the email address of your training account
+    3. Password: Enter the password of your training account.
+6. Select **Create**
+7. After you set up the connection, select **Add and configure**
 8. Configure the details of the Computer use tool as follows:
-    - Name: Look up portfolio data
-    - Description: Search and retrieve financial portfolio data
+    - Name: `Look up portfolio data`
+    - Description: `Search and retrieve financial portfolio data`
     - Instructions:
-        i. Open Microsoft Edge
-        ii. Go to [https://computerusedemos.blob.core.windows.net/web/Portfolio/index.html](https://computerusedemos.blob.core.windows.net/web/Portfolio/index.html).
-        iii. Enter the Portfolio ID in the "Enter Portfolio ID" search field and click on the "Search" button.
-        iv. Retrieve the "Client Name", "Portfolio Value" and "Manager" values exactly as shown on the screen.
-        v. Return those values as the final output.
+    ```
+        1. Open the Microsoft Edge browser.
+        2. Go to [https://computerusedemos.blob.core.windows.net/web/Portfolio/index.html] (https://computerusedemos.blob.core.windows.net/web/Portfolio/index.html).
+        3. Enter the Portfolio ID in the "Enter Portfolio ID" search field and click on the "Search" button.
+        4. Retrieve the "Client Name", "Portfolio Value" and "Manager" values exactly as shown on the screen.
+        5. Return those values as the final output.
         If no portfolio data is found, reply "No portfolio found with the specified ID."
-9. Ensure Authentication is set to No, pass through tool owner’s credentials.
+    ```
+9. Ensure **Authentication** is set to **No, pass through tool owner’s credentials**
 
 > [!IMPORTANT]
 > This setting specifies how Computer use authenticates on the machine during execution. Authenticating with the tool owner’s credentials is more suitable for autonomous agents. Be aware that if you share a conversational agent with this setting, anyone using it can act with the original author’s access to the configured machine.
 
-10. In the Inputs section select +Add input.
-11. Enter name Portfolio ID and Description The ID of the portfolio and select Done
+10. In the **Inputs** section select **+ Add input**
+11. Enter name `Portfolio ID` and Description `The ID of the portfolio` and select **Done**
 
 > [!TIP]
 > During execution, computer use combines your instructions with the input values to complete the task.
 
-12. Select Save.
+12. Select **Save**
 
 #### Testing the Computer use tool
 
-1. In the Instructions section, select the Test button on the right.
-2. Add the sample value 44123BCD and select Test now.
+1. In the **Instructions** section, select the **Test** button on the right
+2. Add the sample value `44123BCD` and select **Test now**
 3. Observe the Computer use tool logging into the machine and performing the requested actions:
     - The left panel shows your instructions and a step-by-step log of the tool’s reasoning and actions.
     - The right panel shows a preview of the actions on the machine you set up for computer use.
 
 > [!TIP]
-> You can also observe the Computer use tool in action from the Activity page
+> You can also observe the Computer use tool in action from the **Activity** page
 
-4. Select Finish testing.
+4. Select **Finish testing**
 
 > [!TIP]
 > If the result isn't what you expect, go to the configuration page and refine your instructions. Add more details to improve accuracy and test again. Allow sufficient time between tests to ensure the previous Computer use task has been fully completed before starting a new one.
 
 #### Setting Up Email Response Capabilities
 
-1. Return to the Tools tab and select + Add a tool
-2. Search for Send an email (V2) from Office 365 Outlook and select it
-3. Select Add and configure
-4. Update its name to Reply to email
-5. Update the description to: Use this operation to reply to the email received
-6. Under Additional details, set authentication to No, pass through tool owner’s credentials
-7. Customize the To input to set its Description to:
-    Use the "from" email of the triggering received email.
-8. Customize the Subject input to set its Description to:
-    Write the email subject.
-9. Customize the Body input to set its Description to:
-    Write the email body using HTML and highlight the requested data.
-10. Click Save to finalize the tool configuration
+1. Return to the **Tools** tab and select **+ Add a tool**
+2. Search for `Send an email (V2) (Office 365 Outlook)` and select it
+3. Select **Add and configure**
+4. Update its name to ``Reply to email``
+5. Update the description to: `Use this operation to reply to the email received`
+6. Under **Additional details**, set authentication to **No, pass through tool owner’s credentials**
+7. Customize the **To** input to set its **Description** to:
+    `Use the "from" email of the triggering received email.`
+8. Customize the **Subject** input to set its **Description** to:
+    `Write the email subject.`
+9. Customize the **Body** input to set its **Description** to:
+    `Write the email body using HTML and highlight the requested data.`
+10. Click **Save** to finalize the tool configuration
 
 #### Configuring Agent Instructions and AI Settings
 
-1. Navigate to Overview and then Instructions
+1. Navigate to **Overview** tab and then **Edit** the **Instructions**
 2. Paste the following comprehensive instructions:
-    When a financial portfolio related request is received, search for the requested data using <Look up portfolio data>. Once you have gathered the financial portfolio information, use the <Reply to email> tool to reply to the original email you received. Do not respond with data beyond what was requested.
+    ```
+    When a financial portfolio related request is received, identify the Portfolio ID and search for the requested data using <Look up portfolio data>. Once you have gathered the financial portfolio information, use the <Reply to email>  tool to reply to the original email you received. Do not respond with data beyond what was requested. 
+    ```
 
 > [!IMPORTANT]
 > For each of the placeholder <...> in the description, use / to insert the tools you just configured in your instructions.
 
-3. Go to the agent’s Settings, and in the Knowledge section disable Use general knowledge to ground agent responses only to data retrieved from CUA.
+3. **Save** the instructions
+4. Go to the agent’s **Settings**, and in the Knowledge section **disable** the **Use general knowledge** to ground agent responses only to data retrieved from CUA.
+5. **Save** the settings
 
 #### Testing Your Complete Agent
 
-1. Send a test email to your training user email with Subject –  Portfolio data request and body:
+1. Send a test email to your training user email with Subject – `Portfolio data request` and body:
 
-```
-Hi!
+    ```
+    Hi!
 
-I hope you're doing well!
-I'm looking for the portfolio manager and value of portfolio #44123BCD.
+    I hope you're doing well!
+    I'm looking for the portfolio manager and value of portfolio #44123BCD.
 
-Much appreciated.
-Thanks!
-```
+    Much appreciated.
+    Thaks!
+    ```
 
 2. Make sure you receive the email in your training user’s inbox, in outlook.office.com
-3. In the Overview tab, go to the Triggers section and select Test trigger
-4. Select the trigger instance and then Start testing
+3. In the **Overview** tab, go to the **Triggers** section and select **Test trigger**
+4. Select the trigger instance and then **Start testing**
 5. Check your emails for the agent’s reply.
 
 > [!TIP]
@@ -393,23 +350,9 @@ Thanks!
 
 ---
 
-### Test your understanding
-
-* How does the Computer use tool enable automation for legacy systems?
-* What are the security considerations when using pass-through credentials?
-* How would you troubleshoot a failed automation run?
-
-**Challenge: Apply this to your own use case**
-
-* What other business processes could benefit from Computer use automation?
-* How would you design an agent to handle multiple data retrieval scenarios?
-* Try configuring a different connector to extend the agent’s capabilities
-
----
-
 ## 🏆 Summary of learnings
 
-True learning comes from doing, questioning, and reflecting—so let's put your skills to the test.
+True learning comes from doing, questioning, and reflecting - so let's put your skills to the test.
 
 To maximize the impact of autonomous agents for legacy system integration:
 
