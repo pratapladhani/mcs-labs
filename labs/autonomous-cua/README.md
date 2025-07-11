@@ -24,7 +24,7 @@ Build an autonomous Copilot Studio agent that retrieves financial portfolio data
 - [Instructions by Use Case](#️-instructions-by-use-case)
   - [Use Case #1: Setup your hosted virtual machine and enable CUA](#-use-case-1-setup-your-hosted-virtual-machine-and-enable-cua)
   - [Use Case #2: Create and Configure an Autonomous Agent](#-use-case-2-create-and-configure-an-autonomous-agent)
-  - [Use Case #3: Add Computer Use and Email Connector](#-use-case-3-add-computer-use-and-email-connector)
+  - [Use Case #3: Add Computer Use and Email Connector](#️-use-case-3-add-computer-use-and-email-connector)
 
 ---
 
@@ -58,18 +58,18 @@ By implementing a Copilot Studio agent, advisors can securely and instantly retr
 | **Triggers** | Events, as simple as "Email received", that trigger autonomous agents to then automatically detect and process the content and context initially provided. |
 | **Tools** | Tools are simple or sophisticated connectors that the Copilot Studio orchestrator can invoke in response to user queries or business events. |
 | **Computer use tool** | Enables the agent to interact with any system that has a graphical user interface. It works with websites and desktop apps by selecting buttons, choosing menus, and entering text into fields on the screen. It performs the task on a computer you set up using a virtual mouse and keyboard, enabling agents to complete tasks even when there isn't an API to connect to the system directly. If a person can use an app or website, Computer use can too. |
-| **Hosted machines** | Cloud-based virtual machines managed through Microsoft Power Automate that enable agents to trigger either Computer-Using Agents (CUAs) or Power Automate desktop flows without needing to maintain their own physical or virtual infrastructure. |
+| **Hosted machines** | Cloud-based virtual machines managed through Microsoft Power Automate that enable agents to trigger either Computer-Using Agents (CUAs) or Power Automate desktop flows. |
 
 ---
 
 ## 📄 Documentation and Additional Training Links
 
-* [Microsoft Copilot Studio Documentation](https://learn.microsoft.com/copilot-studio/)
-* [Copilot Studio Triggers](https://learn.microsoft.com/copilot-studio/triggers/)
-* [Use connectors in Copilot Studio](https://learn.microsoft.com/copilot-studio/connectors/)
+* [Microsoft Copilot Studio Documentation](https://learn.microsoft.com/microsoft-copilot-studio/)
+* [Copilot Studio Triggers](https://learn.microsoft.com/microsoft-copilot-studio/authoring-triggers-about)
+* [Use connectors in Copilot Studio](https://learn.microsoft.com/microsoft-copilot-studio/advanced-connectors)
 * [Office 365 Outlook Connector](https://learn.microsoft.com/connectors/office365/)
-* [Automate web and desktop apps with computer use](https://learn.microsoft.com/power-automate/desktop-flows/computer-use/)
-* [Power Automate Hosted machines](https://learn.microsoft.com/power-automate/hosted-machines/)
+* [Automate web and desktop apps with computer use](https://learn.microsoft.com/microsoft-copilot-studio/computer-use)
+* [Power Automate Hosted machines](https://learn.microsoft.com/power-automate/desktop-flows/hosted-machines)
 
 ---
 
@@ -174,13 +174,13 @@ Learn how to provision, configure, and activate a hosted machine in Power Automa
 
 #### Enabling the machine for Computer use
 
-12. Go back to the hosted machine in Power Automate and select **Settings**.
+12. Go back to the hosted machine in Power Automate and select **Settings**
 
-13. **Turn on** the **Enable for computer use** setting.
+13. **Turn on** the **Enable for computer use** setting
 
-14. On the popup, select **Activate**.
+14. On the popup, select **Activate**
 
-15. Select **Save**.
+15. Select **Save**
 
 ---
 
@@ -220,7 +220,7 @@ Learn how to create and configure an autonomous agent that listens for specific 
 
 4. Name your agent `Portfolio Lookup Agent`
 
-5. Select **Create**.
+5. Select **Create**
 
 #### Enabling generative orchestration
 
@@ -238,7 +238,7 @@ Learn how to create and configure an autonomous agent that listens for specific 
 
 11. Select **Next**
 
-12. In the **Subject Filter (Optional)** field, enter `Portfolio` to filter emails that contain the word "Portfolio" in the subject line.
+12. In the **Subject Filter (Optional)** field, enter `Portfolio` to filter emails that contain the word "Portfolio" in the subject line
 
 13. Finally **Create trigger**
 
@@ -289,7 +289,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
     
     b. Domain and username: Enter the email address of your training account
     
-    c. Password: Enter the password of your training account.
+    c. Password: Enter the password of your training account
 
 1. Select **Create**
 
@@ -382,13 +382,13 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 31. **Save** the instructions
 
-1. Go to the agent’s **Settings**, and in the Knowledge section **disable** the **Use general knowledge** to ground agent responses only to data retrieved from CUA.
+1. Go to the agent’s **Settings**, and in the Knowledge section **disable** the **Use general knowledge** to ground agent responses only to data retrieved from CUA
 
 1. **Save** the settings
 
 #### Testing your complete agent
 
-34. Send a test email to your training user's email account with Subject: `Portfolio data request` and Body:
+34. Send a test email from an email address of your preference to your training user's email account with Subject: `Portfolio data request` and Body:
 
     ```
     Hi!
