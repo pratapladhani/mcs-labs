@@ -261,7 +261,7 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 2. **Test** your agent with this question to see general knowledge in action:
 
    ```
-   Write a poem
+   Write a few lines about [INSERT RANDOM CITY NAME]
    ```
 
 3. **Observe** how the assistant generates an answer from general knowledge.
