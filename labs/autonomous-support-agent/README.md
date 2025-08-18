@@ -321,7 +321,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 31. **Customize** the **Members to add** input to set its **Description** to:
 
     ```
-    Only use the "from" email of the triggering received email. There should be only one user to add. E.g., henry.jammes@copilotstudiotraining.onmicrosoft.com
+    Only use the "from" email address of the received email. There should be only one user to add. E.g., henry.jammes@copilotstudiotraining.onmicrosoft.com
     ```
 32. Click **Save** to finalize the tool configuration
 
