@@ -766,7 +766,7 @@ Use this tool to help users with meeting notes
 
 7. Change the **Name** to `Meeting AI Notes`
 
-8. Switch the **Model** to `GPT-4o`
+8. Keep the **Model** as `GPT-4.1 mini` or use `GPT-4o` if not available
 
 9. Select **+ Add content**, and choose **Image or Document**
 
