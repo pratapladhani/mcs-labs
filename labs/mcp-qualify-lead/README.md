@@ -182,7 +182,7 @@ You’ll configure MCP tools to allow AI to surface prioritized leads.
 ![Dataverse MCP Server](images/DataverseMCPServer.png)
 3. Click **Add and configure**.
 4. Rename the tool to **Dataverse MCP**.
-5. Under **Additional details**, set **Authentication** to **No, pass through tool owner's credentials**.
+5. Under **Additional details**, set **Authentication** to **Maker-provided credentials**.
 6. Click **Save**.
 
 > [!TIP]
@@ -196,7 +196,7 @@ You’ll configure MCP tools to allow AI to surface prioritized leads.
 3. Click **Add and configure**.
 4. Rename to **Lead Qualifier**.
 5. Update description: *Support identifying and focusing on high-potential leads.*
-6. Set **Authentication** to **No, pass through tool owner's credentials**.
+6. Set **Authentication** to **Maker-provided credentials**.
 7. Click **Save**.
 8. Review the tools associated.
 ![D365 MCP Server tools](images/D365MCPServerTools.png)
