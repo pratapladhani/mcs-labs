@@ -310,7 +310,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
     
     If no portfolio data is found, reply "No portfolio found with the specified ID."
     ```
-1. Ensure **Authentication** is set to **No, pass through tool owner’s credentials**
+1. Ensure **Authentication** is set to **Maker-provided credentials**
 
 > [!IMPORTANT]
 > This setting specifies how Computer use authenticates on the machine during execution. Authenticating with the tool owner’s credentials is more suitable for autonomous agents. Be aware that if you share a conversational agent with this setting, anyone using it can act with the original author’s access to the configured machine.
@@ -353,7 +353,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 1. Update the description to: `Use this operation to reply to the email received`
 
-1. Under **Additional details**, set authentication to **No, pass through tool owner’s credentials**
+1. Under **Additional details**, set authentication to **Maker-provided credentials**
 
 1. Customize the **To** input and set its **Description** to:
     `Use the "from" email of the triggering received email.`
