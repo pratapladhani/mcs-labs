@@ -284,19 +284,19 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 22. Under **Additional details**, set authentication to **Maker-provided credentials**
 
-23. For the inputs, keep **Dynamically fill with AI**, for the **To** input, click on **Customize** to set its **Description** to:
+23. For the **To** input, keep **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
 
     ```
     Use the "from" email of the triggering received email.
     ```
 
-23. For the inputs, keep **Dynamically fill with AI**, for the **Subject** input, click on **Customize** to set its **Description** to:
+23. For the **Subject** input, keep **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
 
     ```
     Use the original subject of the triggering received email.
     ```
 
-23. For the inputs, keep **Dynamically fill with AI**, for the **Body** input, click on **Customize** to set its **Description** to:
+23. For the **Body** input, keep **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
 
     ```
     Write the email body using minimal HTML that renders well in Outlook. Use <p> for paragraphs, <br> for line breaks, <ul>/<ol> for bullet points, and <table> for simple tables if needed. All URLs must be formatted as HTML links using <a href="...">, not left as plain text. Do not use Markdown syntax like [1] or reference-style links. Do not include full HTML documents or tags like <html> or <head>. The HTML must be valid as a JSON string: escape double quotes (") and avoid unescaped special characters.
@@ -318,7 +318,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 30. Under **Additional details**, set authentication to **Maker-provided credentials**
 
-31. For the inputs, keep **Dynamically fill with AI**, for the **Members to add** input, click on **Customize** to set its **Description** to:
+31. For the **Members to add** inputs, keep **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
 
     ```
     Only use the "from" email address of the received email. There should be only one user to add. E.g., henry.jammes@copilotstudiotraining.onmicrosoft.com
@@ -340,12 +340,12 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 31. For the **Inputs**:
     - For **Post as**, select **Custom value** and set it to `User`
     - For **Post in**, select **Custom value** and set it to `Group chat`
-    - For **Group chat**, leave **Dynamically fill with AI**, but set this description in **Customize**:
+    - For **Group chat**, leave **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
         ```
         Conversation ID of the Teams chat that was created.
         The format should be similar to this: 19:3d4da799-6a66-4f70-9057-ada103025953_5f22554b-fd15-4676-8c82-dc6122af2a80@unq.gbl.spaces
         ```    
-    - For **Message**, leave **Dynamically fill with AI**, but set this description in **Customize**:
+    - For **Message**, leave **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
         ```
         Polite message greeting the user and telling them you have replied to their email. Provide a one phrase summary of the response you provided to their query. Finish by offering to schedule a call if they to talk through it if they'd like.
         ```     
