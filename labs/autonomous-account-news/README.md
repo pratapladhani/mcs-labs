@@ -305,7 +305,7 @@ In this lab, you will build an autonomous news assistant agent that:
 
   4. Under **Describe what this topic does**, enter `Use this to log search results`.
 
-  5. Click on **Details** and then **Input**
+  5. Click on **Details** (in the menu bar, next to the save button) and then **Input**
 
   6. Click on **Create a new variable**
 
@@ -384,7 +384,7 @@ In this lab, you will build an autonomous news assistant agent that:
 
   15. Under **Describe what this topic does**, enter `Use this to log relevant news for opportunities`
 
-  16. Click on **Details** and then **Input**
+  16. Click on **Details** (in the menu bar, next to the save button) and then **Input**
 
   17. Click on **Create a new variable**
 
