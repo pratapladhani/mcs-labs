@@ -284,19 +284,19 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 22. Under **Additional details**, set authentication to **Maker-provided credentials**
 
-23. **Customize** the **To** input to set its **Description** to:
+23. For the inputs, keep **Dynamically fill with AI**, for the **To** input, click on **Customize** to set its **Description** to:
 
     ```
     Use the "from" email of the triggering received email.
     ```
 
-23. **Customize** the **Subject** input to set its **Description** to:
+23. For the inputs, keep **Dynamically fill with AI**, for the **Subject** input, click on **Customize** to set its **Description** to:
 
     ```
     Use the original subject of the triggering received email.
     ```
 
-23. **Customize** the **Body** input to set its **Description** to:
+23. For the inputs, keep **Dynamically fill with AI**, for the **Body** input, click on **Customize** to set its **Description** to:
 
     ```
     Write the email body using minimal HTML that renders well in Outlook. Use <p> for paragraphs, <br> for line breaks, <ul>/<ol> for bullet points, and <table> for simple tables if needed. All URLs must be formatted as HTML links using <a href="...">, not left as plain text. Do not use Markdown syntax like [1] or reference-style links. Do not include full HTML documents or tags like <html> or <head>. The HTML must be valid as a JSON string: escape double quotes (") and avoid unescaped special characters.
@@ -318,7 +318,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 30. Under **Additional details**, set authentication to **Maker-provided credentials**
 
-31. **Customize** the **Members to add** input to set its **Description** to:
+31. For the inputs, keep **Dynamically fill with AI**, for the **Members to add** input, click on **Customize** to set its **Description** to:
 
     ```
     Only use the "from" email address of the received email. There should be only one user to add. E.g., henry.jammes@copilotstudiotraining.onmicrosoft.com
