@@ -62,7 +62,7 @@ This lab teaches you to implement professional testing practices that ensure you
 |---------|----------------|
 | **Agent Configuration** | Defines the connection between your Copilot Studio agent and the testing framework, enabling automated interactions and response validation |
 | **Test Sets and Test Cases** | Structured collections of scenarios that systematically validate agent behavior across different conversation patterns and edge cases |
-| **Test Types** | Different validation approaches (exact match, generative AI analysis, topic detection) that ensure comprehensive coverage of agent capabilities |
+| **Test Types** | Different validation approaches (response & topic match, generative AI analysis, adaptive cards) that ensure comprehensive coverage of agent capabilities |
 | **Test Runs and Analytics** | Execution framework that provides detailed performance metrics, response analysis, and trending data for continuous improvement |
 
 ---
@@ -165,7 +165,7 @@ Configure a Copilot Studio agent for external access and integrate it with the P
 
 | Test Set Name | Type | Test Utterance  | Expected Response |
 | ------------- | ---- | --------------- | ----------------- |
-| `TST-001` | **Exact Match** | `Hi!` | `Hello, how can I help you today?` |
+| `TST-001` | **Response Match** | `Hi!` | `Hello, how can I help you today?` |
 | `TST-002` | **Generative Answer** | `What caused the fall of the Roman Empire?` | `The fall of the Roman Empire was a gradual process driven by internal issues like political instability and economic decline, and external pressures such as barbarian invasions and climate change.` | 
 
 > [!TIP]
