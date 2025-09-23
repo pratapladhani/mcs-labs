@@ -274,13 +274,11 @@ In this section, you'll learn how to create environment variables and connection
     * `Microsoft Dataverse`
     * `Microsoft Entra ID`
     * `Microsoft Teams`
-    * `Office 365 Outlook`    
-    * `Salesforce`        
+    * `Office 365 Outlook`        
     * `ServiceNow`
     * `SharePoint`
 
 > [!IMPORTANT]
->  * For **Salesforce** configuration values, use the provided values in the **Lab Resources** (specific per training).
 >  * For **ServiceNow** configuration values, use the provided values in the **Lab Resources** (specific per training).
 >  * For **ServiceNow**'s `Instance` configuration, be sure to scroll down in the connection screen.
 
