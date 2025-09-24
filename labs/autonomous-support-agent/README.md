@@ -378,11 +378,13 @@ For each individual question, do a separate **knowledge search** using the confi
 
 #### Testing Your Complete Agent
 
-31. **Send** a test email to your ficitious user email by using the **Workshop Agent**. 
+31. **Send** a test email to your training user email by using the **Workshop Agent**. Simply ask `Send a support email`. You will then shortly receive the email in **Microsoft Outlook**.
 
 > [!IMPORTANT]
-> Access the workshop agent in the same location as when you created your training user account.  You will need the workshop code and your training user's email address if you previously closed 
-the agent. Tell the agent to "Send a support email", you can repeat this process as desired.
+> - Access the workshop agent in the same location as when you created your training user account.
+> - You will need the workshop code and your training user's email address if you previously closed the agent.
+> - You can repeat this process as desired.
+
 >
 > The email should contain something like this:
 >   ```
