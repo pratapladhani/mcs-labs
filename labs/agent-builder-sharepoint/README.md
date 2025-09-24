@@ -1,6 +1,6 @@
-# Create your own SharePoint-based AI assistant with Microsoft Copilot Studio agent builder
+# Create your own SharePoint-based AI assistant with Copilot Studio Lite
 
-Build an intelligent sales admin assistant that analyzes SharePoint data using code interpreter and image generation features in Microsoft Copilot Studio agent builder.
+Build an intelligent sales admin assistant that analyzes SharePoint data using code interpreter and image generation features in Copilot Studio Lite.
 
 ---
 
@@ -28,7 +28,7 @@ Build an intelligent sales admin assistant that analyzes SharePoint data using c
 
 ## 🌐 Introduction
 
-This lab builds on the Microsoft Copilot Studio agent builder experience by integrating SharePoint documents and enabling advanced AI capabilities. You'll create a Sales Admin Assistant that can analyze Excel data, reference policy documents, generate charts through code interpretation, and create visual content.
+This lab builds on the Copilot Studio Lite experience by integrating SharePoint documents and enabling advanced AI capabilities. You'll create a Sales Admin Assistant that can analyze Excel data, reference policy documents, generate charts through code interpretation, and create visual content.
 
 > [!NOTE]  
 > This lab assumes familiarity with the basic agent builder concepts covered in the [web-based agent builder lab](../agent-builder-web/README.md).
