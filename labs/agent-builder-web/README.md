@@ -1,4 +1,4 @@
-# Create your own web-based AI assistant with Copilot Studio Lite
+# Create your own web-based AI assistant with lite experience of Copilot Studio in Microsoft 365 Copilot (formerly Copilot Studio agent builder)
 
 Create an intelligent agent in Copilot that delivers contextual, multi-part answers using instructions and data from the Web.
 
@@ -58,7 +58,7 @@ In this lab, you'll create a Copilot agent in Microsoft 365 Copilot Chat with Co
 * [Overview of Microsoft 365 Copilot Chat](https://learn.microsoft.com/en-us/copilot/chat)
 * [What is Microsoft 365 Copilot?](https://learn.microsoft.com/en-us/microsoft-365-copilot)
 * [Declarative Agents for Microsoft 365 Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-declarative-agent)
-* [Use Copilot Studio Lite to Build Agents](https://learn.microsoft.com/en-us/copilot-studio/agent-builder)
+* [Use Copilot Studio Lite to Build Agents](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/copilot-studio-lite-build)
 
 ---
 
