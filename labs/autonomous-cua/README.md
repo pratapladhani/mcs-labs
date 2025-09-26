@@ -8,7 +8,7 @@ Build an autonomous Copilot Studio agent that retrieves financial portfolio data
 
 | Level | Persona | Duration | Purpose |
 | ----- | ------- | -------- | ------- |
-| 200 | Maker/Developer | 30 minutes | After completing this lab, participants will be able to build an autonomous agent in Microsoft Copilot Studio that uses the Computer use tool to simulate human interaction with legacy systems and integrates Microsoft 365 Outlook to handle email-based data requests and responses. |
+| 200 | Maker/Developer | 20 minutes | After completing this lab, participants will be able to build an autonomous agent in Microsoft Copilot Studio that uses the Computer use tool to simulate human interaction with legacy systems and integrates Microsoft 365 Outlook to handle email-based data requests and responses. |
 
 ---
 
@@ -196,70 +196,51 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 1. Select **Computer use**
 
-> [!TIP]
-> If the Computer use tool doesn't appear, refresh the browser window and check again.
-
-5. Select **Create** to create a new connection to the agent machine and select:
-    
-    a. Agent machine: `Hosted machine for CUA`
-    
-    b. Domain and username: Enter the email address of your training account
-    
-    c. Password: Enter the password of your training account
-
-1. Select **Create**
-
-1. After you set up the connection, select **Add and configure**
-
-1. Configure the **Name** of the Computer use tool as `Look up portfolio data`
-    
-1. Set the **Description** as `Search and retrieve financial portfolio data`
-    
 1. Add the following **Instructions**:
     
     ```
-    1. Open the Microsoft Edge browser.
-    2. Go to [https://computerusedemos.blob.core.windows.net/web/Portfolio/index.html] (https://computerusedemos.blob.core.windows.net/web/Portfolio/index.html).
-    3. Enter the Portfolio ID in the "Enter Portfolio ID" search field and click on the "Search" button.
-    4. Retrieve the "Client Name", "Portfolio Value" and "Manager" values exactly as shown on the screen.
-    5. Return those values as the final output.
+    1. Go to https://computerusedemos.blob.core.windows.net/web/Portfolio/index.html.
+    2. Enter the Portfolio ID in the "Enter Portfolio ID" search field and click on the "Search" button.
+    3. Retrieve the "Client Name", "Portfolio Value" and "Manager" values exactly as shown.
+    4. Return those three values as the final output.
     
-    If no portfolio data is found, reply "No portfolio found with the specified ID."
+    If no portfolio data is found, reply that you couldn't find a portfolio with the specified ID.
     ```
-1. Ensure **Authentication** is set to **Maker-provided credentials**
+1. Select **Add and configure**
 
-> [!IMPORTANT]
-> This setting specifies how Computer use authenticates on the machine during execution. Authenticating with the tool owner’s credentials is more suitable for autonomous agents. Be aware that if you share a conversational agent with this setting, anyone using it can act with the original author’s access to the configured machine.
+1. Update the **Name** of the Computer use tool as `Look up portfolio data`
 
-12. In the **Inputs** section select **+ Add input**
+1. Update the **Description** as `Search and retrieve financial portfolio data`
 
-1. Enter name `Portfolio ID` and Description `The ID of the portfolio` and select **Done**
+1. In the **Inputs** section select **+ Add input**
+
+1. Enter name `Portfolio ID` and description `The ID of the portfolio` and select **Done**
 
 > [!TIP]
 > During execution, Computer use combines your instructions with the input values to complete the task.
 
-14. Select **Save**
+11. Select **Save**
 
 #### Testing the Computer use tool
 
-15. In the **Instructions** section, select the **Test** button on the right
+12. In the **Instructions** section, select the **Test** button on the right
 
 1. Add the sample value `44123BCD` and select **Test now**
 
-1. Observe the Computer use tool logging into the machine and performing the requested actions:
+1. Observe the Computer use tool logging into the computer and performing the requested actions:
     - The left panel shows your instructions and a step-by-step log of the tool’s reasoning and actions.
     - The right panel shows a preview of the actions on the machine you set up for computer use.
 
   ![alt text](images/test_CUA.jpg)
 
-18. Select **Finish testing**
+14. Select **Finish testing**
 
 > [!TIP]
 > If the result isn't what you expect, go to the configuration page and refine your instructions. Add more details to improve accuracy and test again. Allow sufficient time between tests to ensure the previous Computer use task has been fully completed before starting a new one.
 
 #### Setting up email response capabilities
 
-19. Return to the **Tools** tab and select **+ Add a tool**
+15. Return to the **Tools** tab and select **+ Add a tool**
 
 1. Search for `Send an email (V2) (Office 365 Outlook)` and select it
 
