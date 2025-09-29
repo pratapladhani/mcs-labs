@@ -8,7 +8,7 @@ Build an autonomous Copilot Studio agent that retrieves financial portfolio data
 
 | Level | Persona | Duration | Purpose |
 | ----- | ------- | -------- | ------- |
-| 200 | Maker/Developer | 20 minutes | After completing this lab, participants will be able to build an autonomous agent in Microsoft Copilot Studio that uses the Computer use tool to simulate human interaction with legacy systems and integrates Microsoft 365 Outlook to handle email-based data requests and responses. |
+| 200 | Maker/Developer | 15 minutes | After completing this lab, participants will be able to build an autonomous agent in Microsoft Copilot Studio that uses the Computer use tool to simulate human interaction with legacy systems and integrates Microsoft 365 Outlook to handle email-based data requests and responses. |
 
 ---
 
@@ -108,7 +108,7 @@ Set up the foundational autonomous agent with email triggers that automatically 
 
 | Use case | Value added | Estimated effort |
 |----------|-------------|------------------|
-| Create and Configure an Autonomous Agent | Establishes the foundation for automated email processing with intelligent trigger configuration | 10 min |
+| Create and Configure an Autonomous Agent | Establishes the foundation for automated email processing with intelligent trigger configuration | 5 min |
 
 **Summary of tasks**
 
@@ -208,6 +208,12 @@ Learn how to integrate and configure tools for desktop automation and email comm
     ```
 1. Select **Add and configure**
 
+1. Select **Create** to create a connection to the hosted browser
+
+1. Select **Connect to hosted browser** from the drop-down menu and then **Create**
+
+1. Select **Add and configure**
+
 1. Update the **Name** of the Computer use tool as `Look up portfolio data`
 
 1. Update the **Description** as `Search and retrieve financial portfolio data`
@@ -219,11 +225,11 @@ Learn how to integrate and configure tools for desktop automation and email comm
 > [!TIP]
 > During execution, Computer use combines your instructions with the input values to complete the task.
 
-11. Select **Save**
+14. Select **Save**
 
 #### Testing the Computer use tool
 
-12. In the **Instructions** section, select the **Test** button on the right
+15. In the **Instructions** section, select the **Test** button on the right
 
 1. Add the sample value `44123BCD` and select **Test now**
 
@@ -233,14 +239,14 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
   ![alt text](images/test_CUA.jpg)
 
-15. Select **Finish testing**
+18. Select **Finish testing**
 
 > [!TIP]
 > If the result isn't what you expect, go to the configuration page and refine your instructions. Add more details to improve accuracy and test again. Allow sufficient time between tests to ensure the previous Computer use task has been fully completed before starting a new one.
 
 #### Setting up email response capabilities
 
-16. Return to the **Tools** tab and select **+ Add a tool**
+19. Return to the **Tools** tab and select **+ Add a tool**
 
 1. Search for `Send an email (V2) (Office 365 Outlook)` and select it
 
@@ -265,7 +271,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 #### Configuring agent instructions and AI settings
 
-26. Navigate to **Overview** tab and then **Edit** the **Instructions**
+29. Navigate to **Overview** tab and then **Edit** the **Instructions**
 
 1. Paste the following comprehensive instructions:
     ```
@@ -277,7 +283,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
   ![alt text](images/agent_instructions.jpg)
 
-28. **Save** the instructions
+31. **Save** the instructions
 
 1. Go to the agent’s **Settings**, and in the Knowledge section **disable** the **Use general knowledge** to ground agent responses only to data retrieved from CUA
 
@@ -285,7 +291,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 #### Testing your complete agent
 
-31. Send a test email from an email address of your preference to your training user's email account with Subject: `Portfolio data request` and Body:
+34. Send a test email from an email address of your preference to your training user's email account with Subject: `Portfolio data request` and Body:
 
     ```
     Hi!
@@ -305,10 +311,11 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
   ![alt text](images/test_trigger.jpg)
 
-35. Check your emails for the agent’s reply.
+38. Check your emails for the agent’s reply.
 
 > [!TIP]
-> If the Computer use tool seems to be stuck on a particular step, you may stop the running agent by manually signing into the remote hosted machine and signing out again.
+> - Monitor the Computer use tool's actions in the Test chat window or through the agent's **Activity** page.
+> - In the **Activity** page select the current run and switch from **Activity map** to **Transcript** to get a real-time view of all the steps of the Computer use tool along with their respective screenshots. This view is especially useful in autonomous agent runs.
 
 > [!NOTE]
 > Send an additional email request for another portfolio ID and observe the results.
