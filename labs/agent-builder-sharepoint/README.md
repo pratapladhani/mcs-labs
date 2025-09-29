@@ -195,7 +195,7 @@ Analyze sales data for the last 2 years with a breakdown per product line and qu
 
 #### Test image generation
 
-6. **Start a new chat** and test the **image generation** capability with a relevantrequest:
+6. **Start a new chat** and test the **image generation** capability with a relevant request:
 
 ```
 Create a badge for the first place of our sales context for 2026

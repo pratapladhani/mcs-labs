@@ -8,7 +8,7 @@ Build an autonomous Copilot Studio agent that retrieves financial portfolio data
 
 | Level | Persona | Duration | Purpose |
 | ----- | ------- | -------- | ------- |
-| 200 | Maker/Developer | 15 minutes | After completing this lab, participants will be able to build an autonomous agent in Microsoft Copilot Studio that uses the Computer use tool to simulate human interaction with legacy systems and integrates Microsoft 365 Outlook to handle email-based data requests and responses. |
+| 200 | Maker/Developer | 30 minutes | After completing this lab, participants will be able to build an autonomous agent in Microsoft Copilot Studio that uses the Computer use tool to simulate human interaction with legacy systems and integrates Microsoft 365 Outlook to handle email-based data requests and responses. |
 
 ---
 
@@ -206,11 +206,8 @@ Learn how to integrate and configure tools for desktop automation and email comm
     
     If no portfolio data is found, reply that you couldn't find a portfolio with the specified ID.
     ```
-1. Select **Add and configure**
 
-1. Select **Create** to create a connection to the hosted browser
-
-1. Select **Connect to hosted browser** from the drop-down menu and then **Create**
+1. Keep the box **Use hosted browser** checked to create a connection to the hosted browser
 
 1. Select **Add and configure**
 
@@ -300,7 +297,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
     I'm looking for the portfolio manager and value of portfolio #44123BCD.
 
     Much appreciated.
-    Thaks!
+    Thanks!
     ```
 
 1. Make sure you receive the email in your training user’s inbox, in outlook.office.com
