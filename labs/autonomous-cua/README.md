@@ -233,14 +233,14 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
   ![alt text](images/test_CUA.jpg)
 
-14. Select **Finish testing**
+15. Select **Finish testing**
 
 > [!TIP]
 > If the result isn't what you expect, go to the configuration page and refine your instructions. Add more details to improve accuracy and test again. Allow sufficient time between tests to ensure the previous Computer use task has been fully completed before starting a new one.
 
 #### Setting up email response capabilities
 
-15. Return to the **Tools** tab and select **+ Add a tool**
+16. Return to the **Tools** tab and select **+ Add a tool**
 
 1. Search for `Send an email (V2) (Office 365 Outlook)` and select it
 
@@ -265,7 +265,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 #### Configuring agent instructions and AI settings
 
-29. Navigate to **Overview** tab and then **Edit** the **Instructions**
+26. Navigate to **Overview** tab and then **Edit** the **Instructions**
 
 1. Paste the following comprehensive instructions:
     ```
@@ -277,7 +277,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
   ![alt text](images/agent_instructions.jpg)
 
-31. **Save** the instructions
+28. **Save** the instructions
 
 1. Go to the agent’s **Settings**, and in the Knowledge section **disable** the **Use general knowledge** to ground agent responses only to data retrieved from CUA
 
@@ -285,7 +285,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 #### Testing your complete agent
 
-34. Send a test email from an email address of your preference to your training user's email account with Subject: `Portfolio data request` and Body:
+31. Send a test email from an email address of your preference to your training user's email account with Subject: `Portfolio data request` and Body:
 
     ```
     Hi!
@@ -305,7 +305,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
   ![alt text](images/test_trigger.jpg)
 
-38. Check your emails for the agent’s reply.
+35. Check your emails for the agent’s reply.
 
 > [!TIP]
 > If the Computer use tool seems to be stuck on a particular step, you may stop the running agent by manually signing into the remote hosted machine and signing out again.
