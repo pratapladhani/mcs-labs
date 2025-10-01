@@ -140,17 +140,13 @@ In this lab, you'll start with an ALM foundation for working with Microsoft Copi
 * Create an 'Ask me Anything' agent and add SharePoint as a knowledge source.
 * Configure suggested prompts for better user guidance.
 * Deploy to Microsoft 365 Copilot for seamless integration.
-* Learn to prioritize knowledge sources based on user context.
 * Add ServiceNow incidents integration for real-time ticket status.
-* Add custom knowledge sources via HTTP requests.
-* Implement AI summary and review of meeting notes with human oversight.
-
 ---
 
 ## 🧩 Use Cases Covered
 
 | Step | Use Case | Value added | Effort |
-|------|----------|-------------|--------|
+|------|----------|-------------|---------|
 | 1 | [Create a solution and custom publisher](#-use-case-1-create-a-solution-and-custom-publisher) | Structure your success – Group, manage, and deploy all your agent components with clarity and control. | 5 mins |
 | 2 | [Create environment variables and connection references](#-use-case-2-create-environment-variables-and-connection-references) | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 5 mins |
 | 3 | [Create an 'Ask Me Anything' Agent and Add SharePoint Knowledge Source](#-use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source) | Establishes foundational agent with SharePoint knowledge integration and grounded AI responses | 5 mins |
@@ -252,7 +248,6 @@ Set up your development environment by creating a solution and custom publisher 
 
 ---
 
----
 
 ## 🧩 Use Case #2: Create environment variables and connection references
 
@@ -322,7 +317,7 @@ In this section, you'll learn how to create environment variables and connection
 
 ---
 
-###  🏅 Congratulations! You've created environment variables and connection references and completed Use Case #2!
+###  🏅 Congratulations! You've created environment variables and connection references!
 
 ---
 
@@ -438,8 +433,6 @@ Suggest things your agent can do to your end-users through carefully crafted pro
 | Title                     | Prompt                                           |
 |---------------------------|--------------------------------------------------|
 | `Ask me about benefits`     | `What's the Northwind Health Plus Benefits plan?` |
-| `Ask me about policies`     | `What's the leave policy in Germany?`              |
-| `Help fill out meeting notes` | `Capture and structure meeting notes`            |
 | `Check on an incident`      | `What's the status of INC0007001?`                |
 
 
@@ -531,7 +524,7 @@ Integrate real-time incident management for comprehensive support capabilities a
 
 | Use case | Value added | Estimated effort |
 |----------|-------------|------------------|
-| Add ServiceNow Incidents | Integrates real-time incident management for comprehensive support capabilities with agent scoping best practices | 8 minutes |
+| Add ServiceNow Incidents | Integrates real-time incident management for comprehensive support capabilities with agent scoping best practices | 10 minutes |
 
 **Summary of tasks**
 
