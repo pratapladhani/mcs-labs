@@ -278,7 +278,7 @@ In this section, you'll learn how to create environment variables and connection
 5. Leave **Default Value** blank, but under **Current Value**, select **+ New Value**. 
 
 > [!IMPORTANT]
->  * For configuration, use the provided values in the [**Lab Resources**](https://aka.ms/MCSWorkshopLabAssets) web page.
+>  * For configuration, use the provided values in the <a href="https://aka.ms/MCSWorkshopLabAssets" target="_blank">**Lab Resources**</a> web page.
 
 > [!TIP]
 >  * Notice how, under **Advanced**, you can set whether the current value can follow through with your solution deployment, or if it should be reset each time the solution is deployed to a new environment
@@ -312,7 +312,7 @@ In this section, you'll learn how to create environment variables and connection
     * `SharePoint`
 
 > [!IMPORTANT]
->  * For **ServiceNow** configuration values, use the provided values in the [**Lab Resources**](https://aka.ms/MCSWorkshopLabAssets) web page.
+>  * For **ServiceNow** configuration values, use the provided values in the <a href="https://aka.ms/MCSWorkshopLabAssets" target="_blank">**Lab Resources**</a> web page.
 >  * For **ServiceNow**'s `Instance` configuration, be sure to scroll down in the connection screen.
 
 ---
@@ -381,7 +381,7 @@ Create a new agent with SharePoint knowledge integration that provides grounded,
 9. Select **SharePoint**, and paste the SharePoint Knowledge URL and select **Add**.
 
 > [!IMPORTANT]
->  * For configuration, use the provided values in the [**Lab Resources**](https://aka.ms/MCSWorkshopLabAssets) web page.
+>  * For configuration, use the provided values in the <a href="https://aka.ms/MCSWorkshopLabAssets" target="_blank">**Lab Resources**</a> web page.
 
 10. Choose **Add**  
 
