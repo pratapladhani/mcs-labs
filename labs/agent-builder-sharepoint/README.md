@@ -88,12 +88,9 @@ Prepare the SharePoint documents that will serve as knowledge sources for your S
    - **Sales Excel file**: A spreadsheet containing sales data with columns for dates, product lines, revenue, and quarters
    - **Sales policy document**: A Word document containing sales policies, procedures, and guidelines
 
-3. **Download** the **Excel file** to a memorable location.  Open downloaded the file and note the data structure:
+3. Open the **Excel file**. Look at the data structure:
    - Ensure it contains sales data across multiple quarters/years
    - Verify product line categorization
-
-> [!TIP]
->  Check the document sensitivity while the Excel file is open and ensure it's set appropriately.
 
 4. Open the **Word policy document** and review:
    - Sales procedures and guidelines
@@ -122,6 +119,8 @@ You are a Sales Admin Assistant. Your job is to help sales managers track revenu
 
 4. **Confirm** the suggested agent name when prompted.
 
+5. Go to the **Configure** tab
+
 <!--
 ![alt text](images/knowledge-files.png)
 Commented out; screenshots need update due to CPS updates.  Last minute change to labs required so will do at a later date
@@ -131,7 +130,7 @@ Commented out; screenshots need update due to CPS updates.  Last minute change t
 >    ![alt text](images/sharepoint-url-fallback.png)
 -->
 
-5. Under **capabilities**, enable:
+6. Under **capabilities**, enable:
    - **Code interpreter** (for data analysis and chart generation)
    - **Image generator** (for creating visual content)
 
@@ -139,18 +138,22 @@ Commented out; screenshots need update due to CPS updates.  Last minute change t
 
 6. Navigate to the **Configure** tab to review and refine:
    - Agent name and description
-   - Instructions and tone
-   - Knowledge sources
+   - Instructions
    - Starter prompts
-
-7. When satisfied with the configuration, select **Create**.
 
 #### Configure knowledge sources
 
-8. Now head over to the **Configure** tab
-   - Under **Knowledge**, press **Add**
-   - Add the **Word** file you had opened in the previous use case using the **Sharepoint** button
-   - Add the **Excel** file from the previous use case using the **Upload File** dialog
+7. Now head over to the **Knowledge** section
+   - Under **Knowledge**, select the **Search bar**
+   - Go to the **Files** tab.
+   - Select both the **Sales Policy Document** and **Sales** documents
+   - You will see them being added as SharePoint documents
+  
+> [!TIP]
+> - If you can't see the files you just opened, an alternative approach is to **paste** and **add** the SharePoint URL of the Sales folder.
+> - Another alternative approach is to **download** the files locally and **upload** them to your agent.
+
+8. When satisfied with the configuration, select **Create**.
 
 ---
 
@@ -177,10 +180,10 @@ What are the key guidelines in our sales policy regarding customer discounts?
 4. **Start a new chat** and test the **code interpreter** capability with a data analysis request:
 
 ```
-Analyze sales data for the last 2 years with a breakdown per product line and quarter. Use data from Sales.xlsx.
+How are sales trending for home appliances?
 ```
 
-5. When offered to get a visual chart of this breakdown, **confirm**.
+5. *If* offered to get a visual chart of this breakdown, **confirm**.
 
 ![alt text](images/sales-data-analysis.png)
 
@@ -195,30 +198,29 @@ Analyze sales data for the last 2 years with a breakdown per product line and qu
 
 #### Test image generation
 
-6. **Start a new chat** and test the **image generation** capability with a relevant request:
+7. **Start a new chat** and test the **image generation** capability with a relevant request:
 
 ```
-Create a badge for the first place of our sales context for 2026
+Design a professional badge for the first place winner of our 2026 sales contest. It should look modern and premium, with gold colors, the text '1st Place – Sales Contest 2026', and a ribbon or trophy element.
 ```
 
 ![alt text](images/image-generator.png)
 
+> [!TIP]
+> Notice how you can also invoke a specific agent by using **@** in the standard **Chat** area.
 
 #### Update your agents and explore additional capabilities
 
-8. Go to **Create an agent**
+8. Select **...** next to your agent name in the side bar navigation, and choose **Edit**
 
-9. In the breadcrumb, select **My agents** 
+9. Select the Sales agent you created
 
-10. Select the **Sales Assistant** agent you created
-
-11. In the **Configure** tab, explore additional **knowledge** capabilities:
-   - All **Websites** (or specific websites) 
-   - All **Teams** data (or data from specific group chats, meetings, or channels)
+10. In the **Configure** tab, explore additional **knowledge** capabilities:
+   - All **Websites** (or specific websites)
    - All **SharePoint** data (or specific files or sites)
+   - All **Teams** data (or data from specific group chats, meetings, or channels)
    - Your **Emails**
-   - Knowledge sources enabled by your organization at the tenant level, through **Graph Connectors** (e.g., ServiceNow)
-
+   - Knowledge sources enabled by your organization at the tenant level, through **Copilot Connectors** (e.g., ServiceNow)
 
 ###  🏅 Congratulations! You've created an advanced SharePoint-integrated Copilot agent!
 
