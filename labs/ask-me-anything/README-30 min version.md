@@ -23,14 +23,12 @@ Empower employees with answers that matter – Build an intelligent agent that c
 - [Summary of Targets](#-summary-of-targets)
 - [Use Cases Covered](#-use-cases-covered)
 - [Instructions by Use Case](#️-instructions-by-use-case)
-  - [Use Case #1: Create an 'Ask Me Anything' Agent and Add SharePoint Knowledge Source](#-use-case-1-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source)
-  - [Use Case #2: Configure Suggested Prompts](#-use-case-2-configure-suggested-prompts)
-  - [Use Case #3: Deploy to Microsoft 365 Copilot](#-use-case-3-deploy-to-microsoft-365-copilot)
-  - [Use Case #4: Knowledge Prioritization Techniques](#-use-case-4-knowledge-prioritization-techniques)
-  - [Use Case #5: Create a child IT Support Agent](#-use-case-5-create-a-child-it-support-agent)
-  - [Use Case #6: Add Custom Knowledge](#-use-case-6-add-custom-knowledge)
-  - [Use Case #7: AI Summary and Review of Meeting Notes](#-use-case-7-ai-summary-and-review-of-meeting-notes)
-
+  - [Use Case #1: Create a solution and custom publisher](#-use-case-1-create-a-solution-and-custom-publisher)
+  - [Use Case #2: Create environment variables and connection references](#-use-case-2-create-environment-variables-and-connection-references)
+  - [Use Case #3: Create an 'Ask Me Anything' Agent with SharePoint Knowledge](#-use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source)
+  - [Use Case #4: Configure Suggested Prompts](#-use-case-4-configure-suggested-prompts)
+  - [Use Case #5: Deploy to Microsoft 365 Copilot](#-use-case-5-deploy-to-microsoft-365-copilot)
+  - [Use Case #6: Create a child IT Support Agent](#-use-case-6-create-a-child-it-support-agent)
 ---
 
 ## 🤔 Why This Matters
@@ -113,11 +111,11 @@ This lab teaches you to build a comprehensive solution that transforms how emplo
 
 ## 📄 Documentation and Additional Training Links
 
-* [Microsoft Copilot Studio Documentation](https://learn.microsoft.com/en-us/microsoft-copilot-studio/)
-* [Knowledge Sources in Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-boost-conversations)
-* [Create child agents in Copilot Studio (preview)](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-add-other-agents)
-* [Deploy Copilot Studio agents to Microsoft 365](https://learn.microsoft.com/en-us/microsoft-copilot-studio/publication-connect-bot-to-custom-application)
-* [ServiceNow connector for Power Platform](https://learn.microsoft.com/en-us/connectors/service-now/)
+* <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank">Microsoft Copilot Studio Documentation</a>
+* <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-boost-conversations" target="_blank">Knowledge Sources in Copilot Studio</a>
+* <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-add-other-agents" target="_blank">Create child agents in Copilot Studio (preview)</a>
+* <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/publication-connect-bot-to-custom-application" target="_blank">Deploy Copilot Studio agents to Microsoft 365</a>
+* <a href="https://learn.microsoft.com/en-us/connectors/service-now/" target="_blank">ServiceNow connector for Power Platform</a>
 
 
 ---
@@ -155,10 +153,10 @@ In this lab, you'll start with an ALM foundation for working with Microsoft Copi
 |------|----------|-------------|--------|
 | 1 | [Create a solution and custom publisher](#-use-case-1-create-a-solution-and-custom-publisher) | Structure your success – Group, manage, and deploy all your agent components with clarity and control. | 5 mins |
 | 2 | [Create environment variables and connection references](#-use-case-2-create-environment-variables-and-connection-references) | Adapt with flexibility – Environment variables future-proof your agents for seamless multi-environment deployments. Manage credentials and services cleanly across dev, test, and prod. | 5 mins |
-| 3 | [Create an 'Ask Me Anything' Agent and Add SharePoint Knowledge Source](#-use-case-1-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source) | Establishes foundational agent with SharePoint knowledge integration and grounded AI responses | 5 mins |
-| 4 | [Configure Suggested Prompts](#-use-case-2-configure-suggested-prompts) | Guides users toward the agent's best capabilities through strategic prompt suggestions | 3 mins |
-| 5 | [Deploy to Microsoft 365 Copilot](#-use-case-3-deploy-to-microsoft-365-copilot) | Makes the agent available in Microsoft 365 Copilot for seamless user access | 2 mins |
-| 6 | [Use Case #5: Create a child IT Support Agent](#-use-case-5-create-a-child-it-support-agent) | Discover how scoping for knowledge and tools can also be done through the multi-agent capabilitis. | 10 mins |
+| 3 | [Create an 'Ask Me Anything' Agent and Add SharePoint Knowledge Source](#-use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source) | Establishes foundational agent with SharePoint knowledge integration and grounded AI responses | 5 mins |
+| 4 | [Configure Suggested Prompts](#-use-case-4-configure-suggested-prompts) | Guides users toward the agent's best capabilities through strategic prompt suggestions | 3 mins |
+| 5 | [Deploy to Microsoft 365 Copilot](#-use-case-5-deploy-to-microsoft-365-copilot) | Makes the agent available in Microsoft 365 Copilot for seamless user access | 2 mins |
+| 6 | [Create a child IT Support Agent](#-use-case-6-create-a-child-it-support-agent) | Discover how scoping for knowledge and tools can also be done through the multi-agent capabilitis. | 10 mins |
 
 ---
 
