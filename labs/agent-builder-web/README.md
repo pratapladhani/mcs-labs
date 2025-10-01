@@ -183,39 +183,33 @@ I want to build a teacher-style agent that helps users learn about Copilot, incl
 > [!TIP]  
 > From here, you will find that the conversational creation experience might differ from the below step-by-step instructions, as it's using generative AI and it is by nature non-deterministic. The core concepts remain the same, but the UI may change slightly. Just adjust to the questions and options presented to you.
 
-8. *If* asked about how the agent should handle **questions that are directly related to Copilot**, reply with:
-
-```
-It shouldn't answer questions that are not related to Microsoft 365 Copilot, Copilot Chat, or Copilot Studio
-```
-
-9. *If* asked about how should the agent should handle **situations where the user provides incorrect information or demonstrates a misunderstanding**, reply with:
-
-```
-Guide them towards the correct solution based on your knowledge
-```
-
-10. When asked about **publicly accessible websites** as knowledge sources, **paste** these URLs:
-
-```
-https://learn.microsoft.com/en-us/copilot
-https://learn.microsoft.com/en-us/microsoft-copilot-studio
-```
-
-> [!TIP]  
-> You can set URLs with up to 2 levels of depth for grounding. E.g., https://www.domain.com/level1/level2. Just like folders in a file system. That way, all pages under that URL will be used as grounding sources. E.g., https://www.domain.com/level1/level2/page1.html, https://www.domain.com/level1/level2/page2.html, etc.
-
-#### Configure grounding sources
-
-11. When asked for other modifications, you can **instruct** it to tweak the suggestion prompts:
+8. *If* asked for agent name and other details, you can **instruct** it this:
 
 ```
 The name of the agent should be Copilot Teacher. Your tone should be friendly, personal, and emphatic. You can make jokes, use subtle irony and emojis when appropriate.
 ```
 
+9. *If* asked about how the agent should handle **questions that are directly related to Copilot**, or how the agent should handle **situations where the user provides incorrect information or demonstrates a misunderstanding**, reply with:
+
+```
+It shouldn't answer questions that are not related to Microsoft 365 Copilot, Copilot Chat, or Copilot Studio. Always guide users towards the correct solution based on your knowledge.
+```
+
+10. When asked about **publicly accessible websites** as knowledge sources, **paste** these URLs:
+
+```
+Yes, add https://learn.microsoft.com/en-us/microsoft-365-copilot/ and https://learn.microsoft.com/en-us/microsoft-copilot-studio/
+```
+
+> [!TIP]  
+> You can set URLs with up to 2 levels of depth for grounding. E.g., https://www.domain.com/level1/level2. Just like folders in a file system. That way, all pages under that URL will be used as grounding sources. E.g., https://www.domain.com/level1/level2/page1.html, https://www.domain.com/level1/level2/page2.html, etc.
+
+
 #### Finalize configuration
 
-12. Now let's head over to the **Configure** tab. Notice how all of your previous interactions have led to the creation of your agent, its name, description, instructions, knowledge sources and starter prompts. Feel free to tweak them!
+11. Now let's head over to the **Configure** tab. Notice how all of your previous interactions have led to the creation of your agent, its name, description, instructions, knowledge sources and starter prompts. Feel free to tweak them!
+
+12. In the **Knowledge** section, toggle **Prioritize the knowledge sources you added for agent knowledge-based queries** so that the agent uses the configured websites when providing answers, and not its own large language model knowledge.
 
 13. Fix any issue like max character limit for start prompt titles.
 
@@ -236,7 +230,7 @@ What are the differences between Microsoft 365 Copilot and Copilot Chat?
 ```
 
 > [!TIP]
->  If your training tenant is getting throttled because of lack of AI capacity (to prioritize production workloads), you may see a message like this: `Sorry, I wasn't able to respond to that. Is there something else I can help with?`. It's OK, just test your agent while configuring it, and not after you created it. You may try again later.
+>  If your training tenant is getting throttled because of lack of AI capacity (to prioritize production workloads), you may see a message like this: `Sorry, I wasn't able to respond to that. Is there something else I can help with?`. It's OK, **just test your agent while configuring it**, and not after you created it. You may try again later.
 
 >   ![alt text](images/copilot-error.png)
 
