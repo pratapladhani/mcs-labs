@@ -252,12 +252,12 @@ In this section, you'll learn how to create environment variables and connection
 
 7. In the solution, select **New**, then go to **More** and choose **Connection reference**.
 
-8. Use the connector name (e.g., `MSN Weather`) as the name. Optionally, prefix with your project name.
+8. Use the connector name, `MSN Weather`, as the name. Optionally, prefix with your project name.
 
 > [!TIP]
 > In other locales, the connector name may be localized. For example, in French, it would be `MSN Météo`.
 
-9. Select the connector (e.g., **MSN Weather**).
+9. Select the connector **MSN Weather**.
 
 10. In the connection dropdown, choose **New connection** if none exists.
 
@@ -271,7 +271,7 @@ In this section, you'll learn how to create environment variables and connection
 13. Repeat steps for the following connectors:
 
     * `Microsoft Copilot Studio`
-    * `Microsoft Dataverse`
+    * `Microsoft Dataverse` (note: there are 2 connectors named Microsoft Dataverse, pick the 2nd one in the list. When creating the connection, it should have a green logo, not grey).
     * `Microsoft Entra ID`
     * `Microsoft Teams`
     * `Office 365 Outlook`        
@@ -422,7 +422,6 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 9. Name your organization (you can leave the default name) and select **Continue**.'
 
-
 10. Create a new project by setting a **project name**. For example `Agents`
 
 11. Select **+ Create project**.
@@ -463,7 +462,7 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 24. **See** how the various components you have added to your solution are now ready to be committed to your source control. If don't see them all, select **Refresh** as they get detected and added.
 
-25. When ready, select **Commit**, add a comment describing the changes you're introducing (e.g., `New environment variables and connection references`).
+25. When ready, select **Commit**, add a comment describing the changes you're introducing (e.g., `New solution and environment variable`).
 
 ![alt text](images/commit.png)
 
