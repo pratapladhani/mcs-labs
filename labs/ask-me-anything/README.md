@@ -367,11 +367,11 @@ Let's start by asking for the user country at the beginning of the conversation.
 
  -->
 
-2. Now, in your 'Ask Me Anything' agent, go to the **Topics** tab, select **+ Add a topic** and choose **From blank**
+2. Now, in your 'Ask Me Anything' agent, go to the **Topics** tab, and then to the **System topics** tab.
 
-3. Leave the description to blank.
-   
-4. Add a new node **(+)** and choose **Add a tool**.
+3. Open the **Conversation Start** topic
+
+4. At the beginning of the topic, right after the **Trigger**, add a new node **(+)** and choose **Add a tool**.
 
 5. Go the **Connector** tab, and search for `Microsoft Entra ID Get user`
 
