@@ -404,6 +404,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+.vscode/settings.json
 labs/mbr-prep-sharepoint-agent/assets/sample-files/MBR_April_Dunnam.docx
 labs/mbr-prep-sharepoint-agent/assets/sample-files/MBR_Dennis_Bottjer.docx
 labs/mbr-prep-sharepoint-agent/assets/sample-files/MBR_Elena_Nguyen.docx
