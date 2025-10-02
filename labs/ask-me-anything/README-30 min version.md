@@ -29,8 +29,8 @@ Empower employees with answers that matter – Build an intelligent agent that c
   - [Use Case #2: Create connection references](#-use-case-2-create-connection-references)
   - [Use Case #3: Create an 'Ask Me Anything' Agent with SharePoint Knowledge](#-use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source)
   - [Use Case #4: Configure Suggested Prompts](#-use-case-4-configure-suggested-prompts)
-  - [Use Case #5: Create a child IT Support Agent](#-use-case-5-create-a-child-it-support-agent)
-  - [Use Case #6: Deploy to Microsoft 365 Copilot](#-use-case-6-deploy-to-microsoft-365-copilot)
+  - [Use Case #5: Deploy to Microsoft 365 Copilot](#-use-case-5-deploy-to-microsoft-365-copilot)
+  - [Use Case #6: Create a child IT Support Agent](#-use-case-6-create-a-child-it-support-agent)
 
 ---
 
@@ -160,8 +160,8 @@ In this lab, you'll start with an ALM foundation for working with Microsoft Copi
 | 2 | [Create connection references](#-use-case-2-create-connection-references) | Adapt with flexibility – manage credentials and services cleanly across dev, test, and prod. | 5 mins |
 | 3 | [Create an 'Ask Me Anything' Agent and Add SharePoint Knowledge Source](#-use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source) | Establishes foundational agent with SharePoint knowledge integration and grounded AI responses | 5 mins |
 | 4 | [Configure Suggested Prompts](#-use-case-4-configure-suggested-prompts) | Guides users toward the agent's best capabilities through strategic prompt suggestions | 3 mins |
-| 5 | [Create a child IT Support Agent](#-use-case-5-create-a-child-it-support-agent) | Discover how scoping for knowledge and tools can also be done through the multi-agent capabilities. | 10 mins |
-| 6 | [Deploy to Microsoft 365 Copilot](#-use-case-6-deploy-to-microsoft-365-copilot) | Makes the agent available in Microsoft 365 Copilot for seamless user access | 2 mins |
+| 5 | [Deploy to Microsoft 365 Copilot](#-use-case-5-deploy-to-microsoft-365-copilot) | Makes the agent available in Microsoft 365 Copilot for seamless user access | 2 mins |
+| 6 | [Create a child IT Support Agent](#-use-case-6-create-a-child-it-support-agent) | Discover how scoping for knowledge and tools can also be done through the multi-agent capabilities. | 10 mins |
 
 ---
 
@@ -423,7 +423,7 @@ Suggest things your agent can do to your end-users through carefully crafted pro
 
 1. Go to the **overview** tab for your agent
 
-2. Add suggested prompts:
+2. Go to the Suggested prompts section and copy paste the following suggested prompts in the Titles and Prompts for the first three:
 
 | Title                     | Prompt                                           |
 |---------------------------|--------------------------------------------------|
@@ -435,7 +435,8 @@ Suggest things your agent can do to your end-users through carefully crafted pro
 
 > [!TIP]
 >
-> - Prompts are visibile to the end-user when the agent is deployed as a Copilot agent.
+> - Prompts are visible to the end-user when the agent is deployed as a Copilot agent.
+> - In the next lab, we will deploy the agent to M365 Copilot and test these suggested prompts.
 
 ---
 
@@ -450,7 +451,72 @@ Suggest things your agent can do to your end-users through carefully crafted pro
 
 ---
 
-## 🔄 Use Case #5: Create a child IT Support Agent
+## 🔄 Use Case #5: Deploy to Microsoft 365 Copilot
+
+Make the agent available in Microsoft 365 Copilot for seamless user access.
+
+| Use case | Value added | Estimated effort |
+|----------|-------------|------------------|
+| Deploy to Microsoft 365 Copilot | Makes the agent available in Microsoft 365 Copilot for seamless user access | 2 minutes |
+
+**Summary of tasks**
+
+Make the agent available in Microsoft 365 Copilot for your users.
+
+**Scenario:** Deploy your agent where employees already work, ensuring maximum adoption by integrating directly into their daily Microsoft 365 workflow.
+
+### Step-by-step instructions
+
+1. Go to the agent and select **Publish**
+
+2. Go to **Channels**
+
+3. Select **Teams and Microsoft 365 Copilot**
+
+4. Select **Add channel** (at the bottom right corner)
+
+5. **Close** the channel pane
+
+6. **Publish** the agent again.
+
+7. Select **Teams and Microsoft 365 Copilot** channel tile
+
+8. Select **See agent in Microsoft 365**
+
+   ![alt text](images/m365-copilot-channel.png)
+
+9. In the **Microsoft 365 Copilot** experience, the agent description will pop up. Select **Add**
+
+> [!TIP]
+>
+> - You may need to give it a few tries/minutes the first time you deploy to Microsoft 365 Copilot so it deploys correctly.
+> - If this doesn't work, try in Teams instead:
+>   - Choose **See agents in Teams** instead. If you can
+>   - In the new window, if prompted *This site is trying to open Microsoft Teams*, select **Cancel**, and the select **use the web app instead**
+
+10. You will be able to see the three suggested prompts in the agent. Test the agent with the first two prompts.
+
+> [!TIP]
+> If deploying to Teams,  prompts won't be available, so paste the below question:
+>
+> ```
+> What's the Northwind Health Plus Benefits plan?
+> ```
+
+---
+
+### 🏅 Congratulations! You've completed Use Case #5
+
+---
+
+### Test your understanding
+
+- Why is deploying to Microsoft 365 Copilot more effective than standalone deployment for enterprise scenarios?
+- What considerations should you have when choosing deployment channels?
+
+---
+
+## 🔄 Use Case #6: Create a child IT Support Agent
 
 Integrate real-time incident management for comprehensive support capabilities and demonstrate agent scoping techniques.
 
@@ -581,7 +647,7 @@ This use case demonstrates **agent scoping** principles:
 
 ---
 
-### 🏅 Congratulations! You've completed Use Case #5
+### 🏅 Congratulations! You've completed Use Case #6
 
 ---
 
@@ -589,71 +655,6 @@ This use case demonstrates **agent scoping** principles:
 
 - How does ServiceNow integration enhance the employee experience compared to traditional ticket lookup methods?
 - What other enterprise systems could benefit from similar agent integration?
-
----
-
-## 🔄 Use Case #6: Deploy to Microsoft 365 Copilot
-
-Make the agent available in Microsoft 365 Copilot for seamless user access.
-
-| Use case | Value added | Estimated effort |
-|----------|-------------|------------------|
-| Deploy to Microsoft 365 Copilot | Makes the agent available in Microsoft 365 Copilot for seamless user access | 2 minutes |
-
-**Summary of tasks**
-
-Make the agent available in Microsoft 365 Copilot for your users.
-
-**Scenario:** Deploy your agent where employees already work, ensuring maximum adoption by integrating directly into their daily Microsoft 365 workflow.
-
-### Step-by-step instructions
-
-1. Go to the agent and select **Publish**
-
-2. Go to **Channels**
-
-3. Select **Teams and Microsoft 365 Copilot**
-
-4. Select **Add channel** (at the bottom right corner)
-
-5. **Close** the channel pane
-
-6. **Publish** the agent again.
-
-7. Select **Teams and Microsoft 365 Copilot** channel tile
-
-8. Select **See agent in Microsoft 365**
-
-   ![alt text](images/m365-copilot-channel.png)
-
-9. In the **Microsoft 365 Copilot** experience, the agent description will pop up. Select **Add**
-
-> [!TIP]
->
-> - You may need to give it a few tries/minutes the first time you deploy to Microsoft 365 Copilot so it deploys correctly.
-> - If this doesn't work, try in Teams instead:
->   - Choose **See agents in Teams** instead. If you can
->   - In the new window, if prompted *This site is trying to open Microsoft Teams*, select **Cancel**, and the select **use the web app instead**
-
-10. Test the agent with the benefits prompt
-
-> [!TIP]
-> If deploying to Teams,  prompts won't be available, so paste the below question:
->
-> ```
-> What's the Northwind Health Plus Benefits plan?
-> ```
-
----
-
-### 🏅 Congratulations! You've completed Use Case #6
-
----
-
-### Test your understanding
-
-- Why is deploying to Microsoft 365 Copilot more effective than standalone deployment for enterprise scenarios?
-- What considerations should you have when choosing deployment channels?
 
 ---
 
