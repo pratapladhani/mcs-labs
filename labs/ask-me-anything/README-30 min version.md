@@ -308,11 +308,13 @@ In this section, you'll learn how to create connection references in your soluti
 
 7. Log in through Power Apps in a new tab if needed, then close the tab to return to Copilot Studio.
 
-12. Above the **Connection** dropdown, select **Refresh** and choose the newly created connection and click on **Create** to create the connection reference.
+8. Above the **Connection** dropdown, select **Refresh** and choose the newly created connection and click on **Create** to create the connection reference.
 
-13. Repeat steps for the following connector:
+9. Repeat steps for the following connector:
 
     - `SharePoint` - *Use the Connect-directly (cloud-services) option and use the same user credentials that you got for this lab*
+
+10. Validate that you see the two new connector references created in the project. Click on **<-- Back to solutions** in the left nav to return to the solutions page.
 
 > [!TIP]
 >
@@ -354,13 +356,13 @@ Create a new agent with SharePoint knowledge integration that provides grounded,
 
 4. Select **New**, and choose **Agent**
 
-5. Select **Skip to configure**
+5. Select The **Configure** toggle on the top left to manually configure the agent.
 
 6. Name your agent `Ask Me Anything`
 
-7. Click **Create**
+7. Click **Create** on the top right of the screen.
 
-8. Go to **Knowledge**
+8. Go to **Knowledge**, either from the Knowledge section of the Overview tab or the Knowledge tab. Click on **Add Knowledge**
 
   ![alt text](images/knowledge-sharepoint.png)
 
@@ -370,17 +372,21 @@ Create a new agent with SharePoint knowledge integration that provides grounded,
 >
 > - For configuration, use the provided values in the <a href="https://aka.ms/MCSWorkshopLabAssets" target="_blank">**Lab Resources**</a> web page.
 
-10. Choose **Add**  
+10. Choose **Add to agent**. *Shared Documents* will soon show up under the Knowledge area with the status as Ready.
 
-11. Test your agent with this question:
+11. Test your agent, using the "Test your agent" pane in the right, with these questions:
 
 ```
-What's the Northwind Health Plus Benefits plan?
+What are the benefits plans available?
+Share more details regarding the Northwind Health Plus Benefits plan.
+Compare this plan with the other plans.
 ```
 
 > [!TIP]
 >
 > - Notice how relevant it is, and how the citations are accurate. This demonstrates the power of grounded AI responses.
+> - Notice how the Activity Map section shows real time monitoring of the conversation flow.
+> - You can click each activity step to display the details of the step, what was the query, response and the referenced sources. It shows the inputs, decisions, and outputs for that activity.
 
 ---
 
@@ -421,7 +427,8 @@ Suggest things your agent can do to your end-users through carefully crafted pro
 
 | Title                     | Prompt                                           |
 |---------------------------|--------------------------------------------------|
-| `Ask me about benefits`     | `What's the Northwind Health Plus Benefits plan?` |
+| `Ask me about benefits`     | `What benefits are available?` |
+| `Compare benefit plans`     | `Show me a comparison between the different benefit plans available` |
 | `Check on an incident`      | `What's the status of INC0007001?`                |
 
 3. **Save** the prompts
