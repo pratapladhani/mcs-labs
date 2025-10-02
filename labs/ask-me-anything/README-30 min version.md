@@ -428,7 +428,7 @@ Suggest things your agent can do to your end-users through carefully crafted pro
 | Title                     | Prompt                                           |
 |---------------------------|--------------------------------------------------|
 | `Ask me about benefits`     | `What benefits are available?` |
-| `Compare benefit plans`     | `Show me a comparison between the different benefit plans available` |
+| `Compare health plans`     | `Show me a comparison between the different health insurance plans available` |
 | `Check on an incident`      | `What's the status of INC0007001?`                |
 
 3. **Save** the prompts
@@ -495,13 +495,6 @@ Make the agent available in Microsoft 365 Copilot for your users.
 >   - In the new window, if prompted *This site is trying to open Microsoft Teams*, select **Cancel**, and the select **use the web app instead**
 
 10. You will be able to see the three suggested prompts in the agent. Test the agent with the first two prompts.
-
-> [!TIP]
-> If deploying to Teams,  prompts won't be available, so paste the below question:
->
-> ```
-> What's the Northwind Health Plus Benefits plan?
-> ```
 
 ---
 
@@ -587,14 +580,18 @@ This use case demonstrates **agent scoping** principles:
 > [!TIP]
 > In case of issues, refresh the page with CTRL + F5.
 
-5. **Rename** to `Get ServiceNow ticket details`
+5. Click on the Kebab menu (⋮) next to the `List Records` Tool, click **Edit**. Change the **Name** to `Get ServiceNow ticket details`
 
-6. Change **description** to `Gets the details of an incident using its incident number. Use this tool when users ask about ServiceNow tickets, incident status, or IT support requests.`
+6. Change **Description** to: 
+
+    ```
+    Gets the details of an incident using its incident number. Use this tool when users ask about ServiceNow tickets, incident status, or IT support requests.
+    ```
 
 > [!TIP]
 > The description will help the AI know when to use that tool, so it's important to have clear instructions WHEN and WHEN NOT to use this tool. This is a key aspect of agent scoping - being specific about tool usage.
 
-7. Under **Additional details**, change **Authentication** to **Maker-provided credentials**
+7. Expand **Additional details**, change **Credentials to use** to **Maker-provided credentials**
 
 > [!IMPORTANT]
 > In production scenarios, you may want to use the user context when making the connection to ServiceNow. Here, your context (as the author) is used by end-users of your agent when searching for incidents.
@@ -603,7 +600,7 @@ This use case demonstrates **agent scoping** principles:
 
 9. Select **+ Add input** and choose **Query**
 
-10. Select **Customize** and use this for **Description**:
+10. Select **Customize** and change the Display name to **Incident Query** use this for **Description**:
 
     ```
     The output of this variable is the concatenation of numberCONTAINS and the incident number. E.g., 'numberCONTAINSINC0007001'. Only the incident number should be prompted and obtained from the user (e.g., INC0007001)
@@ -645,6 +642,7 @@ This use case demonstrates **agent scoping** principles:
 > [!IMPORTANT]
 > This integration showcases how agents can be scoped for specific domains while maintaining a unified user experience. The ServiceNow knowledge and tools are automatically triggered for IT-related queries, demonstrating intelligent capability routing within a single agent.
 
+30. **Publish** your agent and test the third Suggested prompt regarding ticket status in M365 Copilot (and Teams if needed). Note: you don't need to reload your agent or restart the conversation. Your Ask Me Anything agent is now capable to query Service Now and resolve support issues based on Service Now Knowledge bases as well as query Incident details for you.
 ---
 
 ### 🏅 Congratulations! You've completed Use Case #6
