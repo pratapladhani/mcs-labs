@@ -166,47 +166,36 @@ Create Nova AI with custom instructions and Wikipedia knowledge integration usin
    An intelligent assistant that can answer multi-part questions by combining historical facts, biographical data, and real-time information like weather. Ideal for deep research, exploration, and knowledge synthesis.
    ```
 
-5. When asked for more details, set:
-
-   ```
-   The assistant should answer complex, multi-step questions by combining data from public sources, performing real-time lookups like weather or conversions, and presenting clear, concise responses. When multiple questions are asked, do multiple knowledge searches.
-   The assistant  should not speculate, provide information from unreliable sources, compare competitors, or answer personal, sensitive, or confidential questions.
-   ```
-
-6. When asked about a name for your agent, respond:
+5. When asked about a name for your agent, respond:
 
    ```
    Let's call it Nova AI
    ```
 
-7. If asked about multi-part questions, set:
+6. When asked about public website knowledge sources, set:
 
-   ```
-   Multi-layered questions should be broken down into multiple knowledge searches. 
-   ```
-
-8. When asked about how the agent should interact with users, set:
-
-   ```
-   Nova AI should interact in a friendly and professional manner, using clear language, helpful tone, and light emojis 😊 when appropriate. It should feel approachable, smart, and a bit curious—like a knowledgeable companion.
-   ```
-
-9. When asked about public website knowledge sources, set:
    ```
    Add https://en.wikipedia.org/ as a public data source for general knowledge and factual information.
    ```
 
+5. When asked for more details, set:
+
+   ```
+   The assistant should answer complex questions using verified public information and real-time lookups like weather or conversions. It should give clear, concise answers and handle multiple questions one at a time.
+   It must not speculate, share unverified or sensitive information, or compare products or companies.
+   Nova AI should communicate clearly and professionally, using a friendly tone and light emojis 😊 when appropriate.
+   ```
+
 > [!TIP]
-> - Confirm website ownership for better search results - this allows Copilot Studio to access additional information from your webpages
 > - URLs can have up to two levels of depth (subpaths with forward slash /)
 > - Copilot Studio doesn't do real-time web crawling. It actually uses the Bing index, so results depend on your website's Bing indexing quality and latest crawl date.
 > - You can add up to four public website URLs for knowledge search at a time
 
 #### Finalize creation
 
-10. If you didn't start from your solution: Before creating the agent, select the **...** menu, go to **Advanced Settings**, and choose the Solution you created.
+6. If you didn't start from your solution: Before creating the agent, select the **...** menu, go to **Update advanced Settings**, and choose the Solution you created.
 
-11. Select **Create**.
+7. Select **Create**.
 
 ---
 
@@ -261,7 +250,7 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 2. **Test** your agent with this question to see general knowledge in action:
 
    ```
-   Write a few lines about [INSERT RANDOM CITY NAME]
+   Write a poem
    ```
 
 3. **Observe** how the assistant generates an answer from general knowledge.
@@ -292,9 +281,9 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 > - Use user authentication for role-based access scenarios
 > - Always review security implications of authentication choices
 
-11. Under **Inputs**, for **Units**, choose **Custom value** and select **Imperial** or **Metric**.
+11. Under **Inputs**, for **Units**, for **Fill using**, select **Custom value**, and choose **Imperial** or **Metric**.
 
-12. Under **Inputs**, for **Location**, customize the value and set description:
+12. Under **Inputs**, for **Location**, leave **Fill using** to **Dynamically fill with AI**, but customize the value and set description:
 
     ```
     The location for the weather query. Valid inputs are City, State, Country. 

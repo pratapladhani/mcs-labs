@@ -226,7 +226,7 @@ Create, configure, test, and deploy a conversational MBR agent that leverages Sh
 
 #### Create the agent in Copilot Studio
 
-1. Open a new browser tab and navigate to [copilotstudio.microsoft.com](copilotstudio.microsoft.com). Select **Create**
+1. Open a new browser tab and navigate to [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com). Select **Create**
 
 ![Select Create](./assets/create-agent.jpeg)
 
@@ -234,7 +234,7 @@ Create, configure, test, and deploy a conversational MBR agent that leverages Sh
 
 ![Select New Agent](./assets/new-agent.jpeg)
 
-3. Select **Skip to configure** 
+3. Select the **Configure** tab
 
 4. In the **Name** field type `MBR Agent`. In the **Description** field type,  `This agent helps in preparing for Monthly Business Reviews. It queries MBR resources and provides quick answers`
 
@@ -311,31 +311,23 @@ Create, configure, test, and deploy a conversational MBR agent that leverages Sh
 
 #### Test the deployed agent
 
-20. Select the `...` next to the Deployed text and select **Copy Site Url**. Open a new browser tab and paste in the URL.
+20. Select the `...` next to the Deployed text and select **Copy Agent Url**. Open a new browser tab and paste in the URL.
 
 ![Select Copy Site URL](./assets/copy-url.jpeg)
 
-21. Select the **Documents** library on the left hand navigation.
-
-![Select Documents](./assets/select-document-library.jpeg)
-
-22. Select the **MBR Agent** from the library
-
-![Select MBR Agent](./assets/doc-mbr-agent.jpeg)
-
-23. Your agent will open up on the right hand side. Test it out by typing `What are the top 3 blockers?` in the text input and pressing `Return`
+21. Your agent will open up in SharePoint. Test it out by typing `What are the top 3 blockers?` in the text input and pressing `Return`
 
 ![Testing the agent](./assets/deployed-test1.jpeg)
 
-24. Review the answer and note that it provides links to the referenced documents.
+22. Review the answer and note that it provides links to the referenced documents.
 
 ![Review the first test](./assets/deployed-review1.jpeg)
 
-25. Perform another test by typing `Which reps requested additional pre-sales support?` and pressing `Return`
+23. Perform another test by typing `Which reps requested additional pre-sales support?` and pressing `Return`
 
 ![Testing the agent](./assets/deployed-test2.jpeg)
 
-26. Review your response. Congratulations! You've built and deployed your SharePoint MBR Agent!
+24. Review your response. Congratulations! You've built and deployed your SharePoint MBR Agent!
 
 ![Review the second test results](./assets/dpeloyed-review2.jpeg)
 
