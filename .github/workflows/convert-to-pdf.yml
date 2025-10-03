@@ -61,6 +61,9 @@ jobs:
                 
                 # Change to the lab directory to ensure relative image paths work
                 cd "$lab_dir"
+                echo "Working directory: $(pwd)"
+                echo "Files before conversion:"
+                ls -la
                 
                 # Use custom CSS for better PDF styling
                 if pandoc "README.md" \
@@ -79,12 +82,19 @@ jobs:
                   --pdf-engine-opt=--enable-local-file-access \
                   --pdf-engine-opt=--load-error-handling=ignore \
                   --pdf-engine-opt=--load-media-error-handling=ignore 2>&1; then
-                  echo "✓ Successfully converted $lab_name to ${pdf_output}"
+                  echo "✓ Successfully converted $lab_name"
+                  echo "Files after conversion:"
+                  ls -la "${lab_name}.pdf" 2>/dev/null || echo "PDF file not found!"
                 else
-                  echo "✗ Failed to convert $lab_name"
+                  echo "✗ Failed to convert $lab_name with CSS"
                   # Try fallback conversion without CSS
                   echo "Trying fallback method for $lab_name..."
-                  pandoc "README.md" -o "${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>&1 || echo "Fallback conversion also failed"
+                  if pandoc "README.md" -o "${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>&1; then
+                    echo "✓ Fallback conversion succeeded for $lab_name"
+                    ls -la "${lab_name}.pdf" 2>/dev/null || echo "PDF file not found after fallback!"
+                  else
+                    echo "✗ Fallback conversion also failed for $lab_name"
+                  fi
                 fi
                 # Change back to root directory
                 cd - > /dev/null
@@ -117,17 +127,28 @@ jobs:
           if-no-files-found: warn
         if: always()
 
-      # Also commit PDFs back to the repository
+      # Commit PDFs back to the repository
       - name: Commit PDFs to repository
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-
-          # Check if there are any PDF changes to commit
-          if git diff --quiet && git diff --cached --quiet; then
+          
+          echo "Current git status:"
+          git status
+          
+          echo ""
+          echo "Checking for PDF files to add:"
+          find labs -name "*.pdf" -type f
+          
+          # Add all PDF files
+          git add labs/
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
             echo "No PDF changes to commit"
           else
-            git add labs/**/*.pdf
-            git commit -m "Auto-generated PDFs for lab documentation [skip ci]" || echo "No changes to commit"
-            git push || echo "Nothing to push"
+            echo "Committing PDF files..."
+            git commit -m "Auto-generated PDFs for lab documentation [skip ci]"
+            echo "Pushing changes..."
+            git push
           fi
