@@ -202,8 +202,6 @@ Create an autonomous agent that automatically triggers when new support emails a
 
 ---
 
----
-
 ## 🔄 Use Case #2: Add Knowledge and Tools
 
 Transform your basic agent into a comprehensive support system by adding knowledge sources and ServiceNow integration for complete automated responses.
@@ -404,7 +402,11 @@ For each individual question, do a separate **knowledge search** using the confi
 
 **Challenge Yoursef: Add Teams communication**:
 
-#### Setting Up Teams Capabilities
+---
+
+### Setting Up Teams Capabilities
+
+---
 
 1. Return to the **Tools** tab, and select **+ Add a tool**
 
