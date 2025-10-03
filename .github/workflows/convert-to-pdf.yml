@@ -1,7 +1,7 @@
 # .github/workflows/convert-to-pdf.yml
 
 name: Labs to PDF
-# This workflow is triggered on pushes to the repository.
+# This workflow is triggered on pushes to the repository or manually.
 on:
   push:
     branches:
@@ -10,6 +10,8 @@ on:
     paths:
       - "labs/*/*.md"
       - "labs/*/images/**"
+  # Allow manual triggering of the workflow
+  workflow_dispatch:
 
 jobs:
   converttopdf:
