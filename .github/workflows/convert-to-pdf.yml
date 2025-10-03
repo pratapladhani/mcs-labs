@@ -10,6 +10,7 @@ on:
     paths:
       - "labs/*/*.md"
       - "labs/*/images/**"
+      - ".github/styles/**"
   # Allow manual triggering of the workflow
   workflow_dispatch:
 
@@ -60,13 +61,30 @@ jobs:
                 
                 # Change to the lab directory to ensure relative image paths work
                 cd "$lab_dir"
-                if pandoc "README.md" -o "${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>&1; then
+                
+                # Use custom CSS for better PDF styling
+                if pandoc "README.md" \
+                  -o "${lab_name}.pdf" \
+                  --pdf-engine=wkhtmltopdf \
+                  --css="../../.github/styles/pdf.css" \
+                  --standalone \
+                  --self-contained \
+                  --metadata title="$lab_name Lab Guide" \
+                  --metadata author="Microsoft Copilot Studio Labs" \
+                  --metadata date="$(date +%Y-%m-%d)" \
+                  -V margin-top=0.75in \
+                  -V margin-bottom=0.75in \
+                  -V margin-left=0.75in \
+                  -V margin-right=0.75in \
+                  --pdf-engine-opt=--enable-local-file-access \
+                  --pdf-engine-opt=--load-error-handling=ignore \
+                  --pdf-engine-opt=--load-media-error-handling=ignore 2>&1; then
                   echo "✓ Successfully converted $lab_name to ${pdf_output}"
                 else
                   echo "✗ Failed to convert $lab_name"
-                  # Try alternative conversion
-                  echo "Trying alternative method for $lab_name..."
-                  pandoc "README.md" -o "${lab_name}.html" 2>&1 || echo "HTML conversion also failed"
+                  # Try fallback conversion without CSS
+                  echo "Trying fallback method for $lab_name..."
+                  pandoc "README.md" -o "${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>&1 || echo "Fallback conversion also failed"
                 fi
                 # Change back to root directory
                 cd - > /dev/null
@@ -82,10 +100,10 @@ jobs:
           find labs -name "*.pdf" -type f | while read pdf_file; do
             echo "✓ $(ls -lh "$pdf_file")"
           done
-          
+
           echo ""
           echo "PDF count: $(find labs -name "*.pdf" -type f | wc -l)"
-          
+
           echo ""
           echo "Creating temporary pdfs directory for artifact upload..."
           mkdir -p pdfs-collection
@@ -98,13 +116,13 @@ jobs:
           path: pdfs-collection/
           if-no-files-found: warn
         if: always()
-        
+
       # Also commit PDFs back to the repository
       - name: Commit PDFs to repository
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
+
           # Check if there are any PDF changes to commit
           if git diff --quiet && git diff --cached --quiet; then
             echo "No PDF changes to commit"
