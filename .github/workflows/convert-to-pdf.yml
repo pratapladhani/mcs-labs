@@ -33,20 +33,19 @@ jobs:
           echo "Current directory:"
           pwd
           ls -la
-          
+
           echo ""
           echo "Labs directory:"
           ls -la labs/
-          
+
           echo ""
           echo "Looking for README.md files:"
           find labs -name "README.md" -type f
-          
+
           echo ""
           echo "=== STARTING PDF CONVERSION ==="
-          mkdir -p pdfs
-          
-          # Simple conversion without complex CSS first
+
+          # Convert each README.md to PDF in its own directory
           echo "Processing lab directories..."
           for lab_dir in labs/*/; do
             echo "Checking directory: $lab_dir"
@@ -55,40 +54,62 @@ jobs:
                 lab_name=$(basename "$lab_dir")
                 echo "✓ Found README.md in $lab_name"
                 
-                # Try simple pandoc conversion first
-                echo "Converting $lab_name to PDF..."
-                if pandoc "${lab_dir}README.md" -o "pdfs/${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>&1; then
-                  echo "✓ Successfully converted $lab_name"
+                # Convert PDF to the same directory as the README.md
+                pdf_output="${lab_dir}${lab_name}.pdf"
+                echo "Converting $lab_name to PDF in same folder..."
+                
+                # Change to the lab directory to ensure relative image paths work
+                cd "$lab_dir"
+                if pandoc "README.md" -o "${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>&1; then
+                  echo "✓ Successfully converted $lab_name to ${pdf_output}"
                 else
                   echo "✗ Failed to convert $lab_name"
                   # Try alternative conversion
                   echo "Trying alternative method for $lab_name..."
-                  pandoc "${lab_dir}README.md" -o "pdfs/${lab_name}.html" 2>&1 || echo "HTML conversion also failed"
+                  pandoc "README.md" -o "${lab_name}.html" 2>&1 || echo "HTML conversion also failed"
                 fi
+                # Change back to root directory
+                cd - > /dev/null
               else
                 echo "✗ No README.md found in $lab_dir"
               fi
             fi
           done
-          
+
           echo ""
           echo "=== FINAL RESULTS ==="
-          echo "Contents of pdfs directory:"
-          if [ -d "pdfs" ]; then
-            ls -la pdfs/
-            echo "PDF count: $(ls -1 pdfs/*.pdf 2>/dev/null | wc -l)"
-          else
-            echo "No pdfs directory found!"
-          fi
+          echo "Generated PDFs in lab directories:"
+          find labs -name "*.pdf" -type f | while read pdf_file; do
+            echo "✓ $(ls -lh "$pdf_file")"
+          done
           
           echo ""
-          echo "Current directory contents:"
-          ls -la
+          echo "PDF count: $(find labs -name "*.pdf" -type f | wc -l)"
+          
+          echo ""
+          echo "Creating temporary pdfs directory for artifact upload..."
+          mkdir -p pdfs-collection
+          find labs -name "*.pdf" -type f -exec cp {} pdfs-collection/ \;
 
       - name: Upload PDF artifacts
         uses: actions/upload-artifact@v4
         with:
           name: lab-pdfs
-          path: pdfs/
+          path: pdfs-collection/
           if-no-files-found: warn
         if: always()
+        
+      # Also commit PDFs back to the repository
+      - name: Commit PDFs to repository
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Check if there are any PDF changes to commit
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No PDF changes to commit"
+          else
+            git add labs/**/*.pdf
+            git commit -m "Auto-generated PDFs for lab documentation [skip ci]" || echo "No changes to commit"
+            git push || echo "Nothing to push"
+          fi
