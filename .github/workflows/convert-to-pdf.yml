@@ -26,72 +26,69 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y pandoc wkhtmltopdf
 
-      # Convert each lab to PDF
-      - name: Convert labs to PDF
+      # Debug and convert labs to PDF
+      - name: Debug lab structure and convert to PDF
         run: |
+          echo "=== DEBUGGING LAB STRUCTURE ==="
+          echo "Current directory:"
+          pwd
+          ls -la
+          
+          echo ""
+          echo "Labs directory:"
+          ls -la labs/
+          
+          echo ""
+          echo "Looking for README.md files:"
+          find labs -name "README.md" -type f
+          
+          echo ""
+          echo "=== STARTING PDF CONVERSION ==="
           mkdir -p pdfs
           
-          # Create a simple CSS file for styling
-          cat > style.css << 'EOF'
-          body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            max-width: 800px; 
-            margin: 40px auto; 
-            padding: 20px;
-            line-height: 1.6;
-          } 
-          img { 
-            max-width: 100%; 
-            height: auto; 
-            display: block;
-            margin: 20px 0;
-          }
-          code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 3px;
-          }
-          pre {
-            background-color: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-          }
-          h1, h2, h3, h4, h5, h6 {
-            color: #333;
-            margin-top: 30px;
-          }
-          EOF
-
-          # Process each lab directory individually
+          # Simple conversion without complex CSS first
+          echo "Processing lab directories..."
           for lab_dir in labs/*/; do
-            if [ -f "${lab_dir}README.md" ]; then
-              lab_name=$(basename "$lab_dir")
-              echo "Converting $lab_name to PDF..."
-              
-              # Convert using pandoc with proper options
-              pandoc "${lab_dir}README.md" \
-                --pdf-engine=wkhtmltopdf \
-                --css=style.css \
-                --standalone \
-                --self-contained \
-                -V margin-top=0.75in \
-                -V margin-bottom=0.75in \
-                -V margin-left=0.75in \
-                -V margin-right=0.75in \
-                -o "pdfs/${lab_name}.pdf" \
-                2>&1 || echo "Warning: Failed to convert $lab_name"
+            echo "Checking directory: $lab_dir"
+            if [ -d "$lab_dir" ]; then
+              if [ -f "${lab_dir}README.md" ]; then
+                lab_name=$(basename "$lab_dir")
+                echo "✓ Found README.md in $lab_name"
+                
+                # Try simple pandoc conversion first
+                echo "Converting $lab_name to PDF..."
+                if pandoc "${lab_dir}README.md" -o "pdfs/${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>&1; then
+                  echo "✓ Successfully converted $lab_name"
+                else
+                  echo "✗ Failed to convert $lab_name"
+                  # Try alternative conversion
+                  echo "Trying alternative method for $lab_name..."
+                  pandoc "${lab_dir}README.md" -o "pdfs/${lab_name}.html" 2>&1 || echo "HTML conversion also failed"
+                fi
+              else
+                echo "✗ No README.md found in $lab_dir"
+              fi
             fi
           done
-
-          echo "Generated PDFs:"
-          ls -la pdfs/ || echo "No PDFs directory found"
           
-          # Show what we actually have
-          echo "Contents of current directory:"
+          echo ""
+          echo "=== FINAL RESULTS ==="
+          echo "Contents of pdfs directory:"
+          if [ -d "pdfs" ]; then
+            ls -la pdfs/
+            echo "PDF count: $(ls -1 pdfs/*.pdf 2>/dev/null | wc -l)"
+          else
+            echo "No pdfs directory found!"
+          fi
+          
+          echo ""
+          echo "Current directory contents:"
           ls -la
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: lab-pdfs
-          path: pdfs
+          path: pdfs/
+          if-no-files-found: warn
+        if: always()
