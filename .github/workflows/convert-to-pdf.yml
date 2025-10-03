@@ -20,65 +20,48 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Get list of lab directories that contain README.md files
-      - name: Find lab directories
-        id: find-labs
-        run: |
-          echo "Found lab directories:"
-          find labs -maxdepth 1 -type d -name "*" ! -name "labs" | while read dir; do
-            if [ -f "$dir/README.md" ]; then
-              echo "$dir"
-            fi
-          done > lab_dirs.txt
-          cat lab_dirs.txt
-          # Create a JSON array for the matrix
-          echo "matrix=$(find labs -maxdepth 1 -type d -name "*" ! -name "labs" | while read dir; do if [ -f "$dir/README.md" ]; then basename "$dir"; fi; done | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
-
-      # Process each lab directory
-      - name: Convert each lab to PDF
-        run: |
-          mkdir -p pdfs
-          find labs -maxdepth 1 -type d -name "*" ! -name "labs" | while read lab_dir; do
-            if [ -f "$lab_dir/README.md" ]; then
-              lab_name=$(basename "$lab_dir")
-              echo "Processing lab: $lab_name"
-              
-              # Create temporary directory for this lab
-              temp_dir="temp_$lab_name"
-              mkdir -p "$temp_dir"
-              
-              # Copy README.md to temp directory
-              cp "$lab_dir/README.md" "$temp_dir/"
-              
-              # Copy images directory if it exists
-              if [ -d "$lab_dir/images" ]; then
-                cp -r "$lab_dir/images" "$temp_dir/"
-              fi
-              
-              # Convert to PDF using pandoc (more reliable for individual files)
-              if command -v pandoc &> /dev/null; then
-                pandoc "$temp_dir/README.md" -o "pdfs/${lab_name}.pdf" \
-                  --pdf-engine=wkhtmltopdf \
-                  --css=<(echo "body { font-family: Arial, sans-serif; margin: 40px; } img { max-width: 100%; height: auto; }") \
-                  --self-contained || echo "Failed to convert $lab_name with pandoc"
-              else
-                echo "Pandoc not available, skipping $lab_name"
-              fi
-              
-              # Clean up temp directory
-              rm -rf "$temp_dir"
-            fi
-          done
-
-      # Alternative method using markdown-to-pdf action for each lab
+      # Install dependencies
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y wkhtmltopdf
+          sudo apt-get install -y pandoc wkhtmltopdf
 
-      - name: Convert labs using custom script
+      # Convert each lab to PDF
+      - name: Convert labs to PDF
         run: |
           mkdir -p pdfs
+          
+          # Create a simple CSS file for styling
+          cat > style.css << 'EOF'
+          body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            max-width: 800px; 
+            margin: 40px auto; 
+            padding: 20px;
+            line-height: 1.6;
+          } 
+          img { 
+            max-width: 100%; 
+            height: auto; 
+            display: block;
+            margin: 20px 0;
+          }
+          code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+          }
+          pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+          }
+          h1, h2, h3, h4, h5, h6 {
+            color: #333;
+            margin-top: 30px;
+          }
+          EOF
 
           # Process each lab directory individually
           for lab_dir in labs/*/; do
@@ -86,46 +69,27 @@ jobs:
               lab_name=$(basename "$lab_dir")
               echo "Converting $lab_name to PDF..."
               
-              # Use wkhtmltopdf to convert markdown to PDF
-              # First convert markdown to HTML, then to PDF
-              if command -v pandoc &> /dev/null; then
-                pandoc "${lab_dir}README.md" \
-                  --standalone \
-                  --css=<(echo "
-                    body { 
-                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-                      max-width: 800px; 
-                      margin: 40px auto; 
-                      padding: 20px;
-                      line-height: 1.6;
-                    } 
-                    img { 
-                      max-width: 100%; 
-                      height: auto; 
-                      display: block;
-                      margin: 20px 0;
-                    }
-                    code {
-                      background-color: #f4f4f4;
-                      padding: 2px 4px;
-                      border-radius: 3px;
-                    }
-                    pre {
-                      background-color: #f4f4f4;
-                      padding: 10px;
-                      border-radius: 5px;
-                      overflow-x: auto;
-                    }
-                  ") \
-                  --pdf-engine=wkhtmltopdf \
-                  --pdf-engine-opt=--enable-local-file-access \
-                  -o "pdfs/${lab_name}.pdf" || echo "Warning: Failed to convert $lab_name"
-              fi
+              # Convert using pandoc with proper options
+              pandoc "${lab_dir}README.md" \
+                --pdf-engine=wkhtmltopdf \
+                --css=style.css \
+                --standalone \
+                --self-contained \
+                -V margin-top=0.75in \
+                -V margin-bottom=0.75in \
+                -V margin-left=0.75in \
+                -V margin-right=0.75in \
+                -o "pdfs/${lab_name}.pdf" \
+                2>&1 || echo "Warning: Failed to convert $lab_name"
             fi
           done
 
           echo "Generated PDFs:"
-          ls -la pdfs/
+          ls -la pdfs/ || echo "No PDFs directory found"
+          
+          # Show what we actually have
+          echo "Contents of current directory:"
+          ls -la
 
       - uses: actions/upload-artifact@v4
         with:
