@@ -144,7 +144,7 @@ tr:hover {
 
 /* Column widths for lab table */
 table th:nth-child(1), table td:nth-child(1) { /* Title column */
-  width: 25% !important;
+  width: 65% !important;
 }
 
 table th:nth-child(2), table td:nth-child(2) { /* Download column */
@@ -154,12 +154,12 @@ table th:nth-child(2), table td:nth-child(2) { /* Download column */
 }
 
 table th:nth-child(3), table td:nth-child(3) { /* Overview column */
-  width: 65% !important;
+  width: 25% !important;
 }
 
 /* Override Pandoc's colgroup settings - multiple approaches for maximum compatibility */
 table colgroup col:nth-child(1) {
-  width: 25% !important;
+  width: 65% !important;
 }
 
 table colgroup col:nth-child(2) {
@@ -167,7 +167,7 @@ table colgroup col:nth-child(2) {
 }
 
 table colgroup col:nth-child(3) {
-  width: 65% !important;
+  width: 25% !important;
 }
 
 /* Additional table layout enforcement */
@@ -182,7 +182,7 @@ table th:nth-child(2), table td:nth-child(2) {
 }
 
 table th:nth-child(3), table td:nth-child(3) {
-  min-width: 60% !important;
+  min-width: 20% !important;
 }
 
 /* Responsive tables */
