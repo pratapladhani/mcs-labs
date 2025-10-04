@@ -36,16 +36,19 @@ async function generatePDF(htmlFilePath, outputPath, title = '') {
     
     const page = await browser.newPage();
     
-    // Read HTML content and convert file:// URLs
-    const htmlContent = fs.readFileSync(htmlFilePath, 'utf8');
-    const baseDir = path.dirname(htmlFilePath);
-    
     // Convert to absolute path for file:// URL
     const absoluteHtmlPath = path.resolve(htmlFilePath);
     await page.goto(`file://${absoluteHtmlPath}`, { 
       waitUntil: 'networkidle2',
       timeout: 30000 
     });
+    
+    // Set PDF metadata if title is provided
+    if (title) {
+      await page.evaluateOnNewDocument(`
+        document.title = "${title.replace(/"/g, '\\"')}";
+      `);
+    }
     
     // Generate PDF with professional settings
     const pdfBuffer = await page.pdf({
@@ -61,6 +64,7 @@ async function generatePDF(htmlFilePath, outputPath, title = '') {
       headerTemplate: '<div></div>', // Empty header
       footerTemplate: `
         <div style="font-size: 10px; color: #666; text-align: center; width: 100%; margin: 0 auto;">
+          ${title ? `<span style="float: left;">${title.replace(/"/g, '&quot;')}</span>` : ''}
           <span class="pageNumber"></span> of <span class="totalPages"></span>
         </div>
       `,
