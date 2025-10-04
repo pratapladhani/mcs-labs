@@ -160,6 +160,21 @@ jobs:
                 continue
               fi
               
+              # ---------------------------------------------------------
+              # YAML PARSING CONFLICT DETECTION AND HANDLING
+              # Detect files with horizontal rules that cause YAML parsing issues
+              # ---------------------------------------------------------
+              yaml_disabled_format="markdown+auto_identifiers+gfm_auto_identifiers+emoji+header_attributes"
+              
+              # Check if file has horizontal rules that aren't proper YAML front matter
+              if grep -q '^---$' "${lab_name}_processed.md"; then
+                first_line=$(head -1 "${lab_name}_processed.md")
+                if [ "$first_line" != "---" ]; then
+                  echo "  ⚠️  Detected horizontal rules in content - disabling YAML front matter parsing"
+                  yaml_disabled_format="markdown-yaml_metadata_block+auto_identifiers+gfm_auto_identifiers+emoji+header_attributes"
+                fi
+              fi
+              
               # Try Pandoc conversion with detailed error output for debugging
               set +e  # Temporarily disable exit on error for better error handling
               pandoc_output=$(pandoc "${lab_name}_processed.md" \
@@ -171,7 +186,7 @@ jobs:
                 --section-divs \
                 --id-prefix="" \
                 --metadata title="$lab_title" \
-                -f markdown+auto_identifiers+gfm_auto_identifiers+emoji+header_attributes \
+                -f "$yaml_disabled_format" \
                 -t html5 2>&1)
               
               pandoc_exit_code=$?
