@@ -18,14 +18,31 @@ jobs:
   converttopdf:
     name: Build PDF
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
       # Install dependencies
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc wkhtmltopdf
+          echo "Installing Pandoc and wkhtmltopdf..."
+          sudo apt-get update -qq
+          
+          # Install pandoc first (usually quick)
+          sudo apt-get install -y --no-install-recommends pandoc
+          echo "✓ Pandoc installed"
+          
+          # Try installing wkhtmltopdf with fallback
+          if ! sudo apt-get install -y --no-install-recommends wkhtmltopdf; then
+            echo "APT installation failed, trying snap..."
+            sudo snap install wkhtmltopdf
+          fi
+          echo "✓ wkhtmltopdf installed"
+          
+          # Verify installations
+          pandoc --version
+          wkhtmltopdf --version
+        timeout-minutes: 10
 
       # Convert labs to PDF
       - name: Convert labs to PDF
