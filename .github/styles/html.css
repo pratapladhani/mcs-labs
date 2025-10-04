@@ -144,17 +144,30 @@ tr:hover {
 
 /* Column widths for lab table */
 table th:nth-child(1), table td:nth-child(1) { /* Title column */
-  width: 40%;
+  width: 25% !important;
 }
 
 table th:nth-child(2), table td:nth-child(2) { /* Download column */
-  width: 120px;
+  width: 10% !important;
   text-align: center;
   white-space: nowrap;
 }
 
 table th:nth-child(3), table td:nth-child(3) { /* Overview column */
-  width: auto;
+  width: 65% !important;
+}
+
+/* Override Pandoc's colgroup settings */
+table colgroup col:nth-child(1) {
+  width: 25% !important;
+}
+
+table colgroup col:nth-child(2) {
+  width: 10% !important;
+}
+
+table colgroup col:nth-child(3) {
+  width: 65% !important;
 }
 
 /* Responsive tables */
