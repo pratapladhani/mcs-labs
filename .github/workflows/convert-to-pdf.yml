@@ -73,27 +73,22 @@ jobs:
               # Add closing div tags for callouts (simple approach - assumes single line callouts)
               sed -i 's/\(> <div class="[^"]*">.*\)$/\1<\/div>/g' "${lab_name}_processed.md"
               
-              # Fix anchor links by removing leading emojis to match Pandoc's ID generation
-              # The links in TOC are like: [Introduction](#🌐-introduction)
-              # But Pandoc generates IDs like: id="introduction" (removing emoji entirely)
-              # So we need to convert (#🌐-introduction) to (#introduction)
-              
-              # Debug: Show original anchor links before preprocessing
-              echo "Original anchor links in $lab_name:"
-              grep -n "\[.*\](#[^)]*)" "${lab_name}_processed.md" | head -3 || echo "No anchor links found"
-              
-              # Remove emojis and leading dashes from anchor links
-              # Pattern explanation: 
-              # - (#[^a-zA-Z0-9]*-? matches (# followed by non-alphanumeric chars (emojis) and optional dash
-              # - \([a-zA-Z][^)]*\) captures the actual text part we want to keep
-              # - Replace with (#\1) to keep just the text part
-              sed -i 's|(#[^a-zA-Z0-9]*-*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
-              
-              # Also remove emojis from the actual headers to match the cleaned anchor links
-              # This ensures Pandoc generates TOC links that match our processed anchor links
+              # CRITICAL: Remove emojis from headers FIRST, before Pandoc processes them
+              # This ensures Pandoc generates consistent TOC links and header IDs
+              echo "Removing emojis from headers in $lab_name BEFORE Pandoc processing..."
               sed -i 's/^## [^a-zA-Z0-9]*\([a-zA-Z].*\)$/## \1/g' "${lab_name}_processed.md"
               sed -i 's/^### [^a-zA-Z0-9]*\([a-zA-Z].*\)$/### \1/g' "${lab_name}_processed.md"
               sed -i 's/^#### [^a-zA-Z0-9]*\([a-zA-Z].*\)$/#### \1/g' "${lab_name}_processed.md"
+              
+              # Fix any manual anchor links to match cleaned headers
+              # Remove emojis and leading dashes from anchor links
+              sed -i 's|(#[^a-zA-Z0-9]*-*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
+              
+              # Debug: Show processed headers and links
+              echo "Headers after emoji removal in $lab_name:"
+              grep -n "^##" "${lab_name}_processed.md" | head -3 || echo "No headers found"
+              echo "Anchor links after processing in $lab_name:"
+              grep -n "\[.*\](#[^)]*)" "${lab_name}_processed.md" | head -3 || echo "No anchor links found"
               
               # Debug: Show anchor links after preprocessing
               echo "Processed anchor links in $lab_name:"
@@ -145,9 +140,18 @@ jobs:
                 # Also add standalone anchor tags before headers as backup
                 sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)"/<a name="\2"><\/a><h\1 id="\2" name="\3"/g' "${lab_name}.html"
                 
+                # Make external links open in new window
+                # Add target="_blank" and rel="noopener noreferrer" to external links (http/https)
+                # This regex matches links that start with http:// or https:// and adds the attributes
+                sed -i 's/<a href="\(https\?:\/\/[^"]*\)"/<a href="\1" target="_blank" rel="noopener noreferrer"/g' "${lab_name}.html"
+                
                 # Debug: Show final result
                 echo "Final header structure in $lab_name HTML:"
                 grep -o '<a name="[^"]*"></a><h[1-6] id="[^"]*"' "${lab_name}.html" | head -3 || echo "No processed headers found"
+                
+                # Debug: Show external links
+                echo "External links in $lab_name HTML:"
+                grep -o '<a href="https\?://[^"]*"[^>]*>' "${lab_name}.html" | head -3 || echo "No external links found"
                 
                 # Add simple favicon for consistent branding (blue circle with L)
                 sed -i 's|</head>|  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">\n</head>|' "${lab_name}.html"
