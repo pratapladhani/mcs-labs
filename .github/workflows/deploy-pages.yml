@@ -80,7 +80,19 @@ jobs:
             -t html5
           
           # Fix colgroup widths in the generated HTML
-          sed -i 's|<colgroup>.*</colgroup>|<colgroup><col style="width: 25%"><col style="width: 10%"><col style="width: 65%"></colgroup>|g' _site/index.html
+          echo "Before colgroup fix:"
+          grep -A5 -B1 "<colgroup>" _site/index.html || echo "No colgroup found"
+          
+          # Replace colgroup with specific widths (handle multiline colgroup)
+          sed -i ':a;N;$!ba;s|<colgroup>[^<]*\(<col[^>]*>[^<]*\)*</colgroup>|<colgroup><col style="width: 25%"><col style="width: 10%"><col style="width: 65%"></colgroup>|g' _site/index.html
+          
+          echo "After colgroup fix:"
+          grep -A5 -B1 "<colgroup>" _site/index.html || echo "No colgroup found"
+          
+          # Add favicon to homepage (using robot emoji for consistency)
+          homepage_emoji="�"
+          favicon_data="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>$homepage_emoji</text></svg>"
+          sed -i "s|</head>|  <link rel=\"icon\" href=\"$favicon_data\">\n</head>|" _site/index.html
           
           # Copy all HTML files to the site
           for lab_dir in labs/*/; do

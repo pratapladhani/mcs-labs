@@ -157,7 +157,7 @@ table th:nth-child(3), table td:nth-child(3) { /* Overview column */
   width: 65% !important;
 }
 
-/* Override Pandoc's colgroup settings */
+/* Override Pandoc's colgroup settings - multiple approaches for maximum compatibility */
 table colgroup col:nth-child(1) {
   width: 25% !important;
 }
@@ -168,6 +168,21 @@ table colgroup col:nth-child(2) {
 
 table colgroup col:nth-child(3) {
   width: 65% !important;
+}
+
+/* Additional table layout enforcement */
+table {
+  table-layout: fixed !important;
+}
+
+/* Specific column width enforcement with max-width */
+table th:nth-child(2), table td:nth-child(2) {
+  max-width: 80px !important;
+  min-width: 60px !important;
+}
+
+table th:nth-child(3), table td:nth-child(3) {
+  min-width: 60% !important;
 }
 
 /* Responsive tables */
