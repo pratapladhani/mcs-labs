@@ -89,9 +89,19 @@ jobs:
               # - Replace with (#\1) to keep just the text part
               sed -i 's|(#[^a-zA-Z0-9]*-*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
               
+              # Also remove emojis from the actual headers to match the cleaned anchor links
+              # This ensures Pandoc generates TOC links that match our processed anchor links
+              sed -i 's/^## [^a-zA-Z0-9]*\([a-zA-Z].*\)$/## \1/g' "${lab_name}_processed.md"
+              sed -i 's/^### [^a-zA-Z0-9]*\([a-zA-Z].*\)$/### \1/g' "${lab_name}_processed.md"
+              sed -i 's/^#### [^a-zA-Z0-9]*\([a-zA-Z].*\)$/#### \1/g' "${lab_name}_processed.md"
+              
               # Debug: Show anchor links after preprocessing
               echo "Processed anchor links in $lab_name:"
               grep -n "\[.*\](#[^)]*)" "${lab_name}_processed.md" | head -3 || echo "No anchor links found"
+              
+              # Debug: Show headers after emoji removal
+              echo "Processed headers in $lab_name:"
+              grep -n "^##" "${lab_name}_processed.md" | head -3 || echo "No headers found"
               
               # Debug: Show internal links after preprocessing
               echo "Internal links found in $lab_name (after preprocessing):"
