@@ -4,9 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="author" content="Microsoft Copilot Studio Labs" />
-  <meta name="dcterms.date" content="2025-10-04" />
-  <title>public-website-agent Lab Guide</title>
+  <title>README</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -388,86 +386,12 @@ border-color: #27ae60;
 }</style>
 </head>
 <body>
-<header id="title-block-header">
-<h1 class="title">public-website-agent Lab Guide</h1>
-<p class="author">Microsoft Copilot Studio Labs</p>
-<p class="date">2025-10-04</p>
-</header>
-<nav id="TOC" role="doc-toc">
-<ul>
-<li><a href="#give-your-public-website-chatbot-a-brain-and-make-it-an-agent" id="toc-give-your-public-website-chatbot-a-brain-and-make-it-an-agent">Give
-your public website chatbot a brain and make it an agent</a>
-<ul>
-<li><a href="#lab-details" id="toc-lab-details">🧭 Lab Details</a></li>
-<li><a href="#table-of-contents" id="toc-table-of-contents">📚 Table of
-Contents</a></li>
-<li><a href="#why-this-matters" id="toc-why-this-matters">🤔 Why This
-Matters</a></li>
-<li><a href="#introduction" id="toc-introduction">🌐
-Introduction</a></li>
-<li><a href="#core-concepts-overview" id="toc-core-concepts-overview">🎓
-Core Concepts Overview</a></li>
-<li><a href="#documentation-and-additional-training-links" id="toc-documentation-and-additional-training-links">📄 Documentation
-and Additional Training Links</a></li>
-<li><a href="#prerequisites" id="toc-prerequisites">✅
-Prerequisites</a></li>
-<li><a href="#summary-of-targets" id="toc-summary-of-targets">🎯 Summary
-of Targets</a></li>
-<li><a href="#use-cases-covered" id="toc-use-cases-covered">🧩 Use Cases
-Covered</a></li>
-<li><a href="#instructions-by-use-case" id="toc-instructions-by-use-case">🛠️ Instructions by Use Case</a></li>
-<li><a href="#use-case-1-create-a-new-agent-and-add-knowledge" id="toc-use-case-1-create-a-new-agent-and-add-knowledge">🧱 Use Case #1:
-Create a new agent and add knowledge</a>
-<ul>
-<li><a href="#objective" id="toc-objective">Objective</a></li>
-<li><a href="#step-by-step-instructions" id="toc-step-by-step-instructions">Step-by-step instructions</a></li>
-<li><a href="#congratulations-youve-created-nova-ai" id="toc-congratulations-youve-created-nova-ai">🏅 Congratulations!
-You’ve created Nova AI!</a></li>
-<li><a href="#test-your-understanding" id="toc-test-your-understanding">Test your understanding</a></li>
-</ul></li>
-<li><a href="#use-case-2-disable-general-knowledge-and-add-connectors" id="toc-use-case-2-disable-general-knowledge-and-add-connectors">🔄 Use
-Case #2: Disable general knowledge and add connectors</a>
-<ul>
-<li><a href="#step-by-step-instructions-1" id="toc-step-by-step-instructions-1">Step-by-step instructions</a></li>
-<li><a href="#congratulations-youve-enhanced-nova-ai-with-controlled-knowledge-and-real-time-capabilities" id="toc-congratulations-youve-enhanced-nova-ai-with-controlled-knowledge-and-real-time-capabilities">🏅
-Congratulations! You’ve enhanced Nova AI with controlled knowledge and
-real-time capabilities!</a></li>
-<li><a href="#test-your-understanding-1" id="toc-test-your-understanding-1">Test your understanding</a></li>
-</ul></li>
-<li><a href="#use-case-3-fine-tune-your-ai-assistant-for-smoother-conversations" id="toc-use-case-3-fine-tune-your-ai-assistant-for-smoother-conversations">💬
-Use Case #3: Fine-tune your AI assistant for smoother conversations</a>
-<ul>
-<li><a href="#step-by-step-instructions-2" id="toc-step-by-step-instructions-2">Step-by-step instructions</a></li>
-<li><a href="#congratulations-youve-fine-tuned-nova-ai-for-smoother-conversations" id="toc-congratulations-youve-fine-tuned-nova-ai-for-smoother-conversations">🏅
-Congratulations! You’ve fine-tuned Nova AI for smoother
-conversations!</a></li>
-<li><a href="#test-your-understanding-2" id="toc-test-your-understanding-2">Test your understanding</a></li>
-</ul></li>
-<li><a href="#use-case-4-make-your-agent-public-and-publish-it-to-the-demo-website" id="toc-use-case-4-make-your-agent-public-and-publish-it-to-the-demo-website">🌐
-Use Case #4: Make your agent public and publish it to the demo
-website</a>
-<ul>
-<li><a href="#step-by-step-instructions-3" id="toc-step-by-step-instructions-3">Step-by-step instructions</a></li>
-<li><a href="#congratulations-youve-published-nova-ai-to-the-demo-website" id="toc-congratulations-youve-published-nova-ai-to-the-demo-website">🏅
-Congratulations! You’ve published Nova AI to the demo website!</a></li>
-<li><a href="#test-your-understanding-3" id="toc-test-your-understanding-3">Test your understanding</a></li>
-</ul></li>
-<li><a href="#summary-of-learnings" id="toc-summary-of-learnings">🏆
-Summary of learnings</a>
-<ul>
-<li><a href="#conclusions-and-recommendations" id="toc-conclusions-and-recommendations">Conclusions and
-recommendations</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav>
-<section id="give-your-public-website-chatbot-a-brain-and-make-it-an-agent" class="level1">
-<h1>Give your public website chatbot a brain and make it an agent</h1>
+<h1 id="give-your-public-website-chatbot-a-brain-and-make-it-an-agent">Give
+your public website chatbot a brain and make it an agent</h1>
 <p>Create an intelligent agent that delivers contextual, multi-part
 answers using your content and real-time data.</p>
 <hr />
-<section id="lab-details" class="level2">
-<h2>🧭 Lab Details</h2>
+<h2 id="lab-details">🧭 Lab Details</h2>
 <table>
 <colgroup>
 <col style="width: 18%" />
@@ -497,9 +421,7 @@ organization’s brand.</td>
 </tbody>
 </table>
 <hr />
-</section>
-<section id="table-of-contents" class="level2">
-<h2>📚 Table of Contents</h2>
+<h2 id="table-of-contents">📚 Table of Contents</h2>
 <ul>
 <li><a href="#-why-this-matters">Why This Matters</a></li>
 <li><a href="#-introduction">Introduction</a></li>
@@ -523,9 +445,7 @@ website</a></li>
 </ul></li>
 </ul>
 <hr />
-</section>
-<section id="why-this-matters" class="level2">
-<h2>🤔 Why This Matters</h2>
+<h2 id="why-this-matters">🤔 Why This Matters</h2>
 <p><strong>New to building intelligent agents?</strong> You might think
 creating a sophisticated AI assistant requires complex coding or
 expensive tools, but Copilot Studio makes it accessible to anyone!</p>
@@ -545,9 +465,7 @@ multiple sources of information</q></p>
 <p><strong>The 25 minutes you invest in this lab will transform how
 users interact with your content!</strong></p>
 <hr />
-</section>
-<section id="introduction" class="level2">
-<h2>🌐 Introduction</h2>
+<h2 id="introduction">🌐 Introduction</h2>
 <p>Modern users expect intelligent, contextual responses that go beyond
 simple keyword matching. This lab will guide you through creating Nova
 AI, an intelligent agent that can reason across multiple knowledge
@@ -564,9 +482,7 @@ Synthesize all this information into a coherent, helpful response</p>
 frustrating searches to delightful discoveries, while showcasing your
 organization’s expertise and attention to detail.</p>
 <hr />
-</section>
-<section id="core-concepts-overview" class="level2">
-<h2>🎓 Core Concepts Overview</h2>
+<h2 id="core-concepts-overview">🎓 Core Concepts Overview</h2>
 <table>
 <colgroup>
 <col style="width: 36%" />
@@ -617,9 +533,8 @@ rather than general training data to ensure accuracy and relevance.</td>
 </tbody>
 </table>
 <hr />
-</section>
-<section id="documentation-and-additional-training-links" class="level2">
-<h2>📄 Documentation and Additional Training Links</h2>
+<h2 id="documentation-and-additional-training-links">📄 Documentation
+and Additional Training Links</h2>
 <ul>
 <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-get-started?tabs=web">QuickStart:
 Create and deploy an agent</a></li>
@@ -631,9 +546,7 @@ agent behavior with generative AI</a></li>
 connectors in Copilot Studio</a></li>
 </ul>
 <hr />
-</section>
-<section id="prerequisites" class="level2">
-<h2>✅ Prerequisites</h2>
+<h2 id="prerequisites">✅ Prerequisites</h2>
 <ul>
 <li>Ability to create a custom agent in Microsoft Copilot Studio.</li>
 <li>Environment with the following data loss prevention policies NOT
@@ -648,9 +561,7 @@ Studio</li>
 </ul></li>
 </ul>
 <hr />
-</section>
-<section id="summary-of-targets" class="level2">
-<h2>🎯 Summary of Targets</h2>
+<h2 id="summary-of-targets">🎯 Summary of Targets</h2>
 <p>In this lab, you’ll build Nova AI, an intelligent assistant that goes
 beyond simple Q&amp;A to deliver contextual, multi-part responses. By
 the end of the lab, you will:</p>
@@ -665,9 +576,7 @@ grounding.</li>
 accuracy.</li>
 </ul>
 <hr />
-</section>
-<section id="use-cases-covered" class="level2">
-<h2>🧩 Use Cases Covered</h2>
+<h2 id="use-cases-covered">🧩 Use Cases Covered</h2>
 <table>
 <colgroup>
 <col style="width: 16%" />
@@ -720,13 +629,10 @@ your agent to see it in action on the demo website.</td>
 </tbody>
 </table>
 <hr />
-</section>
-<section id="instructions-by-use-case" class="level2">
-<h2>🛠️ Instructions by Use Case</h2>
+<h2 id="instructions-by-use-case">🛠️ Instructions by Use Case</h2>
 <hr />
-</section>
-<section id="use-case-1-create-a-new-agent-and-add-knowledge" class="level2">
-<h2>🧱 Use Case #1: Create a new agent and add knowledge</h2>
+<h2 id="use-case-1-create-a-new-agent-and-add-knowledge">🧱 Use Case #1:
+Create a new agent and add knowledge</h2>
 <p>Build Nova AI using the conversational creation experience and ground
 it with trusted knowledge sources.</p>
 <table>
@@ -759,16 +665,13 @@ websites and files to ground its answers in trusted data.</p>
 <p><strong>Scenario:</strong> Build the foundation of Nova AI, your
 intelligent agent designed to handle complex, contextual queries by
 drawing from reliable, grounded content.</p>
-<section id="objective" class="level3">
-<h3>Objective</h3>
+<h3 id="objective">Objective</h3>
 <p>Create Nova AI with custom instructions and Wikipedia knowledge
 integration using Copilot Studio’s conversational setup experience.</p>
 <hr />
-</section>
-<section id="step-by-step-instructions" class="level3">
-<h3>Step-by-step instructions</h3>
-<section id="start-the-agent-creation-process" class="level4">
-<h4>Start the agent creation process</h4>
+<h3 id="step-by-step-instructions">Step-by-step instructions</h3>
+<h4 id="start-the-agent-creation-process">Start the agent creation
+process</h4>
 <ol type="1">
 <li><p><strong>Navigate</strong> to <a href="https://copilotstudio.microsoft.com">copilotstudio.microsoft.com</a>.</p></li>
 <li><p>Make sure you’re in the correct environment by looking at the top
@@ -781,9 +684,8 @@ one.</p></li>
 <li><p>Once in your solution, select <strong>+ New</strong> and choose
 <strong>Agent</strong> &gt; <strong>Agent</strong>.</p></li>
 </ol>
-</section>
-<section id="define-your-agent-through-conversation" class="level4">
-<h4>Define your agent through conversation</h4>
+<h4 id="define-your-agent-through-conversation">Define your agent
+through conversation</h4>
 <blockquote>
 <p>[!TIP] - You will be redirected to the conversational creation
 experience. It allows you to use natural language to help you configure
@@ -811,9 +713,7 @@ actually uses the Bing index, so results depend on your website’s Bing
 indexing quality and latest crawl date. - You can add up to four public
 website URLs for knowledge search at a time</p>
 </blockquote>
-</section>
-<section id="finalize-creation" class="level4">
-<h4>Finalize creation</h4>
+<h4 id="finalize-creation">Finalize creation</h4>
 <ol start="6" type="1">
 <li><p>If you didn’t start from your solution: Before creating the
 agent, select the <strong>…</strong> menu, go to <strong>Update advanced
@@ -821,14 +721,10 @@ Settings</strong>, and choose the Solution you created.</p></li>
 <li><p>Select <strong>Create</strong>.</p></li>
 </ol>
 <hr />
-</section>
-</section>
-<section id="congratulations-youve-created-nova-ai" class="level3">
-<h3>🏅 Congratulations! You’ve created Nova AI!</h3>
+<h3 id="congratulations-youve-created-nova-ai">🏅 Congratulations!
+You’ve created Nova AI!</h3>
 <hr />
-</section>
-<section id="test-your-understanding" class="level3">
-<h3>Test your understanding</h3>
+<h3 id="test-your-understanding">Test your understanding</h3>
 <p><strong>Key takeaways:</strong></p>
 <ul>
 <li><strong>Conversational agent creation</strong> – You can build a
@@ -861,10 +757,8 @@ experience?</li>
 </ul>
 <hr />
 <hr />
-</section>
-</section>
-<section id="use-case-2-disable-general-knowledge-and-add-connectors" class="level2">
-<h2>🔄 Use Case #2: Disable general knowledge and add connectors</h2>
+<h2 id="use-case-2-disable-general-knowledge-and-add-connectors">🔄 Use
+Case #2: Disable general knowledge and add connectors</h2>
 <p>Ensure accuracy by grounding responses in your data while adding
 real-time capabilities.</p>
 <table>
@@ -896,10 +790,9 @@ retrieval and test generative orchestration.</p>
 <p><strong>Scenario:</strong> Ensure Nova AI provides only fact-based,
 controlled responses while enabling it to perform real-time actions like
 weather lookups for comprehensive, multi-step answers.</p>
-<section id="step-by-step-instructions-1" class="level3">
-<h3>Step-by-step instructions</h3>
-<section id="test-and-disable-general-knowledge" class="level4">
-<h4>Test and disable general knowledge</h4>
+<h3 id="step-by-step-instructions-1">Step-by-step instructions</h3>
+<h4 id="test-and-disable-general-knowledge">Test and disable general
+knowledge</h4>
 <ol type="1">
 <li><p><strong>Navigate</strong> to <a href="https://copilotstudio.microsoft.com">copilotstudio.microsoft.com</a>
 and <strong>open</strong> the Nova AI agent.</p></li>
@@ -918,9 +811,7 @@ pane, and test the same question again.</p></li>
 <p>[!IMPORTANT] It may take a few minutes for the setting to be fully
 disabled. You may need to refresh and retry several times.</p>
 </blockquote>
-</section>
-<section id="add-weather-connector" class="level4">
-<h4>Add weather connector</h4>
+<h4 id="add-weather-connector">Add weather connector</h4>
 <ol start="6" type="1">
 <li><p>Go to the <strong>Tools</strong> tab and choose <strong>+ Add a
 tool</strong>.</p></li>
@@ -965,9 +856,8 @@ context or more the queries the end-user has typed in.</p>
 <ol start="13" type="1">
 <li><strong>Save</strong> the configuration.</li>
 </ol>
-</section>
-<section id="test-generative-orchestration" class="level4">
-<h4>Test generative orchestration</h4>
+<h4 id="test-generative-orchestration">Test generative
+orchestration</h4>
 <ol start="14" type="1">
 <li><p>Test your enhanced agent with this complex question:</p>
 <pre><code>Who is the current CEO of the company that owns GitHub? Where did they earn their MBA? What&#39;s the average rent for a one-bedroom apartment near that campus? What&#39;s the air quality index in that area today?</code></pre></li>
@@ -980,15 +870,11 @@ answer.</p></li>
 <figcaption aria-hidden="true">alt text</figcaption>
 </figure>
 <hr />
-</section>
-</section>
-<section id="congratulations-youve-enhanced-nova-ai-with-controlled-knowledge-and-real-time-capabilities" class="level3">
-<h3>🏅 Congratulations! You’ve enhanced Nova AI with controlled
-knowledge and real-time capabilities!</h3>
+<h3 id="congratulations-youve-enhanced-nova-ai-with-controlled-knowledge-and-real-time-capabilities">🏅
+Congratulations! You’ve enhanced Nova AI with controlled knowledge and
+real-time capabilities!</h3>
 <hr />
-</section>
-<section id="test-your-understanding-1" class="level3">
-<h3>Test your understanding</h3>
+<h3 id="test-your-understanding-1">Test your understanding</h3>
 <ul>
 <li>Do you understand why disabling general knowledge improves accuracy
 and reduces hallucinations?</li>
@@ -1007,11 +893,8 @@ sources rather than general knowledge?</li>
 users?</li>
 </ul>
 <hr />
-</section>
-</section>
-<section id="use-case-3-fine-tune-your-ai-assistant-for-smoother-conversations" class="level2">
-<h2>💬 Use Case #3: Fine-tune your AI assistant for smoother
-conversations</h2>
+<h2 id="use-case-3-fine-tune-your-ai-assistant-for-smoother-conversations">💬
+Use Case #3: Fine-tune your AI assistant for smoother conversations</h2>
 <p>Customize system topics to enhance interactions and deliver a
 smoother user experience.</p>
 <table>
@@ -1044,10 +927,9 @@ knowledge sources.</p>
 to make it more engaging, add suggested start prompts to guide users
 effectively, and refine system topics like Escalate to ensure they align
 with your organization’s needs.</p>
-<section id="step-by-step-instructions-2" class="level3">
-<h3>Step-by-step instructions</h3>
-<section id="customize-the-welcome-message" class="level4">
-<h4>Customize the welcome message</h4>
+<h3 id="step-by-step-instructions-2">Step-by-step instructions</h3>
+<h4 id="customize-the-welcome-message">Customize the welcome
+message</h4>
 <ol type="1">
 <li><p><strong>Navigate</strong> to <a href="https://copilotstudio.microsoft.com">copilotstudio.microsoft.com</a>
 and <strong>open</strong> the Nova AI agent.</p></li>
@@ -1084,9 +966,8 @@ and cannot do - Keep it concise – Too much information up front can be
 overwhelming - Use Markdown – Most clients support Markdown for advanced
 formatting options</p>
 </blockquote>
-</section>
-<section id="add-quick-reply-conversation-starters" class="level4">
-<h4>Add quick reply conversation starters</h4>
+<h4 id="add-quick-reply-conversation-starters">Add quick reply
+conversation starters</h4>
 <ol start="5" type="1">
 <li><p>While still on the welcome message, select <strong>+
 Add</strong>, then choose <strong>Quick reply</strong>. These serve as
@@ -1129,9 +1010,8 @@ speaking rate, etc.</p>
 <ol start="7" type="1">
 <li><strong>Save</strong> your topic.</li>
 </ol>
-</section>
-<section id="customize-the-escalation-experience" class="level4">
-<h4>Customize the escalation experience</h4>
+<h4 id="customize-the-escalation-experience">Customize the escalation
+experience</h4>
 <ol start="8" type="1">
 <li><p>Go to your agent’s <strong>Topics</strong> tab and select
 <strong>System topics</strong>.</p></li>
@@ -1156,15 +1036,11 @@ to avoid errors</p>
 <li><strong>Save</strong> your topic.</li>
 </ol>
 <hr />
-</section>
-</section>
-<section id="congratulations-youve-fine-tuned-nova-ai-for-smoother-conversations" class="level3">
-<h3>🏅 Congratulations! You’ve fine-tuned Nova AI for smoother
+<h3 id="congratulations-youve-fine-tuned-nova-ai-for-smoother-conversations">🏅
+Congratulations! You’ve fine-tuned Nova AI for smoother
 conversations!</h3>
 <hr />
-</section>
-<section id="test-your-understanding-2" class="level3">
-<h3>Test your understanding</h3>
+<h3 id="test-your-understanding-2">Test your understanding</h3>
 <ul>
 <li>Do you understand how a well-crafted welcome message sets the tone
 and improves engagement?</li>
@@ -1182,10 +1058,8 @@ organization’s branding?</li>
 beyond simply handing off to a live agent?</li>
 </ul>
 <hr />
-</section>
-</section>
-<section id="use-case-4-make-your-agent-public-and-publish-it-to-the-demo-website" class="level2">
-<h2>🌐 Use Case #4: Make your agent public and publish it to the demo
+<h2 id="use-case-4-make-your-agent-public-and-publish-it-to-the-demo-website">🌐
+Use Case #4: Make your agent public and publish it to the demo
 website</h2>
 <p>Remove authentication barriers and publish your agent to see it in
 action on the demo website.</p>
@@ -1219,10 +1093,8 @@ sharing.</p>
 and doesn’t handle private data, you’ll disable authentication for a
 seamless user experience and publish it to the demo website to gather
 feedback before deploying to your real site.</p>
-<section id="step-by-step-instructions-3" class="level3">
-<h3>Step-by-step instructions</h3>
-<section id="remove-authentication" class="level4">
-<h4>Remove authentication</h4>
+<h3 id="step-by-step-instructions-3">Step-by-step instructions</h3>
+<h4 id="remove-authentication">Remove authentication</h4>
 <ol type="1">
 <li><p><strong>Navigate</strong> to <a href="https://copilotstudio.microsoft.com">copilotstudio.microsoft.com</a>
 and <strong>open</strong> the Nova AI agent.</p></li>
@@ -1242,9 +1114,8 @@ documents or system integrations. - <strong>Integration Risks</strong>:
 Verify that connectors don’t use the maker’s authentication context
 unless intended, as this could create data exfiltration risks.</p>
 </blockquote>
-</section>
-<section id="publish-and-test-on-demo-website" class="level4">
-<h4>Publish and test on demo website</h4>
+<h4 id="publish-and-test-on-demo-website">Publish and test on demo
+website</h4>
 <ol start="5" type="1">
 <li><p>Select <strong>Publish</strong> to make your changes
 live.</p></li>
@@ -1272,15 +1143,10 @@ unauthenticated agents or those using manual authentication. It is
 disabled when Web Channel security is enforced.</p>
 </blockquote>
 <hr />
-</section>
-</section>
-<section id="congratulations-youve-published-nova-ai-to-the-demo-website" class="level3">
-<h3>🏅 Congratulations! You’ve published Nova AI to the demo
-website!</h3>
+<h3 id="congratulations-youve-published-nova-ai-to-the-demo-website">🏅
+Congratulations! You’ve published Nova AI to the demo website!</h3>
 <hr />
-</section>
-<section id="test-your-understanding-3" class="level3">
-<h3>Test your understanding</h3>
+<h3 id="test-your-understanding-3">Test your understanding</h3>
 <ul>
 <li>Do you understand why removing authentication improves user
 experience for public information agents?</li>
@@ -1299,10 +1165,7 @@ launch?</li>
 your users?</li>
 </ul>
 <hr />
-</section>
-</section>
-<section id="summary-of-learnings" class="level2">
-<h2>🏆 Summary of learnings</h2>
+<h2 id="summary-of-learnings">🏆 Summary of learnings</h2>
 <p>True learning comes from doing, questioning, and reflecting—so let’s
 put your skills to the test.</p>
 <p>To maximize the impact of your intelligent agent:</p>
@@ -1321,8 +1184,8 @@ reduce hallucinations and keep answers aligned with your trusted
 sources.</li>
 </ul>
 <hr />
-<section id="conclusions-and-recommendations" class="level3">
-<h3>Conclusions and recommendations</h3>
+<h3 id="conclusions-and-recommendations">Conclusions and
+recommendations</h3>
 <p><strong>Intelligent agent golden rules:</strong></p>
 <ul>
 <li>Keep knowledge fresh – Regularly review and update knowledge sources
@@ -1343,8 +1206,5 @@ are not only useful but also delightful, trusted, and aligned with your
 organization’s goals—transforming how users discover and interact with
 your content.</p>
 <hr />
-</section>
-</section>
-</section>
 </body>
 </html>
