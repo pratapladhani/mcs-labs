@@ -62,12 +62,6 @@ jobs:
                 --standalone \
                 --self-contained \
                 --css="../../.github/styles/html.css" \
-                --metadata title="$lab_name Lab Guide" \
-                --metadata author="Microsoft Copilot Studio Labs" \
-                --metadata date="$(date +%Y-%m-%d)" \
-                --toc \
-                --toc-depth=3 \
-                --section-divs \
                 --html-q-tags \
                 --ascii \
                 -f markdown+auto_identifiers \
@@ -78,7 +72,6 @@ jobs:
                 echo "Trying fallback HTML method for $lab_name..."
                 pandoc "README.md" -o "${lab_name}.html" \
                   --standalone \
-                  --section-divs \
                   -f markdown+auto_identifiers \
                   -t html5 2>/dev/null && echo "✓ Fallback HTML conversion succeeded for $lab_name"
               fi
@@ -87,7 +80,7 @@ jobs:
               cd - > /dev/null
             fi
           done
-          
+
           echo "Generated HTML count: $(find labs -name "*.html" -type f | wc -l)"
 
       # Convert HTML to PDF (preserves hyperlinks better)
@@ -130,7 +123,7 @@ jobs:
               fi
             fi
           done
-          
+
           echo "Generated PDF count: $(find labs -name "*.pdf" -type f | wc -l)"
 
       # Commit PDFs and HTML files back to the repository
