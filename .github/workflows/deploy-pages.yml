@@ -59,12 +59,14 @@ jobs:
           # Enhance README for web display
           cp README.md _site/README_processed.md
           
-          # Update the table header to replace URL with Actions column
-          sed -i 's/| Title | URL | Overview |/| Title | Actions | Overview |/g' _site/README_processed.md
-          sed -i 's/|-------|-----|----------|/|-------|---------|----------|/g' _site/README_processed.md
+          # Update the table header to replace URL with Download column
+          sed -i 's/| Title | URL | Overview |/| Title | Download | Overview |/g' _site/README_processed.md
+          sed -i 's/|-------|-----|----------|/|-------|----------|----------|/g' _site/README_processed.md
           
-          # Replace the URL links with HTML and PDF action buttons
-          sed -i 's|\[\([^]]*\)\](\./labs/\([^)]*\))|\[📄 HTML\](labs/\2/\2.html) \[📋 PDF\](labs/\2/\2.pdf)|g' _site/README_processed.md
+          # Make the title clickable (links to HTML) and put PDF download in Download column
+          # Format: | Title | [link-text](./labs/lab-name) | Overview | becomes:
+          # | [Title](labs/lab-name/lab-name.html) | [📋 PDF](labs/lab-name/lab-name.pdf) | Overview |
+          sed -i 's/| \([^|]*\) | \[\([^]]*\)\](\./labs/\([^)]*\)) | \([^|]*\) |/| [\1](labs\/\3\/\3.html) | [📋 PDF](labs\/\3\/\3.pdf) | \4 |/g' _site/README_processed.md
           
           # Convert README to HTML with custom styling (using embedded resources to fix CSS path issue)
           pandoc _site/README_processed.md \
