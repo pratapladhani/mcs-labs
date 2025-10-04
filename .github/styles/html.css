@@ -291,51 +291,82 @@ hr {
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Admonitions/callouts */
+/* GitHub-style callouts/admonitions */
 .note, .warning, .tip, .info {
   padding: 1.5em;
   margin: 2em 0;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   position: relative;
+  font-style: normal;
+}
+
+/* GitHub-style blockquote callouts */
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+  border-left: none;
+  margin: 0;
+  padding: 1em;
+  border-radius: 6px;
+}
+
+blockquote:has(.note) {
+  background-color: #dbeafe;
+  border-left: 4px solid #3b82f6;
+  border-radius: 0 6px 6px 0;
+}
+
+blockquote:has(.tip) {
+  background-color: #dcfce7;
+  border-left: 4px solid #22c55e;
+  border-radius: 0 6px 6px 0;
+}
+
+blockquote:has(.warning) {
+  background-color: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0 6px 6px 0;
 }
 
 .note {
-  background-color: #e8f4fd;
-  border-left: 4px solid #3498db;
+  background-color: #dbeafe;
+  border-left: 4px solid #3b82f6;
+  color: #1e40af;
 }
 
 .warning {
-  background-color: #fdf2e8;
-  border-left: 4px solid #e67e22;
+  background-color: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  color: #92400e;
 }
 
 .tip {
-  background-color: #eafaf1;
-  border-left: 4px solid #27ae60;
+  background-color: #dcfce7;
+  border-left: 4px solid #22c55e;
+  color: #166534;
 }
 
 .info {
-  background-color: #f0f8ff;
-  border-left: 4px solid #17a2b8;
+  background-color: #f0f9ff;
+  border-left: 4px solid #0ea5e9;
+  color: #0c4a6e;
 }
 
-/* Add icons to admonitions */
+/* Add GitHub-style icons to admonitions */
 .note::before {
-  content: "ℹ️";
-  font-size: 1.2em;
+  content: "ℹ️ ";
+  font-size: 1.1em;
   margin-right: 0.5em;
 }
 
 .warning::before {
-  content: "⚠️";
-  font-size: 1.2em;
+  content: "⚠️ ";
+  font-size: 1.1em;
   margin-right: 0.5em;
 }
 
 .tip::before {
-  content: "💡";
-  font-size: 1.2em;
+  content: "💡 ";
+  font-size: 1.1em;
   margin-right: 0.5em;
 }
 

@@ -56,25 +56,40 @@ jobs:
               # Change to the lab directory to ensure relative image paths work
               cd "$lab_dir"
               
-              # Convert to HTML with custom CSS
-              if pandoc "README.md" \
+              # Preprocess markdown for GitHub-style callouts and emoji preservation
+              cp "README.md" "${lab_name}_processed.md"
+              
+              # Convert GitHub-style callouts to HTML divs with classes
+              sed -i 's/> \[!NOTE\]/> <div class="note">**Note:** /g' "${lab_name}_processed.md"
+              sed -i 's/> \[!TIP\]/> <div class="tip">**Tip:** /g' "${lab_name}_processed.md"
+              sed -i 's/> \[!IMPORTANT\]/> <div class="warning">**Important:** /g' "${lab_name}_processed.md"
+              sed -i 's/> \[!WARNING\]/> <div class="warning">**Warning:** /g' "${lab_name}_processed.md"
+              sed -i 's/> \[!CAUTION\]/> <div class="warning">**Caution:** /g' "${lab_name}_processed.md"
+              
+              # Add closing div tags for callouts (simple approach - assumes single line callouts)
+              sed -i 's/\(> <div class="[^"]*">.*\)$/\1<\/div>/g' "${lab_name}_processed.md"
+              
+              # Convert to HTML with custom CSS (preserve emojis by removing --ascii)
+              if pandoc "${lab_name}_processed.md" \
                 -o "${lab_name}.html" \
                 --standalone \
                 --self-contained \
                 --css="../../.github/styles/html.css" \
                 --html-q-tags \
-                --ascii \
                 -f markdown+auto_identifiers \
                 -t html5 2>/dev/null; then
                 echo "✓ Successfully converted $lab_name to HTML"
               else
                 # Try fallback conversion without CSS
                 echo "Trying fallback HTML method for $lab_name..."
-                pandoc "README.md" -o "${lab_name}.html" \
+                pandoc "${lab_name}_processed.md" -o "${lab_name}.html" \
                   --standalone \
                   -f markdown+auto_identifiers \
                   -t html5 2>/dev/null && echo "✓ Fallback HTML conversion succeeded for $lab_name"
               fi
+              
+              # Cleanup processed file
+              rm -f "${lab_name}_processed.md"
               
               # Change back to root directory
               cd - > /dev/null

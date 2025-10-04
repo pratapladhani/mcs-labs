@@ -196,27 +196,59 @@ hr {
   margin-right: 8pt;
 }
 
-/* Admonitions/callouts */
-.note, .warning, .tip {
+/* GitHub-style callouts/admonitions for PDF */
+.note, .warning, .tip, .info {
   padding: 12pt;
   margin: 16pt 0;
   border-radius: 4pt;
   page-break-inside: avoid;
+  font-style: normal;
+}
+
+/* Handle blockquote callouts */
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+  border-left: none;
+  margin: 0;
+  padding: 8pt;
+}
+
+blockquote:has(.note) {
+  background-color: #dbeafe;
+  border-left: 4pt solid #3b82f6;
+}
+
+blockquote:has(.tip) {
+  background-color: #dcfce7;
+  border-left: 4pt solid #22c55e;
+}
+
+blockquote:has(.warning) {
+  background-color: #fef3c7;
+  border-left: 4pt solid #f59e0b;
 }
 
 .note {
-  background-color: #e8f4fd;
-  border-left: 4px solid #3498db;
+  background-color: #dbeafe;
+  border-left: 4pt solid #3b82f6;
+  color: #1e40af;
 }
 
 .warning {
-  background-color: #fdf2e8;
-  border-left: 4pt solid #e67e22;
+  background-color: #fef3c7;
+  border-left: 4pt solid #f59e0b;
+  color: #92400e;
 }
 
 .tip {
-  background-color: #eafaf1;
-  border-left: 4pt solid #27ae60;
+  background-color: #dcfce7;
+  border-left: 4pt solid #22c55e;
+  color: #166534;
+}
+
+.info {
+  background-color: #f0f9ff;
+  border-left: 4pt solid #0ea5e9;
+  color: #0c4a6e;
 }
 
 /* Footer with page numbers */
