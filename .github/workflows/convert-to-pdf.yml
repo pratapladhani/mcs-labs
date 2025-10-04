@@ -73,9 +73,11 @@ jobs:
               # Add closing div tags for callouts (simple approach - assumes single line callouts)
               sed -i 's/\(> <div class="[^"]*">.*\)$/\1<\/div>/g' "${lab_name}_processed.md"
               
-              # Fix anchor links by removing problematic characters
-              # Remove leading hyphens and emojis from anchor links to match Pandoc's clean ID generation
-              sed -i 's/(#[^a-zA-Z]*\([a-zA-Z][^)]*\))/(#\1)/g' "${lab_name}_processed.md"
+              # Fix anchor links by removing leading dashes and emojis to match Pandoc's ID generation
+              # Convert (#-why-this-matters) to (#why-this-matters)
+              sed -i 's/(#-\([^)]*\))/(#\1)/g' "${lab_name}_processed.md"
+              # Also handle cases with emojis: (#🤔-why-this-matters) to (#why-this-matters)
+              sed -i 's/(#[^a-zA-Z0-9]*\([a-zA-Z0-9][^)]*\))/(#\1)/g' "${lab_name}_processed.md"
               
               # Debug: Show internal links after preprocessing
               echo "Internal links found in $lab_name (after preprocessing):"
