@@ -106,15 +106,6 @@ jobs:
                 # Ensure proper anchor link format in HTML
                 # Fix links that might have been broken during conversion
                 sed -i 's/href="#[[:space:]]*\([^"[:space:]]*\)[[:space:]]*"/href="#\1"/g' "${lab_name}.html"
-                
-                # Add robot emoji favicon for consistent branding
-                favicon_emoji="�"
-                echo "Adding favicon emoji: $favicon_emoji for $lab_name"
-                
-                # Add favicon to HTML head using robot emoji as data URL
-                favicon_data="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>$favicon_emoji</text></svg>"
-                sed -i "s|</head>|  <link rel=\"icon\" href=\"$favicon_data\">\n</head>|" "${lab_name}.html"
-                
                 echo "✓ Successfully converted $lab_name to HTML"
               else
                 # Try fallback conversion without CSS
