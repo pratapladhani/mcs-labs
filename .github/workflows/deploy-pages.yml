@@ -123,38 +123,8 @@ jobs:
                   const labs = [
           EOF
           
-          # Generate lab entries for JavaScript
-          echo "          ];" >> _site/index.html
-          
-          # Add JavaScript to populate the grid
-          cat >> _site/index.html << 'EOF'
-                  
-                  function populateLabGrid() {
-                      const grid = document.getElementById('lab-grid');
-                      labs.forEach(lab => {
-                          const card = document.createElement('div');
-                          card.className = 'lab-card';
-                          card.innerHTML = `
-                              <h3 class="lab-title">${lab.title}</h3>
-                              <p class="lab-description">${lab.description}</p>
-                              <div class="lab-links">
-                                  <a href="${lab.htmlPath}" class="lab-link">📄 View HTML</a>
-                                  <a href="${lab.pdfPath}" class="lab-link pdf">📋 Download PDF</a>
-                              </div>
-                          `;
-                          grid.appendChild(card);
-                      });
-                  }
-                  
-                  // Populate the grid when page loads
-                  populateLabGrid();
-              </script>
-          </body>
-          </html>
-          EOF
-          
           # Copy all HTML files and create lab entries
-          echo "          // Lab entries" > temp_labs.js
+          first_lab=true
           for lab_dir in labs/*/; do
             if [ -d "$lab_dir" ]; then
               lab_name=$(basename "$lab_dir")
@@ -177,31 +147,60 @@ jobs:
                 fi
                 
                 # Extract title from HTML file or use lab name
-                title=$(grep -o '<title>[^<]*</title>' "$html_file" | sed 's/<title>\(.*\)<\/title>/\1/' || echo "$lab_name")
+                title=$(grep -o '<title>[^<]*</title>' "$html_file" | sed 's/<title>\(.*\)<\/title>/\1/' 2>/dev/null || echo "$lab_name")
                 title=${title:-$lab_name}
                 
                 # Generate description from README if available
                 description="Hands-on lab for Microsoft Copilot Studio"
                 if [ -f "${lab_dir}README.md" ]; then
-                  description=$(head -3 "${lab_dir}README.md" | tail -1 | sed 's/^[#* ]*//' | cut -c1-100)
+                  description=$(head -5 "${lab_dir}README.md" | tail -1 | sed 's/^[#* ]*//' | cut -c1-150 2>/dev/null || echo "$description")
                 fi
                 
-                # Add to JavaScript array
-                echo "                      {" >> temp_labs.js
-                echo "                          title: '${title//\'/\\\'}', " >> temp_labs.js
-                echo "                          description: '${description//\'/\\\'}', " >> temp_labs.js
-                echo "                          htmlPath: 'labs/$lab_name/${lab_name}.html', " >> temp_labs.js
-                echo "                          pdfPath: 'labs/$lab_name/${lab_name}.pdf'" >> temp_labs.js
-                echo "                      }," >> temp_labs.js
+                # Add comma if not first lab
+                if [ "$first_lab" = true ]; then
+                  first_lab=false
+                else
+                  echo "," >> _site/index.html
+                fi
+                
+                # Add lab entry to JavaScript array
+                echo "                      {" >> _site/index.html
+                echo "                          title: '${title//\'/\\\'}', " >> _site/index.html
+                echo "                          description: '${description//\'/\\\'}', " >> _site/index.html
+                echo "                          htmlPath: 'labs/$lab_name/${lab_name}.html', " >> _site/index.html
+                echo "                          pdfPath: 'labs/$lab_name/${lab_name}.pdf'" >> _site/index.html
+                echo "                      }" >> _site/index.html
                 
                 echo "✓ Added lab: $lab_name"
               fi
             fi
           done
           
-          # Insert lab data into index.html
-          sed -i '/\/\/ Lab entries/r temp_labs.js' _site/index.html
-          rm temp_labs.js
+          # Close JavaScript array and add the rest
+          echo "                  ];" >> _site/index.html
+          echo "                  " >> _site/index.html
+          echo "                  function populateLabGrid() {" >> _site/index.html
+          echo "                      const grid = document.getElementById('lab-grid');" >> _site/index.html
+          echo "                      labs.forEach(lab => {" >> _site/index.html
+          echo "                          const card = document.createElement('div');" >> _site/index.html
+          echo "                          card.className = 'lab-card';" >> _site/index.html
+          echo "                          card.innerHTML = \`" >> _site/index.html
+          echo "                              <h3 class=\"lab-title\">\${lab.title}</h3>" >> _site/index.html
+          echo "                              <p class=\"lab-description\">\${lab.description}</p>" >> _site/index.html
+          echo "                              <div class=\"lab-links\">" >> _site/index.html
+          echo "                                  <a href=\"\${lab.htmlPath}\" class=\"lab-link\">📄 View HTML</a>" >> _site/index.html
+          echo "                                  <a href=\"\${lab.pdfPath}\" class=\"lab-link pdf\">📋 Download PDF</a>" >> _site/index.html
+          echo "                              </div>" >> _site/index.html
+          echo "                          \`;" >> _site/index.html
+          echo "                          grid.appendChild(card);" >> _site/index.html
+          echo "                      });" >> _site/index.html
+          echo "                  }" >> _site/index.html
+          echo "                  " >> _site/index.html
+          echo "                  // Populate the grid when page loads" >> _site/index.html
+          echo "                  populateLabGrid();" >> _site/index.html
+          echo "              </script>" >> _site/index.html
+          echo "          </body>" >> _site/index.html
+          echo "          </html>" >> _site/index.html
           
           echo ""
           echo "📊 Site structure created:"
