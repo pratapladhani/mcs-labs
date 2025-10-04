@@ -73,6 +73,10 @@ jobs:
               # Add closing div tags for callouts (simple approach - assumes single line callouts)
               sed -i 's/\(> <div class="[^"]*">.*\)$/\1<\/div>/g' "${lab_name}_processed.md"
               
+              # Debug: Show internal links before conversion
+              echo "Internal links found in $lab_name:"
+              grep -n "\[.*\](#[^)]*)" "${lab_name}_processed.md" || echo "No internal links found"
+              
               # Convert to HTML with custom CSS (preserve emojis and fix anchors)
               if pandoc "${lab_name}_processed.md" \
                 -o "${lab_name}.html" \
@@ -83,8 +87,23 @@ jobs:
                 --toc \
                 --toc-depth=3 \
                 --section-divs \
-                -f markdown+auto_identifiers+emoji \
+                --id-prefix="" \
+                -f markdown+auto_identifiers+gfm_auto_identifiers+emoji \
                 -t html5 2>/dev/null; then
+                echo "✓ Successfully converted $lab_name to HTML"
+                
+                # Debug: Check generated anchor IDs
+                echo "Generated anchor IDs in HTML:"
+                grep -o 'id="[^"]*"' "${lab_name}.html" | head -10
+                
+                # Post-process HTML to ensure anchor links work
+                # Fix common anchor ID issues - remove emoji symbols and standardize format
+                sed -i 's/id="[^"]*️[^"]*"/id=""/g' "${lab_name}.html"  # Remove emoji from IDs
+                sed -i 's/id="[[:space:]]*\([^"]*\)[[:space:]]*"/id="\1"/g' "${lab_name}.html"  # Trim spaces
+                
+                # Debug: Show final anchor IDs
+                echo "Final anchor IDs in HTML:"
+                grep -o 'id="[^"]*"' "${lab_name}.html" | head -5
                 echo "✓ Successfully converted $lab_name to HTML"
               else
                 # Try fallback conversion without CSS
@@ -93,7 +112,8 @@ jobs:
                   --standalone \
                   --section-divs \
                   --toc \
-                  -f markdown+auto_identifiers+emoji \
+                  --id-prefix="" \
+                  -f markdown+auto_identifiers+gfm_auto_identifiers+emoji \
                   -t html5 2>/dev/null && echo "✓ Fallback HTML conversion succeeded for $lab_name"
               fi
               
@@ -122,6 +142,11 @@ jobs:
                 # Change to the lab directory
                 cd "$lab_dir"
                 
+                # Debug: Check HTML file before PDF conversion
+                echo "Checking HTML structure for $lab_name:"
+                echo "First few links in HTML:"
+                grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "${lab_name}.html" | head -3 || echo "No internal links found in HTML"
+                
                 # Convert HTML to PDF using wkhtmltopdf (preserves hyperlinks and emojis)
                 if wkhtmltopdf \
                   --page-size Letter \
@@ -135,9 +160,10 @@ jobs:
                   --outline-depth 4 \
                   --print-media-type \
                   --no-stop-slow-scripts \
-                  --javascript-delay 1000 \
+                  --javascript-delay 2000 \
                   --encoding utf-8 \
                   --disable-smart-shrinking \
+                  --debug-javascript \
                   "${lab_name}.html" "${lab_name}.pdf" 2>/dev/null; then
                   echo "✓ Successfully converted $lab_name HTML to PDF"
                 else
