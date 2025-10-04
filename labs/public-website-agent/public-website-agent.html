@@ -146,37 +146,37 @@ background-color: #e3f2fd;
 transition: background-color 0.2s ease;
 }
 
-table th:nth-child(1), table td:nth-child(1) { 
+table.lab-table th:nth-child(1), table.lab-table td:nth-child(1) { 
 width: 65% !important;
 }
-table th:nth-child(2), table td:nth-child(2) { 
+table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) { 
 width: 10% !important;
 text-align: center;
 white-space: nowrap;
 }
-table th:nth-child(3), table td:nth-child(3) { 
+table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) { 
 width: 25% !important;
 }
 
-table colgroup col:nth-child(1) {
+table.lab-table colgroup col:nth-child(1) {
 width: 65% !important;
 }
-table colgroup col:nth-child(2) {
+table.lab-table colgroup col:nth-child(2) {
 width: 10% !important;
 }
-table colgroup col:nth-child(3) {
+table.lab-table colgroup col:nth-child(3) {
 width: 25% !important;
 }
 
-table {
+table.lab-table {
 table-layout: fixed !important;
 }
 
-table th:nth-child(2), table td:nth-child(2) {
+table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) {
 max-width: 80px !important;
 min-width: 60px !important;
 }
-table th:nth-child(3), table td:nth-child(3) {
+table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) {
 min-width: 20% !important;
 }
 
@@ -452,68 +452,6 @@ border-color: #27ae60;
 <h1 class="title">public-website-agent - Microsoft Copilot Studio
 Labs</h1>
 </header>
-<nav id="TOC" role="doc-toc">
-<ul>
-<li><a href="#give-your-public-website-chatbot-a-brain-and-make-it-an-agent" id="toc-give-your-public-website-chatbot-a-brain-and-make-it-an-agent">Give
-your public website chatbot a brain and make it an agent</a>
-<ul>
-<li><a href="#lab-details" id="toc-lab-details">Lab Details</a></li>
-<li><a href="#table-of-contents" id="toc-table-of-contents">Table of
-Contents</a></li>
-<li><a href="#why-this-matters" id="toc-why-this-matters">Why This
-Matters</a></li>
-<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
-<li><a href="#core-concepts-overview" id="toc-core-concepts-overview">Core Concepts Overview</a></li>
-<li><a href="#documentation-and-additional-training-links" id="toc-documentation-and-additional-training-links">Documentation and
-Additional Training Links</a></li>
-<li><a href="#prerequisites" id="toc-prerequisites">Prerequisites</a></li>
-<li><a href="#summary-of-targets" id="toc-summary-of-targets">Summary of
-Targets</a></li>
-<li><a href="#use-cases-covered" id="toc-use-cases-covered">Use Cases
-Covered</a></li>
-<li><a href="#instructions-by-use-case" id="toc-instructions-by-use-case">Instructions by Use Case</a></li>
-<li><a href="#use-case-1-create-a-new-agent-and-add-knowledge" id="toc-use-case-1-create-a-new-agent-and-add-knowledge">Use Case #1:
-Create a new agent and add knowledge</a>
-<ul>
-<li><a href="#objective" id="toc-objective">Objective</a></li>
-<li><a href="#step-by-step-instructions" id="toc-step-by-step-instructions">Step-by-step instructions</a></li>
-<li><a href="#congratulations-youve-created-nova-ai" id="toc-congratulations-youve-created-nova-ai">Congratulations! You’ve
-created Nova AI!</a></li>
-<li><a href="#test-your-understanding" id="toc-test-your-understanding">Test your understanding</a></li>
-</ul></li>
-<li><a href="#use-case-2-disable-general-knowledge-and-add-connectors" id="toc-use-case-2-disable-general-knowledge-and-add-connectors">Use
-Case #2: Disable general knowledge and add connectors</a>
-<ul>
-<li><a href="#step-by-step-instructions-1" id="toc-step-by-step-instructions-1">Step-by-step instructions</a></li>
-<li><a href="#congratulations-youve-enhanced-nova-ai-with-controlled-knowledge-and-real-time-capabilities" id="toc-congratulations-youve-enhanced-nova-ai-with-controlled-knowledge-and-real-time-capabilities">Congratulations!
-You’ve enhanced Nova AI with controlled knowledge and real-time
-capabilities!</a></li>
-<li><a href="#test-your-understanding-1" id="toc-test-your-understanding-1">Test your understanding</a></li>
-</ul></li>
-<li><a href="#use-case-3-fine-tune-your-ai-assistant-for-smoother-conversations" id="toc-use-case-3-fine-tune-your-ai-assistant-for-smoother-conversations">Use
-Case #3: Fine-tune your AI assistant for smoother conversations</a>
-<ul>
-<li><a href="#step-by-step-instructions-2" id="toc-step-by-step-instructions-2">Step-by-step instructions</a></li>
-<li><a href="#congratulations-youve-fine-tuned-nova-ai-for-smoother-conversations" id="toc-congratulations-youve-fine-tuned-nova-ai-for-smoother-conversations">Congratulations!
-You’ve fine-tuned Nova AI for smoother conversations!</a></li>
-<li><a href="#test-your-understanding-2" id="toc-test-your-understanding-2">Test your understanding</a></li>
-</ul></li>
-<li><a href="#use-case-4-make-your-agent-public-and-publish-it-to-the-demo-website" id="toc-use-case-4-make-your-agent-public-and-publish-it-to-the-demo-website">Use
-Case #4: Make your agent public and publish it to the demo website</a>
-<ul>
-<li><a href="#step-by-step-instructions-3" id="toc-step-by-step-instructions-3">Step-by-step instructions</a></li>
-<li><a href="#congratulations-youve-published-nova-ai-to-the-demo-website" id="toc-congratulations-youve-published-nova-ai-to-the-demo-website">Congratulations!
-You’ve published Nova AI to the demo website!</a></li>
-<li><a href="#test-your-understanding-3" id="toc-test-your-understanding-3">Test your understanding</a></li>
-</ul></li>
-<li><a href="#summary-of-learnings" id="toc-summary-of-learnings">Summary of learnings</a>
-<ul>
-<li><a href="#conclusions-and-recommendations" id="toc-conclusions-and-recommendations">Conclusions and
-recommendations</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav>
 <section id="give-your-public-website-chatbot-a-brain-and-make-it-an-agent" class="level1">
 <h1>Give your public website chatbot a brain and make it an agent</h1>
 <p>Create an intelligent agent that delivers contextual, multi-part
