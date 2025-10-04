@@ -40,8 +40,8 @@ jobs:
           echo "✓ wkhtmltopdf installed"
           
           # Install fonts for emoji support
-          sudo apt-get install -y --no-install-recommends fonts-noto-color-emoji fonts-noto-emoji
-          echo "✓ Emoji fonts installed"
+          sudo apt-get install -y --no-install-recommends fonts-noto-color-emoji || echo "Warning: Could not install emoji fonts"
+          echo "✓ Emoji fonts installation attempted"
 
           # Verify installations
           pandoc --version
