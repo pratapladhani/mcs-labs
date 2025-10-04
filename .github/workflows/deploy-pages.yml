@@ -81,7 +81,8 @@ jobs:
             -t html5
           
           # Remove the title block header (keep <title> in <head>, remove <header> in body)
-          perl -0pi -e 's/<header id="title-block-header">.*?<\/header>\n?//s' _site/index.html
+          # Use a more robust approach to remove the header block
+          sed -i '/<header id="title-block-header">/,/<\/header>/d' _site/index.html
           
           # Add lab-table class and normalize column widths (use Perl for robust multi-line handling)
           perl -0pi -e 's/<table style="width:100%;">/<table class="lab-table" style="width:100%;">/' _site/index.html

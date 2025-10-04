@@ -84,6 +84,13 @@ jobs:
               # Remove emojis and leading dashes from anchor links
               sed -i 's|(#[^a-zA-Z0-9]*-*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
               
+              # Extract the first H1 title from the markdown file for use as page title
+              lab_title=$(grep -m 1 '^# ' "${lab_name}_processed.md" | sed 's/^# //' | sed 's/[*_`]//g' | head -1)
+              if [ -z "$lab_title" ]; then
+                lab_title="$lab_name - Microsoft Copilot Studio Labs"
+              fi
+              echo "Using page title: $lab_title"
+              
               # Convert to HTML with custom CSS (no TOC for individual pages)
               if pandoc "${lab_name}_processed.md" \
                 -o "${lab_name}.html" \
@@ -93,13 +100,14 @@ jobs:
                 --html-q-tags \
                 --section-divs \
                 --id-prefix="" \
-                --metadata title="$lab_name - Microsoft Copilot Studio Labs" \
+                --metadata title="$lab_title" \
                 -f markdown+auto_identifiers+gfm_auto_identifiers+emoji+header_attributes \
                 -t html5 2>/dev/null; then
                 echo "✓ Successfully converted $lab_name to HTML"
                 
                 # Remove the title block header (keep <title> in <head>, remove <header> in body)
-                perl -0pi -e 's/<header id="title-block-header">.*?<\/header>\n?//s' "${lab_name}.html"
+                # Use a more robust approach to remove the header block
+                sed -i '/<header id="title-block-header">/,/<\/header>/d' "${lab_name}.html"
                 
                 # Post-process HTML to fix anchor links and remove problematic IDs
                 # Remove empty or invalid IDs that might break navigation
