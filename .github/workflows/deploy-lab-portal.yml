@@ -14,11 +14,17 @@ name: 🌐 Deploy Lab Portal to GitHub Pages
 # WORKFLOW TRIGGERS
 # =============================================================================
 on:
-  # Deploy when HTML files or styling changes
+  # Deploy when documentation generation workflow completes
+  workflow_run:
+    workflows: ["📚 Generate Lab Documentation (HTML & PDF)"]
+    types:
+      - completed
+    branches: ["main"]
+
+  # Deploy when styling changes (independent of document generation)
   push:
     branches: ["main"]
     paths:
-      - "labs/**/*.html"         # Generated HTML files
       - ".github/styles/**"      # CSS styling updates
       - ".github/workflows/deploy-lab-portal.yml"  # This workflow file
 
@@ -59,6 +65,11 @@ jobs:
   build-site:
     name: 🏗️ Build Lab Portal Site
     runs-on: ubuntu-latest
+    # Only run if triggered manually, by style changes, or if documentation generation succeeded
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     
     steps:
       # =================================================================
@@ -145,6 +156,9 @@ jobs:
                 # Copy PDF file if it exists
                 if [ -f "$pdf_file" ]; then
                   cp "$pdf_file" "_site/labs/$lab_name/"
+                  echo "    📄 PDF copied: $lab_name.pdf"
+                else
+                  echo "    ⚠️  PDF not found: $pdf_file"
                 fi
                 
                 # Copy images if they exist
@@ -161,10 +175,16 @@ jobs:
           rm -f _site/README_processed.md
           
           echo ""
-          echo "📊 Site structure created:"
-          find _site -type f | head -20
-          echo "..."
+          echo "📊 Site deployment summary:"
+          echo "HTML files: $(find _site -name "*.html" -type f | wc -l)"
+          echo "PDF files: $(find _site -name "*.pdf" -type f | wc -l)"
+          echo "CSS files: $(find _site -name "*.css" -type f | wc -l)"
+          echo "Image files: $(find _site -name "*.png" -o -name "*.jpg" -o -name "*.gif" -o -name "*.svg" | wc -l)"
           echo "Total files: $(find _site -type f | wc -l)"
+          echo ""
+          echo "📂 Site structure preview:"
+          find _site -type f | head -15
+          echo "..."
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
