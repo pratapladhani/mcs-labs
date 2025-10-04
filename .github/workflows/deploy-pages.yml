@@ -59,20 +59,12 @@ jobs:
           # Enhance README for web display
           cp README.md _site/README_processed.md
           
-          # Add lab navigation section at the end
-          echo "" >> _site/README_processed.md
-          echo "---" >> _site/README_processed.md
-          echo "" >> _site/README_processed.md
-          echo "## 🎯 Interactive Lab Access" >> _site/README_processed.md
-          echo "" >> _site/README_processed.md
-          echo "Click on any lab below to view the HTML version online or download the PDF for offline reading:" >> _site/README_processed.md
-          echo "" >> _site/README_processed.md
-          echo '<div class="lab-grid" id="lab-grid">' >> _site/README_processed.md
-          echo '<!-- Labs will be populated by JavaScript -->' >> _site/README_processed.md
-          echo '</div>' >> _site/README_processed.md
+          # Update the table header to replace URL with Actions column
+          sed -i 's/| Title | URL | Overview |/| Title | Actions | Overview |/g' _site/README_processed.md
+          sed -i 's/|-------|-----|----------|/|-------|---------|----------|/g' _site/README_processed.md
           
-          # Update README links to point to deployed HTML files
-          sed -i 's|\[\([^]]*\)\](\./labs/\([^)]*\))|\[\1\](labs/\2/\2.html)|g' _site/README_processed.md
+          # Replace the URL links with HTML and PDF action buttons
+          sed -i 's|\[\([^]]*\)\](\./labs/\([^)]*\))|\[📄 HTML\](labs/\2/\2.html) \[📋 PDF\](labs/\2/\2.pdf)|g' _site/README_processed.md
           
           # Convert README to HTML with custom styling (using embedded resources to fix CSS path issue)
           pandoc _site/README_processed.md \
@@ -87,88 +79,7 @@ jobs:
             -f markdown+auto_identifiers+gfm_auto_identifiers+emoji \
             -t html5
           
-          # Add custom CSS for lab cards directly to the HTML
-          sed -i '/<\/head>/i \
-          <style> \
-              .lab-grid { \
-                  display: grid; \
-                  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); \
-                  gap: 2rem; \
-                  margin: 2rem 0; \
-              } \
-              .lab-card { \
-                  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); \
-                  border: 1px solid #dee2e6; \
-                  border-radius: 12px; \
-                  padding: 1.5rem; \
-                  transition: all 0.3s ease; \
-                  box-shadow: 0 2px 8px rgba(0,0,0,0.1); \
-              } \
-              .lab-card:hover { \
-                  transform: translateY(-4px); \
-                  box-shadow: 0 8px 25px rgba(0,0,0,0.15); \
-                  border-color: #3498db; \
-              } \
-              .lab-title { \
-                  color: #2c3e50; \
-                  margin-bottom: 0.8rem; \
-                  font-size: 1.3em; \
-                  font-weight: 600; \
-              } \
-              .lab-description { \
-                  color: #555; \
-                  margin-bottom: 1.2rem; \
-                  line-height: 1.6; \
-                  font-size: 0.95em; \
-              } \
-              .lab-links { \
-                  display: flex; \
-                  gap: 0.8rem; \
-                  flex-wrap: wrap; \
-              } \
-              .lab-link { \
-                  padding: 0.6rem 1.2rem; \
-                  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); \
-                  color: white; \
-                  text-decoration: none; \
-                  border-radius: 6px; \
-                  font-size: 0.9em; \
-                  font-weight: 500; \
-                  transition: all 0.2s ease; \
-                  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3); \
-              } \
-              .lab-link:hover { \
-                  background: linear-gradient(135deg, #2980b9 0%, #21618c 100%); \
-                  transform: translateY(-1px); \
-                  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4); \
-                  color: white; \
-              } \
-              .lab-link.pdf { \
-                  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); \
-                  box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3); \
-              } \
-              .lab-link.pdf:hover { \
-                  background: linear-gradient(135deg, #c0392b 0%, #a93226 100%); \
-                  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.4); \
-              } \
-              @media (max-width: 768px) { \
-                  .lab-grid { \
-                      grid-template-columns: 1fr; \
-                      gap: 1.5rem; \
-                  } \
-                  .lab-links { \
-                      flex-direction: column; \
-                  } \
-              } \
-          </style>' _site/index.html
-          
-          # Add JavaScript section for lab population
-          sed -i '/<\/body>/i \
-          <script> \
-              const labs = [' _site/index.html
-          
-          # Copy all HTML files and create lab entries
-          first_lab=true
+          # Copy all HTML files to the site
           for lab_dir in labs/*/; do
             if [ -d "$lab_dir" ]; then
               lab_name=$(basename "$lab_dir")
@@ -190,63 +101,10 @@ jobs:
                   cp -r "${lab_dir}images" "_site/labs/$lab_name/"
                 fi
                 
-                # Extract title from HTML file or use lab name
-                title=$(grep -o '<title>[^<]*</title>' "$html_file" | sed 's/<title>\(.*\)<\/title>/\1/' 2>/dev/null || echo "$lab_name")
-                title=${title:-$lab_name}
-                
-                # Generate description from README if available
-                description="Hands-on lab for Microsoft Copilot Studio"
-                if [ -f "${lab_dir}README.md" ]; then
-                  description=$(head -5 "${lab_dir}README.md" | tail -1 | sed 's/^[#* ]*//' | cut -c1-150 2>/dev/null || echo "$description")
-                fi
-                
-                # Add comma if not first lab
-                if [ "$first_lab" = true ]; then
-                  first_lab=false
-                else
-                  echo "," >> _site/index.html
-                fi
-                
-                # Add lab entry to JavaScript array
-                echo "                      {" >> _site/index.html
-                echo "                          title: '${title//\'/\\\'}', " >> _site/index.html
-                echo "                          description: '${description//\'/\\\'}', " >> _site/index.html
-                echo "                          htmlPath: 'labs/$lab_name/${lab_name}.html', " >> _site/index.html
-                echo "                          pdfPath: 'labs/$lab_name/${lab_name}.pdf'" >> _site/index.html
-                echo "                      }" >> _site/index.html
-                
-                echo "✓ Added lab: $lab_name"
+                echo "✓ Copied lab: $lab_name"
               fi
             fi
           done
-          
-          # Close JavaScript array and add the rest
-          echo "              ];" >> _site/index.html
-          echo "              " >> _site/index.html
-          echo "              function populateLabGrid() {" >> _site/index.html
-          echo "                  const grid = document.getElementById('lab-grid');" >> _site/index.html
-          echo "                  if (!grid) return; // Grid not found" >> _site/index.html
-          echo "                  " >> _site/index.html
-          echo "                  labs.forEach(lab => {" >> _site/index.html
-          echo "                      const card = document.createElement('div');" >> _site/index.html
-          echo "                      card.className = 'lab-card';" >> _site/index.html
-          echo "                      card.innerHTML = \`" >> _site/index.html
-          echo "                          <h3 class=\"lab-title\">\${lab.title}</h3>" >> _site/index.html
-          echo "                          <p class=\"lab-description\">\${lab.description}</p>" >> _site/index.html
-          echo "                          <div class=\"lab-links\">" >> _site/index.html
-          echo "                              <a href=\"\${lab.htmlPath}\" class=\"lab-link\">📄 View HTML</a>" >> _site/index.html
-          echo "                              <a href=\"\${lab.pdfPath}\" class=\"lab-link pdf\">📋 Download PDF</a>" >> _site/index.html
-          echo "                          </div>" >> _site/index.html
-          echo "                      \`;" >> _site/index.html
-          echo "                      grid.appendChild(card);" >> _site/index.html
-          echo "                  });" >> _site/index.html
-          echo "              }" >> _site/index.html
-          echo "              " >> _site/index.html
-          echo "              // Populate the grid when page loads" >> _site/index.html
-          echo "              document.addEventListener('DOMContentLoaded', populateLabGrid);" >> _site/index.html
-          echo "          </script>" >> _site/index.html
-          echo "      </body>" >> _site/index.html
-          echo "  </html>" >> _site/index.html
           
           # Clean up temp file
           rm -f _site/README_processed.md
