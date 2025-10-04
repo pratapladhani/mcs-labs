@@ -75,8 +75,6 @@ jobs:
             --embed-resources \
             --css="styles/html.css" \
             --html-q-tags \
-            --toc \
-            --toc-depth=2 \
             --section-divs \
             -f markdown+auto_identifiers+gfm_auto_identifiers+emoji \
             -t html5
