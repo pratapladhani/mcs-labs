@@ -142,46 +142,46 @@ tr:hover {
   transition: background-color 0.2s ease;
 }
 
-/* Column widths for lab table */
-table th:nth-child(1), table td:nth-child(1) { /* Title column */
+/* Column widths for homepage lab table only */
+table.lab-table th:nth-child(1), table.lab-table td:nth-child(1) { /* Title column */
   width: 65% !important;
 }
 
-table th:nth-child(2), table td:nth-child(2) { /* Download column */
+table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) { /* Download column */
   width: 10% !important;
   text-align: center;
   white-space: nowrap;
 }
 
-table th:nth-child(3), table td:nth-child(3) { /* Overview column */
+table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) { /* Overview column */
   width: 25% !important;
 }
 
-/* Override Pandoc's colgroup settings - multiple approaches for maximum compatibility */
-table colgroup col:nth-child(1) {
+/* Override Pandoc's colgroup settings for homepage table only */
+table.lab-table colgroup col:nth-child(1) {
   width: 65% !important;
 }
 
-table colgroup col:nth-child(2) {
+table.lab-table colgroup col:nth-child(2) {
   width: 10% !important;
 }
 
-table colgroup col:nth-child(3) {
+table.lab-table colgroup col:nth-child(3) {
   width: 25% !important;
 }
 
-/* Additional table layout enforcement */
-table {
+/* Additional table layout enforcement for homepage lab table */
+table.lab-table {
   table-layout: fixed !important;
 }
 
-/* Specific column width enforcement with max-width */
-table th:nth-child(2), table td:nth-child(2) {
+/* Specific column width enforcement with max-width for homepage table */
+table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) {
   max-width: 80px !important;
   min-width: 60px !important;
 }
 
-table th:nth-child(3), table td:nth-child(3) {
+table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) {
   min-width: 20% !important;
 }
 

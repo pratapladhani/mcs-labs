@@ -84,15 +84,13 @@ jobs:
               # Remove emojis and leading dashes from anchor links
               sed -i 's|(#[^a-zA-Z0-9]*-*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
               
-              # Convert to HTML with custom CSS (preserve emojis and fix anchors)
+              # Convert to HTML with custom CSS (no TOC for individual pages)
               if pandoc "${lab_name}_processed.md" \
                 -o "${lab_name}.html" \
                 --standalone \
                 --self-contained \
                 --css="../../.github/styles/html.css" \
                 --html-q-tags \
-                --toc \
-                --toc-depth=3 \
                 --section-divs \
                 --id-prefix="" \
                 --metadata title="$lab_name - Microsoft Copilot Studio Labs" \
@@ -116,21 +114,10 @@ jobs:
                 # Also add standalone anchor tags before headers as backup
                 sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)"/<a name="\2"><\/a><h\1 id="\2" name="\3"/g' "${lab_name}.html"
                 
-                # Fix TOC links to match cleaned header IDs
-                # Remove leading dashes and emojis from TOC anchor links to match header IDs
-                # First handle simple dash pattern: href="#-text" -> href="#text"
-                sed -i 's/href="#-\([a-zA-Z][^"]*\)"/href="#\1"/g' "${lab_name}.html"
-                # Then handle emoji+dash pattern: href="#emoji-text" -> href="#text"
-                sed -i 's/href="#[^a-zA-Z0-9]*\([a-zA-Z][^"]*\)"/href="#\1"/g' "${lab_name}.html"
-                
                 # Make external links open in new window
                 # Add target="_blank" and rel="noopener noreferrer" to external links (http/https)
                 # This regex matches links that start with http:// or https:// and adds the attributes
                 sed -i 's/<a href="\(https\?:\/\/[^"]*\)"/<a href="\1" target="_blank" rel="noopener noreferrer"/g' "${lab_name}.html"
-                
-                # Debug: Show external links
-                echo "External links in $lab_name HTML:"
-                grep -o '<a href="https\?://[^"]*"[^>]*>' "${lab_name}.html" | head -3 || echo "No external links found"
                 
                 # Add simple favicon for consistent branding (blue circle with L)
                 sed -i 's|</head>|  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">\n</head>|' "${lab_name}.html"
