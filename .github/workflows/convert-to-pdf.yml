@@ -73,9 +73,13 @@ jobs:
               # Add closing div tags for callouts (simple approach - assumes single line callouts)
               sed -i 's/\(> <div class="[^"]*">.*\)$/\1<\/div>/g' "${lab_name}_processed.md"
               
-              # Debug: Show internal links before conversion
-              echo "Internal links found in $lab_name:"
-              grep -n "\[.*\](#[^)]*)" "${lab_name}_processed.md" || echo "No internal links found"
+              # Fix anchor links by removing problematic characters
+              # Remove leading hyphens and emojis from anchor links to match Pandoc's clean ID generation
+              sed -i 's/(#[^a-zA-Z]*\([a-zA-Z][^)]*\))/(#\1)/g' "${lab_name}_processed.md"
+              
+              # Debug: Show internal links after preprocessing
+              echo "Internal links found in $lab_name (after preprocessing):"
+              grep -n "\[.*\](#[^)]*)" "${lab_name}_processed.md" | head -5 || echo "No internal links found"
               
               # Convert to HTML with custom CSS (preserve emojis and fix anchors)
               if pandoc "${lab_name}_processed.md" \
@@ -88,22 +92,18 @@ jobs:
                 --toc-depth=3 \
                 --section-divs \
                 --id-prefix="" \
-                -f markdown+auto_identifiers+gfm_auto_identifiers+emoji \
+                -f markdown+auto_identifiers+gfm_auto_identifiers+emoji+header_attributes \
                 -t html5 2>/dev/null; then
                 echo "✓ Successfully converted $lab_name to HTML"
                 
-                # Debug: Check generated anchor IDs
-                echo "Generated anchor IDs in HTML:"
-                grep -o 'id="[^"]*"' "${lab_name}.html" | head -10
+                # Post-process HTML to fix anchor links and remove problematic IDs
+                # Remove empty or invalid IDs that might break navigation
+                sed -i 's/id=""//g' "${lab_name}.html"
+                sed -i 's/id="[[:space:]]*"//g' "${lab_name}.html"
                 
-                # Post-process HTML to ensure anchor links work
-                # Fix common anchor ID issues - remove emoji symbols and standardize format
-                sed -i 's/id="[^"]*️[^"]*"/id=""/g' "${lab_name}.html"  # Remove emoji from IDs
-                sed -i 's/id="[[:space:]]*\([^"]*\)[[:space:]]*"/id="\1"/g' "${lab_name}.html"  # Trim spaces
-                
-                # Debug: Show final anchor IDs
-                echo "Final anchor IDs in HTML:"
-                grep -o 'id="[^"]*"' "${lab_name}.html" | head -5
+                # Ensure proper anchor link format in HTML
+                # Fix links that might have been broken during conversion
+                sed -i 's/href="#[[:space:]]*\([^"[:space:]]*\)[[:space:]]*"/href="#\1"/g' "${lab_name}.html"
                 echo "✓ Successfully converted $lab_name to HTML"
               else
                 # Try fallback conversion without CSS
