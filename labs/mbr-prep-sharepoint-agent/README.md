@@ -21,7 +21,7 @@ This guide provides step-by-step instructions for creating an MBR (Monthly Busin
 - [Prerequisites](#-prerequisites)
 - [Summary of Targets](#-summary-of-targets)
 - [Use Cases Covered](#-use-cases-covered)
-- [Instructions by Use Case](#instructions-by-use-case)
+- [Instructions by Use Case](#️-instructions-by-use-case)
   - [Use Case #1: Create SharePoint site and upload MBR documents](#-use-case-1-create-sharepoint-site-and-upload-mbr-documents)
   - [Use Case #2: Build and deploy MBR agent](#-use-case-2-build-and-deploy-mbr-agent)
 - [Summary of Learnings](#-summary-of-learnings)
