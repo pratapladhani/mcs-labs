@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>copilot-studio-kit_processed</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -280,37 +280,64 @@ margin: 2em 0;
 border-radius: 8px;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 position: relative;
+font-style: normal;
+}
+
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+border-left: none;
+margin: 0;
+padding: 1em;
+border-radius: 6px;
+}
+blockquote:has(.note) {
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.tip) {
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.warning) {
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+border-radius: 0 6px 6px 0;
 }
 .note {
-background-color: #e8f4fd;
-border-left: 4px solid #3498db;
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+color: #1e40af;
 }
 .warning {
-background-color: #fdf2e8;
-border-left: 4px solid #e67e22;
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+color: #92400e;
 }
 .tip {
-background-color: #eafaf1;
-border-left: 4px solid #27ae60;
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+color: #166534;
 }
 .info {
-background-color: #f0f8ff;
-border-left: 4px solid #17a2b8;
+background-color: #f0f9ff;
+border-left: 4px solid #0ea5e9;
+color: #0c4a6e;
 }
 
 .note::before {
-content: "ℹ️";
-font-size: 1.2em;
+content: "ℹ️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .warning::before {
-content: "⚠️";
-font-size: 1.2em;
+content: "⚠️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .tip::before {
-content: "💡";
-font-size: 1.2em;
+content: "💡 ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 
@@ -643,8 +670,13 @@ application, either installed in your organization or the one that was
 setup for the training.</li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] - To access this app, use the provided URL in the
-<strong>Lab Resources</strong> (specific per training).</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<ul>
+<li>To access this app, use the provided URL in the <strong>Lab
+Resources</strong> (specific per training).</li>
+</ul>
 </blockquote>
 <ol start="2" type="1">
 <li>The first time you open the app, you will be prompted to allow
@@ -668,17 +700,23 @@ the <strong>Token Endpoint</strong> field in the Copilot Studio
 Kit.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] The <strong>tokent endpoint</strong> allows to obtain a token
-that can be used to initiate a conversation with the agent
-programmatically. This is essential for automated testing frameworks to
-interact with your agent. Once the token is obtained, it can be used to
-send messages to the agent and receive responses from the <strong>Direct
-Line API</strong>.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>The <strong>tokent endpoint</strong> allows to obtain a token that
+can be used to initiate a conversation with the agent programmatically.
+This is essential for automated testing frameworks to interact with your
+agent. Once the token is obtained, it can be used to send messages to
+the agent and receive responses from the <strong>Direct Line
+API</strong>.</p>
 </blockquote>
 <blockquote>
-<p>[!IMPORTANT] Using <q>No authentication</q> is suitable for agents
-that do not access sensitive internal information. It allows anyone to
-interact with your agent, so use it cautiously.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Using <q>No authentication</q> is suitable for agents that do not
+access sensitive internal information. It allows anyone to interact with
+your agent, so use it cautiously.</p>
 </blockquote>
 <ol start="7" type="1">
 <li>Select <strong>Save and close</strong> to create the agent
@@ -724,8 +762,11 @@ subgrid.</p></li>
 </tbody>
 </table>
 <blockquote>
-<p>[!TIP] You can either add each test individually, or toggle the
-subgrid view to <strong>Export/Import View</strong> and select selecting
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>You can either add each test individually, or toggle the subgrid view
+to <strong>Export/Import View</strong> and select selecting
 <code>⋮</code> <strong>Export Agent Tests</strong> &gt; <strong>Export
 Agent Tests in Excel Online</strong>. This makes it very convenient to
 create or update multiple tests at once, especially for larger test
@@ -818,8 +859,11 @@ in the previous use case.</p></li>
 <li><p><strong>Save</strong> the test run to initialize it.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] Test runs can take several minutes depending on the number of
-test cases and agent response times. You can monitor progress in
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>Test runs can take several minutes depending on the number of test
+cases and agent response times. You can monitor progress in
 real-time.</p>
 </blockquote>
 <h4 id="analyze-test-results-and-performance-metrics">Analyze Test
@@ -837,9 +881,12 @@ comprehensive analytics including:
 results to understand why responses didn’t meet expectations.</li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] Pay special attention to tests that fail due to response
-quality rather than exact matching. These often indicate opportunities
-for prompt optimization or knowledge base improvements.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Pay special attention to tests that fail due to response quality
+rather than exact matching. These often indicate opportunities for
+prompt optimization or knowledge base improvements.</p>
 </blockquote>
 <h4 id="optimize-based-on-insights">Optimize Based on Insights</h4>
 <ol start="7" type="1">
@@ -858,9 +905,11 @@ results, such as:
 </ul></li>
 </ol>
 <blockquote>
-<p>[!TIP] Create a feedback loop by implementing improvements in your
-agent, then re-running the same test set to measure progress over
-time.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>Create a feedback loop by implementing improvements in your agent,
+then re-running the same test set to measure progress over time.</p>
 </blockquote>
 <hr />
 <h3 id="congratulations-youve-completed-test-execution-and-analysis">🏅
@@ -942,7 +991,10 @@ transcripts.</p>
 </figure></li>
 </ol>
 <blockquote>
-<p>[!TIP] Conversation KPIs simplify performance tracking by providing
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>Conversation KPIs simplify performance tracking by providing
 structured data that can be easily exported and analyzed in Power BI or
 other reporting tools.</p>
 </blockquote>
@@ -975,8 +1027,11 @@ user engagement.</p></li>
 <figcaption aria-hidden="true">alt text</figcaption>
 </figure>
 <blockquote>
-<p>[!TIP] Use the Webchat Playground to generate HTML with custom styles
-that match your organization’s branding guidelines.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>Use the Webchat Playground to generate HTML with custom styles that
+match your organization’s branding guidelines.</p>
 </blockquote>
 <hr />
 <h3 id="congratulations-youve-explored-the-full-power-cat-copilot-studio-kit-ecosystem">🏅

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>agent-builder-sharepoint_processed</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -279,37 +279,64 @@ margin: 2em 0;
 border-radius: 8px;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 position: relative;
+font-style: normal;
+}
+
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+border-left: none;
+margin: 0;
+padding: 1em;
+border-radius: 6px;
+}
+blockquote:has(.note) {
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.tip) {
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.warning) {
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+border-radius: 0 6px 6px 0;
 }
 .note {
-background-color: #e8f4fd;
-border-left: 4px solid #3498db;
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+color: #1e40af;
 }
 .warning {
-background-color: #fdf2e8;
-border-left: 4px solid #e67e22;
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+color: #92400e;
 }
 .tip {
-background-color: #eafaf1;
-border-left: 4px solid #27ae60;
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+color: #166534;
 }
 .info {
-background-color: #f0f8ff;
-border-left: 4px solid #17a2b8;
+background-color: #f0f9ff;
+border-left: 4px solid #0ea5e9;
+color: #0c4a6e;
 }
 
 .note::before {
-content: "ℹ️";
-font-size: 1.2em;
+content: "ℹ️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .warning::before {
-content: "⚠️";
-font-size: 1.2em;
+content: "⚠️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .tip::before {
-content: "💡";
-font-size: 1.2em;
+content: "💡 ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 
@@ -447,10 +474,12 @@ create a Sales Admin Assistant that can analyze Excel data, reference
 policy documents, generate charts through code interpretation, and
 create visual content.</p>
 <blockquote>
-<p>[!NOTE]<br />
-This lab assumes familiarity with the basic Copilot Studio lite concepts
-covered in the <a href="../agent-builder-web/README.md">web-based agent
-builder lab</a>.</p>
+<div class="note">
+<strong>Note:</strong>
+</div>
+<p>This lab assumes familiarity with the basic Copilot Studio lite
+concepts covered in the <a href="../agent-builder-web/README.md">web-based agent builder
+lab</a>.</p>
 </blockquote>
 <hr />
 <h2 id="prerequisites">✅ Prerequisites</h2>
@@ -530,8 +559,11 @@ for your Sales Admin Assistant.</p>
 </ul></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] The URL of the SharePoint site is available in
-<strong>Lab Resources</strong> (specific per training).</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>The URL of the SharePoint site is available in <strong>Lab
+Resources</strong> (specific per training).</p>
 </blockquote>
 <ol start="2" type="1">
 <li>Locate the following sample files:
@@ -577,7 +609,7 @@ prompted.</p></li>
 <!--
 ![alt text](images/knowledge-files.png)
 Commented out; screenshots need update due to CPS updates.  Last minute change to labs required so will do at a later date
-> [!TIP]
+> <div class="tip">**Tip:** </div>
 > If you can't see the files you just opened, an alternative approach is just to **paste** and **add** the SharePoint URL of the Sales folder.
 > 
 >    ![alt text](images/sharepoint-url-fallback.png)
@@ -612,11 +644,16 @@ bar</strong></li>
 </ul></li>
 </ol>
 <blockquote>
-<p>[!TIP] - If you can’t see the files you just opened, an alternative
-approach is to <strong>paste</strong> and <strong>add</strong> the
-SharePoint URL of the Sales folder. - Another alternative approach is to
-<strong>download</strong> the files locally and <strong>upload</strong>
-them to your agent.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>If you can’t see the files you just opened, an alternative approach
+is to <strong>paste</strong> and <strong>add</strong> the SharePoint URL
+of the Sales folder.</li>
+<li>Another alternative approach is to <strong>download</strong> the
+files locally and <strong>upload</strong> them to your agent.</li>
+</ul>
 </blockquote>
 <ol start="8" type="1">
 <li>When satisfied with the configuration, select
@@ -678,7 +715,10 @@ generation</strong> capability with a relevant request:</li>
 <figcaption aria-hidden="true">alt text</figcaption>
 </figure>
 <blockquote>
-<p>[!TIP] Notice how you can also invoke a specific agent by using
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>Notice how you can also invoke a specific agent by using
 <strong><span class="citation" data-cites="*">@*</span>* in the standard
 </strong>Chat** area.</p>
 </blockquote>

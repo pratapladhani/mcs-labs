@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>measure-success_processed</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -280,37 +280,64 @@ margin: 2em 0;
 border-radius: 8px;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 position: relative;
+font-style: normal;
+}
+
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+border-left: none;
+margin: 0;
+padding: 1em;
+border-radius: 6px;
+}
+blockquote:has(.note) {
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.tip) {
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.warning) {
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+border-radius: 0 6px 6px 0;
 }
 .note {
-background-color: #e8f4fd;
-border-left: 4px solid #3498db;
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+color: #1e40af;
 }
 .warning {
-background-color: #fdf2e8;
-border-left: 4px solid #e67e22;
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+color: #92400e;
 }
 .tip {
-background-color: #eafaf1;
-border-left: 4px solid #27ae60;
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+color: #166534;
 }
 .info {
-background-color: #f0f8ff;
-border-left: 4px solid #17a2b8;
+background-color: #f0f9ff;
+border-left: 4px solid #0ea5e9;
+color: #0c4a6e;
 }
 
 .note::before {
-content: "ℹ️";
-font-size: 1.2em;
+content: "ℹ️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .warning::before {
-content: "⚠️";
-font-size: 1.2em;
+content: "⚠️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .tip::before {
-content: "💡";
-font-size: 1.2em;
+content: "💡 ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 
@@ -678,10 +705,13 @@ conversation</strong>.</p></li>
 <li><p>Explore what the topic is doing.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] The end of conversation topic is meant to be triggered when
-the agent has presumably fulfilled the user’s request. This can happen
-either after providing a direct answer, such as retrieving information
-from knowledge sources, or after completing a more complex multi-turn
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>The end of conversation topic is meant to be triggered when the agent
+has presumably fulfilled the user’s request. This can happen either
+after providing a direct answer, such as retrieving information from
+knowledge sources, or after completing a more complex multi-turn
 interaction where the user and agent exchange multiple messages to
 complete a task.</p>
 </blockquote>
@@ -752,10 +782,13 @@ Overview tab, or in Settings, under Generative AI.</p>
 and shows you the agent’s reasoning based on the user query.</p></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] In the test pane, notice that you are no longer prompted
-with <q>Did this answer your question?</q>. Why isn’t End of
-conversation triggered? That is because the Conversational boosting
-topic wasn’t traversed with generative mode.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>In the test pane, notice that you are no longer prompted with <q>Did
+this answer your question?</q>. Why isn’t End of conversation triggered?
+That is because the Conversational boosting topic wasn’t traversed with
+generative mode.</p>
 </blockquote>
 <h4 id="creating-the-plan-complete-topic">Creating the Plan Complete
 Topic</h4>
@@ -939,9 +972,12 @@ questions consecutively.</p>
 conversation flow.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] If you want the user’s follow-up questions to trigger existing
-topics rather than always defaulting to Conversational boosting, verify
-the Interruptions setting in the <q>Did that answer your question?</q>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>If you want the user’s follow-up questions to trigger existing topics
+rather than always defaulting to Conversational boosting, verify the
+Interruptions setting in the <q>Did that answer your question?</q>
 question properties. By default, they allow interruptions, meaning the
 agent can seamlessly switch to a recognized topic based on the user’s
 next input.</p>

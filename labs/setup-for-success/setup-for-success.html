@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>setup-for-success_processed</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -280,37 +280,64 @@ margin: 2em 0;
 border-radius: 8px;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 position: relative;
+font-style: normal;
+}
+
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+border-left: none;
+margin: 0;
+padding: 1em;
+border-radius: 6px;
+}
+blockquote:has(.note) {
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.tip) {
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.warning) {
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+border-radius: 0 6px 6px 0;
 }
 .note {
-background-color: #e8f4fd;
-border-left: 4px solid #3498db;
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+color: #1e40af;
 }
 .warning {
-background-color: #fdf2e8;
-border-left: 4px solid #e67e22;
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+color: #92400e;
 }
 .tip {
-background-color: #eafaf1;
-border-left: 4px solid #27ae60;
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+color: #166534;
 }
 .info {
-background-color: #f0f8ff;
-border-left: 4px solid #17a2b8;
+background-color: #f0f9ff;
+border-left: 4px solid #0ea5e9;
+color: #0c4a6e;
 }
 
 .note::before {
-content: "ℹ️";
-font-size: 1.2em;
+content: "ℹ️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .warning::before {
-content: "⚠️";
-font-size: 1.2em;
+content: "⚠️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .tip::before {
-content: "💡";
-font-size: 1.2em;
+content: "💡 ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 
@@ -706,11 +733,17 @@ corner).</p></li>
 <li><p>Enter a display name.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] * Avoid names like <code>DEV</code>, <code>TEST</code>,
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>Avoid names like <code>DEV</code>, <code>TEST</code>,
 <code>PROD</code>, <code>POC</code>, <code>MVP</code> or anything tied
-to a project lifecycle phase. * Use a descriptive, project-based name. *
-For example, if this is specific to this training and lab, use
-<code>Training Workshop Agents</code></p>
+to a project lifecycle phase.</li>
+<li>Use a descriptive, project-based name.</li>
+<li>For example, if this is specific to this training and lab, use
+<code>Training Workshop Agents</code></li>
+</ul>
 </blockquote>
 <h4 id="create-a-publisher">Create a publisher</h4>
 <ol start="6" type="1">
@@ -718,15 +751,22 @@ For example, if this is specific to this training and lab, use
 publisher</strong> to create one.</li>
 </ol>
 <blockquote>
-<p>[!TIP] * You may use your organization’s name. * While the
-<strong>Display name</strong> may contain spaces, the
-<strong>Name</strong> can’t contain special characters and spaces. *
-Define a short prefix for use in technical names.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>You may use your organization’s name.</li>
+<li>While the <strong>Display name</strong> may contain spaces, the
+<strong>Name</strong> can’t contain special characters and spaces.</li>
+<li>Define a short prefix for use in technical names.</li>
+</ul>
 </blockquote>
 <blockquote>
-<p>[!IMPORTANT] Avoid using the default publisher or the default
-solution. Custom publishers ensure cleaner component names and better
-ALM hygiene.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Avoid using the default publisher or the default solution. Custom
+publishers ensure cleaner component names and better ALM hygiene.</p>
 </blockquote>
 <h4 id="set-and-create">Set and create</h4>
 <ol start="7" type="1">
@@ -819,22 +859,37 @@ and choose <strong>Environment variable</strong>.</p></li>
 Value</strong>.</p></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] * For configuration, use the provided values in the
-<strong>Lab Resources</strong> (specific per training).</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<ul>
+<li>For configuration, use the provided values in the <strong>Lab
+Resources</strong> (specific per training).</li>
+</ul>
 </blockquote>
 <blockquote>
-<p>[!TIP] * Notice how, under <strong>Advanced</strong>, you can set
-whether the current value can follow through with your solution
-deployment, or if it should be reset each time the solution is deployed
-to a new environment</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>Notice how, under <strong>Advanced</strong>, you can set whether the
+current value can follow through with your solution deployment, or if it
+should be reset each time the solution is deployed to a new
+environment</li>
+</ul>
 </blockquote>
 <ol start="6" type="1">
 <li>Click <strong>Save</strong>.</li>
 </ol>
 <blockquote>
-<p>[!TIP] * Environment variables can also be of type
-<strong>Secret</strong> to retrieve secure values like API keys from
-Azure Key Vault at runtime.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>Environment variables can also be of type <strong>Secret</strong> to
+retrieve secure values like API keys from Azure Key Vault at
+runtime.</li>
+</ul>
 </blockquote>
 <ol start="7" type="1">
 <li><p>In the solution, select <strong>New</strong>, then go to
@@ -844,8 +899,11 @@ reference</strong>.</p></li>
 Optionally, prefix with your project name.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] In other locales, the connector name may be localized. For
-example, in French, it would be <code>MSN Météo</code>.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>In other locales, the connector name may be localized. For example,
+in French, it would be <code>MSN Météo</code>.</p>
 </blockquote>
 <ol start="9" type="1">
 <li><p>Select the connector <strong>MSN Weather</strong>.</p></li>
@@ -858,9 +916,14 @@ Copilot Studio.</p></li>
 connection.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] * If the <strong>Create</strong> button is grayed out, it’s
-just because you pasted the display name. Type an extra character in the
-display name field and remove it to be able to create.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>If the <strong>Create</strong> button is grayed out, it’s just
+because you pasted the display name. Type an extra character in the
+display name field and remove it to be able to create.</li>
+</ul>
 </blockquote>
 <ol start="13" type="1">
 <li><p>Repeat steps for the following connectors:</p>
@@ -878,10 +941,16 @@ connection, it should have a green logo, not grey).</li>
 </ul></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] * For <strong>ServiceNow</strong> configuration values,
-use the provided values in the <strong>Lab Resources</strong> (specific
-per training). * For <strong>ServiceNow</strong>’s <code>Instance</code>
-configuration, be sure to scroll down in the connection screen.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<ul>
+<li>For <strong>ServiceNow</strong> configuration values, use the
+provided values in the <strong>Lab Resources</strong> (specific per
+training).</li>
+<li>For <strong>ServiceNow</strong>’s <code>Instance</code>
+configuration, be sure to scroll down in the connection screen.</li>
+</ul>
 </blockquote>
 <h4 id="get-a-production-environment">Get a production environment</h4>
 <ol start="14" type="1">
@@ -896,11 +965,17 @@ and to show up, but you will be notified in your training tenant Outlook
 mailbox when it is ready.</li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] - Access the workshop agent in the same location as when
-you created your training user account. - You will need the workshop
-code and your training user’s email address if you previously closed the
-agent. - You are limited to a single PROD environment for the duration
-workshop.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<ul>
+<li>Access the workshop agent in the same location as when you created
+your training user account.</li>
+<li>You will need the workshop code and your training user’s email
+address if you previously closed the agent.</li>
+<li>You are limited to a single PROD environment for the duration
+workshop.</li>
+</ul>
 </blockquote>
 <hr />
 <h3 id="congratulations-youve-created-environment-variables-and-connection-references">🏅
@@ -934,7 +1009,10 @@ client secret).</li>
 <h2 id="use-case-3-set-up-git-source-control">🔄 Use Case #3: Set up Git
 source control</h2>
 <blockquote>
-<p>[!TIP] This lab is optional and won’t block your progress in future
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>This lab is optional and won’t block your progress in future
 labs.</p>
 </blockquote>
 <p>Connect your solution to Azure DevOps Git to track changes and
@@ -975,23 +1053,23 @@ for automated deployment pipelines.</p>
 
 1. **Navigate** to the Azure DevOps organization that was created for the training, and log in.
 
-> [!IMPORTANT]
+> <div class="warning">**Important:** </div>
 > Find it in **Azure DevOps Organization** link in the **Lab Resources** (specific per training).
 
-> [!TIP]
->  * First-time users may need to confirm their user&#x2019;s fictitious name and country.
+> <div class="tip">**Tip:** </div>
+>  * First-time users may need to confirm their user’s fictitious name and country.
 
 2. Create a new project by setting a **project name**. Use the same name as your fictitious user's name. Keep the options by default (e.g, Private).
 
 3. Select **+ Create project**.
 
-4. After project creation, go to **Repos** &#x2192; **Branches**.
+4. After project creation, go to **Repos** → **Branches**.
 
 5. Select **Initialize** (at the bottom) to create the `main` branch with a README or .gitignore.
 
    ![alt text](images/azure-devops-initialize-branch.png) 
     
-> &#x1F389; You&#x2019;ve set up the Git repo! Now return to Microsoft Copilot Studio.
+> 🎉 You’ve set up the Git repo! Now return to Microsoft Copilot Studio.
 
 ### Connecting Microsoft Copilot Studio to Git
 
@@ -1042,8 +1120,11 @@ Essentials</strong></p></li>
 <strong>Visual Studio Dev Essentials</strong></p></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] If you’re landing into a <strong>Something went
-wrong!</strong> error, follow these steps: 1. Go to <a href="https://aex.dev.azure.com/">aex.dev.azure.com</a>. 2. If prompted,
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>If you’re landing into a <strong>Something went wrong!</strong>
+error, follow these steps: 1. Go to <a href="https://aex.dev.azure.com/">aex.dev.azure.com</a>. 2. If prompted,
 create new organization (you can leave the default name) if prompted 3.
 Skip to step 10.</p>
 </blockquote>

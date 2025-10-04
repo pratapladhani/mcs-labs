@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>pipelines-and-source-control_processed</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -280,37 +280,64 @@ margin: 2em 0;
 border-radius: 8px;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 position: relative;
+font-style: normal;
+}
+
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+border-left: none;
+margin: 0;
+padding: 1em;
+border-radius: 6px;
+}
+blockquote:has(.note) {
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.tip) {
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.warning) {
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+border-radius: 0 6px 6px 0;
 }
 .note {
-background-color: #e8f4fd;
-border-left: 4px solid #3498db;
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+color: #1e40af;
 }
 .warning {
-background-color: #fdf2e8;
-border-left: 4px solid #e67e22;
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+color: #92400e;
 }
 .tip {
-background-color: #eafaf1;
-border-left: 4px solid #27ae60;
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+color: #166534;
 }
 .info {
-background-color: #f0f8ff;
-border-left: 4px solid #17a2b8;
+background-color: #f0f9ff;
+border-left: 4px solid #0ea5e9;
+color: #0c4a6e;
 }
 
 .note::before {
-content: "ℹ️";
-font-size: 1.2em;
+content: "ℹ️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .warning::before {
-content: "⚠️";
-font-size: 1.2em;
+content: "⚠️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .tip::before {
-content: "💡";
-font-size: 1.2em;
+content: "💡 ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 
@@ -661,7 +688,10 @@ across environments with proper validation and governance controls.</p>
 <h3 id="step-by-step-instructions">Step-by-step instructions</h3>
 <h4 id="get-a-prod-environment">Get a PROD environment</h4>
 <blockquote>
-<p>[!TIP] If you haven’t done so already, you need to request a PROD
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>If you haven’t done so already, you need to request a PROD
 environment to be created for your user. This is a one-time setup step
 that will allow you to create pipelines for deployment.</p>
 </blockquote>
@@ -673,11 +703,14 @@ This will then take a couple of minutes to provision and to show
 up.</li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] Access the workshop agent in the same location as when
-you created your training user account. You will need the workshop code
-and your training user’s email address if you previously closed the
-agent. Tell the agent to <q>Provision a PROD environment</q>. You are
-limited to a single PROD environment for the duration workshop.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Access the workshop agent in the same location as when you created
+your training user account. You will need the workshop code and your
+training user’s email address if you previously closed the agent. Tell
+the agent to <q>Provision a PROD environment</q>. You are limited to a
+single PROD environment for the duration workshop.</p>
 </blockquote>
 <h4 id="access-power-platform-pipelines">Access Power Platform
 pipelines</h4>
@@ -716,10 +749,15 @@ the <strong>Target environment</strong>.</p></li>
 <li>In the PROD card, select <strong>Deploy here</strong>.</li>
 </ol>
 <blockquote>
-<p>[!TIP] - The wizard then makes sure that each environment variable
-has a value set in the target environment, and that all connection
-references are valid. If any of these checks fail, you will be prompted
-to fix them before proceeding.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>The wizard then makes sure that each environment variable has a
+value set in the target environment, and that all connection references
+are valid. If any of these checks fail, you will be prompted to fix them
+before proceeding.</li>
+</ul>
 </blockquote>
 <ol start="14" type="1">
 <li><p><strong>Repeat</strong> the operation for the PROD
@@ -915,7 +953,10 @@ target environments.</p>
 deployments</strong> – Pipelines provide this automation while remaining
 extensible for advanced scenarios.</p>
 <blockquote>
-<p>[!IMPORTANT] <strong>Critical reminder about non-solution-aware
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p><strong>Critical reminder about non-solution-aware
 settings:</strong></p>
 <p>These Copilot Studio settings require manual post-deployment
 configuration: * <strong>Azure Application Insights settings</strong> *
@@ -926,11 +967,14 @@ end-users)</strong></p>
 <p>Always include these in your post-deployment checklist!</p>
 </blockquote>
 <blockquote>
-<p>[!NOTE] <strong>Managed Environment governance in your lab:</strong>
-Your PROD environment uses Managed Environment governance to enforce
-that solutions are managed and unmanaged customizations are blocked.
-This ensures deployment integrity and prevents unauthorized changes
-outside of the pipeline process.</p>
+<div class="note">
+<strong>Note:</strong>
+</div>
+<p><strong>Managed Environment governance in your lab:</strong> Your
+PROD environment uses Managed Environment governance to enforce that
+solutions are managed and unmanaged customizations are blocked. This
+ensures deployment integrity and prevents unauthorized changes outside
+of the pipeline process.</p>
 </blockquote>
 <hr />
 <h3 id="conclusions-and-recommendations">Conclusions and
