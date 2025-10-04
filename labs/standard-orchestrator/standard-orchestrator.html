@@ -21,6 +21,7 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
+q { quotes: "“" "”" "‘" "’"; }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
 </style>
   <style type="text/css">
@@ -441,12 +442,13 @@ recommendations</a></li>
 </ul></li>
 </ul>
 </nav>
-<h1 id="create-your-first-agent-in-microsoft-copilot-studio">Create Your
-First Agent in Microsoft Copilot Studio</h1>
+<section id="create-your-first-agent-in-microsoft-copilot-studio" class="level1">
+<h1>Create Your First Agent in Microsoft Copilot Studio</h1>
 <p>Create and publish your first intelligent copilot using Microsoft
 Copilot Studio.</p>
 <hr />
-<h2 id="lab-details">🌝 Lab Details</h2>
+<section id="lab-details" class="level2">
+<h2>🌝 Lab Details</h2>
 <table>
 <colgroup>
 <col style="width: 1%" />
@@ -476,7 +478,9 @@ question nodes, testing, and deployment.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="table-of-contents">📚 Table of Contents</h2>
+</section>
+<section id="table-of-contents" class="level2">
+<h2>📚 Table of Contents</h2>
 <ul>
 <li><p><a href="#-why-this-matters">Why This Matters</a></p></li>
 <li><p><a href="#-introduction">Introduction</a></p></li>
@@ -497,7 +501,9 @@ an agent and topic</a></li>
 </ul></li>
 </ul>
 <hr />
-<h2 id="why-this-matters">🤔 Why This Matters</h2>
+</section>
+<section id="why-this-matters" class="level2">
+<h2>🤔 Why This Matters</h2>
 <p><strong>For new Copilot Studio makers:</strong> You might feel unsure
 about where to start or how much time it will take to create something
 valuable.</p>
@@ -510,15 +516,17 @@ UI, faster time to value.</li>
 </ul>
 <p><strong>Common challenges solved by this lab:</strong></p>
 <ul>
-<li>“I don’t know how to start a copilot.”</li>
-<li>“The interface is overwhelming.”</li>
-<li>“I want a quick win to show value.”</li>
-<li>“I’m not a developer—can I still build a bot?”</li>
+<li><q>I don’t know how to start a copilot.</q></li>
+<li><q>The interface is overwhelming.</q></li>
+<li><q>I want a quick win to show value.</q></li>
+<li><q>I’m not a developer—can I still build a bot?</q></li>
 </ul>
 <p><strong>You’ll get value fast—just 40 minutes to build your first
 functional agent.</strong></p>
 <hr />
-<h2 id="introduction">🌐 Introduction</h2>
+</section>
+<section id="introduction" class="level2">
+<h2>🌐 Introduction</h2>
 <p>Microsoft Copilot Studio simplifies the creation of intelligent bots
 by providing a unified canvas for conversational logic, AI integration,
 and publishing.</p>
@@ -531,7 +539,9 @@ freeing up employee time.</p>
 scratch, test it, and publish it for feedback—all without writing
 code.</strong></p>
 <hr />
-<h2 id="core-concepts-overview">🎓 Core Concepts Overview</h2>
+</section>
+<section id="core-concepts-overview" class="level2">
+<h2>🎓 Core Concepts Overview</h2>
 <table>
 <colgroup>
 <col style="width: 25%" />
@@ -574,8 +584,9 @@ conversations.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="documentation-and-additional-training-links">📄 Documentation
-and Additional Training Links</h2>
+</section>
+<section id="documentation-and-additional-training-links" class="level2">
+<h2>📄 Documentation and Additional Training Links</h2>
 <ul>
 <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/overview">Microsoft
 Copilot Studio Overview</a></li>
@@ -587,15 +598,19 @@ Platform Documentation</a></li>
 and Share Copilots</a></li>
 </ul>
 <hr />
-<h2 id="prerequisites">✅ Prerequisites</h2>
+</section>
+<section id="prerequisites" class="level2">
+<h2>✅ Prerequisites</h2>
 <ul>
 <li>A computer with internet access</li>
 <li>Access to a Microsoft tenant with Copilot Studio (trial or
 licensed)</li>
-<li>Generative AI setting must be set to “<a href="https://learn.microsoft.com/microsoft-copilot-studio/advanced-generative-actions#turn-off-generative-orchestration-for-an-agent">Classic</a>”</li>
+<li>Generative AI setting must be set to <q><a href="https://learn.microsoft.com/microsoft-copilot-studio/advanced-generative-actions#turn-off-generative-orchestration-for-an-agent">Classic</a></q></li>
 </ul>
 <hr />
-<h2 id="summary-of-targets">🎯 Summary of Targets</h2>
+</section>
+<section id="summary-of-targets" class="level2">
+<h2>🎯 Summary of Targets</h2>
 <p>In this lab, you’ll build a complete agent and publish it for
 testing. By the end of the lab, you will:</p>
 <ul>
@@ -606,7 +621,9 @@ testing. By the end of the lab, you will:</p>
 <li>Test and publish your agent to a demo site</li>
 </ul>
 <hr />
-<h2 id="use-cases-covered">🧰 Use Cases Covered</h2>
+</section>
+<section id="use-cases-covered" class="level2">
+<h2>🧰 Use Cases Covered</h2>
 <table>
 <colgroup>
 <col style="width: 2%" />
@@ -640,10 +657,13 @@ your agent to the demo site</a></td>
 </tbody>
 </table>
 <hr />
-<h2 id="instructions-by-use-case">🛠️ Instructions by Use Case</h2>
+</section>
+<section id="instructions-by-use-case" class="level2">
+<h2>🛠️ Instructions by Use Case</h2>
 <hr />
-<h2 id="use-case-1-create-an-agent-and-topic">🧱 Use Case #1: Create an
-agent and topic</h2>
+</section>
+<section id="use-case-1-create-an-agent-and-topic" class="level2">
+<h2>🧱 Use Case #1: Create an agent and topic</h2>
 <p>Build your first copilot and create a topic to handle customer order
 status.</p>
 <table>
@@ -678,17 +698,21 @@ status.</p>
 </ul>
 <p><strong>Scenario:</strong> You work for Contoso and want a copilot to
 help customers check order status and open support tickets.</p>
-<h3 id="objective">Objective</h3>
+<section id="objective" class="level3">
+<h3>Objective</h3>
 <p>Create a fully functioning agent with one manually authored topic and
 one AI-generated topic.</p>
 <hr />
-<h3 id="step-by-step-instructions">Step-by-step instructions</h3>
-<h4 id="sign-in-and-create-an-agent">Sign in and create an agent</h4>
+</section>
+<section id="step-by-step-instructions" class="level3">
+<h3>Step-by-step instructions</h3>
+<section id="sign-in-and-create-an-agent" class="level4">
+<h4>Sign in and create an agent</h4>
 <ol type="1">
 <li><p><strong>Navigate</strong> to <a href="https://copilotstudio.microsoft.com">copilotstudio.microsoft.com</a>.</p></li>
 <li><p>Make sure you’re in the correct environment by looking at the top
 right corner. In these labs, the environment name should start by
-<strong>‘DEV -’</strong>. #### Define your agent through
+<strong><q>DEV -</q></strong>. #### Define your agent through
 conversation</p></li>
 <li><p>From the Microsoft Copilot Studio Home page, describe your agent
 to create it.</p>
@@ -720,11 +744,14 @@ one. <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAArcAAAHyCAIAAAB+gnF
 <strong>Create</strong> button.</p></li>
 </ol>
 <hr />
-<h4 id="congratulations-youve-created-contoso-support-assistant">🏅
-Congratulations! You’ve created <em>Contoso Support Assistant</em>
-!</h4>
+</section>
+<section id="congratulations-youve-created-contoso-support-assistant" class="level4">
+<h4>🏅 Congratulations! You’ve created <em>Contoso Support
+Assistant</em> !</h4>
 <hr />
-<h4 id="finalize-creation">Finalize creation</h4>
+</section>
+<section id="finalize-creation" class="level4">
+<h4>Finalize creation</h4>
 <ol start="11" type="1">
 <li><p><strong>Disable</strong> the <em>Generative AI Orchestration</em>
 feature to switch back to manual topic triggering.
@@ -741,8 +768,9 @@ at the bottom of the <strong>Test agent pane</strong>, enter
 <code>Hello</code> and then select the <strong>Send</strong> button.</p>
 </blockquote></li>
 </ol>
-<h4 id="manually-create-your-first-topic">Manually create your first
-topic</h4>
+</section>
+<section id="manually-create-your-first-topic" class="level4">
+<h4>Manually create your first topic</h4>
 <ol type="1">
 <li><p>Navigate to <strong>Topics</strong> tab</p></li>
 <li><p>Create <strong>From blank</strong>, name it
@@ -763,7 +791,7 @@ has my order shipped</code></pre>
 <li>The <strong>Display name</strong> is used in case of
 <strong>disambiguation</strong> (for example, when multiple topics match
 a user utterance, the user is prompted to choose between two or three
-recognized topics, in a “<em>Did you mean…</em>” question.</li>
+recognized topics, in a <q><em>Did you mean…</em></q> question.</li>
 <li>When <strong>generative AI orchestration</strong> is used instead of
 the built-in natural language understanding for topic triggering, the
 display name is called the Model display name and is used in addition to
@@ -814,7 +842,9 @@ conversation</strong></p>
 <li><p><strong>Test</strong> with
 <code>I&#39;d like to check the status of my order</code></p></li>
 </ol>
-<h4 id="create-a-topic-using-copilot">Create a topic using Copilot</h4>
+</section>
+<section id="create-a-topic-using-copilot" class="level4">
+<h4>Create a topic using Copilot</h4>
 <ol type="1">
 <li><p>Go to <strong>Topics</strong> &gt; <strong>Add a topics</strong>
 &gt; <strong>Create from description with Copilot</strong></p></li>
@@ -828,10 +858,14 @@ conversation</strong></p>
 <code>I have an issue with my laptop and need to open a support ticket</code></p></li>
 </ol>
 <hr />
-<h3 id="congratulations-youve-completed-use-case-1">🏅 Congratulations!
-You’ve completed Use Case 1!</h3>
+</section>
+</section>
+<section id="congratulations-youve-completed-use-case-1" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case 1!</h3>
 <hr />
-<h3 id="test-your-understanding">Test your understanding</h3>
+</section>
+<section id="test-your-understanding" class="level3">
+<h3>Test your understanding</h3>
 <p><strong>Key takeaways:</strong></p>
 <ul>
 <li><strong>Unified UI</strong> – Central place for authoring, testing,
@@ -855,8 +889,10 @@ flows</li>
 <li>Try creating a topic for it using Copilot</li>
 </ul>
 <hr />
-<h2 id="use-case-2-publish-your-agent-to-the-demo-site">🔄 Use Case #2:
-Publish your agent to the demo site</h2>
+</section>
+</section>
+<section id="use-case-2-publish-your-agent-to-the-demo-site" class="level2">
+<h2>🔄 Use Case #2: Publish your agent to the demo site</h2>
 <p>Let external users test your agent before going live.</p>
 <table>
 <colgroup>
@@ -888,9 +924,10 @@ Publish your agent to the demo site</h2>
 </ul>
 <p><strong>Scenario:</strong> You want to share your bot with colleagues
 or stakeholders for feedback without requiring sign-in.</p>
-<h3 id="step-by-step-instructions-1">Step-by-step instructions</h3>
-<h4 id="modify-the-agent-settings-to-enable-access-from-external-users">Modify
-the agent settings to enable access from external users</h4>
+<section id="step-by-step-instructions-1" class="level3">
+<h3>Step-by-step instructions</h3>
+<section id="modify-the-agent-settings-to-enable-access-from-external-users" class="level4">
+<h4>Modify the agent settings to enable access from external users</h4>
 <ol type="1">
 <li><p>Go to <strong>Settings</strong> &gt; <strong>Security</strong>
 &gt; <strong>Authentication</strong></p></li>
@@ -919,10 +956,14 @@ your agent’s behavior on an external testing website</h4></li>
 <code>I have an issue with my laptop and need to open a support ticket</code></p></li>
 </ol>
 <hr />
-<h3 id="congratulations-youve-completed-use-case-2">🏅 Congratulations!
-You’ve completed Use Case 2!</h3>
+</section>
+</section>
+<section id="congratulations-youve-completed-use-case-2" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case 2!</h3>
 <hr />
-<h3 id="test-your-understanding-1">Test your understanding</h3>
+</section>
+<section id="test-your-understanding-1" class="level3">
+<h3>Test your understanding</h3>
 <ul>
 <li>What’s the difference between publishing and saving?</li>
 <li>Why might you use the demo site versus a Teams deployment?</li>
@@ -935,7 +976,10 @@ You’ve completed Use Case 2!</h3>
 <li>Share the demo site and gather feedback</li>
 </ul>
 <hr />
-<h2 id="summary-of-learnings">🏆 Summary of learnings</h2>
+</section>
+</section>
+<section id="summary-of-learnings" class="level2">
+<h2>🏆 Summary of learnings</h2>
 <p>To maximize your Copilot Studio experience:</p>
 <ul>
 <li><strong>Start simple</strong> – One topic can already solve a
@@ -948,8 +992,8 @@ steps</li>
 <li><strong>Publish to share</strong> – Gather real feedback early</li>
 </ul>
 <hr />
-<h3 id="conclusions-and-recommendations">Conclusions and
-recommendations</h3>
+<section id="conclusions-and-recommendations" class="level3">
+<h3>Conclusions and recommendations</h3>
 <p><strong>Copilot Studio golden rules:</strong></p>
 <ul>
 <li>Name agents and topics clearly</li>
@@ -962,5 +1006,8 @@ recommendations</h3>
 <p>By following these principles, you’ll be well on your way to building
 intelligent, useful agents that drive real value.</p>
 <hr />
+</section>
+</section>
+</section>
 </body>
 </html>
