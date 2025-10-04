@@ -1,4 +1,53 @@
-# 🤖 Microsoft Copilot Studio Labs 🧪
+# 🤖 Microsoft C| Model Context Protocol (MCP) & Copilot Studio | [MCS-MCP Lab](https://github.com/microsoft/mcsmcp) | In this lab, you will learn how to deploy an MCP Server and integrate it with Microsoft Copilot Studio. You'll explore how to set up the MCP Server, enabling context-aware agents, and then how to add it into Copilot Studio for streamlined deployment and management.  |
+
+## 🧪 Automated Testing with Playwright
+
+This repository includes comprehensive automated testing capabilities using Playwright to validate the functionality of your Copilot Studio labs.
+
+### Quick Start with Testing
+
+1. **Setup testing environment:**
+   ```bash
+   npm install
+   npx playwright install
+   ```
+
+2. **Configure credentials:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your Microsoft 365 credentials
+   ```
+
+3. **Run tests:**
+   ```bash
+   # Run all tests
+   npm test
+   
+   # Run with browser visible
+   npm run test:headed
+   
+   # Interactive test runner
+   npm run test:ui
+   ```
+
+### Available Test Suites
+
+- **Agent Builder Web Tests** - Validates web-based agent creation and functionality
+- **SharePoint Integration Tests** - Tests SharePoint-connected agents and data analysis
+- **Multi-Agent IT Support Tests** - Validates routing and specialized agent interactions
+- **M365 Copilot Integration Tests** - Tests agent deployment and usage in Microsoft 365
+
+### Testing Features
+
+- ✅ **Automated Agent Creation** - Creates and configures test agents
+- ✅ **Conversation Testing** - Validates agent responses and behavior
+- ✅ **Knowledge Source Validation** - Tests document and web integration
+- ✅ **Cross-Browser Testing** - Chrome, Firefox, Safari support
+- ✅ **Visual Regression Testing** - Screenshots and videos on failures
+- ✅ **CI/CD Ready** - GitHub Actions compatible
+
+For detailed testing documentation, see [PLAYWRIGHT-GUIDE.md](./PLAYWRIGHT-GUIDE.md).
+ilot Studio Labs 🧪
 
 | Title | URL | Overview |
 |-------|-----|----------|
