@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>autonomous-account-news_processed</title>
+  <title>autonomous-account-news - Microsoft Copilot Studio Labs</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -208,6 +208,40 @@ background-color: #f8f9fa;
 tr:hover {
 background-color: #e3f2fd;
 transition: background-color 0.2s ease;
+}
+
+table th:nth-child(1), table td:nth-child(1) { 
+width: 25% !important;
+}
+table th:nth-child(2), table td:nth-child(2) { 
+width: 10% !important;
+text-align: center;
+white-space: nowrap;
+}
+table th:nth-child(3), table td:nth-child(3) { 
+width: 65% !important;
+}
+
+table colgroup col:nth-child(1) {
+width: 25% !important;
+}
+table colgroup col:nth-child(2) {
+width: 10% !important;
+}
+table colgroup col:nth-child(3) {
+width: 65% !important;
+}
+
+table {
+table-layout: fixed !important;
+}
+
+table th:nth-child(2), table td:nth-child(2) {
+max-width: 80px !important;
+min-width: 60px !important;
+}
+table th:nth-child(3), table td:nth-child(3) {
+min-width: 60% !important;
 }
 
 @media (max-width: 768px) {
@@ -475,15 +509,51 @@ background-color: #1a3326;
 border-color: #27ae60;
 }
 }</style>
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">
 </head>
 <body>
-<h1 id="build-an-autonomous-account-news-assistant-agent">Build an
-Autonomous Account News Assistant Agent</h1>
+<header id="title-block-header">
+<h1 class="title">autonomous-account-news - Microsoft Copilot Studio
+Labs</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#build-an-autonomous-account-news-assistant-agent" id="toc-build-an-autonomous-account-news-assistant-agent">Build an
+Autonomous Account News Assistant Agent</a>
+<ul>
+<li><a href="#-lab-details" id="toc--lab-details">🧭 Lab
+Details</a></li>
+<li><a href="#-table-of-contents" id="toc--table-of-contents">📚 Table
+of Contents</a></li>
+<li><a href="#-why-this-matters" id="toc--why-this-matters">🤔 Why This
+Matters</a></li>
+<li><a href="#-introduction" id="toc--introduction">🌐
+Introduction</a></li>
+<li><a href="#-core-concepts-overview" id="toc--core-concepts-overview">🎓 Core Concepts Overview</a></li>
+<li><a href="#-documentation-and-additional-training-links" id="toc--documentation-and-additional-training-links">📄 Documentation
+and Additional Training Links</a></li>
+<li><a href="#-prerequisites" id="toc--prerequisites">✅
+Prerequisites</a></li>
+<li><a href="#-summary-of-targets" id="toc--summary-of-targets">🎯
+Summary of Targets</a></li>
+<li><a href="#️-instructions-by-use-case" id="toc-️-instructions-by-use-case">⚖️ Instructions by Use Case</a>
+<ul>
+<li><a href="#-use-case-5-create-and-send-a-structured-html-report-via-email" id="toc--use-case-5-create-and-send-a-structured-html-report-via-email">🧱
+Use Case #5: Create and Send a Structured HTML Report via Email</a></li>
+<li><a href="#-congratulations-youve-completed-use-case-5" id="toc--congratulations-youve-completed-use-case-5">🏅 Congratulations!
+You’ve completed Use Case #5!</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<section id="build-an-autonomous-account-news-assistant-agent" class="level1">
+<h1>Build an Autonomous Account News Assistant Agent</h1>
 <p>Empower sellers with timely insights – Build an autonomous Copilot
 Studio agent that periodically scans your Sales App for high-value
 opportunities, finds related news, and sends curated reports.</p>
 <hr />
-<h2 id="lab-details">🧭 Lab Details</h2>
+<section id="-lab-details" class="level2">
+<h2>🧭 Lab Details</h2>
 <table>
 <colgroup>
 <col style="width: 1%" />
@@ -513,20 +583,24 @@ reports using Microsoft 365 Outlook.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="table-of-contents">📚 Table of Contents</h2>
+</section>
+<section id="-table-of-contents" class="level2">
+<h2>📚 Table of Contents</h2>
 <ul>
-<li><a href="#-why-this-matters">Why This Matters</a></li>
-<li><a href="#-introduction">Introduction</a></li>
-<li><a href="#-core-concepts-overview">Core Concepts Overview</a></li>
-<li><a href="#-documentation-and-additional-training-links">Documentation and
-Additional Training Links</a></li>
-<li><a href="#-prerequisites">Prerequisites</a></li>
-<li><a href="#-summary-of-targets">Summary of Targets</a></li>
-<li><a href="#️-instructions-by-use-case">Instructions by Use
+<li><a href="#why-this-matters">Why This Matters</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#core-concepts-overview">Core Concepts Overview</a></li>
+<li><a href="#documentation-and-additional-training-links">Documentation
+and Additional Training Links</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#summary-of-targets">Summary of Targets</a></li>
+<li><a href="#instructions-by-use-case">Instructions by Use
 Case</a></li>
 </ul>
 <hr />
-<h2 id="why-this-matters">🤔 Why This Matters</h2>
+</section>
+<section id="-why-this-matters" class="level2">
+<h2>🤔 Why This Matters</h2>
 <p><strong>Sales leaders and field sellers</strong> – Want to know what
 your competitors or customers are up to before the next call? Tired of
 manually searching for news or relying on fragmented updates?</p>
@@ -543,7 +617,9 @@ no need for sellers to proactively interact with the agent. It runs
 independently, letting them delegate the task of tracking
 account-relevant news and focus on closing deals.</p>
 <hr />
-<h2 id="introduction">🌐 Introduction</h2>
+</section>
+<section id="-introduction" class="level2">
+<h2>🌐 Introduction</h2>
 <p>Copilot Studio now supports two types of agents:
 <strong>conversational agents</strong>, which respond to user input, and
 <strong>autonomous agents</strong>, which act based on business events
@@ -559,7 +635,9 @@ to determine relevance</li>
 <p>This proactive approach helps account teams stay ahead of client
 developments and tailor their engagement based on current events.</p>
 <hr />
-<h2 id="core-concepts-overview">🎓 Core Concepts Overview</h2>
+</section>
+<section id="-core-concepts-overview" class="level2">
+<h2>🎓 Core Concepts Overview</h2>
 <table>
 <colgroup>
 <col style="width: 13%" />
@@ -604,8 +682,9 @@ or task execution.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="documentation-and-additional-training-links">📄 Documentation
-and Additional Training Links</h2>
+</section>
+<section id="-documentation-and-additional-training-links" class="level2">
+<h2>📄 Documentation and Additional Training Links</h2>
 <ul>
 <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/faqs-generative-orchestration">Generative
 Orchestration</a></li>
@@ -617,7 +696,9 @@ Tools in Custom Agents</a></li>
 Connector</a></li>
 </ul>
 <hr />
-<h2 id="prerequisites">✅ Prerequisites</h2>
+</section>
+<section id="-prerequisites" class="level2">
+<h2>✅ Prerequisites</h2>
 <ul>
 <li>Access to Microsoft Copilot Studio</li>
 <li>Sales App instance with active opportunities</li>
@@ -627,7 +708,9 @@ Connector</a></li>
 Studio</li>
 </ul>
 <hr />
-<h2 id="summary-of-targets">🎯 Summary of Targets</h2>
+</section>
+<section id="-summary-of-targets" class="level2">
+<h2>🎯 Summary of Targets</h2>
 <p>In this lab, you will build an autonomous news assistant agent
 that:</p>
 <ul>
@@ -657,7 +740,7 @@ to assess relevance</li>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td><a href="#-use-case-1-create-and-configure-an-autonomous-agent">Create and
+<td><a href="#use-case-1-create-and-configure-an-autonomous-agent">Create and
 Configure an Autonomous Agent</a></td>
 <td>Establishes the agent framework and automated trigger for continuous
 operation</td>
@@ -665,14 +748,14 @@ operation</td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td><a href="#-use-case-2-add-a-tool-to-fetch-high-value-opportunities-from-the-sales-app">Add
+<td><a href="#use-case-2-add-a-tool-to-fetch-high-value-opportunities-from-the-sales-app">Add
 a Tool to Fetch High-Value Opportunities from the Sales App</a></td>
 <td>Enables data-driven insights by sourcing relevant CRM records</td>
 <td>10 min</td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td><a href="#-use-case-3-analyze-opportunities-using-web-search-and-deep-reasoning">Analyze
+<td><a href="#use-case-3-analyze-opportunities-using-web-search-and-deep-reasoning">Analyze
 Opportunities Using Web Search and Deep Reasoning</a></td>
 <td>Enriches understanding of each opportunity using external
 signals</td>
@@ -680,7 +763,7 @@ signals</td>
 </tr>
 <tr class="even">
 <td>4</td>
-<td><a href="#-use-case-4-store-content-using-topics-and-global-variables">Store
+<td><a href="#use-case-4-store-content-using-topics-and-global-variables">Store
 Content Using Topics and Global Variables</a></td>
 <td>Maintains precise context for downstream steps and output
 accuracy</td>
@@ -688,7 +771,7 @@ accuracy</td>
 </tr>
 <tr class="odd">
 <td>5</td>
-<td><a href="#-use-case-5-create-and-send-a-structured-html-report-via-email">Create
+<td><a href="#use-case-5-create-and-send-a-structured-html-report-via-email">Create
 and Send a Structured HTML Report via Email</a></td>
 <td>Delivers clear, actionable summaries to stakeholders</td>
 <td>15 min</td>
@@ -696,7 +779,9 @@ and Send a Structured HTML Report via Email</a></td>
 </tbody>
 </table>
 <hr />
-<h2 id="instructions-by-use-case">⚖️ Instructions by Use Case</h2>
+</section>
+<section id="️-instructions-by-use-case" class="level2">
+<h2>⚖️ Instructions by Use Case</h2>
 <p>### 🧱 Use Case #1: Create and Configure an Autonomous Agent</p>
 <p>Set up an autonomous agent with a recurring trigger that
 automatically activates on a schedule.</p>
@@ -1182,8 +1267,8 @@ using the code editor.</p>
 <ol start="24" type="1">
 <li>Click <strong>Save</strong>.</li>
 </ol>
-<h4 id="add-instructions-to-your-agent.">Add instructions to your
-agent.</h4>
+<section id="add-instructions-to-your-agent" class="level4">
+<h4>Add instructions to your agent.</h4>
 <ol start="25" type="1">
 <li>Navigate to the <strong>Overview</strong> tab and locate the
 <strong>Instructions</strong> section. Paste the following instructions
@@ -1261,8 +1346,10 @@ contains a JSON object with:
 <hr />
 <p>### 🏅 Congratulations! You’ve completed Use Case #4!</p>
 <hr />
-<h3 id="use-case-5-create-and-send-a-structured-html-report-via-email">🧱
-Use Case #5: Create and Send a Structured HTML Report via Email</h3>
+</section>
+<section id="-use-case-5-create-and-send-a-structured-html-report-via-email" class="level3">
+<h3>🧱 Use Case #5: Create and Send a Structured HTML Report via
+Email</h3>
 <p>Automate the final step: format relevant news into a clean, branded
 email for account stakeholders.</p>
 <table>
@@ -1300,7 +1387,8 @@ autonomous agents, topics can operate silently without sending
 user-facing messages, making them ideal for structuring and transforming
 data as part of a multi-step orchestration process.</p>
 </blockquote>
-<h4 id="step-by-step-instructions">Step-by-step instructions</h4>
+<section id="step-by-step-instructions" class="level4">
+<h4>Step-by-step instructions</h4>
 <ol type="1">
 <li><p>Navigate to the <strong>Topics</strong> tab.</p></li>
 <li><p>In the <strong>System</strong> tab, open the <strong>Conversation
@@ -1517,8 +1605,13 @@ follows: <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACEYAAAS2CAYAAAA
 </figure></li>
 </ol>
 <hr />
-<h3 id="congratulations-youve-completed-use-case-5">🏅 Congratulations!
-You’ve completed Use Case #5!</h3>
+</section>
+</section>
+<section id="-congratulations-youve-completed-use-case-5" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case #5!</h3>
 <hr />
+</section>
+</section>
+</section>
 </body>
 </html>

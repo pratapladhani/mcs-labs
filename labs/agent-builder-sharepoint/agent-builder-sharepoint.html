@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>agent-builder-sharepoint_processed</title>
+  <title>agent-builder-sharepoint - Microsoft Copilot Studio Labs</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -143,6 +143,40 @@ background-color: #f8f9fa;
 tr:hover {
 background-color: #e3f2fd;
 transition: background-color 0.2s ease;
+}
+
+table th:nth-child(1), table td:nth-child(1) { 
+width: 25% !important;
+}
+table th:nth-child(2), table td:nth-child(2) { 
+width: 10% !important;
+text-align: center;
+white-space: nowrap;
+}
+table th:nth-child(3), table td:nth-child(3) { 
+width: 65% !important;
+}
+
+table colgroup col:nth-child(1) {
+width: 25% !important;
+}
+table colgroup col:nth-child(2) {
+width: 10% !important;
+}
+table colgroup col:nth-child(3) {
+width: 65% !important;
+}
+
+table {
+table-layout: fixed !important;
+}
+
+table th:nth-child(2), table td:nth-child(2) {
+max-width: 80px !important;
+min-width: 60px !important;
+}
+table th:nth-child(3), table td:nth-child(3) {
+min-width: 60% !important;
 }
 
 @media (max-width: 768px) {
@@ -410,17 +444,72 @@ background-color: #1a3326;
 border-color: #27ae60;
 }
 }</style>
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">
 </head>
 <body>
-<h1 id="create-your-own-sharepoint-based-ai-assistant-with-the-lite-experience-of-copilot-studio-in-microsoft-365-copilot-formerly-copilot-studio-agent-builder">Create
+<header id="title-block-header">
+<h1 class="title">agent-builder-sharepoint - Microsoft Copilot Studio
+Labs</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#create-your-own-sharepoint-based-ai-assistant-with-the-lite-experience-of-copilot-studio-in-microsoft-365-copilot-formerly-copilot-studio-agent-builder" id="toc-create-your-own-sharepoint-based-ai-assistant-with-the-lite-experience-of-copilot-studio-in-microsoft-365-copilot-formerly-copilot-studio-agent-builder">Create
 your own SharePoint-based AI assistant with the lite experience of
 Copilot Studio in Microsoft 365 Copilot (formerly Copilot Studio agent
-builder)</h1>
+builder)</a>
+<ul>
+<li><a href="#-lab-details" id="toc--lab-details">🧭 Lab
+Details</a></li>
+<li><a href="#-table-of-contents" id="toc--table-of-contents">📚 Table
+of Contents</a></li>
+<li><a href="#-introduction" id="toc--introduction">🌐
+Introduction</a></li>
+<li><a href="#-prerequisites" id="toc--prerequisites">✅
+Prerequisites</a></li>
+<li><a href="#-summary-of-targets" id="toc--summary-of-targets">🎯
+Summary of Targets</a></li>
+<li><a href="#-use-cases-covered" id="toc--use-cases-covered">🧩 Use
+Cases Covered</a></li>
+<li><a href="#️-instructions-by-use-case" id="toc-️-instructions-by-use-case">🛠️ Instructions by Use Case</a></li>
+<li><a href="#-use-case-1-access-sharepoint-documents" id="toc--use-case-1-access-sharepoint-documents">📁 Use Case #1: Access
+SharePoint documents</a>
+<ul>
+<li><a href="#step-by-step-instructions" id="toc-step-by-step-instructions">Step-by-step instructions</a></li>
+</ul></li>
+<li><a href="#-use-case-2-create-your-sales-admin-assistant-agent" id="toc--use-case-2-create-your-sales-admin-assistant-agent">🤖 Use Case
+#2: Create your Sales Admin Assistant agent</a>
+<ul>
+<li><a href="#step-by-step-instructions-1" id="toc-step-by-step-instructions-1">Step-by-step instructions</a></li>
+</ul></li>
+<li><a href="#-use-case-3-test-advanced-ai-capabilities" id="toc--use-case-3-test-advanced-ai-capabilities">🧪 Use Case #3: Test
+advanced AI capabilities</a>
+<ul>
+<li><a href="#step-by-step-instructions-2" id="toc-step-by-step-instructions-2">Step-by-step instructions</a></li>
+<li><a href="#-congratulations-youve-created-an-advanced-sharepoint-integrated-copilot-agent" id="toc--congratulations-youve-created-an-advanced-sharepoint-integrated-copilot-agent">🏅
+Congratulations! You’ve created an advanced SharePoint-integrated
+Copilot agent!</a></li>
+</ul></li>
+<li><a href="#-summary-of-learnings" id="toc--summary-of-learnings">🔁
+Summary of Learnings</a>
+<ul>
+<li><a href="#technical-capabilities-mastered" id="toc-technical-capabilities-mastered">Technical Capabilities
+Mastered</a></li>
+<li><a href="#business-value-delivered" id="toc-business-value-delivered">Business Value Delivered</a></li>
+<li><a href="#best-practices-applied" id="toc-best-practices-applied">Best Practices Applied</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<section id="create-your-own-sharepoint-based-ai-assistant-with-the-lite-experience-of-copilot-studio-in-microsoft-365-copilot-formerly-copilot-studio-agent-builder" class="level1">
+<h1>Create your own SharePoint-based AI assistant with the lite
+experience of Copilot Studio in Microsoft 365 Copilot (formerly Copilot
+Studio agent builder)</h1>
 <p>Build an intelligent sales admin assistant that analyzes SharePoint
 data using code interpreter and image generation features in Copilot
 Studio Lite.</p>
 <hr />
-<h2 id="lab-details">🧭 Lab Details</h2>
+<section id="-lab-details" class="level2">
+<h2>🧭 Lab Details</h2>
 <table>
 <colgroup>
 <col style="width: 18%" />
@@ -449,25 +538,29 @@ sales operations.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="table-of-contents">📚 Table of Contents</h2>
+</section>
+<section id="-table-of-contents" class="level2">
+<h2>📚 Table of Contents</h2>
 <ul>
-<li><a href="#-introduction">Introduction</a></li>
-<li><a href="#-prerequisites">Prerequisites</a></li>
-<li><a href="#-summary-of-targets">Summary of Targets</a></li>
-<li><a href="#-use-cases-covered">Use Cases Covered</a></li>
-<li><a href="#️-instructions-by-use-case">Instructions by Use Case</a>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#summary-of-targets">Summary of Targets</a></li>
+<li><a href="#use-cases-covered">Use Cases Covered</a></li>
+<li><a href="#instructions-by-use-case">Instructions by Use Case</a>
 <ul>
-<li><a href="#-use-case-1-access-sharepoint-documents">Use Case #1:
+<li><a href="#use-case-1-access-sharepoint-documents">Use Case #1:
 Access SharePoint documents</a></li>
-<li><a href="#-use-case-2-create-your-sales-admin-assistant-agent">Use
+<li><a href="#use-case-2-create-your-sales-admin-assistant-agent">Use
 Case #2: Create your Sales Admin Assistant agent</a></li>
-<li><a href="#-use-case-3-test-advanced-ai-capabilities">Use Case #3:
+<li><a href="#use-case-3-test-advanced-ai-capabilities">Use Case #3:
 Test advanced AI capabilities</a></li>
 </ul></li>
-<li><a href="#-summary-of-learnings">Summary of Learnings</a></li>
+<li><a href="#summary-of-learnings">Summary of Learnings</a></li>
 </ul>
 <hr />
-<h2 id="introduction">🌐 Introduction</h2>
+</section>
+<section id="-introduction" class="level2">
+<h2>🌐 Introduction</h2>
 <p>This lab builds on the Copilot Studio Lite experience by integrating
 SharePoint documents and enabling advanced AI capabilities. You’ll
 create a Sales Admin Assistant that can analyze Excel data, reference
@@ -482,14 +575,18 @@ concepts covered in the <a href="../agent-builder-web/README.md">web-based agent
 lab</a>.</p>
 </blockquote>
 <hr />
-<h2 id="prerequisites">✅ Prerequisites</h2>
+</section>
+<section id="-prerequisites" class="level2">
+<h2>✅ Prerequisites</h2>
 <ul>
 <li>Access to Microsoft 365 Copilot or Copilot Chat</li>
 <li>Access to a SharePoint site with sample sales data</li>
 <li>Ability to create and configure Copilot agents</li>
 </ul>
 <hr />
-<h2 id="summary-of-targets">🎯 Summary of Targets</h2>
+</section>
+<section id="-summary-of-targets" class="level2">
+<h2>🎯 Summary of Targets</h2>
 <p>By the end of the lab, your Sales Admin Assistant will be able
 to:</p>
 <ul>
@@ -500,7 +597,9 @@ to:</p>
 <li>Provide insights on sales trends and performance metrics</li>
 </ul>
 <hr />
-<h2 id="use-cases-covered">🧩 Use Cases Covered</h2>
+</section>
+<section id="-use-cases-covered" class="level2">
+<h2>🧩 Use Cases Covered</h2>
 <table>
 <colgroup>
 <col style="width: 16%" />
@@ -519,23 +618,23 @@ to:</p>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td><a href="#-use-case-1-access-sharepoint-documents">Access SharePoint
+<td><a href="#use-case-1-access-sharepoint-documents">Access SharePoint
 documents</a></td>
 <td>Establish data sources for the agent</td>
 <td>5 min</td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td><a href="#-use-case-2-create-your-sales-admin-assistant-agent">Create your
-Sales Admin Assistant agent</a></td>
+<td><a href="#use-case-2-create-your-sales-admin-assistant-agent">Create
+your Sales Admin Assistant agent</a></td>
 <td>Build an agent with SharePoint integration and advanced
 capabilities</td>
 <td>10 min</td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td><a href="#-use-case-3-test-advanced-ai-capabilities">Test advanced
-AI capabilities</a></td>
+<td><a href="#use-case-3-test-advanced-ai-capabilities">Test advanced AI
+capabilities</a></td>
 <td>Validate code interpreter, image generation, and data analysis
 features</td>
 <td>5 min</td>
@@ -543,14 +642,19 @@ features</td>
 </tbody>
 </table>
 <hr />
-<h2 id="instructions-by-use-case">🛠️ Instructions by Use Case</h2>
+</section>
+<section id="️-instructions-by-use-case" class="level2">
+<h2>🛠️ Instructions by Use Case</h2>
 <hr />
-<h2 id="use-case-1-access-sharepoint-documents">📁 Use Case #1: Access
-SharePoint documents</h2>
+</section>
+<section id="-use-case-1-access-sharepoint-documents" class="level2">
+<h2>📁 Use Case #1: Access SharePoint documents</h2>
 <p>Prepare the SharePoint documents that will serve as knowledge sources
 for your Sales Admin Assistant.</p>
-<h3 id="step-by-step-instructions">Step-by-step instructions</h3>
-<h4 id="navigate-to-sharepoint">Navigate to SharePoint</h4>
+<section id="step-by-step-instructions" class="level3">
+<h3>Step-by-step instructions</h3>
+<section id="navigate-to-sharepoint" class="level4">
+<h4>Navigate to SharePoint</h4>
 <ol type="1">
 <li>Navigate to your organization’s SharePoint site
 <ul>
@@ -586,12 +690,17 @@ sales policies, procedures, and guidelines</li>
 </ul></li>
 </ol>
 <hr />
-<h2 id="use-case-2-create-your-sales-admin-assistant-agent">🤖 Use Case
-#2: Create your Sales Admin Assistant agent</h2>
+</section>
+</section>
+</section>
+<section id="-use-case-2-create-your-sales-admin-assistant-agent" class="level2">
+<h2>🤖 Use Case #2: Create your Sales Admin Assistant agent</h2>
 <p>Build a specialized agent with SharePoint integration and advanced AI
 capabilities.</p>
-<h3 id="step-by-step-instructions-1">Step-by-step instructions</h3>
-<h4 id="create-the-agent">Create the agent</h4>
+<section id="step-by-step-instructions-1" class="level3">
+<h3>Step-by-step instructions</h3>
+<section id="create-the-agent" class="level4">
+<h4>Create the agent</h4>
 <ol type="1">
 <li><p>Navigate to <a href="https://m365.cloud.microsoft/chat/?auth=2&amp;home=1">Microsoft
 365 Copilot Chat</a> and go to the <strong>Chat</strong> tab.</p></li>
@@ -622,7 +731,9 @@ generation)</li>
 <li><strong>Image generator</strong> (for creating visual content)</li>
 </ul></li>
 </ol>
-<h4 id="finalize-configuration">Finalize configuration</h4>
+</section>
+<section id="finalize-configuration" class="level4">
+<h4>Finalize configuration</h4>
 <ol start="6" type="1">
 <li>Navigate to the <strong>Configure</strong> tab to review and refine:
 <ul>
@@ -631,7 +742,9 @@ generation)</li>
 <li>Starter prompts</li>
 </ul></li>
 </ol>
-<h4 id="configure-knowledge-sources">Configure knowledge sources</h4>
+</section>
+<section id="configure-knowledge-sources" class="level4">
+<h4>Configure knowledge sources</h4>
 <ol start="7" type="1">
 <li>Now head over to the <strong>Knowledge</strong> section
 <ul>
@@ -660,12 +773,17 @@ files locally and <strong>upload</strong> them to your agent.</li>
 <strong>Create</strong>.</li>
 </ol>
 <hr />
-<h2 id="use-case-3-test-advanced-ai-capabilities">🧪 Use Case #3: Test
-advanced AI capabilities</h2>
+</section>
+</section>
+</section>
+<section id="-use-case-3-test-advanced-ai-capabilities" class="level2">
+<h2>🧪 Use Case #3: Test advanced AI capabilities</h2>
 <p>Validate your agent’s ability to work with SharePoint data and
 advanced AI features.</p>
-<h3 id="step-by-step-instructions-2">Step-by-step instructions</h3>
-<h4 id="test-policy-knowledge">Test policy knowledge</h4>
+<section id="step-by-step-instructions-2" class="level3">
+<h3>Step-by-step instructions</h3>
+<section id="test-policy-knowledge" class="level4">
+<h4>Test policy knowledge</h4>
 <ol type="1">
 <li><p>Select <strong>Go to agent</strong> to start testing.</p></li>
 <li><p>First, test the agent’s <strong>knowledge</strong> of your sales
@@ -676,8 +794,9 @@ policy:</p></li>
 <li>Verify the agent references your SharePoint policy document and
 provides accurate information.</li>
 </ol>
-<h4 id="test-code-interpreter-with-data-analysis">Test code interpreter
-with data analysis</h4>
+</section>
+<section id="test-code-interpreter-with-data-analysis" class="level4">
+<h4>Test code interpreter with data analysis</h4>
 <ol start="4" type="1">
 <li><strong>Start a new chat</strong> and test the <strong>code
 interpreter</strong> capability with a data analysis request:</li>
@@ -704,7 +823,9 @@ interpreter</strong> capability with a data analysis request:</li>
 <li>Provides insights based on the analysis</li>
 </ul></li>
 </ol>
-<h4 id="test-image-generation">Test image generation</h4>
+</section>
+<section id="test-image-generation" class="level4">
+<h4>Test image generation</h4>
 <ol start="7" type="1">
 <li><strong>Start a new chat</strong> and test the <strong>image
 generation</strong> capability with a relevant request:</li>
@@ -722,8 +843,9 @@ generation</strong> capability with a relevant request:</li>
 <strong><span class="citation" data-cites="*">@*</span>* in the standard
 </strong>Chat** area.</p>
 </blockquote>
-<h4 id="update-your-agents-and-explore-additional-capabilities">Update
-your agents and explore additional capabilities</h4>
+</section>
+<section id="update-your-agents-and-explore-additional-capabilities" class="level4">
+<h4>Update your agents and explore additional capabilities</h4>
 <ol start="8" type="1">
 <li><p>Select <strong>…</strong> next to your agent name in the side bar
 navigation, and choose <strong>Edit</strong></p></li>
@@ -741,14 +863,19 @@ meetings, or channels)</li>
 <li>Knowledge sources enabled by your organization at the tenant level,
 through <strong>Copilot Connectors</strong> (e.g., ServiceNow)</li>
 </ul>
-<h3 id="congratulations-youve-created-an-advanced-sharepoint-integrated-copilot-agent">🏅
-Congratulations! You’ve created an advanced SharePoint-integrated
+</section>
+</section>
+<section id="-congratulations-youve-created-an-advanced-sharepoint-integrated-copilot-agent" class="level3">
+<h3>🏅 Congratulations! You’ve created an advanced SharePoint-integrated
 Copilot agent!</h3>
 <hr />
-<h2 id="summary-of-learnings">🔁 Summary of Learnings</h2>
+</section>
+</section>
+<section id="-summary-of-learnings" class="level2">
+<h2>🔁 Summary of Learnings</h2>
 <p>Key achievements and insights from this lab:</p>
-<h3 id="technical-capabilities-mastered">Technical Capabilities
-Mastered</h3>
+<section id="technical-capabilities-mastered" class="level3">
+<h3>Technical Capabilities Mastered</h3>
 <ul>
 <li><strong>SharePoint Integration</strong> – Connected agent to
 organizational documents and data sources</li>
@@ -757,7 +884,9 @@ and chart generation.</li>
 <li><strong>Image Generation</strong> – Created relevant visual content
 for business presentations</li>
 </ul>
-<h3 id="business-value-delivered">Business Value Delivered</h3>
+</section>
+<section id="business-value-delivered" class="level3">
+<h3>Business Value Delivered</h3>
 <ul>
 <li><strong>Data-Driven Insights</strong> – Transform raw sales data
 into actionable intelligence</li>
@@ -768,7 +897,9 @@ presentation-ready visuals and charts</li>
 <li><strong>Operational Efficiency</strong> – Streamline sales reporting
 and analysis workflows</li>
 </ul>
-<h3 id="best-practices-applied">Best Practices Applied</h3>
+</section>
+<section id="best-practices-applied" class="level3">
+<h3>Best Practices Applied</h3>
 <ul>
 <li><strong>Specific Instructions</strong> – Tailored agent behavior to
 sales management needs</li>
@@ -780,5 +911,8 @@ image generation appropriately</li>
 communication style</li>
 </ul>
 <hr />
+</section>
+</section>
+</section>
 </body>
 </html>
