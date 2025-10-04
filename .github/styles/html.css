@@ -142,6 +142,21 @@ tr:hover {
   transition: background-color 0.2s ease;
 }
 
+/* Column widths for lab table */
+table th:nth-child(1), table td:nth-child(1) { /* Title column */
+  width: 40%;
+}
+
+table th:nth-child(2), table td:nth-child(2) { /* Download column */
+  width: 120px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+table th:nth-child(3), table td:nth-child(3) { /* Overview column */
+  width: auto;
+}
+
 /* Responsive tables */
 @media (max-width: 768px) {
   table {
