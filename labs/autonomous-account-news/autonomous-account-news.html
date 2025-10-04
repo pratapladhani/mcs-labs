@@ -21,6 +21,7 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
+q { quotes: "“" "”" "‘" "’"; }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
 
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -486,13 +487,14 @@ You’ve completed Use Case #5!</a></li>
 </ul></li>
 </ul>
 </nav>
-<h1 id="build-an-autonomous-account-news-assistant-agent">Build an
-Autonomous Account News Assistant Agent</h1>
+<section id="build-an-autonomous-account-news-assistant-agent" class="level1">
+<h1>Build an Autonomous Account News Assistant Agent</h1>
 <p>Empower sellers with timely insights – Build an autonomous Copilot
 Studio agent that periodically scans your Sales App for high-value
 opportunities, finds related news, and sends curated reports.</p>
 <hr />
-<h2 id="lab-details">🧭 Lab Details</h2>
+<section id="lab-details" class="level2">
+<h2>🧭 Lab Details</h2>
 <table>
 <colgroup>
 <col style="width: 1%" />
@@ -522,7 +524,9 @@ reports using Microsoft 365 Outlook.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="table-of-contents">📚 Table of Contents</h2>
+</section>
+<section id="table-of-contents" class="level2">
+<h2>📚 Table of Contents</h2>
 <ul>
 <li><a href="#-why-this-matters">Why This Matters</a></li>
 <li><a href="#-introduction">Introduction</a></li>
@@ -535,7 +539,9 @@ Additional Training Links</a></li>
 Case</a></li>
 </ul>
 <hr />
-<h2 id="why-this-matters">🤔 Why This Matters</h2>
+</section>
+<section id="why-this-matters" class="level2">
+<h2>🤔 Why This Matters</h2>
 <p><strong>Sales leaders and field sellers</strong> – Want to know what
 your competitors or customers are up to before the next call? Tired of
 manually searching for news or relying on fragmented updates?</p>
@@ -552,7 +558,9 @@ no need for sellers to proactively interact with the agent. It runs
 independently, letting them delegate the task of tracking
 account-relevant news and focus on closing deals.</p>
 <hr />
-<h2 id="introduction">🌐 Introduction</h2>
+</section>
+<section id="introduction" class="level2">
+<h2>🌐 Introduction</h2>
 <p>Copilot Studio now supports two types of agents:
 <strong>conversational agents</strong>, which respond to user input, and
 <strong>autonomous agents</strong>, which act based on business events
@@ -568,7 +576,9 @@ to determine relevance</li>
 <p>This proactive approach helps account teams stay ahead of client
 developments and tailor their engagement based on current events.</p>
 <hr />
-<h2 id="core-concepts-overview">🎓 Core Concepts Overview</h2>
+</section>
+<section id="core-concepts-overview" class="level2">
+<h2>🎓 Core Concepts Overview</h2>
 <table>
 <colgroup>
 <col style="width: 13%" />
@@ -613,8 +623,9 @@ or task execution.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="documentation-and-additional-training-links">📄 Documentation
-and Additional Training Links</h2>
+</section>
+<section id="documentation-and-additional-training-links" class="level2">
+<h2>📄 Documentation and Additional Training Links</h2>
 <ul>
 <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/faqs-generative-orchestration">Generative
 Orchestration</a></li>
@@ -626,7 +637,9 @@ Tools in Custom Agents</a></li>
 Connector</a></li>
 </ul>
 <hr />
-<h2 id="prerequisites">✅ Prerequisites</h2>
+</section>
+<section id="prerequisites" class="level2">
+<h2>✅ Prerequisites</h2>
 <ul>
 <li>Access to Microsoft Copilot Studio</li>
 <li>Sales App instance with active opportunities</li>
@@ -636,7 +649,9 @@ Connector</a></li>
 Studio</li>
 </ul>
 <hr />
-<h2 id="summary-of-targets">🎯 Summary of Targets</h2>
+</section>
+<section id="summary-of-targets" class="level2">
+<h2>🎯 Summary of Targets</h2>
 <p>In this lab, you will build an autonomous news assistant agent
 that:</p>
 <ul>
@@ -705,7 +720,9 @@ and Send a Structured HTML Report via Email</a></td>
 </tbody>
 </table>
 <hr />
-<h2 id="instructions-by-use-case">⚖️ Instructions by Use Case</h2>
+</section>
+<section id="instructions-by-use-case" class="level2">
+<h2>⚖️ Instructions by Use Case</h2>
 <p>### 🧱 Use Case #1: Create and Configure an Autonomous Agent</p>
 <p>Set up an autonomous agent with a recurring trigger that
 automatically activates on a schedule.</p>
@@ -1172,8 +1189,8 @@ the code editor.</p>
 <ol start="24" type="1">
 <li>Click <strong>Save</strong>.</li>
 </ol>
-<h4 id="add-instructions-to-your-agent.">Add instructions to your
-agent.</h4>
+<section id="add-instructions-to-your-agent." class="level4">
+<h4>Add instructions to your agent.</h4>
 <ol start="25" type="1">
 <li>Navigate to the <strong>Overview</strong> tab and locate the
 <strong>Instructions</strong> section. Paste the following instructions
@@ -1187,7 +1204,7 @@ there to guide the agent’s orchestration:</li>
 4. Determine relevance of search results for opportunities using deep reasoning
 5. Use Log relevant news for opportunities to log your findings. The base input for Log relevant news for opportunities should be {Global.searchResults} with determined relevance added</code></pre>
 <blockquote>
-<p>[!TIP] If instructions don’t offer the “/” option to reference
+<p>[!TIP] If instructions don’t offer the <q>/</q> option to reference
 topics, tools or variables, you can skip step 26-30 and continue with
 the next steps. You can always come back to this later.</p>
 </blockquote>
@@ -1248,8 +1265,10 @@ contains a JSON object with:
 <hr />
 <p>### 🏅 Congratulations! You’ve completed Use Case #4!</p>
 <hr />
-<h3 id="use-case-5-create-and-send-a-structured-html-report-via-email">🧱
-Use Case #5: Create and Send a Structured HTML Report via Email</h3>
+</section>
+<section id="use-case-5-create-and-send-a-structured-html-report-via-email" class="level3">
+<h3>🧱 Use Case #5: Create and Send a Structured HTML Report via
+Email</h3>
 <p>Automate the final step: format relevant news into a clean, branded
 email for account stakeholders.</p>
 <table>
@@ -1285,7 +1304,8 @@ autonomous agents, topics can operate silently without sending
 user-facing messages, making them ideal for structuring and transforming
 data as part of a multi-step orchestration process.</p>
 </blockquote>
-<h4 id="step-by-step-instructions">Step-by-step instructions</h4>
+<section id="step-by-step-instructions" class="level4">
+<h4>Step-by-step instructions</h4>
 <ol type="1">
 <li><p>Navigate to the <strong>Topics</strong> tab.</p></li>
 <li><p>In the <strong>System</strong> tab, open the <strong>Conversation
@@ -1449,7 +1469,7 @@ steps:</p></li>
 </ol>
 <pre><code>6. Send an HTML report of the data in {Global.relevantNewsForOpportunities}. Use {Global.reportTemplate} as a template for the report, and &lt;Send a summary report&gt; to send it.</code></pre>
 <blockquote>
-<p>[!TIP] If instructions don’t offer the “/” option to reference
+<p>[!TIP] If instructions don’t offer the <q>/</q> option to reference
 topics, tools or variables, you can skip step 25 and continue with the
 next steps. You can always come back to this later.</p>
 </blockquote>
@@ -1492,8 +1512,13 @@ follows: <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACEYAAAS2CAYAAAA
 </figure></li>
 </ol>
 <hr />
-<h3 id="congratulations-youve-completed-use-case-5">🏅 Congratulations!
-You’ve completed Use Case #5!</h3>
+</section>
+</section>
+<section id="congratulations-youve-completed-use-case-5" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case #5!</h3>
 <hr />
+</section>
+</section>
+</section>
 </body>
 </html>
