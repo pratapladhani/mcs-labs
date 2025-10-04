@@ -1,0 +1,52 @@
+# Playwright Auth and Cache Files
+# These files contain sensitive authentication data and temporary browser cache
+# that should never be committed to version control
+
+# Browser profile directories (contains cache, cookies, local storage, etc.)
+playwright/.auth/chromium-profile/
+playwright/.auth/firefox-profile/
+playwright/.auth/webkit-profile/
+
+# Browser cache files
+playwright/.auth/videos/
+playwright/.auth/*.webm
+playwright/.auth/*.mp4
+
+# Authentication state files (may contain sensitive tokens)
+playwright/.auth/user.json
+playwright/.auth/cookies-backup.json
+
+# Keep only essential authentication files:
+# playwright/.auth/*.png (screenshots for documentation)
+# playwright/.auth/authenticated-state.png (for reference)
+
+# Node modules and build artifacts
+node_modules/
+dist/
+build/
+
+# Test results
+test-results/
+playwright-report/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

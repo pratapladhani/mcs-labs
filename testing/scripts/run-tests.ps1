@@ -40,6 +40,23 @@ param(
     [switch]$Headless = $false
 )
 
+# Ensure we're in the testing directory
+$scriptDir = Split-Path -Parent $PSScriptRoot
+if (Test-Path (Join-Path $scriptDir "package.json")) {
+    # We're already in the testing directory
+    Set-Location $scriptDir
+} else {
+    # Look for testing directory in parent
+    $parentDir = Split-Path -Parent $scriptDir
+    $testingDir = Join-Path $parentDir "testing"
+    if (Test-Path (Join-Path $testingDir "package.json")) {
+        Set-Location $testingDir
+    } else {
+        Write-Error "Could not find testing directory with package.json. Current location: $(Get-Location)"
+        exit 1
+    }
+}
+
 # Colors for output
 $Green = "`e[32m"
 $Blue = "`e[34m"
@@ -149,9 +166,9 @@ function Setup-Authentication {
         if ($Headless) {
             Write-Warning "Cannot run authentication setup in headless mode"
             Write-Info "Running with --headed flag for interactive login"
-            npx playwright test persistent-profile-auth.ts --headed
+            npx playwright test tests/persistent-profile-auth.ts --headed
         } else {
-            npx playwright test persistent-profile-auth.ts --headed
+            npx playwright test tests/persistent-profile-auth.ts --headed
         }
         Write-Status "Authentication setup completed!"
         Write-Info "Your login will persist across all future test runs"
@@ -159,7 +176,7 @@ function Setup-Authentication {
     } catch {
         Write-Error "Authentication setup failed: $_"
         Write-Info "Please try running the authentication setup manually:"
-        Write-Info "npx playwright test persistent-profile-auth.ts --headed"
+        Write-Info "npx playwright test tests/persistent-profile-auth.ts --headed"
         return $false
     }
 }
@@ -172,7 +189,7 @@ function Run-Tests {
     if ($SpecificLab) {
         Write-Info "Running tests for lab: $SpecificLab"
         try {
-            npx playwright test "$SpecificLab.spec.ts" $headedFlag
+            npx playwright test "tests/$SpecificLab.spec.ts" $headedFlag
             Write-Status "Lab tests completed successfully!"
             return $true
         } catch {
@@ -299,4 +316,4 @@ switch ($Action) {
 }
 
 Write-Host ""
-Write-Info "Testing framework ready! Check README-Testing.md for detailed documentation."
+Write-Info "Testing framework ready! Check docs/README-Testing.md for detailed documentation."

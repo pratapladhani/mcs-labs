@@ -1,3 +1,38 @@
+/**
+ * AGENT BUILDER WEB LAB - COMPLETE WORKFLOW TEST
+ * 
+ * PURPOSE:
+ * - Validates the complete Agent Builder Web lab workflow from start to finish
+ * - Tests all major steps: navigation, agent creation, configuration, deployment
+ * - Ensures lab instructions work correctly for end users
+ * 
+ * WORKFLOW TESTED:
+ * 1. Navigate to Microsoft 365 Copilot (correct page validation)
+ * 2. Access Chat tab and agent creation
+ * 3. Create agent with web knowledge source
+ * 4. Configure agent settings and instructions
+ * 5. Test agent functionality
+ * 6. Deploy to Microsoft 365 Copilot
+ * 
+ * USAGE:
+ * - Run specific lab: `npx playwright test agent-builder-web-lab.spec.ts --headed`
+ * - Part of full test suite: `.\scripts\run-tests.ps1 -Action test -Lab agent-builder-web`
+ * 
+ * AUTHENTICATION:
+ * - Uses persistent browser profile (run persistent-profile-auth.ts first)
+ * - Automatically handles Microsoft 365 authentication
+ * 
+ * DEBUGGING:
+ * - Creates screenshots at key steps in `.auth/` folder
+ * - Detailed console logging for each workflow step
+ * - Videos captured on failure for troubleshooting
+ * 
+ * TEAM NOTES:
+ * - This test follows the actual lab instructions step-by-step
+ * - Modify selectors if Microsoft UI changes
+ * - Test duration: ~5-10 minutes depending on page load times
+ */
+
 import { test, expect, chromium } from '@playwright/test';
 
 test.describe('Agent Builder Web Lab Validation', () => {

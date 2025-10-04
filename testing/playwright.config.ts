@@ -1,3 +1,33 @@
+/**
+ * PLAYWRIGHT CONFIGURATION
+ * 
+ * PURPOSE:
+ * - Central configuration for all Playwright tests
+ * - Defines test execution behavior, browsers, and authentication flow
+ * - Sets up multi-browser testing with persistent authentication
+ * 
+ * KEY FEATURES:
+ * - Persistent browser profiles for authentication (no credential storage)
+ * - Multi-browser support: Chromium, Firefox, Safari, Mobile
+ * - Automatic retry and failure handling
+ * - Video/screenshot capture for debugging
+ * 
+ * AUTHENTICATION FLOW:
+ * 1. 'setup' project runs `persistent-profile-auth.ts` first
+ * 2. All other projects depend on setup completion
+ * 3. Tests inherit authenticated browser profile
+ * 
+ * CUSTOMIZATION:
+ * - Modify `baseURL` for different environments
+ * - Adjust `workers` for parallel execution
+ * - Update `retries` for flaky test handling
+ * 
+ * TEAM USAGE:
+ * - No direct editing needed for normal testing
+ * - Modify timeouts if tests are slow
+ * - Add new browsers in `projects` array if needed
+ */
+
 import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 
@@ -48,32 +78,49 @@ export default defineConfig({
   projects: [
     {
       name: 'setup',
-      testMatch: /.*\.setup\.ts/,
+      testMatch: /persistent-profile-auth\.ts/,
     },
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome'],
+        // Use the persistent browser profile for authentication
+        channel: 'chromium',
+      },
       dependencies: ['setup'],
     },
+    // Note: Persistent profile tests handle browser launch directly in the test files
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { 
+        ...devices['Desktop Firefox'],
+        storageState: 'playwright/.auth/user.json',
+      },
       dependencies: ['setup'],
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { 
+        ...devices['Desktop Safari'],
+        storageState: 'playwright/.auth/user.json',
+      },
       dependencies: ['setup'],
     },
     /* Test against mobile viewports. */
     {
       name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
+      use: { 
+        ...devices['Pixel 5'],
+        storageState: 'playwright/.auth/user.json',
+      },
       dependencies: ['setup'],
     },
     {
       name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
+      use: { 
+        ...devices['iPhone 12'],
+        storageState: 'playwright/.auth/user.json',
+      },
       dependencies: ['setup'],
     },
   ],

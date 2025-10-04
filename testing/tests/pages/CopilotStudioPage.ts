@@ -1,3 +1,34 @@
+/**
+ * COPILOT STUDIO PAGE OBJECT MODEL
+ * 
+ * PURPOSE:
+ * - Encapsulates Copilot Studio UI interactions and element selectors
+ * - Provides reusable methods for common Copilot Studio operations
+ * - Abstracts UI complexity from test files
+ * 
+ * KEY METHODS:
+ * - createAgent() - Create new agent with configuration
+ * - addWebsiteKnowledge() - Add website as knowledge source
+ * - addSharePointKnowledge() - Add SharePoint as knowledge source
+ * - publishAgent() - Deploy agent to Microsoft 365
+ * - testAgent() - Send test messages to agent
+ * 
+ * USAGE:
+ * - Import and instantiate in test files
+ * - Provides stable interface even if UI changes
+ * - Handles common wait conditions and error states
+ * 
+ * MAINTENANCE:
+ * - Update selectors when Copilot Studio UI changes
+ * - Add new methods for new features
+ * - Keep methods focused and atomic
+ * 
+ * TEAM NOTES:
+ * - This is the single source of truth for Copilot Studio interactions
+ * - Changes here affect all tests using Copilot Studio
+ * - Test methods thoroughly when updating selectors
+ */
+
 import { Page, Locator } from '@playwright/test';
 
 export class CopilotStudioPage {

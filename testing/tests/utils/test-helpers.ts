@@ -1,4 +1,34 @@
-// Test Utilities for MCS Labs Playwright Testing
+/**
+ * TEST UTILITIES AND HELPER FUNCTIONS
+ * 
+ * PURPOSE:
+ * - Provides common utility functions used across all tests
+ * - Handles screenshot management, wait conditions, and data generation
+ * - Centralizes reusable test logic to avoid duplication
+ * 
+ * KEY UTILITIES:
+ * - generateTestName() - Create unique names for test agents/resources
+ * - waitForElement() - Smart wait with multiple fallback strategies
+ * - takeScreenshot() - Capture and save screenshots with descriptive names
+ * - cleanupTestData() - Clean up test resources after test completion
+ * - validateEnvironment() - Check prerequisites before running tests
+ * 
+ * USAGE:
+ * - Import specific functions or entire TestHelpers class
+ * - Use for common operations that appear in multiple tests
+ * - Provides consistent error handling and logging
+ * 
+ * TEAM GUIDELINES:
+ * - Add new utilities here instead of duplicating code in tests
+ * - Keep functions pure and stateless when possible
+ * - Include comprehensive error handling and logging
+ * - Document function parameters and return values
+ * 
+ * EXAMPLES:
+ * - const agentName = TestHelpers.generateTestName('WebAgent');
+ * - await TestHelpers.takeScreenshot(page, 'agent-created');
+ * - await TestHelpers.waitForElement(page, 'button[data-testid="save"]');
+ */
 
 export class TestHelpers {
   /**
