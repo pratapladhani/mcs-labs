@@ -76,7 +76,6 @@ jobs:
             --css="styles/html.css" \
             --html-q-tags \
             --section-divs \
-            --metadata title="Microsoft Copilot Studio Labs" \
             -f markdown+auto_identifiers+gfm_auto_identifiers+emoji \
             -t html5
           
