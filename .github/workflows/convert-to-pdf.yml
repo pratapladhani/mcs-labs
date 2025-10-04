@@ -27,128 +27,111 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y pandoc wkhtmltopdf
 
-      # Debug and convert labs to PDF
-      - name: Debug lab structure and convert to PDF
+      # Convert labs to PDF
+      - name: Convert labs to PDF
         run: |
-          echo "=== DEBUGGING LAB STRUCTURE ==="
-          echo "Current directory:"
-          pwd
-          ls -la
-
-          echo ""
-          echo "Labs directory:"
-          ls -la labs/
-
-          echo ""
-          echo "Looking for README.md files:"
-          find labs -name "README.md" -type f
-
-          echo ""
-          echo "=== STARTING PDF CONVERSION ==="
-
           # Convert each README.md to PDF in its own directory
-          echo "Processing lab directories..."
           for lab_dir in labs/*/; do
-            echo "Checking directory: $lab_dir"
-            if [ -d "$lab_dir" ]; then
-              if [ -f "${lab_dir}README.md" ]; then
-                lab_name=$(basename "$lab_dir")
-                echo "✓ Found README.md in $lab_name"
-                
-                # Convert PDF to the same directory as the README.md
-                pdf_output="${lab_dir}${lab_name}.pdf"
-                echo "Converting $lab_name to PDF in same folder..."
-                
-                # Change to the lab directory to ensure relative image paths work
-                cd "$lab_dir"
-                echo "Working directory: $(pwd)"
-                echo "Files before conversion:"
-                ls -la
-                
-                # Use custom CSS for better PDF styling
-                if pandoc "README.md" \
-                  -o "${lab_name}.pdf" \
-                  --pdf-engine=wkhtmltopdf \
-                  --css="../../.github/styles/pdf.css" \
-                  --standalone \
-                  --self-contained \
-                  --metadata title="$lab_name Lab Guide" \
-                  --metadata author="Microsoft Copilot Studio Labs" \
-                  --metadata date="$(date +%Y-%m-%d)" \
-                  -V margin-top=0.75in \
-                  -V margin-bottom=0.75in \
-                  -V margin-left=0.75in \
-                  -V margin-right=0.75in \
-                  --pdf-engine-opt=--enable-local-file-access \
-                  --pdf-engine-opt=--load-error-handling=ignore \
-                  --pdf-engine-opt=--load-media-error-handling=ignore 2>&1; then
-                  echo "✓ Successfully converted $lab_name"
-                  echo "Files after conversion:"
-                  ls -la "${lab_name}.pdf" 2>/dev/null || echo "PDF file not found!"
-                else
-                  echo "✗ Failed to convert $lab_name with CSS"
-                  # Try fallback conversion without CSS
-                  echo "Trying fallback method for $lab_name..."
-                  if pandoc "README.md" -o "${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>&1; then
-                    echo "✓ Fallback conversion succeeded for $lab_name"
-                    ls -la "${lab_name}.pdf" 2>/dev/null || echo "PDF file not found after fallback!"
-                  else
-                    echo "✗ Fallback conversion also failed for $lab_name"
-                  fi
-                fi
-                # Change back to root directory
-                cd - > /dev/null
+            if [ -d "$lab_dir" ] && [ -f "${lab_dir}README.md" ]; then
+              lab_name=$(basename "$lab_dir")
+              echo "Converting $lab_name to PDF..."
+              
+              # Change to the lab directory to ensure relative image paths work
+              cd "$lab_dir"
+              
+              # Use custom CSS for better PDF styling
+              if pandoc "README.md" \
+                -o "${lab_name}.pdf" \
+                --pdf-engine=wkhtmltopdf \
+                --css="../../.github/styles/pdf.css" \
+                --standalone \
+                --self-contained \
+                --metadata title="$lab_name Lab Guide" \
+                --metadata author="Microsoft Copilot Studio Labs" \
+                --metadata date="$(date +%Y-%m-%d)" \
+                -V margin-top=0.75in \
+                -V margin-bottom=0.75in \
+                -V margin-left=0.75in \
+                -V margin-right=0.75in \
+                --pdf-engine-opt=--enable-local-file-access \
+                --pdf-engine-opt=--load-error-handling=ignore \
+                --pdf-engine-opt=--load-media-error-handling=ignore 2>/dev/null; then
+                echo "✓ Successfully converted $lab_name"
               else
-                echo "✗ No README.md found in $lab_dir"
+                # Try fallback conversion without CSS
+                echo "Trying fallback method for $lab_name..."
+                pandoc "README.md" -o "${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>/dev/null && echo "✓ Fallback conversion succeeded for $lab_name"
               fi
+              
+              # Change back to root directory
+              cd - > /dev/null
             fi
           done
 
-          echo ""
-          echo "=== FINAL RESULTS ==="
-          echo "Generated PDFs in lab directories:"
-          find labs -name "*.pdf" -type f | while read pdf_file; do
-            echo "✓ $(ls -lh "$pdf_file")"
+          echo "Generated PDF count: $(find labs -name "*.pdf" -type f | wc -l)"
+
+      # Convert labs to HTML
+      - name: Convert labs to HTML
+        run: |
+          # Convert each README.md to HTML in its own directory
+          for lab_dir in labs/*/; do
+            if [ -d "$lab_dir" ] && [ -f "${lab_dir}README.md" ]; then
+              lab_name=$(basename "$lab_dir")
+              echo "Converting $lab_name to HTML..."
+              
+              # Change to the lab directory to ensure relative image paths work
+              cd "$lab_dir"
+              
+              # Convert to HTML with custom CSS
+              if pandoc "README.md" \
+                -o "${lab_name}.html" \
+                --standalone \
+                --self-contained \
+                --css="../../.github/styles/html.css" \
+                --metadata title="$lab_name Lab Guide" \
+                --metadata author="Microsoft Copilot Studio Labs" \
+                --metadata date="$(date +%Y-%m-%d)" \
+                --toc \
+                --toc-depth=3 2>/dev/null; then
+                echo "✓ Successfully converted $lab_name to HTML"
+              else
+                # Try fallback conversion without CSS
+                echo "Trying fallback HTML method for $lab_name..."
+                pandoc "README.md" -o "${lab_name}.html" --standalone 2>/dev/null && echo "✓ Fallback HTML conversion succeeded for $lab_name"
+              fi
+              
+              # Change back to root directory
+              cd - > /dev/null
+            fi
           done
 
-          echo ""
-          echo "PDF count: $(find labs -name "*.pdf" -type f | wc -l)"
+          echo "Generated HTML count: $(find labs -name "*.html" -type f | wc -l)"
 
-          echo ""
-          echo "Creating temporary pdfs directory for artifact upload..."
-          mkdir -p pdfs-collection
-          find labs -name "*.pdf" -type f -exec cp {} pdfs-collection/ \;
-
-      - name: Upload PDF artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: lab-pdfs
-          path: pdfs-collection/
-          if-no-files-found: warn
-        if: always()
-
-      # Commit PDFs back to the repository
-      - name: Commit PDFs to repository
+      # Commit PDFs and HTML files back to the repository
+      - name: Commit PDFs and HTML files to repository
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
+
           echo "Current git status:"
           git status
-          
+
           echo ""
-          echo "Checking for PDF files to add:"
+          echo "Checking for generated files to add:"
+          echo "PDF files:"
           find labs -name "*.pdf" -type f
-          
-          # Add all PDF files
+          echo "HTML files:"
+          find labs -name "*.html" -type f
+
+          # Add all generated files
           git add labs/
-          
+
           # Check if there are changes to commit
           if git diff --staged --quiet; then
-            echo "No PDF changes to commit"
+            echo "No generated files to commit"
           else
-            echo "Committing PDF files..."
-            git commit -m "Auto-generated PDFs for lab documentation [skip ci]"
+            echo "Committing generated PDF and HTML files..."
+            git commit -m "Auto-generated PDFs and HTML files for lab documentation [skip ci]"
             echo "Pushing changes..."
             git push
           fi
