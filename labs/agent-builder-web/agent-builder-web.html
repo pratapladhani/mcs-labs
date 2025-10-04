@@ -126,11 +126,14 @@ margin: 1.5em 0;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 border-radius: 8px;
 overflow: hidden;
+table-layout: fixed;
 }
 th, td {
 border: 1px solid #dee2e6;
 padding: 12px 16px;
 text-align: left;
+word-wrap: break-word;
+overflow-wrap: break-word;
 }
 th {
 background-color: #f8f9fa;
@@ -146,38 +149,51 @@ background-color: #e3f2fd;
 transition: background-color 0.2s ease;
 }
 
-table.lab-table th:nth-child(1), table.lab-table td:nth-child(1) { 
-width: 65% !important;
-}
-table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) { 
-width: 10% !important;
-text-align: center;
-white-space: nowrap;
-}
-table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) { 
-width: 25% !important;
+
+table thead tr th:nth-child(1):nth-last-child(4),
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(4),
+table tbody tr td:nth-child(1):nth-last-child(4),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(4) {
+width: auto;
 }
 
-table.lab-table colgroup col:nth-child(1) {
-width: 65% !important;
-}
-table.lab-table colgroup col:nth-child(2) {
+table thead tr th:nth-child(1):nth-last-child(4),
+table tbody tr td:nth-child(1):nth-last-child(4) {
 width: 10% !important;
 }
-table.lab-table colgroup col:nth-child(3) {
-width: 25% !important;
+
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2) {
+width: 15% !important;
+}
+
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3) {
+width: 15% !important;
+}
+
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(4),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(4) {
+width: 60% !important;
 }
 
 table.lab-table {
 table-layout: fixed !important;
 }
-
+table.lab-table th:nth-child(1), table.lab-table td:nth-child(1) {
+width: 65% !important;
+}
 table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) {
-max-width: 80px !important;
-min-width: 60px !important;
+width: 10% !important;
+text-align: center;
+white-space: nowrap;
 }
 table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) {
-min-width: 20% !important;
+width: 25% !important;
 }
 
 @media (max-width: 768px) {
@@ -451,9 +467,6 @@ border-color: #27ae60;
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">
 </head>
 <body>
-<header id="title-block-header">
-<h1 class="title">agent-builder-web - Microsoft Copilot Studio Labs</h1>
-</header>
 <section id="create-your-own-web-based-ai-assistant-with-lite-experience-of-copilot-studio-in-microsoft-365-copilot-formerly-copilot-studio-agent-builder" class="level1">
 <h1>Create your own web-based AI assistant with lite experience of
 Copilot Studio in Microsoft 365 Copilot (formerly Copilot Studio agent
