@@ -82,6 +82,10 @@ jobs:
           # Fix colgroup widths in the generated HTML
           sed -i 's|<colgroup>.*</colgroup>|<colgroup><col style="width: 25%"><col style="width: 10%"><col style="width: 65%"></colgroup>|g' _site/index.html
           
+          # Make external links open in new window on homepage
+          # Add target="_blank" and rel="noopener noreferrer" to external links (http/https)
+          sed -i 's/<a href="\(https\?:\/\/[^"]*\)"/<a href="\1" target="_blank" rel="noopener noreferrer"/g' _site/index.html
+          
           # Add simple favicon to homepage (blue circle with L)
           sed -i 's|</head>|  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">\n</head>|' _site/index.html
           
