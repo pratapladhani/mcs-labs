@@ -48,80 +48,116 @@ jobs:
           mkdir -p _site/styles
           cp -r .github/styles/* _site/styles/
           
-          # Create index.html with lab listing
-          cat > _site/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Microsoft Copilot Studio Labs</title>
-              <link rel="stylesheet" href="styles/html.css">
-              <style>
-                  .lab-grid {
-                      display: grid;
-                      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                      gap: 2rem;
-                      margin: 2rem 0;
-                  }
-                  .lab-card {
-                      background: #f8f9fa;
-                      border: 1px solid #dee2e6;
-                      border-radius: 8px;
-                      padding: 1.5rem;
-                      transition: transform 0.2s ease, box-shadow 0.2s ease;
-                  }
-                  .lab-card:hover {
-                      transform: translateY(-2px);
-                      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                  }
-                  .lab-title {
-                      color: #2c3e50;
-                      margin-bottom: 0.5rem;
-                      font-size: 1.2em;
-                  }
-                  .lab-description {
-                      color: #666;
-                      margin-bottom: 1rem;
-                      line-height: 1.5;
-                  }
-                  .lab-links {
-                      display: flex;
-                      gap: 1rem;
-                  }
-                  .lab-link {
-                      padding: 0.5rem 1rem;
-                      background: #3498db;
-                      color: white;
-                      text-decoration: none;
-                      border-radius: 4px;
-                      font-size: 0.9em;
-                      transition: background 0.2s ease;
-                  }
-                  .lab-link:hover {
-                      background: #2980b9;
-                      color: white;
-                  }
-                  .lab-link.pdf {
-                      background: #e74c3c;
-                  }
-                  .lab-link.pdf:hover {
-                      background: #c0392b;
-                  }
-              </style>
-          </head>
-          <body>
-              <h1>🚀 Microsoft Copilot Studio Labs</h1>
-              <p>Welcome to the Microsoft Copilot Studio Labs collection. Click on any lab below to view the HTML version or download the PDF.</p>
-              
-              <div class="lab-grid" id="lab-grid">
-                  <!-- Labs will be populated by JavaScript -->
-              </div>
-
-              <script>
-                  // Lab configuration - this will be populated by the build script
-                  const labs = [
-          EOF
+          # Convert root README.md to HTML as the main page
+          echo "Converting root README.md to homepage..."
+          
+          # Enhance README for web display
+          cp README.md _site/README_processed.md
+          
+          # Add lab navigation section at the end
+          echo "" >> _site/README_processed.md
+          echo "---" >> _site/README_processed.md
+          echo "" >> _site/README_processed.md
+          echo "## 🎯 Interactive Lab Access" >> _site/README_processed.md
+          echo "" >> _site/README_processed.md
+          echo "Click on any lab below to view the HTML version online or download the PDF for offline reading:" >> _site/README_processed.md
+          echo "" >> _site/README_processed.md
+          echo '<div class="lab-grid" id="lab-grid">' >> _site/README_processed.md
+          echo '<!-- Labs will be populated by JavaScript -->' >> _site/README_processed.md
+          echo '</div>' >> _site/README_processed.md
+          
+          # Convert README to HTML with custom styling
+          pandoc _site/README_processed.md \
+            -o _site/index.html \
+            --standalone \
+            --self-contained \
+            --css="styles/html.css" \
+            --html-q-tags \
+            --toc \
+            --toc-depth=2 \
+            --section-divs \
+            -f markdown+auto_identifiers+gfm_auto_identifiers+emoji \
+            -t html5
+          
+          # Add custom CSS for lab cards directly to the HTML
+          sed -i '/<\/head>/i \
+          <style> \
+              .lab-grid { \
+                  display: grid; \
+                  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); \
+                  gap: 2rem; \
+                  margin: 2rem 0; \
+              } \
+              .lab-card { \
+                  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); \
+                  border: 1px solid #dee2e6; \
+                  border-radius: 12px; \
+                  padding: 1.5rem; \
+                  transition: all 0.3s ease; \
+                  box-shadow: 0 2px 8px rgba(0,0,0,0.1); \
+              } \
+              .lab-card:hover { \
+                  transform: translateY(-4px); \
+                  box-shadow: 0 8px 25px rgba(0,0,0,0.15); \
+                  border-color: #3498db; \
+              } \
+              .lab-title { \
+                  color: #2c3e50; \
+                  margin-bottom: 0.8rem; \
+                  font-size: 1.3em; \
+                  font-weight: 600; \
+              } \
+              .lab-description { \
+                  color: #555; \
+                  margin-bottom: 1.2rem; \
+                  line-height: 1.6; \
+                  font-size: 0.95em; \
+              } \
+              .lab-links { \
+                  display: flex; \
+                  gap: 0.8rem; \
+                  flex-wrap: wrap; \
+              } \
+              .lab-link { \
+                  padding: 0.6rem 1.2rem; \
+                  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); \
+                  color: white; \
+                  text-decoration: none; \
+                  border-radius: 6px; \
+                  font-size: 0.9em; \
+                  font-weight: 500; \
+                  transition: all 0.2s ease; \
+                  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3); \
+              } \
+              .lab-link:hover { \
+                  background: linear-gradient(135deg, #2980b9 0%, #21618c 100%); \
+                  transform: translateY(-1px); \
+                  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4); \
+                  color: white; \
+              } \
+              .lab-link.pdf { \
+                  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); \
+                  box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3); \
+              } \
+              .lab-link.pdf:hover { \
+                  background: linear-gradient(135deg, #c0392b 0%, #a93226 100%); \
+                  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.4); \
+              } \
+              @media (max-width: 768px) { \
+                  .lab-grid { \
+                      grid-template-columns: 1fr; \
+                      gap: 1.5rem; \
+                  } \
+                  .lab-links { \
+                      flex-direction: column; \
+                  } \
+              } \
+          </style>' _site/index.html
+          
+          # Add JavaScript section for lab population
+          sed -i '/<\/body>/i \
+          <script> \
+              const labs = [' _site/index.html
           
           # Copy all HTML files and create lab entries
           first_lab=true
@@ -177,30 +213,35 @@ jobs:
           done
           
           # Close JavaScript array and add the rest
-          echo "                  ];" >> _site/index.html
+          echo "              ];" >> _site/index.html
+          echo "              " >> _site/index.html
+          echo "              function populateLabGrid() {" >> _site/index.html
+          echo "                  const grid = document.getElementById('lab-grid');" >> _site/index.html
+          echo "                  if (!grid) return; // Grid not found" >> _site/index.html
           echo "                  " >> _site/index.html
-          echo "                  function populateLabGrid() {" >> _site/index.html
-          echo "                      const grid = document.getElementById('lab-grid');" >> _site/index.html
-          echo "                      labs.forEach(lab => {" >> _site/index.html
-          echo "                          const card = document.createElement('div');" >> _site/index.html
-          echo "                          card.className = 'lab-card';" >> _site/index.html
-          echo "                          card.innerHTML = \`" >> _site/index.html
-          echo "                              <h3 class=\"lab-title\">\${lab.title}</h3>" >> _site/index.html
-          echo "                              <p class=\"lab-description\">\${lab.description}</p>" >> _site/index.html
-          echo "                              <div class=\"lab-links\">" >> _site/index.html
-          echo "                                  <a href=\"\${lab.htmlPath}\" class=\"lab-link\">📄 View HTML</a>" >> _site/index.html
-          echo "                                  <a href=\"\${lab.pdfPath}\" class=\"lab-link pdf\">📋 Download PDF</a>" >> _site/index.html
-          echo "                              </div>" >> _site/index.html
-          echo "                          \`;" >> _site/index.html
-          echo "                          grid.appendChild(card);" >> _site/index.html
-          echo "                      });" >> _site/index.html
-          echo "                  }" >> _site/index.html
-          echo "                  " >> _site/index.html
-          echo "                  // Populate the grid when page loads" >> _site/index.html
-          echo "                  populateLabGrid();" >> _site/index.html
-          echo "              </script>" >> _site/index.html
-          echo "          </body>" >> _site/index.html
-          echo "          </html>" >> _site/index.html
+          echo "                  labs.forEach(lab => {" >> _site/index.html
+          echo "                      const card = document.createElement('div');" >> _site/index.html
+          echo "                      card.className = 'lab-card';" >> _site/index.html
+          echo "                      card.innerHTML = \`" >> _site/index.html
+          echo "                          <h3 class=\"lab-title\">\${lab.title}</h3>" >> _site/index.html
+          echo "                          <p class=\"lab-description\">\${lab.description}</p>" >> _site/index.html
+          echo "                          <div class=\"lab-links\">" >> _site/index.html
+          echo "                              <a href=\"\${lab.htmlPath}\" class=\"lab-link\">📄 View HTML</a>" >> _site/index.html
+          echo "                              <a href=\"\${lab.pdfPath}\" class=\"lab-link pdf\">📋 Download PDF</a>" >> _site/index.html
+          echo "                          </div>" >> _site/index.html
+          echo "                      \`;" >> _site/index.html
+          echo "                      grid.appendChild(card);" >> _site/index.html
+          echo "                  });" >> _site/index.html
+          echo "              }" >> _site/index.html
+          echo "              " >> _site/index.html
+          echo "              // Populate the grid when page loads" >> _site/index.html
+          echo "              document.addEventListener('DOMContentLoaded', populateLabGrid);" >> _site/index.html
+          echo "          </script>" >> _site/index.html
+          echo "      </body>" >> _site/index.html
+          echo "  </html>" >> _site/index.html
+          
+          # Clean up temp file
+          rm -f _site/README_processed.md
           
           echo ""
           echo "📊 Site structure created:"
