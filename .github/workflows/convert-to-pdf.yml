@@ -142,8 +142,10 @@ jobs:
                 
                 # Fix TOC links to match cleaned header IDs
                 # Remove leading dashes and emojis from TOC anchor links to match header IDs
-                # Pattern: href="#-text" or href="#emoji-text" -> href="#text"
-                sed -i 's/href="#[^a-zA-Z0-9]*-*\([a-zA-Z][^"]*\)"/href="#\1"/g' "${lab_name}.html"
+                # First handle simple dash pattern: href="#-text" -> href="#text"
+                sed -i 's/href="#-\([a-zA-Z][^"]*\)"/href="#\1"/g' "${lab_name}.html"
+                # Then handle emoji+dash pattern: href="#emoji-text" -> href="#text"
+                sed -i 's/href="#[^a-zA-Z0-9]*\([a-zA-Z][^"]*\)"/href="#\1"/g' "${lab_name}.html"
                 
                 # Make external links open in new window
                 # Add target="_blank" and rel="noopener noreferrer" to external links (http/https)
