@@ -287,7 +287,7 @@ jobs:
       # =================================================================
       # Convert styled HTML files to professional PDFs with:
       # - Table of Contents and bookmarks for navigation
-      # - Clean content without internal links
+      # - Internal links preserved for PDF navigation
       # - Page numbering and professional layout
       # =================================================================
       - name: 📄 Generate Professional PDFs
@@ -327,60 +327,28 @@ jobs:
                 # Add anchor targets before headers for better PDF internal linking
                 sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)">/<a id="\2" name="\2"><\/a><h\1 id="\2" name="\3">/g' "${lab_name}.html"
                 
-                # Create a PDF-specific version of the HTML with internal links removed
-                echo "Creating PDF-optimized version without internal links..."
-                cp "${lab_name}.html" "${lab_name}_pdf.html"
-                
-                # Debug: Show what internal links were found before removal
-                internal_link_count=$(grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "${lab_name}_pdf.html" | wc -l)
+                # Debug: Show what internal links are available for PDF navigation
+                echo "Preserving internal links for PDF navigation..."
+                internal_link_count=$(grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "${lab_name}.html" | wc -l)
                 if [ "$internal_link_count" -gt 0 ]; then
-                  echo "Found $internal_link_count internal links to remove:"
-                  grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "${lab_name}_pdf.html" | head -3
+                  echo "Found $internal_link_count internal links to preserve in PDF:"
+                  grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "${lab_name}.html" | head -3
                 else
                   echo "No HTML internal links found"
                 fi
                 
-                # Remove HTML internal anchor links but keep the text content
-                # Pattern: <a href="#something">text</a> becomes just: text
-                sed -i 's/<a href="#[^"]*"[^>]*>\([^<]*\)<\/a>/\1/g' "${lab_name}_pdf.html"
+                echo "✓ Internal links preserved for PDF navigation"
                 
-                # Remove any remaining anchor elements with internal links
-                sed -i 's/<a[^>]*href="#[^"]*"[^>]*>//g' "${lab_name}_pdf.html"
-                sed -i 's/<\/a>//g' "${lab_name}_pdf.html"
+                # Convert HTML to PDF using Puppeteer with internal links preserved
+                echo "Generating PDF with Puppeteer (preserving internal navigation)..."
+                lab_title=$(grep -m 1 '<title>' "${lab_name}.html" | sed 's/<[^>]*>//g' | sed 's/^[ \t]*//;s/[ \t]*$//' || echo "$lab_name")
                 
-                # Remove markdown-style internal links that might still be in HTML
-                # Pattern: [text](#section) becomes just: text
-                sed -i 's/\[\([^]]*\)\](#[^)]*)/\1/g' "${lab_name}_pdf.html"
-                
-                # Remove any orphaned internal link references
-                sed -i 's/(#[^)]*)//g' "${lab_name}_pdf.html"
-                
-                # Clean up any double spaces or formatting issues from link removal
-                sed -i 's/  \+/ /g' "${lab_name}_pdf.html"
-                
-                echo "✓ Internal links removed from PDF version"
-                
-                echo "First few links in HTML:"
-                grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "${lab_name}.html" | head -3 || echo "No internal links found in HTML"
-                
-                # Convert HTML to PDF using Puppeteer (more stable than wkhtmltopdf)
-                echo "Generating PDF with Puppeteer..."
-                lab_title=$(grep -m 1 '<title>' "${lab_name}_pdf.html" | sed 's/<[^>]*>//g' | sed 's/^[ \t]*//;s/[ \t]*$//' || echo "$lab_name")
-                
-                if node "../../.github/scripts/generate-pdf.js" "${lab_name}_pdf.html" "${lab_name}.pdf" "$lab_title"; then
-                  echo "✓ Successfully converted $lab_name HTML to PDF"
+                if node "../../.github/scripts/generate-pdf.js" "${lab_name}.html" "${lab_name}.pdf" "$lab_title"; then
+                  echo "✓ Successfully converted $lab_name HTML to PDF with internal links"
                 else
                   echo "✗ Failed to convert $lab_name HTML to PDF with Puppeteer"
-                  # Fallback: try with original HTML file
-                  if node "../../.github/scripts/generate-pdf.js" "${lab_name}.html" "${lab_name}.pdf" "$lab_title"; then
-                    echo "✓ Fallback PDF conversion succeeded for $lab_name"
-                  else
-                    echo "✗ Both PDF conversion methods failed for $lab_name"
-                  fi
+                  echo "  This might be due to internal link navigation issues in PDF generation"
                 fi
-                
-                # Cleanup temporary PDF-specific HTML file
-                rm -f "${lab_name}_pdf.html"
                 
                 # Change back to root directory
                 cd - > /dev/null
