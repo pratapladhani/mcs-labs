@@ -71,11 +71,14 @@ jobs:
           echo '<!-- Labs will be populated by JavaScript -->' >> _site/README_processed.md
           echo '</div>' >> _site/README_processed.md
           
-          # Convert README to HTML with custom styling
+          # Update README links to point to deployed HTML files
+          sed -i 's|\[\([^]]*\)\](\./labs/\([^)]*\))|\[\1\](labs/\2/\2.html)|g' _site/README_processed.md
+          
+          # Convert README to HTML with custom styling (using embedded resources to fix CSS path issue)
           pandoc _site/README_processed.md \
             -o _site/index.html \
             --standalone \
-            --self-contained \
+            --embed-resources \
             --css="styles/html.css" \
             --html-q-tags \
             --toc \
