@@ -64,9 +64,9 @@ jobs:
           sed -i 's/|-------|-----|----------|/|-------|----------|----------|/g' _site/README_processed.md
           
           # Make the title clickable (links to HTML) and put PDF download in Download column
-          # Format: | Title | [link-text](./labs/lab-name) | Overview | becomes:
-          # | [Title](labs/lab-name/lab-name.html) | [📋 PDF](labs/lab-name/lab-name.pdf) | Overview |
-          sed -i 's/| \([^|]*\) | \[\([^]]*\)\](\./labs/\([^)]*\)) | \([^|]*\) |/| [\1](labs\/\3\/\3.html) | [📋 PDF](labs\/\3\/\3.pdf) | \4 |/g' _site/README_processed.md
+          # Process each lab row - pattern: | Title | [link-text](./labs/lab-name) | Overview |
+          # Replace with: | [Title](labs/lab-name/lab-name.html) | [📋 PDF](labs/lab-name/lab-name.pdf) | Overview |
+          sed -i -E 's/\| ([^|]+) \| \[([^]]+)\]\(\.\/labs\/([^/]+)\) \| ([^|]+) \|/| [\1](labs\/\3\/\3.html) | [📋 PDF](labs\/\3\/\3.pdf) | \4 |/g' _site/README_processed.md
           
           # Convert README to HTML with custom styling (using embedded resources to fix CSS path issue)
           pandoc _site/README_processed.md \
