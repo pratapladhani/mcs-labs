@@ -140,14 +140,21 @@ jobs:
                 # Also add standalone anchor tags before headers as backup
                 sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)"/<a name="\2"><\/a><h\1 id="\2" name="\3"/g' "${lab_name}.html"
                 
+                # Fix TOC links to match cleaned header IDs
+                # Remove leading dashes and emojis from TOC anchor links to match header IDs
+                # Pattern: href="#-text" or href="#emoji-text" -> href="#text"
+                sed -i 's/href="#[^a-zA-Z0-9]*-*\([a-zA-Z][^"]*\)"/href="#\1"/g' "${lab_name}.html"
+                
                 # Make external links open in new window
                 # Add target="_blank" and rel="noopener noreferrer" to external links (http/https)
                 # This regex matches links that start with http:// or https:// and adds the attributes
                 sed -i 's/<a href="\(https\?:\/\/[^"]*\)"/<a href="\1" target="_blank" rel="noopener noreferrer"/g' "${lab_name}.html"
                 
-                # Debug: Show final result
-                echo "Final header structure in $lab_name HTML:"
-                grep -o '<a name="[^"]*"></a><h[1-6] id="[^"]*"' "${lab_name}.html" | head -3 || echo "No processed headers found"
+                # Debug: Show final TOC links and header IDs
+                echo "Final TOC links in $lab_name HTML:"
+                grep -o 'href="#[^"]*"' "${lab_name}.html" | head -5 || echo "No TOC links found"
+                echo "Final header IDs in $lab_name HTML:"
+                grep -o '<h[1-6] id="[^"]*"' "${lab_name}.html" | head -5 || echo "No header IDs found"
                 
                 # Debug: Show external links
                 echo "External links in $lab_name HTML:"
