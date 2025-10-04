@@ -22,21 +22,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Install dependencies
-      - name: Install dependencies
+      # Setup Pandoc using dedicated action (much faster than apt-get)
+      - name: Setup Pandoc
+        uses: pandoc/actions/setup@main
+        with:
+          version: 3.1.3
+
+      # Install wkhtmltopdf and fonts
+      - name: Install wkhtmltopdf and fonts
         run: |
-          echo "Installing Pandoc and wkhtmltopdf..."
-          sudo apt-get update -qq
-
-          # Install pandoc first (usually quick)
-          sudo apt-get install -y --no-install-recommends pandoc
-          echo "✓ Pandoc installed"
-
-          # Try installing wkhtmltopdf with fallback
-          if ! sudo apt-get install -y --no-install-recommends wkhtmltopdf; then
-            echo "APT installation failed, trying snap..."
-            sudo snap install wkhtmltopdf
-          fi
+          echo "Installing wkhtmltopdf..."
+          
+          # Use wget to download specific version (faster than apt)
+          wget -q https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.jammy_amd64.deb
+          sudo apt-get install -y ./wkhtmltox_0.12.6.1-3.jammy_amd64.deb
+          rm wkhtmltox_0.12.6.1-3.jammy_amd64.deb
           echo "✓ wkhtmltopdf installed"
           
           # Install fonts for emoji support
@@ -46,7 +46,7 @@ jobs:
           # Verify installations
           pandoc --version
           wkhtmltopdf --version
-        timeout-minutes: 10
+        timeout-minutes: 5
 
       # Convert labs to HTML first (needed for PDF generation)
       - name: Convert labs to HTML
@@ -213,6 +213,9 @@ jobs:
           find labs -name "*.pdf" -type f
           echo "HTML files:"
           find labs -name "*.html" -type f
+
+          # Sync with latest remote changes to avoid push conflicts during long runs
+          git pull --rebase --autostash origin main
 
           # Add all generated files
           git add labs/
