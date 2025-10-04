@@ -83,8 +83,8 @@ jobs:
           # Fix colgroup widths in the generated HTML
           sed -i 's|<colgroup>.*</colgroup>|<colgroup><col style="width: 25%"><col style="width: 10%"><col style="width: 65%"></colgroup>|g' _site/index.html
           
-          # Add favicon to homepage
-          sed -i 's|</head>|  <link rel="icon" href="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='"'"'http://www.w3.org/2000/svg'"'"' viewBox='"'"'0 0 100 100'"'"'%3E%3Ctext y='"'"'.9em'"'"' font-size='"'"'90'"'"'%3E🤖%3C/text%3E%3C/svg%3E">\n</head>|' _site/index.html
+          # Add favicon to homepage (using lab flask emoji)
+          sed -i 's|</head>|  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='"'"'http://www.w3.org/2000/svg'"'"' viewBox='"'"'0 0 100 100'"'"'%3E%3Ctext y='"'"'.9em'"'"' font-size='"'"'90'"'"'%3E�%3C/text%3E%3C/svg%3E">\n</head>|' _site/index.html
           
           # Copy all HTML files to the site
           for lab_dir in labs/*/; do
