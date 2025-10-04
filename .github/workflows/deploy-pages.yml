@@ -38,6 +38,11 @@ jobs:
         with:
           # Enable Pages if not already enabled
           enablement: true
+      
+      - name: Install Pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
 
       - name: Create Pages site structure
         run: |
