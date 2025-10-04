@@ -38,6 +38,10 @@ jobs:
             sudo snap install wkhtmltopdf
           fi
           echo "✓ wkhtmltopdf installed"
+          
+          # Install fonts for emoji support
+          sudo apt-get install -y --no-install-recommends fonts-noto-color-emoji fonts-noto-emoji
+          echo "✓ Emoji fonts installed"
 
           # Verify installations
           pandoc --version
@@ -69,14 +73,17 @@ jobs:
               # Add closing div tags for callouts (simple approach - assumes single line callouts)
               sed -i 's/\(> <div class="[^"]*">.*\)$/\1<\/div>/g' "${lab_name}_processed.md"
               
-              # Convert to HTML with custom CSS (preserve emojis by removing --ascii)
+              # Convert to HTML with custom CSS (preserve emojis and fix anchors)
               if pandoc "${lab_name}_processed.md" \
                 -o "${lab_name}.html" \
                 --standalone \
                 --self-contained \
                 --css="../../.github/styles/html.css" \
                 --html-q-tags \
-                -f markdown+auto_identifiers \
+                --toc \
+                --toc-depth=3 \
+                --section-divs \
+                -f markdown+auto_identifiers+emoji \
                 -t html5 2>/dev/null; then
                 echo "✓ Successfully converted $lab_name to HTML"
               else
@@ -84,7 +91,9 @@ jobs:
                 echo "Trying fallback HTML method for $lab_name..."
                 pandoc "${lab_name}_processed.md" -o "${lab_name}.html" \
                   --standalone \
-                  -f markdown+auto_identifiers \
+                  --section-divs \
+                  --toc \
+                  -f markdown+auto_identifiers+emoji \
                   -t html5 2>/dev/null && echo "✓ Fallback HTML conversion succeeded for $lab_name"
               fi
               
@@ -113,7 +122,7 @@ jobs:
                 # Change to the lab directory
                 cd "$lab_dir"
                 
-                # Convert HTML to PDF using wkhtmltopdf (preserves hyperlinks)
+                # Convert HTML to PDF using wkhtmltopdf (preserves hyperlinks and emojis)
                 if wkhtmltopdf \
                   --page-size Letter \
                   --margin-top 0.75in \
@@ -122,9 +131,13 @@ jobs:
                   --margin-right 0.75in \
                   --enable-local-file-access \
                   --enable-internal-links \
+                  --outline \
+                  --outline-depth 4 \
                   --print-media-type \
                   --no-stop-slow-scripts \
                   --javascript-delay 1000 \
+                  --encoding utf-8 \
+                  --disable-smart-shrinking \
                   "${lab_name}.html" "${lab_name}.pdf" 2>/dev/null; then
                   echo "✓ Successfully converted $lab_name HTML to PDF"
                 else
