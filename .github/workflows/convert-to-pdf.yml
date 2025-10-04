@@ -27,18 +27,18 @@ jobs:
         run: |
           echo "Installing Pandoc and wkhtmltopdf..."
           sudo apt-get update -qq
-          
+
           # Install pandoc first (usually quick)
           sudo apt-get install -y --no-install-recommends pandoc
           echo "✓ Pandoc installed"
-          
+
           # Try installing wkhtmltopdf with fallback
           if ! sudo apt-get install -y --no-install-recommends wkhtmltopdf; then
             echo "APT installation failed, trying snap..."
             sudo snap install wkhtmltopdf
           fi
           echo "✓ wkhtmltopdf installed"
-          
+
           # Verify installations
           pandoc --version
           wkhtmltopdf --version
@@ -109,12 +109,21 @@ jobs:
                 --metadata author="Microsoft Copilot Studio Labs" \
                 --metadata date="$(date +%Y-%m-%d)" \
                 --toc \
-                --toc-depth=3 2>/dev/null; then
+                --toc-depth=3 \
+                --section-divs \
+                --html-q-tags \
+                --ascii \
+                -f markdown+auto_identifiers \
+                -t html5 2>/dev/null; then
                 echo "✓ Successfully converted $lab_name to HTML"
               else
                 # Try fallback conversion without CSS
                 echo "Trying fallback HTML method for $lab_name..."
-                pandoc "README.md" -o "${lab_name}.html" --standalone 2>/dev/null && echo "✓ Fallback HTML conversion succeeded for $lab_name"
+                pandoc "README.md" -o "${lab_name}.html" \
+                  --standalone \
+                  --section-divs \
+                  -f markdown+auto_identifiers \
+                  -t html5 2>/dev/null && echo "✓ Fallback HTML conversion succeeded for $lab_name"
               fi
               
               # Change back to root directory
