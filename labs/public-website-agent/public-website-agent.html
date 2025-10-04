@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>public-website-agent_processed</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -280,37 +280,64 @@ margin: 2em 0;
 border-radius: 8px;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 position: relative;
+font-style: normal;
+}
+
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+border-left: none;
+margin: 0;
+padding: 1em;
+border-radius: 6px;
+}
+blockquote:has(.note) {
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.tip) {
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.warning) {
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+border-radius: 0 6px 6px 0;
 }
 .note {
-background-color: #e8f4fd;
-border-left: 4px solid #3498db;
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+color: #1e40af;
 }
 .warning {
-background-color: #fdf2e8;
-border-left: 4px solid #e67e22;
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+color: #92400e;
 }
 .tip {
-background-color: #eafaf1;
-border-left: 4px solid #27ae60;
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+color: #166534;
 }
 .info {
-background-color: #f0f8ff;
-border-left: 4px solid #17a2b8;
+background-color: #f0f9ff;
+border-left: 4px solid #0ea5e9;
+color: #0c4a6e;
 }
 
 .note::before {
-content: "ℹ️";
-font-size: 1.2em;
+content: "ℹ️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .warning::before {
-content: "⚠️";
-font-size: 1.2em;
+content: "⚠️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .tip::before {
-content: "💡";
-font-size: 1.2em;
+content: "💡 ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 
@@ -687,11 +714,17 @@ one.</p></li>
 <h4 id="define-your-agent-through-conversation">Define your agent
 through conversation</h4>
 <blockquote>
-<p>[!TIP] - You will be redirected to the conversational creation
-experience. It allows you to use natural language to help you configure
-your agent. - Note that this conversational experience only helps build
-and curate the agent title, description, instruction, and knowledge
-sources. - The order or nature of questions may vary.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>You will be redirected to the conversational creation experience. It
+allows you to use natural language to help you configure your
+agent.</li>
+<li>Note that this conversational experience only helps build and curate
+the agent title, description, instruction, and knowledge sources.</li>
+<li>The order or nature of questions may vary.</li>
+</ul>
 </blockquote>
 <ol start="4" type="1">
 <li><p>In the <strong>Conversational creation experience</strong> chat,
@@ -707,11 +740,18 @@ It must not speculate, share unverified or sensitive information, or compare pro
 Nova AI should communicate clearly and professionally, using a friendly tone and light emojis 😊 when appropriate.</code></pre></li>
 </ol>
 <blockquote>
-<p>[!TIP] - URLs can have up to two levels of depth (subpaths with
-forward slash /) - Copilot Studio doesn’t do real-time web crawling. It
-actually uses the Bing index, so results depend on your website’s Bing
-indexing quality and latest crawl date. - You can add up to four public
-website URLs for knowledge search at a time</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>URLs can have up to two levels of depth (subpaths with forward slash
+/)</li>
+<li>Copilot Studio doesn’t do real-time web crawling. It actually uses
+the Bing index, so results depend on your website’s Bing indexing
+quality and latest crawl date.</li>
+<li>You can add up to four public website URLs for knowledge search at a
+time</li>
+</ul>
 </blockquote>
 <h4 id="finalize-creation">Finalize creation</h4>
 <ol start="6" type="1">
@@ -808,8 +848,11 @@ AI</strong>, and disable <strong>Use general knowledge</strong>, then
 pane, and test the same question again.</p></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] It may take a few minutes for the setting to be fully
-disabled. You may need to refresh and retry several times.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>It may take a few minutes for the setting to be fully disabled. You
+may need to refresh and retry several times.</p>
 </blockquote>
 <h4 id="add-weather-connector">Add weather connector</h4>
 <ol start="6" type="1">
@@ -820,8 +863,13 @@ current weather</strong> action.</p></li>
 <li><p>Select <strong>Add and configure</strong>.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] - You may need to select the connection so that the buttons
-are not grayed out.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>You may need to select the connection so that the buttons are not
+grayed out.</li>
+</ul>
 </blockquote>
 <ol start="9" type="1">
 <li>Under <strong>Additional details</strong>, set
@@ -829,14 +877,20 @@ are not grayed out.</p>
 credentials</strong>.</li>
 </ol>
 <blockquote>
-<p>[!CAUTION] - When using <strong>Maker-provided credentials</strong>,
-the end-user of the agent isn’t prompted to use its own context and
-connection to connect to the service. Instead, it’s using the context
-and connection of the person who has configured the agent. - Only use
-author authentication for actions that don’t need user-specific data, as
-using the credentials from someone else can expose to data exfiltration
-risks. - Use user authentication for role-based access scenarios -
-Always review security implications of authentication choices</p>
+<div class="warning">
+<strong>Caution:</strong>
+</div>
+<ul>
+<li>When using <strong>Maker-provided credentials</strong>, the end-user
+of the agent isn’t prompted to use its own context and connection to
+connect to the service. Instead, it’s using the context and connection
+of the person who has configured the agent.</li>
+<li>Only use author authentication for actions that don’t need
+user-specific data, as using the credentials from someone else can
+expose to data exfiltration risks.</li>
+<li>Use user authentication for role-based access scenarios</li>
+<li>Always review security implications of authentication choices</li>
+</ul>
 </blockquote>
 <ol start="11" type="1">
 <li><p>Under <strong>Inputs</strong>, for <strong>Units</strong>, for
@@ -849,9 +903,14 @@ AI</strong>, but customize the value and set description:</p>
 Always include city and country, and state only for locations where appropriate (e.g., in the US)</code></pre></li>
 </ol>
 <blockquote>
-<p>[!TIP] - The description of inputs is used by the AI to determine
-what value to set as it will try to automatically identify them from the
-context or more the queries the end-user has typed in.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>The description of inputs is used by the AI to determine what value
+to set as it will try to automatically identify them from the context or
+more the queries the end-user has typed in.</li>
+</ul>
 </blockquote>
 <ol start="13" type="1">
 <li><strong>Save</strong> the configuration.</li>
@@ -936,16 +995,21 @@ and <strong>open</strong> the Nova AI agent.</p></li>
 <li><p>Go to your agent’s <strong>Topics</strong> tab</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] - Topics are <strong>scripted conversational building
-blocks</strong> of an agent. Topics can be used to design how a
-conversation dialog should play out in a deterministic manner (as
-opposed to letting the AI be in charge of the conversation and
-generating text). Topics can contain messages, questions, conditions,
-variables, etc. - Copilot Studio agents come with pre-created custom and
-system topics. The default <strong>custom topics</strong> offer
-fundamental conversational abilities, such as Greetings, Goodbye, Thank
-you, and Start Over. <strong>System topics</strong> are also natively
-available and help manage specific conversation events.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>Topics are <strong>scripted conversational building blocks</strong>
+of an agent. Topics can be used to design how a conversation dialog
+should play out in a deterministic manner (as opposed to letting the AI
+be in charge of the conversation and generating text). Topics can
+contain messages, questions, conditions, variables, etc.</li>
+<li>Copilot Studio agents come with pre-created custom and system
+topics. The default <strong>custom topics</strong> offer fundamental
+conversational abilities, such as Greetings, Goodbye, Thank you, and
+Start Over. <strong>System topics</strong> are also natively available
+and help manage specific conversation events.</li>
+</ul>
 </blockquote>
 <ol start="3" type="1">
 <li><p>Select the <strong>System</strong> tab, and choose the
@@ -959,12 +1023,20 @@ I can break down complex questions and combine insights from historical facts, b
 What are you curious about today?</code></pre></li>
 </ol>
 <blockquote>
-<p>[!TIP] - Be clear and direct – Avoid jargon and long sentences -
-Encourage interaction – Provide a natural way for users to start asking
-questions - Set expectations – Briefly indicate what the assistant can
-and cannot do - Keep it concise – Too much information up front can be
-overwhelming - Use Markdown – Most clients support Markdown for advanced
-formatting options</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>Be clear and direct – Avoid jargon and long sentences</li>
+<li>Encourage interaction – Provide a natural way for users to start
+asking questions</li>
+<li>Set expectations – Briefly indicate what the assistant can and
+cannot do</li>
+<li>Keep it concise – Too much information up front can be
+overwhelming</li>
+<li>Use Markdown – Most clients support Markdown for advanced formatting
+options</li>
+</ul>
 </blockquote>
 <h4 id="add-quick-reply-conversation-starters">Add quick reply
 conversation starters</h4>
@@ -983,15 +1055,20 @@ suggested conversation starters for the end-user:</p>
 </figure></li>
 </ol>
 <blockquote>
-<p>[!TIP] - You can test your changes in a topic without needing to
-save. Just refresh the test pane to get the latest experience. - Quick
-replies display as <strong>buttons</strong> to the user, by default,
-when selected, the message is sent back to the agent as if the user had
-typed it. - Notice in the <strong>Quick replies properties</strong> how
-the type can be changed from <em>Send a message</em> (default) to
-<em>Open URL</em>, <em>Make a call</em>, or <em>Send a hidden
-message</em>, effectively helping create more advanced button
-experiences.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>You can test your changes in a topic without needing to save. Just
+refresh the test pane to get the latest experience.</li>
+<li>Quick replies display as <strong>buttons</strong> to the user, by
+default, when selected, the message is sent back to the agent as if the
+user had typed it.</li>
+<li>Notice in the <strong>Quick replies properties</strong> how the type
+can be changed from <em>Send a message</em> (default) to <em>Open
+URL</em>, <em>Make a call</em>, or <em>Send a hidden message</em>,
+effectively helping create more advanced button experiences.</li>
+</ul>
 </blockquote>
 <ol start="6" type="1">
 <li>Notice the <strong>Speech variation available</strong> note. Toggle
@@ -1000,12 +1077,17 @@ and delete the <q>Thanks for calling, how can I help</q> variation
 (unless you use a voice channel for your agent).</li>
 </ol>
 <blockquote>
-<p>[!TIP] - The Speech variation can be useful if you add a voice or
-telephony channel for your agent. Voice experiences should traditionally
-be shorter, and you can use Speech Synthesis Markup Language (SSML), an
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>The Speech variation can be useful if you add a voice or telephony
+channel for your agent. Voice experiences should traditionally be
+shorter, and you can use Speech Synthesis Markup Language (SSML), an
 XML-based markup language, to customize text to speech outputs by
 adjusting pitch, adding pauses, improving pronunciation, changing
-speaking rate, etc.</p>
+speaking rate, etc.</li>
+</ul>
 </blockquote>
 <ol start="7" type="1">
 <li><strong>Save</strong> your topic.</li>
@@ -1023,14 +1105,19 @@ the end user:</p>
 I recommend reaching out to our [Microsoft Copilot Studio community](https://aka.ms/CopilotStudioCommunity) or submitting a [support request](https://learn.microsoft.com/en-us/power-platform/admin/get-help-support).</code></pre></li>
 </ol>
 <blockquote>
-<p>[!TIP] - <strong>Escalation Triggers</strong> – The Escalate topic
-activates when the end-user asks to speak with someone or when the
-Fallback topic fails to provide an answer three times in a row -
-<strong>Insights from Escalations</strong> – The Escalate topic helps
-track conversations that lead to escalation, highlighting gaps where
-users seek alternatives - <strong>Disabling the Escalate Topic</strong>
-– If you disable it, ensure the Fallback topic no longer redirects to it
-to avoid errors</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li><strong>Escalation Triggers</strong> – The Escalate topic activates
+when the end-user asks to speak with someone or when the Fallback topic
+fails to provide an answer three times in a row</li>
+<li><strong>Insights from Escalations</strong> – The Escalate topic
+helps track conversations that lead to escalation, highlighting gaps
+where users seek alternatives</li>
+<li><strong>Disabling the Escalate Topic</strong> – If you disable it,
+ensure the Fallback topic no longer redirects to it to avoid errors</li>
+</ul>
 </blockquote>
 <ol start="11" type="1">
 <li><strong>Save</strong> your topic.</li>
@@ -1105,14 +1192,21 @@ and <strong>open</strong> the Nova AI agent.</p></li>
 <li><p><strong>Review</strong> the warning before confirming.</p></li>
 </ol>
 <blockquote>
-<p>[!CAUTION] - <strong>Enterprise Restrictions</strong>: Your Power
-Platform administrator may have DLP policies that restrict deploying
-agents without authentication. Work with your admin to request an
-exception if needed. - <strong>Content Review</strong>: Before making
-your agent public, ensure no sensitive data is exposed through uploaded
-documents or system integrations. - <strong>Integration Risks</strong>:
-Verify that connectors don’t use the maker’s authentication context
-unless intended, as this could create data exfiltration risks.</p>
+<div class="warning">
+<strong>Caution:</strong>
+</div>
+<ul>
+<li><strong>Enterprise Restrictions</strong>: Your Power Platform
+administrator may have DLP policies that restrict deploying agents
+without authentication. Work with your admin to request an exception if
+needed.</li>
+<li><strong>Content Review</strong>: Before making your agent public,
+ensure no sensitive data is exposed through uploaded documents or system
+integrations.</li>
+<li><strong>Integration Risks</strong>: Verify that connectors don’t use
+the maker’s authentication context unless intended, as this could create
+data exfiltration risks.</li>
+</ul>
 </blockquote>
 <h4 id="publish-and-test-on-demo-website">Publish and test on demo
 website</h4>
@@ -1134,13 +1228,20 @@ and interact with your agent.</p></li>
 <figcaption aria-hidden="true">alt text</figcaption>
 </figure>
 <blockquote>
-<p>[!TIP] - The demo website URL can be shared with others for quick
-feedback before deployment - The chat canvas design can be customized to
-align with your organization’s brand - Check out the Web Chat customizer
-in the <a href="https://aka.ms/CopilotStudioKit">Copilot Studio Kit</a>
-for advanced styling - The demo website is only available for
-unauthenticated agents or those using manual authentication. It is
-disabled when Web Channel security is enforced.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<ul>
+<li>The demo website URL can be shared with others for quick feedback
+before deployment</li>
+<li>The chat canvas design can be customized to align with your
+organization’s brand</li>
+<li>Check out the Web Chat customizer in the <a href="https://aka.ms/CopilotStudioKit">Copilot Studio Kit</a> for
+advanced styling</li>
+<li>The demo website is only available for unauthenticated agents or
+those using manual authentication. It is disabled when Web Channel
+security is enforced.</li>
+</ul>
 </blockquote>
 <hr />
 <h3 id="congratulations-youve-published-nova-ai-to-the-demo-website">🏅

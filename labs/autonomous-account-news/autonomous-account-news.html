@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>autonomous-account-news_processed</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -344,37 +344,64 @@ margin: 2em 0;
 border-radius: 8px;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 position: relative;
+font-style: normal;
+}
+
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+border-left: none;
+margin: 0;
+padding: 1em;
+border-radius: 6px;
+}
+blockquote:has(.note) {
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.tip) {
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.warning) {
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+border-radius: 0 6px 6px 0;
 }
 .note {
-background-color: #e8f4fd;
-border-left: 4px solid #3498db;
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+color: #1e40af;
 }
 .warning {
-background-color: #fdf2e8;
-border-left: 4px solid #e67e22;
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+color: #92400e;
 }
 .tip {
-background-color: #eafaf1;
-border-left: 4px solid #27ae60;
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+color: #166534;
 }
 .info {
-background-color: #f0f8ff;
-border-left: 4px solid #17a2b8;
+background-color: #f0f9ff;
+border-left: 4px solid #0ea5e9;
+color: #0c4a6e;
 }
 
 .note::before {
-content: "ℹ️";
-font-size: 1.2em;
+content: "ℹ️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .warning::before {
-content: "⚠️";
-font-size: 1.2em;
+content: "⚠️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .tip::before {
-content: "💡";
-font-size: 1.2em;
+content: "💡 ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 
@@ -717,9 +744,12 @@ the ellipsis <strong>…</strong>).</p></li>
 <strong>Agent</strong>.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] If you have set one of your solutions as the default solution,
-you can also create a new agent directly from Copilot Studio’s home page
-by clicking <strong>New agent</strong>. It will automatically create the
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>If you have set one of your solutions as the default solution, you
+can also create a new agent directly from Copilot Studio’s home page by
+clicking <strong>New agent</strong>. It will automatically create the
 agent in your default solution.</p>
 </blockquote>
 <ol start="5" type="1">
@@ -745,11 +775,13 @@ it with: <code>Analyze Opportunities</code>.</p></li>
 trigger.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] The instruction <em>Analyze Opportunities</em> functions
-similarly to a conversational instruction. When triggered, the agent
-will try to follow this directive using its orchestration
-logic—factoring in global instructions and tool definitions (covered in
-later steps).</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>The instruction <em>Analyze Opportunities</em> functions similarly to
+a conversational instruction. When triggered, the agent will try to
+follow this directive using its orchestration logic—factoring in global
+instructions and tool definitions (covered in later steps).</p>
 </blockquote>
 <hr />
 <p>### 🏅 Congratulations! You’ve completed Use Case #1!</p>
@@ -803,8 +835,10 @@ menu.</p></li>
 ().</p></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT]<br />
-Create the connection using OAuth and sign in with your workshop
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Create the connection using OAuth and sign in with your workshop
 credentials. Your user requires permission to access Opportunity
 records, which is provided as part of the workshop.</p>
 </blockquote>
@@ -815,8 +849,10 @@ records, which is provided as part of the workshop.</p>
 <code>This operation gets Opportunity records</code></p></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT]<br />
-Clear and specific tool names and descriptions help the Orchestrator
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Clear and specific tool names and descriptions help the Orchestrator
 understand the tool’s purpose. Names can even be more influential than
 descriptions.</p>
 </blockquote>
@@ -826,9 +862,11 @@ descriptions.</p>
 <strong>Maker-provided credentials</strong>.</p></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT]<br />
-Always use Maker-provided credentials for autonomous agents. This option
-allows tools to run without requiring user interaction.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Always use Maker-provided credentials for autonomous agents. This
+option allows tools to run without requiring user interaction.</p>
 </blockquote>
 <ol start="9" type="1">
 <li><p>Under <strong>Inputs</strong>, change
@@ -962,8 +1000,10 @@ variables, the agent can focus precisely on the intended content.</p>
 <p><strong>Objective</strong> Create two topics that store search and
 analysis results in global variables.</p>
 <blockquote>
-<p>[!IMPORTANT]<br />
-Topics in generative orchestration function similarly to tools — they
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Topics in generative orchestration function similarly to tools — they
 accept inputs, run logic, and produce outputs. But instead of calling
 external APIs, they use internal logic authored in Copilot Studio. In
 autonomous agents, topics can operate silently without sending
@@ -994,8 +1034,10 @@ The JSON object should contain:
 - Citation names and URLs</code></pre></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT]<br />
-The description will guide the agent to populate this variable with a
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>The description will guide the agent to populate this variable with a
 structured JSON format. You don’t need to enforce a specific schema—just
 ensure it’s easy for the agent to interpret in downstream steps.</p>
 </blockquote>
@@ -1017,9 +1059,11 @@ variable value</strong>.</li>
 <li>Click <strong>Save</strong></li>
 </ol>
 <blockquote>
-<p>[!TIP]<br />
-You can also copy and paste the YAML content below into your agent using
-the code editor.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>You can also copy and paste the YAML content below into your agent
+using the code editor.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> AdaptiveDialog</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">inputs</span><span class="kw">:</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">kind</span><span class="kw">:</span><span class="at"> AutomaticTaskInput</span></span>
@@ -1093,9 +1137,11 @@ variable value</strong>.</li>
 using the code editor.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP]<br />
-You can also copy and paste the YAML content below into your agent using
-the code editor.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>You can also copy and paste the YAML content below into your agent
+using the code editor.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> AdaptiveDialog</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">inputs</span><span class="kw">:</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">kind</span><span class="kw">:</span><span class="at"> AutomaticTaskInput</span></span>
@@ -1151,9 +1197,12 @@ there to guide the agent’s orchestration:</li>
 4. Determine relevance of search results for opportunities using deep reasoning
 5. Use Log relevant news for opportunities to log your findings. The base input for Log relevant news for opportunities should be {Global.searchResults} with determined relevance added</code></pre>
 <blockquote>
-<p>[!TIP] If instructions don’t offer the <q>/</q> option to reference
-topics, tools or variables, you can skip step 26-30 and continue with
-the next steps. You can always come back to this later.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>If instructions don’t offer the <q>/</q> option to reference topics,
+tools or variables, you can skip step 26-30 and continue with the next
+steps. You can always come back to this later.</p>
 </blockquote>
 <ol start="26" type="1">
 <li><p>To increase orchestration accuracy, you will now replace names of
@@ -1241,8 +1290,10 @@ email for account stakeholders.</p>
 <p><strong>Objective</strong> Configure HTML templating and email
 delivery for your autonomous agent.</p>
 <blockquote>
-<p>[!IMPORTANT]<br />
-Topics in generative orchestration function similarly to tools — they
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Topics in generative orchestration function similarly to tools — they
 accept inputs, run logic, and produce outputs. But instead of calling
 external APIs, they use internal logic authored in Copilot Studio. In
 autonomous agents, topics can operate silently without sending
@@ -1263,9 +1314,12 @@ variable value</strong> node.</p></li>
 <li><p>Paste the following HTML content as a string:</p></li>
 </ol>
 <blockquote>
-<p>[!NOTE] To avoid errors, we: - Wrapped the entire HTML in double
-quotes: <code>&quot;...&quot;</code> - Escaped each inner quote as double
-double-quotes: <code>&quot;&quot;</code></p>
+<div class="note">
+<strong>Note:</strong>
+</div>
+<p>To avoid errors, we: - Wrapped the entire HTML in double quotes:
+<code>&quot;...&quot;</code> - Escaped each inner quote as double double-quotes:
+<code>&quot;&quot;</code></p>
 </blockquote>
 <pre><code>&quot;&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -1352,9 +1406,11 @@ double-quotes: <code>&quot;&quot;</code></p>
 &lt;/body&gt;
 &lt;/html&gt;&quot;</code></pre>
 <blockquote>
-<p>[!IMPORTANT]<br />
-The HTML template functions as a <strong>one-shot example</strong> that
-guides the agent’s generation process. When the agent is asked to
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>The HTML template functions as a <strong>one-shot example</strong>
+that guides the agent’s generation process. When the agent is asked to
 produce an HTML report, it will refer to this template to determine how
 to format the content, structure the sections, and organize links.</p>
 <p>The agent will also extract useful signals from the template — for
@@ -1387,9 +1443,11 @@ Outlook.</p></li>
 <strong>Maker-provided credentials</strong>.</p></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT]<br />
-Always use Maker-provided credentials for autonomous agents. This allows
-tools to run without user interaction.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Always use Maker-provided credentials for autonomous agents. This
+allows tools to run without user interaction.</p>
 </blockquote>
 <ol start="20" type="1">
 <li><p>Under <strong>Inputs</strong>:</p>
@@ -1413,9 +1471,12 @@ steps:</p></li>
 </ol>
 <pre><code>6. Send an HTML report of the data in {Global.relevantNewsForOpportunities}. Use {Global.reportTemplate} as a template for the report, and &lt;Send a summary report&gt; to send it.</code></pre>
 <blockquote>
-<p>[!TIP] If instructions don’t offer the <q>/</q> option to reference
-topics, tools or variables, you can skip step 25 and continue with the
-next steps. You can always come back to this later.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>If instructions don’t offer the <q>/</q> option to reference topics,
+tools or variables, you can skip step 25 and continue with the next
+steps. You can always come back to this later.</p>
 </blockquote>
 <ol start="25" type="1">
 <li>Highlight the tools and variables and use the <code>/</code>

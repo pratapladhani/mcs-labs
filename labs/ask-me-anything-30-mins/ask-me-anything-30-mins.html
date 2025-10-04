@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>ask-me-anything-30-mins_processed</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -280,37 +280,64 @@ margin: 2em 0;
 border-radius: 8px;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 position: relative;
+font-style: normal;
+}
+
+blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
+border-left: none;
+margin: 0;
+padding: 1em;
+border-radius: 6px;
+}
+blockquote:has(.note) {
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.tip) {
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+border-radius: 0 6px 6px 0;
+}
+blockquote:has(.warning) {
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+border-radius: 0 6px 6px 0;
 }
 .note {
-background-color: #e8f4fd;
-border-left: 4px solid #3498db;
+background-color: #dbeafe;
+border-left: 4px solid #3b82f6;
+color: #1e40af;
 }
 .warning {
-background-color: #fdf2e8;
-border-left: 4px solid #e67e22;
+background-color: #fef3c7;
+border-left: 4px solid #f59e0b;
+color: #92400e;
 }
 .tip {
-background-color: #eafaf1;
-border-left: 4px solid #27ae60;
+background-color: #dcfce7;
+border-left: 4px solid #22c55e;
+color: #166534;
 }
 .info {
-background-color: #f0f8ff;
-border-left: 4px solid #17a2b8;
+background-color: #f0f9ff;
+border-left: 4px solid #0ea5e9;
+color: #0c4a6e;
 }
 
 .note::before {
-content: "ℹ️";
-font-size: 1.2em;
+content: "ℹ️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .warning::before {
-content: "⚠️";
-font-size: 1.2em;
+content: "⚠️ ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 .tip::before {
-content: "💡";
-font-size: 1.2em;
+content: "💡 ";
+font-size: 1.1em;
 margin-right: 0.5em;
 }
 
@@ -789,7 +816,9 @@ these labs, the environment name should start by <strong><q>DEV -
 &lt;your current User Name&gt;</q></strong>.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP]</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
 <ul>
 <li>When you requested for a new user account using the <strong>Training
 Assistant</strong> agent, we auto provisioned a new Developer
@@ -812,7 +841,9 @@ automatically add a <strong>Name</strong> for the solution (without the
 spaces).</p></li>
 </ol>
 <blockquote>
-<p>[!TIP]</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
 <ul>
 <li>Avoid names like <code>DEV</code>, <code>TEST</code>,
 <code>PROD</code>, <code>POC</code>, <code>MVP</code> or anything tied
@@ -831,7 +862,9 @@ as the Display Name, <strong>MCSLab</strong> as the Name, and
 <strong>mcslab</strong> as the Prefix and <strong>Save</strong>.</li>
 </ol>
 <blockquote>
-<p>[!TIP]</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
 <ul>
 <li>You may use your organization’s name.</li>
 <li>While the <strong>Display name</strong> may contain spaces, the
@@ -840,9 +873,11 @@ as the Display Name, <strong>MCSLab</strong> as the Name, and
 </ul>
 </blockquote>
 <blockquote>
-<p>[!IMPORTANT] Avoid using the default publisher or the default
-solution. Custom publishers ensure cleaner component names and better
-ALM hygiene.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>Avoid using the default publisher or the default solution. Custom
+publishers ensure cleaner component names and better ALM hygiene.</p>
 </blockquote>
 <h4 id="set-and-create">Set and create</h4>
 <ol start="7" type="1">
@@ -851,7 +886,9 @@ component goes into it by default).</li>
 <li>Click <strong>Create</strong>.</li>
 </ol>
 <blockquote>
-<p>[!TIP]</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
 <ul>
 <li>If you missed to set the solution as the preferred solution in the
 previous step, you can click <strong>Back</strong> to go to the
@@ -945,7 +982,9 @@ name. Optionally, prefix with your project name.</p></li>
 connection</strong> if none exists.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP]</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
 <ul>
 <li>If the <strong>Create</strong> button is grayed out, it’s just
 because you pasted the display name. Type an extra character in the
@@ -953,7 +992,9 @@ display name field and remove it to be able to create.</li>
 </ul>
 </blockquote>
 <blockquote>
-<p>[!IMPORTANT]</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
 <ul>
 <li>For <strong>ServiceNow</strong> configuration values, use the
 provided values in the
@@ -981,7 +1022,9 @@ the project. Click on <strong>&lt;– Back to solutions</strong> in the
 left nav to return to the solutions page.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP]</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
 <ul>
 <li>These connection references will be used later in the lab to connect
 to the two connection instances we created in the environment. When we
@@ -1062,7 +1105,9 @@ Knowledge</strong></p></li>
 Knowledge URL and select <strong>Add</strong>.</li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT]</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
 <ul>
 <li>For configuration, use the provided values in the
 <a href="https://aka.ms/MCSWorkshopLabAssets" target="_blank"><strong>Lab
@@ -1080,7 +1125,9 @@ right, with these questions:</p></li>
 Share more details regarding the Northwind Health Plus Benefits plan.
 Compare this plan with the other plans.</code></pre>
 <blockquote>
-<p>[!TIP]</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
 <ul>
 <li>Notice how relevant it is, and how the citations are accurate. This
 demonstrates the power of grounded AI responses.</li>
@@ -1176,7 +1223,9 @@ three:</p></li>
 <li><strong>Save</strong> the prompts</li>
 </ol>
 <blockquote>
-<p>[!TIP]</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
 <ul>
 <li>Prompts are visible to the end-user when the agent is deployed as a
 Copilot agent.</li>
@@ -1246,7 +1295,9 @@ tile</p></li>
 agent description will pop up. Select <strong>Add</strong></p></li>
 </ol>
 <blockquote>
-<p>[!TIP]</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
 <ul>
 <li>You may need to give it a few tries/minutes the first time you
 deploy to Microsoft 365 Copilot so it deploys correctly.</li>
@@ -1369,7 +1420,10 @@ and select the <strong>List records</strong> tool you just
 added.</p></li>
 </ol>
 <blockquote>
-<p>[!TIP] In case of issues, refresh the page with CTRL + F5.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>In case of issues, refresh the page with CTRL + F5.</p>
 </blockquote>
 <ol start="5" type="1">
 <li><p>Click on the Kebab menu (⋮) next to the <code>List Records</code>
@@ -1379,10 +1433,13 @@ Tool, click <strong>Edit</strong>. Change the <strong>Name</strong> to
 <pre><code>Gets the details of an incident using its incident number. Use this tool when users ask about ServiceNow tickets, incident status, or IT support requests.</code></pre></li>
 </ol>
 <blockquote>
-<p>[!TIP] The description will help the AI know when to use that tool,
-so it’s important to have clear instructions WHEN and WHEN NOT to use
-this tool. This is a key aspect of agent scoping - being specific about
-tool usage.</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>The description will help the AI know when to use that tool, so it’s
+important to have clear instructions WHEN and WHEN NOT to use this tool.
+This is a key aspect of agent scoping - being specific about tool
+usage.</p>
 </blockquote>
 <ol start="7" type="1">
 <li>Expand <strong>Additional details</strong>, change
@@ -1390,10 +1447,12 @@ tool usage.</p>
 credentials</strong></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] In production scenarios, you may want to use the user
-context when making the connection to ServiceNow. Here, your context (as
-the author) is used by end-users of your agent when searching for
-incidents.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>In production scenarios, you may want to use the user context when
+making the connection to ServiceNow. Here, your context (as the author)
+is used by end-users of your agent when searching for incidents.</p>
 </blockquote>
 <ol start="8" type="1">
 <li><p>For <strong>Record Type</strong>, set a <strong>Custom
@@ -1406,7 +1465,10 @@ value</strong> and choose <code>Incident</code></p></li>
 <pre><code>The output of this variable is the concatenation of numberCONTAINS and the incident number. E.g., &#39;numberCONTAINSINC0007001&#39;. Only the incident number should be prompted and obtained from the user (e.g., INC0007001)</code></pre></li>
 </ol>
 <blockquote>
-<p>[!TIP] Again, these instructions will be used by AI to understand how
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>Again, these instructions will be used by AI to understand how
 determine how to pass that information to the ServiceNow connector. In
 this case, how to use the very specific OData formatting of ServiceNow
 queries.</p>
@@ -1424,7 +1486,10 @@ queries.</p>
 <pre><code>My USB port is no longer working on my PC... what can I do? While you&#39;re here, can you also share an update for case INC0000059? It&#39;s been quite a while since I&#39;ve opened them... thanks!!</code></pre></li>
 </ol>
 <blockquote>
-<p>[!TIP] Notice how the agent automatically:</p>
+<div class="tip">
+<strong>Tip:</strong>
+</div>
+<p>Notice how the agent automatically:</p>
 <ul>
 <li>Uses the appropriate ServiceNow tool based on the query type</li>
 <li>Handles multiple tickets in a single request (e.g., if you ask for
@@ -1453,11 +1518,13 @@ ServiceNow capabilities with other knowledge sources</li>
 </ul></li>
 </ol>
 <blockquote>
-<p>[!IMPORTANT] This integration showcases how agents can be scoped for
-specific domains while maintaining a unified user experience. The
-ServiceNow knowledge and tools are automatically triggered for
-IT-related queries, demonstrating intelligent capability routing within
-a single agent.</p>
+<div class="warning">
+<strong>Important:</strong>
+</div>
+<p>This integration showcases how agents can be scoped for specific
+domains while maintaining a unified user experience. The ServiceNow
+knowledge and tools are automatically triggered for IT-related queries,
+demonstrating intelligent capability routing within a single agent.</p>
 </blockquote>
 <h2 id="publish-your-agent-and-test-the-third-suggested-prompt-regarding-ticket-status-in-m365-copilot-and-teams-if-needed.-note-you-dont-need-to-reload-your-agent-or-restart-the-conversation.-your-ask-me-anything-agent-is-now-capable-to-query-service-now-and-resolve-support-issues-based-on-service-now-knowledge-bases-as-well-as-query-incident-details-for-you.">30.
 <strong>Publish</strong> your agent and test the third Suggested prompt
