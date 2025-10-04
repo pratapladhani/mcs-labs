@@ -1,6 +1,6 @@
 # .github/workflows/convert-to-pdf.yml
 
-name: Labs to PDF
+name: Labs to HTML and PDF
 # This workflow is triggered on pushes to the repository or manually.
 on:
   push:
@@ -44,50 +44,7 @@ jobs:
           wkhtmltopdf --version
         timeout-minutes: 10
 
-      # Convert labs to PDF
-      - name: Convert labs to PDF
-        run: |
-          # Convert each README.md to PDF in its own directory
-          for lab_dir in labs/*/; do
-            if [ -d "$lab_dir" ] && [ -f "${lab_dir}README.md" ]; then
-              lab_name=$(basename "$lab_dir")
-              echo "Converting $lab_name to PDF..."
-              
-              # Change to the lab directory to ensure relative image paths work
-              cd "$lab_dir"
-              
-              # Use custom CSS for better PDF styling
-              if pandoc "README.md" \
-                -o "${lab_name}.pdf" \
-                --pdf-engine=wkhtmltopdf \
-                --css="../../.github/styles/pdf.css" \
-                --standalone \
-                --self-contained \
-                --metadata title="$lab_name Lab Guide" \
-                --metadata author="Microsoft Copilot Studio Labs" \
-                --metadata date="$(date +%Y-%m-%d)" \
-                -V margin-top=0.75in \
-                -V margin-bottom=0.75in \
-                -V margin-left=0.75in \
-                -V margin-right=0.75in \
-                --pdf-engine-opt=--enable-local-file-access \
-                --pdf-engine-opt=--load-error-handling=ignore \
-                --pdf-engine-opt=--load-media-error-handling=ignore 2>/dev/null; then
-                echo "✓ Successfully converted $lab_name"
-              else
-                # Try fallback conversion without CSS
-                echo "Trying fallback method for $lab_name..."
-                pandoc "README.md" -o "${lab_name}.pdf" --pdf-engine=wkhtmltopdf 2>/dev/null && echo "✓ Fallback conversion succeeded for $lab_name"
-              fi
-              
-              # Change back to root directory
-              cd - > /dev/null
-            fi
-          done
-
-          echo "Generated PDF count: $(find labs -name "*.pdf" -type f | wc -l)"
-
-      # Convert labs to HTML
+      # Convert labs to HTML first (needed for PDF generation)
       - name: Convert labs to HTML
         run: |
           # Convert each README.md to HTML in its own directory
@@ -130,8 +87,51 @@ jobs:
               cd - > /dev/null
             fi
           done
-
+          
           echo "Generated HTML count: $(find labs -name "*.html" -type f | wc -l)"
+
+      # Convert HTML to PDF (preserves hyperlinks better)
+      - name: Convert HTML to PDF
+        run: |
+          # Convert each HTML file to PDF in its own directory
+          for lab_dir in labs/*/; do
+            if [ -d "$lab_dir" ]; then
+              lab_name=$(basename "$lab_dir")
+              html_file="${lab_dir}${lab_name}.html"
+              
+              if [ -f "$html_file" ]; then
+                echo "Converting $lab_name HTML to PDF..."
+                
+                # Change to the lab directory
+                cd "$lab_dir"
+                
+                # Convert HTML to PDF using wkhtmltopdf (preserves hyperlinks)
+                if wkhtmltopdf \
+                  --page-size Letter \
+                  --margin-top 0.75in \
+                  --margin-bottom 0.75in \
+                  --margin-left 0.75in \
+                  --margin-right 0.75in \
+                  --enable-local-file-access \
+                  --enable-internal-links \
+                  --print-media-type \
+                  --no-stop-slow-scripts \
+                  --javascript-delay 1000 \
+                  "${lab_name}.html" "${lab_name}.pdf" 2>/dev/null; then
+                  echo "✓ Successfully converted $lab_name HTML to PDF"
+                else
+                  echo "✗ Failed to convert $lab_name HTML to PDF"
+                fi
+                
+                # Change back to root directory
+                cd - > /dev/null
+              else
+                echo "✗ HTML file not found for $lab_name"
+              fi
+            fi
+          done
+          
+          echo "Generated PDF count: $(find labs -name "*.pdf" -type f | wc -l)"
 
       # Commit PDFs and HTML files back to the repository
       - name: Commit PDFs and HTML files to repository
