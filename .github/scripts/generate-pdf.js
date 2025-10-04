@@ -40,8 +40,9 @@ async function generatePDF(htmlFilePath, outputPath, title = '') {
     const htmlContent = fs.readFileSync(htmlFilePath, 'utf8');
     const baseDir = path.dirname(htmlFilePath);
     
-    // Set base URL for relative paths
-    await page.goto(`file://${htmlFilePath}`, { 
+    // Convert to absolute path for file:// URL
+    const absoluteHtmlPath = path.resolve(htmlFilePath);
+    await page.goto(`file://${absoluteHtmlPath}`, { 
       waitUntil: 'networkidle2',
       timeout: 30000 
     });
