@@ -1,42 +1,77 @@
-# Deploy HTML files to GitHub Pages
-name: Deploy to GitHub Pages
+# =============================================================================
+# MICROSOFT COPILOT STUDIO LABS - WEB DEPLOYMENT WORKFLOW
+# =============================================================================
+# This workflow deploys generated HTML files to GitHub Pages, creating a
+# professional web portal for accessing lab documentation with:
+# - Homepage with lab directory and download links
+# - Individual lab pages with styled content
+# - Responsive design and professional branding
+# =============================================================================
 
+name: 🌐 Deploy Lab Portal to GitHub Pages
+
+# =============================================================================
+# WORKFLOW TRIGGERS
+# =============================================================================
 on:
-  # Runs on pushes targeting the default branch
+  # Deploy when HTML files or styling changes
   push:
     branches: ["main"]
     paths:
-      - "labs/**/*.html"
-      - ".github/styles/**"
-      - ".github/workflows/deploy-pages.yml"
+      - "labs/**/*.html"         # Generated HTML files
+      - ".github/styles/**"      # CSS styling updates
+      - ".github/workflows/deploy-lab-portal.yml"  # This workflow file
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allow manual deployment from GitHub Actions UI
   workflow_dispatch:
+    inputs:
+      force_rebuild:
+        description: 'Force complete rebuild of site'
+        required: false
+        default: false
+        type: boolean
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# =============================================================================
+# GITHUB PAGES PERMISSIONS
+# =============================================================================
+# Required permissions for deploying to GitHub Pages
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read    # Read repository content
+  pages: write      # Deploy to GitHub Pages
+  id-token: write   # GitHub Pages deployment token
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# =============================================================================
+# DEPLOYMENT CONCURRENCY CONTROL
+# =============================================================================
+# Ensure only one deployment runs at a time, but don't cancel in-progress 
+# deployments to avoid corrupted states
 concurrency:
-  group: "pages"
+  group: "pages-deployment"
   cancel-in-progress: false
 
+# =============================================================================
+# WORKFLOW JOBS
+# =============================================================================
 jobs:
-  # Build job
-  build:
+  # ---------------------------------------------------------------------------
+  # JOB 1: BUILD GITHUB PAGES SITE
+  # ---------------------------------------------------------------------------
+  build-site:
+    name: 🏗️ Build Lab Portal Site
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout
+      # =================================================================
+      # STEP 1: REPOSITORY AND PAGES SETUP
+      # =================================================================
+      - name: 📂 Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup Pages
+      - name: ⚙️ Configure GitHub Pages
         uses: actions/configure-pages@v4
         with:
-          # Enable Pages if not already enabled
           enablement: true
       
       - name: Install Pandoc
@@ -134,11 +169,29 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
-  # Deployment job
-  deploy:
+  # ---------------------------------------------------------------------------
+  # JOB 2: DEPLOY TO GITHUB PAGES
+  # ---------------------------------------------------------------------------
+  deploy-site:
+    name: 🚀 Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-site
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
     steps:
-      - name: Deploy to GitHub Pages
+      - name: 🌐 Deploy Lab Portal to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+# =============================================================================
+# END OF WORKFLOW: Deploy Lab Portal to GitHub Pages
+# =============================================================================
+# This workflow successfully:
+# ✅ Creates a professional homepage with lab directory and downloads
+# ✅ Deploys all lab HTML files with consistent styling and navigation
+# ✅ Provides responsive design optimized for web viewing
+# ✅ Maintains proper linking between homepage and individual labs
+# ✅ Serves the complete lab portal at GitHub Pages URL
+# =============================================================================

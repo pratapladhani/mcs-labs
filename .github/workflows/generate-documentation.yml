@@ -1,97 +1,149 @@
-# .github/workflows/convert-to-pdf.yml
+# =============================================================================
+# MICROSOFT COPILOT STUDIO LABS - DOCUMENT GENERATION WORKFLOW
+# =============================================================================
+# This workflow converts lab markdown files to HTML and PDF formats with:
+# - Professional styling and layout
+# - Working PDF bookmarks and table of contents
+# - Clean internal link handling
+# - Consistent branding and navigation
+# =============================================================================
 
-name: Labs to HTML and PDF
-# This workflow is triggered on pushes to the repository or manually.
+name: 📚 Generate Lab Documentation (HTML & PDF)
+
+# =============================================================================
+# WORKFLOW TRIGGERS
+# =============================================================================
 on:
+  # Trigger on changes to lab content or styling
   push:
     branches:
       - main
-    # Paths can be used to only trigger actions when you have edited certain files, such as a file within the /labs directory
     paths:
-      - "labs/*/*.md"
-      - "labs/*/images/**"
-      - ".github/styles/**"
-  # Allow manual triggering of the workflow
+      - "labs/*/*.md"           # Lab markdown content
+      - "labs/*/images/**"      # Lab images and assets
+      - ".github/styles/**"     # CSS styling files
+      - ".github/workflows/generate-documentation.yml"  # This workflow file
+  
+  # Allow manual execution from GitHub Actions UI
   workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Enable debug output'
+        required: false
+        default: false
+        type: boolean
 
+# =============================================================================
+# WORKFLOW JOBS
+# =============================================================================
 jobs:
-  converttopdf:
-    name: Build PDF
+  generate-documentation:
+    name: 🔨 Generate Lab Documents
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    
     steps:
-      - uses: actions/checkout@v4
+      # =================================================================
+      # STEP 1: REPOSITORY SETUP
+      # =================================================================
+      - name: 📂 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better git operations
 
-      # Setup Pandoc using dedicated action (much faster than apt-get)
-      - name: Setup Pandoc
+      # =================================================================
+      # STEP 2: INSTALL DOCUMENT CONVERSION TOOLS
+      # =================================================================
+      - name: 📄 Setup Pandoc (Markdown to HTML Converter)
         uses: pandoc/actions/setup@main
         with:
           version: 3.1.3
 
-      # Install wkhtmltopdf and fonts
-      - name: Install wkhtmltopdf and fonts
+      - name: 🔧 Install PDF Generation Tools (wkhtmltopdf + Fonts)
         run: |
-          echo "Installing wkhtmltopdf..."
+          echo "🔧 Installing wkhtmltopdf for HTML to PDF conversion..."
           
-          # Use wget to download specific version (faster than apt)
+          # Download specific wkhtmltopdf version (faster than apt-get)
           wget -q https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.jammy_amd64.deb
           sudo apt-get install -y ./wkhtmltox_0.12.6.1-3.jammy_amd64.deb
           rm wkhtmltox_0.12.6.1-3.jammy_amd64.deb
-          echo "✓ wkhtmltopdf installed"
+          echo "✅ wkhtmltopdf installed successfully"
           
-          # Install fonts for emoji support
-          sudo apt-get install -y --no-install-recommends fonts-noto-color-emoji || echo "Warning: Could not install emoji fonts"
-          echo "✓ Emoji fonts installation attempted"
+          # Install emoji and international fonts for better PDF rendering
+          sudo apt-get install -y --no-install-recommends fonts-noto-color-emoji || echo "⚠️ Warning: Could not install emoji fonts"
+          echo "✅ Font installation completed"
 
-          # Verify installations
-          pandoc --version
-          wkhtmltopdf --version
+          # Verify tool versions
+          echo "🔍 Verifying installations:"
+          pandoc --version | head -2
+          wkhtmltopdf --version | head -1
         timeout-minutes: 5
 
-      # Convert labs to HTML first (needed for PDF generation)
-      - name: Convert labs to HTML
+      # =================================================================
+      # STEP 3: MARKDOWN TO HTML CONVERSION
+      # =================================================================
+      # Process each lab's README.md file and convert to styled HTML
+      # with proper navigation, clean headers, and web optimization
+      # =================================================================
+      - name: 🌐 Convert Lab Markdown to HTML
         run: |
-          # Convert each README.md to HTML in its own directory
+          echo "🌐 Starting HTML conversion for all lab directories..."
+          
+          # Process each lab directory containing a README.md file
           for lab_dir in labs/*/; do
             if [ -d "$lab_dir" ] && [ -f "${lab_dir}README.md" ]; then
               lab_name=$(basename "$lab_dir")
-              echo "Converting $lab_name to HTML..."
+              echo "📝 Processing lab: $lab_name"
               
-              # Change to the lab directory to ensure relative image paths work
+              # Enter lab directory to ensure relative image paths work correctly
               cd "$lab_dir"
               
-              # Preprocess markdown for GitHub-style callouts and emoji preservation
+              # ---------------------------------------------------------
+              # MARKDOWN PREPROCESSING
+              # Prepare markdown for conversion with enhanced features
+              # ---------------------------------------------------------
+              echo "  🔄 Preprocessing markdown content..."
               cp "README.md" "${lab_name}_processed.md"
               
-              # Convert GitHub-style callouts to HTML divs with classes
+              # Convert GitHub-style callouts to styled HTML divs
+              # These will be styled by our CSS for better visual impact
               sed -i 's/> \[!NOTE\]/> <div class="note">**Note:** /g' "${lab_name}_processed.md"
               sed -i 's/> \[!TIP\]/> <div class="tip">**Tip:** /g' "${lab_name}_processed.md"
               sed -i 's/> \[!IMPORTANT\]/> <div class="warning">**Important:** /g' "${lab_name}_processed.md"
               sed -i 's/> \[!WARNING\]/> <div class="warning">**Warning:** /g' "${lab_name}_processed.md"
               sed -i 's/> \[!CAUTION\]/> <div class="warning">**Caution:** /g' "${lab_name}_processed.md"
               
-              # Add closing div tags for callouts (simple approach - assumes single line callouts)
+              # Close callout div tags (assumes single-line callouts)
               sed -i 's/\(> <div class="[^"]*">.*\)$/\1<\/div>/g' "${lab_name}_processed.md"
               
-              # CRITICAL: Remove emojis from headers FIRST, before Pandoc processes them
-              # This ensures Pandoc generates consistent TOC links and header IDs
-              echo "Removing emojis from headers in $lab_name BEFORE Pandoc processing..."
+              # ---------------------------------------------------------
+              # HEADER NORMALIZATION FOR CONSISTENT NAVIGATION
+              # Remove emojis from headers BEFORE Pandoc processing to 
+              # ensure consistent TOC links and anchor IDs
+              # ---------------------------------------------------------
+              echo "  🧹 Cleaning headers for consistent navigation..."
               sed -i 's/^## [^a-zA-Z0-9]*\([a-zA-Z].*\)$/## \1/g' "${lab_name}_processed.md"
               sed -i 's/^### [^a-zA-Z0-9]*\([a-zA-Z].*\)$/### \1/g' "${lab_name}_processed.md"
               sed -i 's/^#### [^a-zA-Z0-9]*\([a-zA-Z].*\)$/#### \1/g' "${lab_name}_processed.md"
               
-              # Fix any manual anchor links to match cleaned headers
-              # Remove emojis and leading dashes from anchor links
+              # Fix internal anchor links to match cleaned headers
               sed -i 's|(#[^a-zA-Z0-9]*-*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
               
-              # Extract the first H1 title from the markdown file for use as page title
+              # ---------------------------------------------------------
+              # EXTRACT DOCUMENT TITLE FROM H1 HEADER
+              # Use the actual lab title instead of directory name
+              # ---------------------------------------------------------
               lab_title=$(grep -m 1 '^# ' "${lab_name}_processed.md" | sed 's/^# //' | sed 's/[*_`]//g' | head -1)
               if [ -z "$lab_title" ]; then
                 lab_title="$lab_name - Microsoft Copilot Studio Labs"
               fi
-              echo "Using page title: $lab_title"
+              echo "  📋 Document title: $lab_title"
               
-              # Convert to HTML with custom CSS (no TOC for individual pages)
+              # ---------------------------------------------------------
+              # PANDOC CONVERSION: MARKDOWN → HTML
+              # Convert with professional styling and web optimization
+              # ---------------------------------------------------------
+              echo "  🔄 Converting to HTML with Pandoc..."
               if pandoc "${lab_name}_processed.md" \
                 -o "${lab_name}.html" \
                 --standalone \
@@ -103,19 +155,22 @@ jobs:
                 --metadata title="$lab_title" \
                 -f markdown+auto_identifiers+gfm_auto_identifiers+emoji+header_attributes \
                 -t html5 2>/dev/null; then
-                echo "✓ Successfully converted $lab_name to HTML"
+                echo "    ✅ HTML conversion successful"
                 
-                # Remove the title block header (keep <title> in <head>, remove <header> in body)
-                # Use a more robust approach to remove the header block
+                # ---------------------------------------------------------
+                # HTML POST-PROCESSING AND CLEANUP
+                # Clean up generated HTML for better web display
+                # ---------------------------------------------------------
+                echo "  🧹 Post-processing HTML for web optimization..."
+                
+                # Remove Pandoc's title block header (keep <title> in <head>)
                 sed -i '/<header id="title-block-header">/,/<\/header>/d' "${lab_name}.html"
                 
-                # Post-process HTML to fix anchor links and remove problematic IDs
-                # Remove empty or invalid IDs that might break navigation
+                # Clean up empty or malformed IDs that break navigation
                 sed -i 's/id=""//g' "${lab_name}.html"
                 sed -i 's/id="[[:space:]]*"//g' "${lab_name}.html"
                 
-                # Ensure proper anchor link format in HTML
-                # Fix links that might have been broken during conversion
+                # Fix anchor link formatting from conversion artifacts
                 sed -i 's/href="#[[:space:]]*\([^"[:space:]]*\)[[:space:]]*"/href="#\1"/g' "${lab_name}.html"
                 
                 # Add name attributes to headers for better anchor compatibility
@@ -162,19 +217,28 @@ jobs:
 
           echo "Generated HTML count: $(find labs -name "*.html" -type f | wc -l)"
 
-      # Convert HTML to PDF (preserves hyperlinks better)
-      - name: Convert HTML to PDF
+      # =================================================================
+      # STEP 4: HTML TO PDF CONVERSION
+      # =================================================================
+      # Convert styled HTML files to professional PDFs with:
+      # - Table of Contents and bookmarks for navigation
+      # - Clean content without internal links
+      # - Page numbering and professional layout
+      # =================================================================
+      - name: 📄 Generate Professional PDFs
         run: |
-          # Convert each HTML file to PDF in its own directory
+          echo "📄 Starting PDF generation for all labs..."
+          
+          # Process each lab directory with an HTML file
           for lab_dir in labs/*/; do
             if [ -d "$lab_dir" ]; then
               lab_name=$(basename "$lab_dir")
               html_file="${lab_dir}${lab_name}.html"
               
               if [ -f "$html_file" ]; then
-                echo "Converting $lab_name HTML to PDF..."
+                echo "🔄 Processing: $lab_name"
                 
-                # Change to the lab directory
+                # Enter lab directory for local file access
                 cd "$lab_dir"
                 
                 # Debug: Check HTML file before PDF conversion
@@ -239,7 +303,7 @@ jobs:
                 if wkhtmltopdf \
                   --page-size Letter \
                   --margin-top 0.75in \
-                  --margin-bottom 0.75in \
+                  --margin-bottom 1.0in \
                   --margin-left 0.75in \
                   --margin-right 0.75in \
                   --enable-local-file-access \
@@ -253,16 +317,19 @@ jobs:
                   --encoding utf-8 \
                   --disable-smart-shrinking \
                   --enable-toc-back-links \
-                  --footer-right "Page [page] of [topage]" \
-                  --footer-font-size 10 \
-                  --footer-spacing 5 \
                   --title "$lab_title" \
                   --dump-outline "${lab_name}_outline.xml" \
                   toc \
                   --toc-header-text "Table of Contents" \
                   --toc-level-indentation 15 \
                   --toc-text-size-shrink 0.8 \
+                  --footer-right "Page [page] of [topage]" \
+                  --footer-font-size 10 \
+                  --footer-spacing 5 \
                   "${lab_name}_pdf.html" \
+                  --footer-right "Page [page] of [topage]" \
+                  --footer-font-size 10 \
+                  --footer-spacing 5 \
                   "${lab_name}.pdf" 2>/dev/null; then
                   echo "✓ Successfully converted $lab_name HTML to PDF with TOC and bookmarks"
                   
@@ -280,7 +347,7 @@ jobs:
                   if wkhtmltopdf \
                     --page-size Letter \
                     --margin-top 0.75in \
-                    --margin-bottom 0.75in \
+                    --margin-bottom 1.0in \
                     --margin-left 0.75in \
                     --margin-right 0.75in \
                     --enable-local-file-access \
@@ -288,6 +355,9 @@ jobs:
                     --outline \
                     --outline-depth 4 \
                     --encoding utf-8 \
+                    --footer-right "Page [page] of [topage]" \
+                    --footer-font-size 10 \
+                    --footer-spacing 5 \
                     --title "$lab_title" \
                     "${lab_name}_pdf.html" "${lab_name}.pdf" 2>/dev/null; then
                     echo "✓ Fallback PDF conversion succeeded for $lab_name"
@@ -309,8 +379,13 @@ jobs:
 
           echo "Generated PDF count: $(find labs -name "*.pdf" -type f | wc -l)"
 
-      # Commit PDFs and HTML files back to the repository
-      - name: Commit PDFs and HTML files to repository
+      # =================================================================
+      # STEP 5: COMMIT GENERATED DOCUMENTS
+      # =================================================================
+      # Save generated HTML and PDF files back to the repository
+      # for distribution and GitHub Pages deployment
+      # =================================================================
+      - name: 💾 Commit Generated Documents to Repository
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -340,3 +415,14 @@ jobs:
             echo "Pushing changes..."
             git push
           fi
+
+# =============================================================================
+# END OF WORKFLOW: Generate Lab Documentation (HTML & PDF)
+# =============================================================================
+# This workflow successfully:
+# ✅ Converts all lab markdown files to professional HTML with styling
+# ✅ Generates PDF versions with TOC, bookmarks, and clean content
+# ✅ Handles internal links appropriately for each format
+# ✅ Commits generated files back to repository for distribution
+# ✅ Triggers the deployment workflow for GitHub Pages
+# =============================================================================
