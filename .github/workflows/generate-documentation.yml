@@ -127,7 +127,8 @@ jobs:
               sed -i 's/^#### [^a-zA-Z0-9]*\([a-zA-Z].*\)$/#### \1/g' "${lab_name}_processed.md"
               
               # Fix internal anchor links to match cleaned headers
-              sed -i 's|(#[^a-zA-Z0-9]*-*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
+              # Handle emoji-containing anchor links more carefully
+              sed -i 's|(#[^a-zA-Z]*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
               
               # ---------------------------------------------------------
               # EXTRACT DOCUMENT TITLE FROM H1 HEADER
