@@ -80,9 +80,12 @@ jobs:
             -f markdown+auto_identifiers+gfm_auto_identifiers+emoji \
             -t html5
           
+          # Remove the title block header (keep <title> in <head>, remove <header> in body)
+          perl -0pi -e 's/<header id="title-block-header">.*?<\/header>\n?//s' _site/index.html
+          
           # Add lab-table class and normalize column widths (use Perl for robust multi-line handling)
           perl -0pi -e 's/<table style="width:100%;">/<table class="lab-table" style="width:100%;">/' _site/index.html
-          perl -0pi -e 's|<colgroup>.*?</colgroup>|<colgroup><col style="width: 65%" /><col style="width: 10%" /><col style="width: 25%" /></colgroup>|s' _site/index.html
+          perl -0pi -e 's|<colgroup>.*?</colgroup>|<colgroup><col style="width: 25%" /><col style="width: 10%" /><col style="width: 65%" /></colgroup>|s' _site/index.html
 
           # Make external links open in new window on homepage
           # Add target="_blank" and rel="noopener noreferrer" to external links (http/https)

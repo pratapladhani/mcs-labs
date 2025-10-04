@@ -98,6 +98,9 @@ jobs:
                 -t html5 2>/dev/null; then
                 echo "✓ Successfully converted $lab_name to HTML"
                 
+                # Remove the title block header (keep <title> in <head>, remove <header> in body)
+                perl -0pi -e 's/<header id="title-block-header">.*?<\/header>\n?//s' "${lab_name}.html"
+                
                 # Post-process HTML to fix anchor links and remove problematic IDs
                 # Remove empty or invalid IDs that might break navigation
                 sed -i 's/id=""//g' "${lab_name}.html"

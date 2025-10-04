@@ -118,12 +118,15 @@ table {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
   overflow: hidden;
+  table-layout: fixed;
 }
 
 th, td {
   border: 1px solid #dee2e6;
   padding: 12px 16px;
   text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 th {
@@ -142,47 +145,60 @@ tr:hover {
   transition: background-color 0.2s ease;
 }
 
-/* Column widths for homepage lab table only */
-table.lab-table th:nth-child(1), table.lab-table td:nth-child(1) { /* Title column */
+/* Default column widths for 4-column tables (like Lab Details) */
+/* Pattern: Level (10%), Persona (15%), Duration (15%), Purpose (60%) */
+table thead tr th:nth-child(1):nth-last-child(4),
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(4),
+table tbody tr td:nth-child(1):nth-last-child(4),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(4) {
+  width: auto;
+}
+
+/* First column (Level, etc.) - narrow */
+table thead tr th:nth-child(1):nth-last-child(4),
+table tbody tr td:nth-child(1):nth-last-child(4) {
+  width: 10% !important;
+}
+
+/* Second column (Persona, etc.) - medium */
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2) {
+  width: 15% !important;
+}
+
+/* Third column (Duration, etc.) - medium */
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3) {
+  width: 15% !important;
+}
+
+/* Fourth column (Purpose, etc.) - wide for long text */
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(4),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(4) {
+  width: 60% !important;
+}
+
+/* Column widths for homepage lab table (3 columns) */
+table.lab-table {
+  table-layout: fixed !important;
+}
+
+table.lab-table th:nth-child(1), table.lab-table td:nth-child(1) {
   width: 65% !important;
 }
 
-table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) { /* Download column */
+table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) {
   width: 10% !important;
   text-align: center;
   white-space: nowrap;
 }
 
-table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) { /* Overview column */
-  width: 25% !important;
-}
-
-/* Override Pandoc's colgroup settings for homepage table only */
-table.lab-table colgroup col:nth-child(1) {
-  width: 65% !important;
-}
-
-table.lab-table colgroup col:nth-child(2) {
-  width: 10% !important;
-}
-
-table.lab-table colgroup col:nth-child(3) {
-  width: 25% !important;
-}
-
-/* Additional table layout enforcement for homepage lab table */
-table.lab-table {
-  table-layout: fixed !important;
-}
-
-/* Specific column width enforcement with max-width for homepage table */
-table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) {
-  max-width: 80px !important;
-  min-width: 60px !important;
-}
-
 table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) {
-  min-width: 20% !important;
+  width: 25% !important;
 }
 
 /* Responsive tables */
