@@ -161,6 +161,7 @@ jobs:
               fi
               
               # Try Pandoc conversion with detailed error output for debugging
+              set +e  # Temporarily disable exit on error for better error handling
               pandoc_output=$(pandoc "${lab_name}_processed.md" \
                 -o "${lab_name}.html" \
                 --standalone \
@@ -174,6 +175,7 @@ jobs:
                 -t html5 2>&1)
               
               pandoc_exit_code=$?
+              set -e  # Re-enable exit on error
               
               if [ $pandoc_exit_code -eq 0 ] && [ -f "${lab_name}.html" ]; then
                 echo "    ✅ HTML conversion successful"
@@ -221,6 +223,7 @@ jobs:
                 
                 # Try fallback conversion without CSS and complex options
                 echo "  🔄 Trying fallback HTML method for $lab_name..."
+                set +e  # Disable exit on error for fallback
                 fallback_output=$(pandoc "${lab_name}_processed.md" -o "${lab_name}.html" \
                   --standalone \
                   --section-divs \
@@ -231,6 +234,7 @@ jobs:
                   -t html5 2>&1)
                 
                 fallback_exit_code=$?
+                set -e  # Re-enable exit on error
                 
                 if [ $fallback_exit_code -eq 0 ] && [ -f "${lab_name}.html" ]; then
                   echo "  ✅ Fallback HTML conversion succeeded for $lab_name"
