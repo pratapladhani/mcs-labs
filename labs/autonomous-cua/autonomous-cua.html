@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>autonomous-cua_processed</title>
+  <title>autonomous-cua - Microsoft Copilot Studio Labs</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -144,6 +144,40 @@ background-color: #f8f9fa;
 tr:hover {
 background-color: #e3f2fd;
 transition: background-color 0.2s ease;
+}
+
+table th:nth-child(1), table td:nth-child(1) { 
+width: 25% !important;
+}
+table th:nth-child(2), table td:nth-child(2) { 
+width: 10% !important;
+text-align: center;
+white-space: nowrap;
+}
+table th:nth-child(3), table td:nth-child(3) { 
+width: 65% !important;
+}
+
+table colgroup col:nth-child(1) {
+width: 25% !important;
+}
+table colgroup col:nth-child(2) {
+width: 10% !important;
+}
+table colgroup col:nth-child(3) {
+width: 65% !important;
+}
+
+table {
+table-layout: fixed !important;
+}
+
+table th:nth-child(2), table td:nth-child(2) {
+max-width: 80px !important;
+min-width: 60px !important;
+}
+table th:nth-child(3), table td:nth-child(3) {
+min-width: 60% !important;
 }
 
 @media (max-width: 768px) {
@@ -411,15 +445,69 @@ background-color: #1a3326;
 border-color: #27ae60;
 }
 }</style>
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">
 </head>
 <body>
-<h1 id="autonomous-portfolio-lookup-agent-with-computer-using-agents-cua">Autonomous
-Portfolio Lookup Agent with Computer-Using Agents (CUA)</h1>
+<header id="title-block-header">
+<h1 class="title">autonomous-cua - Microsoft Copilot Studio Labs</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#autonomous-portfolio-lookup-agent-with-computer-using-agents-cua" id="toc-autonomous-portfolio-lookup-agent-with-computer-using-agents-cua">Autonomous
+Portfolio Lookup Agent with Computer-Using Agents (CUA)</a>
+<ul>
+<li><a href="#-lab-details" id="toc--lab-details">🧭 Lab
+Details</a></li>
+<li><a href="#-table-of-contents" id="toc--table-of-contents">📚 Table
+of Contents</a></li>
+<li><a href="#-why-this-matters" id="toc--why-this-matters">🤔 Why This
+Matters</a></li>
+<li><a href="#-introduction" id="toc--introduction">🌐
+Introduction</a></li>
+<li><a href="#-core-concepts-overview" id="toc--core-concepts-overview">🎓 Core Concepts Overview</a></li>
+<li><a href="#-documentation-and-additional-training-links" id="toc--documentation-and-additional-training-links">📄 Documentation
+and Additional Training Links</a></li>
+<li><a href="#-prerequisites" id="toc--prerequisites">✅
+Prerequisites</a></li>
+<li><a href="#-summary-of-targets" id="toc--summary-of-targets">🎯
+Summary of Targets</a></li>
+<li><a href="#-use-cases-covered" id="toc--use-cases-covered">🧩 Use
+Cases Covered</a></li>
+<li><a href="#️-instructions-by-use-case" id="toc-️-instructions-by-use-case">🛠️ Instructions by Use Case</a></li>
+<li><a href="#-use-case-1-create-and-configure-an-autonomous-agent" id="toc--use-case-1-create-and-configure-an-autonomous-agent">🔄 Use
+Case #1: Create and Configure an Autonomous Agent</a>
+<ul>
+<li><a href="#objective" id="toc-objective">Objective</a></li>
+<li><a href="#step-by-step-instructions" id="toc-step-by-step-instructions">Step-by-step instructions</a></li>
+<li><a href="#-congratulations-youve-completed-use-case-1" id="toc--congratulations-youve-completed-use-case-1">🏅 Congratulations!
+You’ve completed Use Case #1!</a></li>
+</ul></li>
+<li><a href="#️-use-case-2-add-computer-use-and-email-connector" id="toc-️-use-case-2-add-computer-use-and-email-connector">🖥️ Use Case
+#2: Add Computer Use and Email Connector</a>
+<ul>
+<li><a href="#objective-1" id="toc-objective-1">Objective</a></li>
+<li><a href="#step-by-step-instructions-1" id="toc-step-by-step-instructions-1">Step-by-step instructions</a></li>
+<li><a href="#-congratulations-youve-completed-use-case-2" id="toc--congratulations-youve-completed-use-case-2">🏅 Congratulations!
+You’ve completed Use Case #2!</a></li>
+</ul></li>
+<li><a href="#-summary-of-learnings" id="toc--summary-of-learnings">🏆
+Summary of learnings</a>
+<ul>
+<li><a href="#conclusions-and-recommendations" id="toc-conclusions-and-recommendations">Conclusions and
+recommendations</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<section id="autonomous-portfolio-lookup-agent-with-computer-using-agents-cua" class="level1">
+<h1>Autonomous Portfolio Lookup Agent with Computer-Using Agents
+(CUA)</h1>
 <p>Build an autonomous Copilot Studio agent that retrieves financial
 portfolio data from internal legacy systems that lack API
 connectivity.</p>
 <hr />
-<h2 id="lab-details">🧭 Lab Details</h2>
+<section id="-lab-details" class="level2">
+<h2>🧭 Lab Details</h2>
 <table>
 <colgroup>
 <col style="width: 18%" />
@@ -449,26 +537,30 @@ responses.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="table-of-contents">📚 Table of Contents</h2>
+</section>
+<section id="-table-of-contents" class="level2">
+<h2>📚 Table of Contents</h2>
 <ul>
-<li><a href="#-why-this-matters">Why This Matters</a></li>
-<li><a href="#-introduction">Introduction</a></li>
-<li><a href="#-core-concepts-overview">Core Concepts Overview</a></li>
-<li><a href="#-documentation-and-additional-training-links">Documentation and
-Additional Training Links</a></li>
-<li><a href="#-prerequisites">Prerequisites</a></li>
-<li><a href="#-summary-of-targets">Summary of Targets</a></li>
-<li><a href="#-use-cases-covered">Use Cases Covered</a></li>
-<li><a href="#️-instructions-by-use-case">Instructions by Use Case</a>
+<li><a href="#why-this-matters">Why This Matters</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#core-concepts-overview">Core Concepts Overview</a></li>
+<li><a href="#documentation-and-additional-training-links">Documentation
+and Additional Training Links</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#summary-of-targets">Summary of Targets</a></li>
+<li><a href="#use-cases-covered">Use Cases Covered</a></li>
+<li><a href="#instructions-by-use-case">Instructions by Use Case</a>
 <ul>
-<li><a href="#-use-case-1-create-and-configure-an-autonomous-agent">Use
+<li><a href="#use-case-1-create-and-configure-an-autonomous-agent">Use
 Case #1: Create and Configure an Autonomous Agent</a></li>
-<li><a href="#️-use-case-2-add-computer-use-and-email-connector">Use
-Case #2: Add Computer Use and Email Connector</a></li>
+<li><a href="#use-case-2-add-computer-use-and-email-connector">Use Case
+#2: Add Computer Use and Email Connector</a></li>
 </ul></li>
 </ul>
 <hr />
-<h2 id="why-this-matters">🤔 Why This Matters</h2>
+</section>
+<section id="-why-this-matters" class="level2">
+<h2>🤔 Why This Matters</h2>
 <p>Legacy systems without APIs create major roadblocks for automation.
 Traditional RPA often relies on fragile screen-scraping or manual
 workarounds, which slow down decision-making, increase errors, and
@@ -480,7 +572,9 @@ needing API integration. You’ll learn to build an autonomous agent that
 delivers faster responses, reduces manual workload, and enables
 real-time, informed decisions.</p>
 <hr />
-<h2 id="introduction">🌐 Introduction</h2>
+</section>
+<section id="-introduction" class="level2">
+<h2>🌐 Introduction</h2>
 <p>In this lab, you’ll learn how to build an autonomous agent using
 Microsoft Copilot Studio. This agent will simulate human interaction
 with a legacy internal system to retrieve financial portfolio data
@@ -503,7 +597,9 @@ instantly retrieve accurate portfolio data. This improves response
 times, reduces manual workload, and enhances overall productivity
 without the limitations of traditional RPA.</p>
 <hr />
-<h2 id="core-concepts-overview">🎓 Core Concepts Overview</h2>
+</section>
+<section id="-core-concepts-overview" class="level2">
+<h2>🎓 Core Concepts Overview</h2>
 <table>
 <colgroup>
 <col style="width: 36%" />
@@ -554,8 +650,9 @@ Windows applications.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="documentation-and-additional-training-links">📄 Documentation
-and Additional Training Links</h2>
+</section>
+<section id="-documentation-and-additional-training-links" class="level2">
+<h2>📄 Documentation and Additional Training Links</h2>
 <ul>
 <li><a href="https://learn.microsoft.com/microsoft-copilot-studio/">Microsoft
 Copilot Studio Documentation</a></li>
@@ -569,13 +666,17 @@ connectors in Copilot Studio</a></li>
 web and desktop apps with computer use</a></li>
 </ul>
 <hr />
-<h2 id="prerequisites">✅ Prerequisites</h2>
+</section>
+<section id="-prerequisites" class="level2">
+<h2>✅ Prerequisites</h2>
 <ul>
 <li>Access to Microsoft Copilot Studio with appropriate licensing</li>
 <li>Office 365 environment with Outlook integration enabled</li>
 </ul>
 <hr />
-<h2 id="summary-of-targets">🎯 Summary of Targets</h2>
+</section>
+<section id="-summary-of-targets" class="level2">
+<h2>🎯 Summary of Targets</h2>
 <p>In this lab, you’ll build an autonomous portfolio lookup agent that
 retrieves portfolio information from an internal legacy system. By the
 end of the lab, you will:</p>
@@ -592,7 +693,9 @@ formatting</li>
 requests</li>
 </ul>
 <hr />
-<h2 id="use-cases-covered">🧩 Use Cases Covered</h2>
+</section>
+<section id="-use-cases-covered" class="level2">
+<h2>🧩 Use Cases Covered</h2>
 <table>
 <colgroup>
 <col style="width: 16%" />
@@ -611,7 +714,7 @@ requests</li>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td><a href="#-use-case-1-create-and-configure-an-autonomous-agent">Create and
+<td><a href="#use-case-1-create-and-configure-an-autonomous-agent">Create and
 Configure an Autonomous Agent</a></td>
 <td>Establishes the foundation for automated email processing with
 intelligent trigger configuration</td>
@@ -619,7 +722,7 @@ intelligent trigger configuration</td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td><a href="#️-use-case-2-add-computer-use-and-email-connector">Add
+<td><a href="#use-case-2-add-computer-use-and-email-connector">Add
 Computer Use and Email Connector</a></td>
 <td>Enables automated data retrieval from a legacy internal system
 lacking API connectivity, without requiring backend access or system
@@ -631,10 +734,13 @@ specifically requested data.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="instructions-by-use-case">🛠️ Instructions by Use Case</h2>
+</section>
+<section id="️-instructions-by-use-case" class="level2">
+<h2>🛠️ Instructions by Use Case</h2>
 <hr />
-<h2 id="use-case-1-create-and-configure-an-autonomous-agent">🔄 Use Case
-#1: Create and Configure an Autonomous Agent</h2>
+</section>
+<section id="-use-case-1-create-and-configure-an-autonomous-agent" class="level2">
+<h2>🔄 Use Case #1: Create and Configure an Autonomous Agent</h2>
 <p>Set up the foundational autonomous agent with email triggers that
 automatically activates when email requests arrive.</p>
 <table>
@@ -666,14 +772,17 @@ configure its identity, and set up an email trigger using the Microsoft
 <p><strong>Scenario:</strong> To automate portfolio lookups, the agent
 must be able to detect incoming email requests and initiate the
 appropriate automation flow based on subject line filtering.</p>
-<h3 id="objective">Objective</h3>
+<section id="objective" class="level3">
+<h3>Objective</h3>
 <p>Learn how to create and configure an autonomous agent that listens
 for specific email triggers and prepares to launch automation tasks in
 response.</p>
 <hr />
-<h3 id="step-by-step-instructions">Step-by-step instructions</h3>
-<h4 id="creating-the-agent-and-trigger-setup">Creating the agent and
-trigger setup</h4>
+</section>
+<section id="step-by-step-instructions" class="level3">
+<h3>Step-by-step instructions</h3>
+<section id="creating-the-agent-and-trigger-setup" class="level4">
+<h4>Creating the agent and trigger setup</h4>
 <ol type="1">
 <li><p>Navigate to <a href="https://copilotstudio.microsoft.com">copilotstudio.microsoft.com</a></p></li>
 <li><p>Make sure you’re in the correct environment by looking at the top
@@ -690,7 +799,9 @@ wizard</p></li>
 <li><p>Name your agent <code>Portfolio Lookup Agent</code></p></li>
 <li><p>Select <strong>Create</strong></p></li>
 </ol>
-<h4 id="configuring-email-triggers">Configuring email triggers</h4>
+</section>
+<section id="configuring-email-triggers" class="level4">
+<h4>Configuring email triggers</h4>
 <ol start="9" type="1">
 <li><p>Scroll down to the triggers section and click <strong>+Add
 trigger</strong></p></li>
@@ -706,11 +817,15 @@ trigger</strong></p></li>
 <li><p>Finally <strong>Create trigger</strong></p></li>
 </ol>
 <hr />
-<h3 id="congratulations-youve-completed-use-case-1">🏅 Congratulations!
-You’ve completed Use Case #1!</h3>
+</section>
+</section>
+<section id="-congratulations-youve-completed-use-case-1" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case #1!</h3>
 <hr />
-<h2 id="use-case-2-add-computer-use-and-email-connector">🖥️ Use Case #2:
-Add Computer Use and Email Connector</h2>
+</section>
+</section>
+<section id="️-use-case-2-add-computer-use-and-email-connector" class="level2">
+<h2>🖥️ Use Case #2: Add Computer Use and Email Connector</h2>
 <p>Configure a Computer use tool that logs into a computer, navigates
 through a website, searches and retrieves financial portfolio data. Then
 use the Office 365 Outlook connector to reply with the requested
@@ -748,14 +863,17 @@ define the agent’s behavior and testing flow.</p>
 must retrieve portfolio data from a legacy web interface using desktop
 simulation and respond to email requests with accurate, formatted
 information.</p>
-<h3 id="objective-1">Objective</h3>
+<section id="objective-1" class="level3">
+<h3>Objective</h3>
 <p>Learn how to integrate and configure tools for desktop automation and
 email communication, define agent instructions, and test the full
 end-to-end workflow from trigger to response.</p>
 <hr />
-<h3 id="step-by-step-instructions-1">Step-by-step instructions</h3>
-<h4 id="configuring-the-computer-use-tool">Configuring the Computer use
-tool</h4>
+</section>
+<section id="step-by-step-instructions-1" class="level3">
+<h3>Step-by-step instructions</h3>
+<section id="configuring-the-computer-use-tool" class="level4">
+<h4>Configuring the Computer use tool</h4>
 <ol type="1">
 <li><p>Navigate to <strong>Tools</strong> in the top-level menu</p></li>
 <li><p>Select <strong>+ Add a tool</strong></p></li>
@@ -791,8 +909,9 @@ input values to complete the task.</p>
 <ol start="14" type="1">
 <li>Select <strong>Save</strong></li>
 </ol>
-<h4 id="testing-the-computer-use-tool">Testing the Computer use
-tool</h4>
+</section>
+<section id="testing-the-computer-use-tool" class="level4">
+<h4>Testing the Computer use tool</h4>
 <ol start="15" type="1">
 <li><p>In the <strong>Instructions</strong> section, select the
 <strong>Test</strong> button on the right</p></li>
@@ -824,8 +943,9 @@ again. Allow sufficient time between tests to ensure the previous
 Computer use task has been fully completed before starting a new
 one.</p>
 </blockquote>
-<h4 id="setting-up-email-response-capabilities">Setting up email
-response capabilities</h4>
+</section>
+<section id="setting-up-email-response-capabilities" class="level4">
+<h4>Setting up email response capabilities</h4>
 <ol start="19" type="1">
 <li><p>Return to the <strong>Tools</strong> tab and select <strong>+ Add
 a tool</strong></p></li>
@@ -849,8 +969,9 @@ and select it</p></li>
 <li><p>Click <strong>Save</strong> to finalize the tool
 configuration</p></li>
 </ol>
-<h4 id="configuring-agent-instructions-and-ai-settings">Configuring
-agent instructions and AI settings</h4>
+</section>
+<section id="configuring-agent-instructions-and-ai-settings" class="level4">
+<h4>Configuring agent instructions and AI settings</h4>
 <ol start="29" type="1">
 <li><p>Navigate to <strong>Overview</strong> tab and then
 <strong>Edit</strong> the <strong>Instructions</strong></p></li>
@@ -876,7 +997,9 @@ knowledge</strong> to ground agent responses only to data retrieved from
 CUA</p></li>
 <li><p><strong>Save</strong> the settings</p></li>
 </ol>
-<h4 id="testing-your-complete-agent">Testing your complete agent</h4>
+</section>
+<section id="testing-your-complete-agent" class="level4">
+<h4>Testing your complete agent</h4>
 <ol start="34" type="1">
 <li><p>Send a test email from an email address of your preference to
 your training user’s email account with Subject:
@@ -925,10 +1048,15 @@ autonomous agent runs.</li>
 the results.</p>
 </blockquote>
 <hr />
-<h3 id="congratulations-youve-completed-use-case-2">🏅 Congratulations!
-You’ve completed Use Case #2!</h3>
+</section>
+</section>
+<section id="-congratulations-youve-completed-use-case-2" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case #2!</h3>
 <hr />
-<h2 id="summary-of-learnings">🏆 Summary of learnings</h2>
+</section>
+</section>
+<section id="-summary-of-learnings" class="level2">
+<h2>🏆 Summary of learnings</h2>
 <p>True learning comes from doing, questioning, and reflecting - so
 let’s put your skills to the test.</p>
 <p>To maximize the impact of autonomous agents for legacy system
@@ -944,8 +1072,8 @@ professional responses to user requests</li>
 instructions and tool configurations for reliability</li>
 </ul>
 <hr />
-<h3 id="conclusions-and-recommendations">Conclusions and
-recommendations</h3>
+<section id="conclusions-and-recommendations" class="level3">
+<h3>Conclusions and recommendations</h3>
 <p><strong>Automation golden rules:</strong></p>
 <ul>
 <li>Always validate environment and licensing prerequisites before
@@ -962,5 +1090,8 @@ testing</li>
 efficient automation for legacy systems, empowering your organization to
 make faster, data-driven decisions.</p>
 <hr />
+</section>
+</section>
+</section>
 </body>
 </html>

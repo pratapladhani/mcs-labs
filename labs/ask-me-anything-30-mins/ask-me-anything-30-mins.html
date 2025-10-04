@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>ask-me-anything-30-mins_processed</title>
+  <title>ask-me-anything-30-mins - Microsoft Copilot Studio Labs</title>
   <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -144,6 +144,40 @@ background-color: #f8f9fa;
 tr:hover {
 background-color: #e3f2fd;
 transition: background-color 0.2s ease;
+}
+
+table th:nth-child(1), table td:nth-child(1) { 
+width: 25% !important;
+}
+table th:nth-child(2), table td:nth-child(2) { 
+width: 10% !important;
+text-align: center;
+white-space: nowrap;
+}
+table th:nth-child(3), table td:nth-child(3) { 
+width: 65% !important;
+}
+
+table colgroup col:nth-child(1) {
+width: 25% !important;
+}
+table colgroup col:nth-child(2) {
+width: 10% !important;
+}
+table colgroup col:nth-child(3) {
+width: 65% !important;
+}
+
+table {
+table-layout: fixed !important;
+}
+
+table th:nth-child(2), table td:nth-child(2) {
+max-width: 80px !important;
+min-width: 60px !important;
+}
+table th:nth-child(3), table td:nth-child(3) {
+min-width: 60% !important;
 }
 
 @media (max-width: 768px) {
@@ -411,14 +445,123 @@ background-color: #1a3326;
 border-color: #27ae60;
 }
 }</style>
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">
 </head>
 <body>
-<h1 id="create-an-ask-me-anything-agent-for-your-employees">Create an
-<q>Ask me anything</q> agent for your employees</h1>
+<header id="title-block-header">
+<h1 class="title">ask-me-anything-30-mins - Microsoft Copilot Studio
+Labs</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#create-an-ask-me-anything-agent-for-your-employees" id="toc-create-an-ask-me-anything-agent-for-your-employees">Create an
+<q>Ask me anything</q> agent for your employees</a>
+<ul>
+<li><a href="#-lab-details" id="toc--lab-details">🧭 Lab
+Details</a></li>
+<li><a href="#-table-of-contents" id="toc--table-of-contents">📚 Table
+of Contents</a></li>
+<li><a href="#-why-this-matters" id="toc--why-this-matters">🤔 Why This
+Matters</a></li>
+<li><a href="#-why-start-with-alm" id="toc--why-start-with-alm">🤔 Why
+Start with ALM?</a></li>
+<li><a href="#-alm-introduction" id="toc--alm-introduction">🌐 ALM
+Introduction</a></li>
+<li><a href="#-core-alm-concepts-overview" id="toc--core-alm-concepts-overview">🎓 Core ALM Concepts
+Overview</a></li>
+<li><a href="#-lab-introduction" id="toc--lab-introduction">🌐 Lab
+Introduction</a></li>
+<li><a href="#-core-concepts-overview" id="toc--core-concepts-overview">🎓 Core Concepts Overview</a></li>
+<li><a href="#-documentation-and-additional-training-links" id="toc--documentation-and-additional-training-links">📄 Documentation
+and Additional Training Links</a></li>
+<li><a href="#-prerequisites" id="toc--prerequisites">✅
+Prerequisites</a></li>
+<li><a href="#-summary-of-targets" id="toc--summary-of-targets">🎯
+Summary of Targets</a></li>
+<li><a href="#-use-cases-covered" id="toc--use-cases-covered">🧩 Use
+Cases Covered</a></li>
+<li><a href="#️-instructions-by-use-case" id="toc-️-instructions-by-use-case">🛠️ Instructions by Use Case</a></li>
+<li><a href="#-use-case-1-create-a-solution-and-custom-publisher" id="toc--use-case-1-create-a-solution-and-custom-publisher">🧱 Use Case
+#1: Create a solution and custom publisher</a>
+<ul>
+<li><a href="#objective" id="toc-objective">Objective</a></li>
+<li><a href="#step-by-step-instructions" id="toc-step-by-step-instructions">Step by step instructions</a></li>
+<li><a href="#-congratulations-youve-created-your-solution-and-completed-use-case-1" id="toc--congratulations-youve-created-your-solution-and-completed-use-case-1">🏅
+Congratulations! You’ve created your solution and completed Use Case
+#1</a></li>
+<li><a href="#test-your-understanding" id="toc-test-your-understanding">Test your understanding</a></li>
+</ul></li>
+<li><a href="#-use-case-2-create-connection-references" id="toc--use-case-2-create-connection-references">🧩 Use Case #2: Create
+connection references</a>
+<ul>
+<li><a href="#summary-of-tasks" id="toc-summary-of-tasks">Summary of
+tasks</a></li>
+<li><a href="#step-by-step-instructions-1" id="toc-step-by-step-instructions-1">Step-by-step instructions</a></li>
+<li><a href="#-congratulations-youve-created-connection-references-for-the-project" id="toc--congratulations-youve-created-connection-references-for-the-project">🏅
+Congratulations! You’ve created connection references for the
+project</a></li>
+</ul></li>
+<li><a href="#-use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source" id="toc--use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source">🧱
+Use Case #3: Create an <q>Ask Me Anything</q> Agent and Add SharePoint
+Knowledge Source</a>
+<ul>
+<li><a href="#objective-1" id="toc-objective-1">Objective</a></li>
+<li><a href="#step-by-step-instructions-2" id="toc-step-by-step-instructions-2">Step-by-step instructions</a></li>
+<li><a href="#-congratulations-youve-completed-use-case-3" id="toc--congratulations-youve-completed-use-case-3">🏅 Congratulations!
+You’ve completed Use Case #3</a></li>
+<li><a href="#test-your-understanding-1" id="toc-test-your-understanding-1">Test your understanding</a></li>
+</ul></li>
+<li><a href="#-use-case-4-configure-suggested-prompts" id="toc--use-case-4-configure-suggested-prompts">🔄 Use Case #4:
+Configure Suggested Prompts</a>
+<ul>
+<li><a href="#step-by-step-instructions-3" id="toc-step-by-step-instructions-3">Step-by-step instructions</a></li>
+<li><a href="#-congratulations-youve-completed-use-case-4" id="toc--congratulations-youve-completed-use-case-4">🏅 Congratulations!
+You’ve completed Use Case #4</a></li>
+<li><a href="#test-your-understanding-2" id="toc-test-your-understanding-2">Test your understanding</a></li>
+</ul></li>
+<li><a href="#-use-case-5-deploy-to-microsoft-365-copilot" id="toc--use-case-5-deploy-to-microsoft-365-copilot">🔄 Use Case #5:
+Deploy to Microsoft 365 Copilot</a>
+<ul>
+<li><a href="#step-by-step-instructions-4" id="toc-step-by-step-instructions-4">Step-by-step instructions</a></li>
+<li><a href="#-congratulations-youve-completed-use-case-5" id="toc--congratulations-youve-completed-use-case-5">🏅 Congratulations!
+You’ve completed Use Case #5</a></li>
+<li><a href="#test-your-understanding-3" id="toc-test-your-understanding-3">Test your understanding</a></li>
+</ul></li>
+<li><a href="#-use-case-6-create-a-child-it-support-agent" id="toc--use-case-6-create-a-child-it-support-agent">🔄 Use Case #6:
+Create a child IT Support Agent</a>
+<ul>
+<li><a href="#understanding-agent-scoping-with-servicenow-integration" id="toc-understanding-agent-scoping-with-servicenow-integration">Understanding
+Agent Scoping with ServiceNow Integration</a></li>
+<li><a href="#step-by-step-instructions-5" id="toc-step-by-step-instructions-5">Step-by-step instructions</a></li>
+</ul></li>
+<li><a href="#30-publish-your-agent-and-test-the-third-suggested-prompt-regarding-ticket-status-in-m365-copilot-and-teams-if-needed-note-you-dont-need-to-reload-your-agent-or-restart-the-conversation-your-ask-me-anything-agent-is-now-capable-to-query-service-now-and-resolve-support-issues-based-on-service-now-knowledge-bases-as-well-as-query-incident-details-for-you" id="toc-30-publish-your-agent-and-test-the-third-suggested-prompt-regarding-ticket-status-in-m365-copilot-and-teams-if-needed-note-you-dont-need-to-reload-your-agent-or-restart-the-conversation-your-ask-me-anything-agent-is-now-capable-to-query-service-now-and-resolve-support-issues-based-on-service-now-knowledge-bases-as-well-as-query-incident-details-for-you">30.
+<strong>Publish</strong> your agent and test the third Suggested prompt
+regarding ticket status in M365 Copilot (and Teams if needed). Note: you
+don’t need to reload your agent or restart the conversation. Your Ask Me
+Anything agent is now capable to query Service Now and resolve support
+issues based on Service Now Knowledge bases as well as query Incident
+details for you.</a>
+<ul>
+<li><a href="#-congratulations-youve-completed-use-case-6" id="toc--congratulations-youve-completed-use-case-6">🏅 Congratulations!
+You’ve completed Use Case #6</a></li>
+<li><a href="#test-your-understanding-4" id="toc-test-your-understanding-4">Test your understanding</a></li>
+</ul></li>
+<li><a href="#-summary-of-learnings" id="toc--summary-of-learnings">🏆
+Summary of learnings</a>
+<ul>
+<li><a href="#conclusions-and-recommendations" id="toc-conclusions-and-recommendations">Conclusions and
+recommendations</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<section id="create-an-ask-me-anything-agent-for-your-employees" class="level1">
+<h1>Create an <q>Ask me anything</q> agent for your employees</h1>
 <p>Empower employees with answers that matter – Build an intelligent
 agent that connects to your knowledge and data.</p>
 <hr />
-<h2 id="lab-details">🧭 Lab Details</h2>
+<section id="-lab-details" class="level2">
+<h2>🧭 Lab Details</h2>
 <table>
 <colgroup>
 <col style="width: 18%" />
@@ -449,39 +592,43 @@ ServiceNow to retrieve ticket status.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="table-of-contents">📚 Table of Contents</h2>
+</section>
+<section id="-table-of-contents" class="level2">
+<h2>📚 Table of Contents</h2>
 <ul>
-<li><a href="#-why-this-matters">Why This Matters</a></li>
-<li><a href="#-why-start-with-alm">Why Start with ALM?</a></li>
-<li><a href="#-alm-introduction">ALM Introduction</a></li>
-<li><a href="#-core-alm-concepts-overview">Core ALM Concepts
+<li><a href="#why-this-matters">Why This Matters</a></li>
+<li><a href="#why-start-with-alm">Why Start with ALM?</a></li>
+<li><a href="#alm-introduction">ALM Introduction</a></li>
+<li><a href="#core-alm-concepts-overview">Core ALM Concepts
 Overview</a></li>
-<li><a href="#-lab-introduction">Lab Introduction</a></li>
-<li><a href="#-core-concepts-overview">Core Concepts Overview</a></li>
-<li><a href="#-documentation-and-additional-training-links">Documentation and
-Additional Training Links</a></li>
-<li><a href="#-prerequisites">Prerequisites</a></li>
-<li><a href="#-summary-of-targets">Summary of Targets</a></li>
-<li><a href="#-use-cases-covered">Use Cases Covered</a></li>
-<li><a href="#️-instructions-by-use-case">Instructions by Use Case</a>
+<li><a href="#lab-introduction">Lab Introduction</a></li>
+<li><a href="#core-concepts-overview">Core Concepts Overview</a></li>
+<li><a href="#documentation-and-additional-training-links">Documentation
+and Additional Training Links</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#summary-of-targets">Summary of Targets</a></li>
+<li><a href="#use-cases-covered">Use Cases Covered</a></li>
+<li><a href="#instructions-by-use-case">Instructions by Use Case</a>
 <ul>
-<li><a href="#-use-case-1-create-a-solution-and-custom-publisher">Use
+<li><a href="#use-case-1-create-a-solution-and-custom-publisher">Use
 Case #1: Create a solution and custom publisher</a></li>
-<li><a href="#-use-case-2-create-connection-references">Use Case #2:
+<li><a href="#use-case-2-create-connection-references">Use Case #2:
 Create connection references</a></li>
-<li><a href="#-use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source">Use
+<li><a href="#use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source">Use
 Case #3: Create an <q>Ask Me Anything</q> Agent with SharePoint
 Knowledge</a></li>
-<li><a href="#-use-case-4-configure-suggested-prompts">Use Case #4:
+<li><a href="#use-case-4-configure-suggested-prompts">Use Case #4:
 Configure Suggested Prompts</a></li>
-<li><a href="#-use-case-5-deploy-to-microsoft-365-copilot">Use Case #5:
+<li><a href="#use-case-5-deploy-to-microsoft-365-copilot">Use Case #5:
 Deploy to Microsoft 365 Copilot</a></li>
-<li><a href="#-use-case-6-create-a-child-it-support-agent">Use Case #6:
+<li><a href="#use-case-6-create-a-child-it-support-agent">Use Case #6:
 Create a child IT Support Agent</a></li>
 </ul></li>
 </ul>
 <hr />
-<h2 id="why-this-matters">🤔 Why This Matters</h2>
+</section>
+<section id="-why-this-matters" class="level2">
+<h2>🤔 Why This Matters</h2>
 <p><strong>Makers and IT professionals</strong> - Tired of employees
 constantly asking the same questions about policies, benefits, or system
 status? Frustrated by scattered knowledge across multiple systems?</p>
@@ -508,7 +655,9 @@ look</q></li>
 countless hours and improve employee satisfaction by providing instant
 access to knowledge.</strong></p>
 <hr />
-<h2 id="why-start-with-alm">🤔 Why Start with ALM?</h2>
+</section>
+<section id="-why-start-with-alm" class="level2">
+<h2>🤔 Why Start with ALM?</h2>
 <p><strong>New to Power Platform or Copilot Studio?</strong> You might
 be eager to start building agents right away, but taking a few minutes
 to set up Application Lifecycle Management (ALM) first will save you
@@ -534,7 +683,9 @@ works</q></li>
 <p><strong>The few minutes ALM setup in this lab prevents all these
 problems!</strong></p>
 <hr />
-<h2 id="alm-introduction">🌐 ALM Introduction</h2>
+</section>
+<section id="-alm-introduction" class="level2">
+<h2>🌐 ALM Introduction</h2>
 <p>Application Lifecycle Management (ALM) ensures that your solutions
 evolve safely and efficiently as they move from development to
 production. This lab will walk you through the foundational best
@@ -552,7 +703,9 @@ version</li>
 <p>With the ALM practices in this lab, you’ll avoid these pitfalls and
 set yourself up for success!</p>
 <hr />
-<h2 id="core-alm-concepts-overview">🎓 Core ALM Concepts Overview</h2>
+</section>
+<section id="-core-alm-concepts-overview" class="level2">
+<h2>🎓 Core ALM Concepts Overview</h2>
 <table>
 <colgroup>
 <col style="width: 5%" />
@@ -598,7 +751,9 @@ settings—allowing reuse and cleaner ALM processes.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="lab-introduction">🌐 Lab Introduction</h2>
+</section>
+<section id="-lab-introduction" class="level2">
+<h2>🌐 Lab Introduction</h2>
 <p>In today’s fast-paced business environment, employees need quick
 access to accurate information from multiple sources. Whether it’s HR
 policies, IT incident status, or custom knowledge bases, information is
@@ -619,7 +774,9 @@ creating a single conversational interface that intelligently routes
 questions to the right knowledge sources and provides contextual,
 accurate responses.</p>
 <hr />
-<h2 id="core-concepts-overview">🎓 Core Concepts Overview</h2>
+</section>
+<section id="-core-concepts-overview" class="level2">
+<h2>🎓 Core Concepts Overview</h2>
 <table>
 <colgroup>
 <col style="width: 36%" />
@@ -653,8 +810,9 @@ agent.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="documentation-and-additional-training-links">📄 Documentation
-and Additional Training Links</h2>
+</section>
+<section id="-documentation-and-additional-training-links" class="level2">
+<h2>📄 Documentation and Additional Training Links</h2>
 <ul>
 <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/">Microsoft
 Copilot Studio Documentation</a></li>
@@ -668,7 +826,9 @@ Copilot Studio agents to Microsoft 365</a></li>
 connector for Power Platform</a></li>
 </ul>
 <hr />
-<h2 id="prerequisites">✅ Prerequisites</h2>
+</section>
+<section id="-prerequisites" class="level2">
+<h2>✅ Prerequisites</h2>
 <ul>
 <li>Access to Microsoft Copilot Studio with appropriate licensing.</li>
 <li>A Microsoft Power Platform environment with at least an Environment
@@ -680,7 +840,9 @@ environment provided).</li>
 administration.</li>
 </ul>
 <hr />
-<h2 id="summary-of-targets">🎯 Summary of Targets</h2>
+</section>
+<section id="-summary-of-targets" class="level2">
+<h2>🎯 Summary of Targets</h2>
 <p>In this lab, you’ll start with an ALM foundation for working with
 Microsoft Copilot Studio like a pro. Then you will build a comprehensive
 <q>Ask me anything</q> agent that serves as a central knowledge hub for
@@ -699,7 +861,9 @@ status.</li>
 <li>Deploy to Microsoft 365 Copilot for seamless integration.</li>
 </ul>
 <hr />
-<h2 id="use-cases-covered">🧩 Use Cases Covered</h2>
+</section>
+<section id="-use-cases-covered" class="level2">
+<h2>🧩 Use Cases Covered</h2>
 <table style="width:100%;">
 <colgroup>
 <col style="width: 15%" />
@@ -718,7 +882,7 @@ status.</li>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td><a href="#-use-case-1-create-a-solution-and-custom-publisher">Create
+<td><a href="#use-case-1-create-a-solution-and-custom-publisher">Create
 a solution and custom publisher</a></td>
 <td>Structure your success – Group, manage, and deploy all your agent
 components with clarity and control.</td>
@@ -726,15 +890,15 @@ components with clarity and control.</td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td><a href="#-use-case-2-create-connection-references">Create
-connection references</a></td>
+<td><a href="#use-case-2-create-connection-references">Create connection
+references</a></td>
 <td>Adapt with flexibility – manage credentials and services cleanly
 across dev, test, and prod.</td>
 <td>5 mins</td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td><a href="#-use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source">Create
+<td><a href="#use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source">Create
 an <q>Ask Me Anything</q> Agent and Add SharePoint Knowledge
 Source</a></td>
 <td>Establishes foundational agent with SharePoint knowledge integration
@@ -743,7 +907,7 @@ and grounded AI responses</td>
 </tr>
 <tr class="even">
 <td>4</td>
-<td><a href="#-use-case-4-configure-suggested-prompts">Configure
+<td><a href="#use-case-4-configure-suggested-prompts">Configure
 Suggested Prompts</a></td>
 <td>Guides users toward the agent’s best capabilities through strategic
 prompt suggestions</td>
@@ -751,7 +915,7 @@ prompt suggestions</td>
 </tr>
 <tr class="odd">
 <td>5</td>
-<td><a href="#-use-case-5-deploy-to-microsoft-365-copilot">Deploy to
+<td><a href="#use-case-5-deploy-to-microsoft-365-copilot">Deploy to
 Microsoft 365 Copilot</a></td>
 <td>Makes the agent available in Microsoft 365 Copilot for seamless user
 access</td>
@@ -759,8 +923,8 @@ access</td>
 </tr>
 <tr class="even">
 <td>6</td>
-<td><a href="#-use-case-6-create-a-child-it-support-agent">Create a
-child IT Support Agent</a></td>
+<td><a href="#use-case-6-create-a-child-it-support-agent">Create a child
+IT Support Agent</a></td>
 <td>Discover how scoping for knowledge and tools can also be done
 through the multi-agent capabilities.</td>
 <td>10 mins</td>
@@ -768,10 +932,13 @@ through the multi-agent capabilities.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="instructions-by-use-case">🛠️ Instructions by Use Case</h2>
+</section>
+<section id="️-instructions-by-use-case" class="level2">
+<h2>🛠️ Instructions by Use Case</h2>
 <hr />
-<h2 id="use-case-1-create-a-solution-and-custom-publisher">🧱 Use Case
-#1: Create a solution and custom publisher</h2>
+</section>
+<section id="-use-case-1-create-a-solution-and-custom-publisher" class="level2">
+<h2>🧱 Use Case #1: Create a solution and custom publisher</h2>
 <p>Use a structured container to group all agents components for better
 lifecycle management.</p>
 <table>
@@ -803,12 +970,16 @@ solution as default.</p>
 <p><strong>Scenario:</strong> Properly setup your development
 environment so that you can later easily package and deploy your agents
 to other environments.</p>
-<h3 id="objective">Objective</h3>
+<section id="objective" class="level3">
+<h3>Objective</h3>
 <p>Set up your development environment by creating a solution and custom
 publisher in Microsoft Copilot Studio.</p>
 <hr />
-<h3 id="step-by-step-instructions">Step by step instructions</h3>
-<h4 id="open-the-solutions-area">Open the Solutions area</h4>
+</section>
+<section id="step-by-step-instructions" class="level3">
+<h3>Step by step instructions</h3>
+<section id="open-the-solutions-area" class="level4">
+<h4>Open the Solutions area</h4>
 <ol type="1">
 <li><p>Go to the <a href="https://copilotstudio.microsoft.com/">https://copilotstudio.microsoft.com</a>.</p></li>
 <li><p>Confirm you are in the correct environment (top-right corner). In
@@ -826,7 +997,9 @@ Environment with <strong><q>DEV - &lt;your current User
 Name&gt;</q></strong> as the name of the environment.</li>
 </ul>
 </blockquote>
-<h4 id="create-a-solution">Create a solution</h4>
+</section>
+<section id="create-a-solution" class="level4">
+<h4>Create a solution</h4>
 <ol start="3" type="1">
 <li><p>In the left navigation (under the <code>...</code> menu), select
 <strong>Solutions</strong></p>
@@ -854,7 +1027,9 @@ different environments as part of the ALM process.</li>
 <code>Training Workshop Agents</code></li>
 </ul>
 </blockquote>
-<h4 id="create-a-publisher">Create a publisher</h4>
+</section>
+<section id="create-a-publisher" class="level4">
+<h4>Create a publisher</h4>
 <ol start="6" type="1">
 <li>If this is your first solution, click <strong>+ New
 publisher</strong> to create one. You can use <strong>MCS Lab</strong>
@@ -879,7 +1054,9 @@ as the Display Name, <strong>MCSLab</strong> as the Name, and
 <p>Avoid using the default publisher or the default solution. Custom
 publishers ensure cleaner component names and better ALM hygiene.</p>
 </blockquote>
-<h4 id="set-and-create">Set and create</h4>
+</section>
+<section id="set-and-create" class="level4">
+<h4>Set and create</h4>
 <ol start="7" type="1">
 <li>Check <strong>Set as your preferred solution</strong> (so any new
 component goes into it by default).</li>
@@ -897,11 +1074,15 @@ and use the <strong>Set preferred solution</strong> on the top nav.</li>
 </ul>
 </blockquote>
 <hr />
-<h3 id="congratulations-youve-created-your-solution-and-completed-use-case-1">🏅
-Congratulations! You’ve created your solution and completed Use Case
-#1</h3>
+</section>
+</section>
+<section id="-congratulations-youve-created-your-solution-and-completed-use-case-1" class="level3">
+<h3>🏅 Congratulations! You’ve created your solution and completed Use
+Case #1</h3>
 <hr />
-<h3 id="test-your-understanding">Test your understanding</h3>
+</section>
+<section id="test-your-understanding" class="level3">
+<h3>Test your understanding</h3>
 <p><strong>Key takeaways:</strong></p>
 <ul>
 <li><strong>Solutions first</strong> – Solutions help manage your agent
@@ -928,8 +1109,10 @@ components?</li>
 case.</li>
 </ul>
 <hr />
-<h2 id="use-case-2-create-connection-references">🧩 Use Case #2: Create
-connection references</h2>
+</section>
+</section>
+<section id="-use-case-2-create-connection-references" class="level2">
+<h2>🧩 Use Case #2: Create connection references</h2>
 <p>Use connection abstractions for seamless multi-environment
 deployments.</p>
 <table>
@@ -954,13 +1137,16 @@ across dev, test, and prod.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="summary-of-tasks">Summary of tasks</h3>
+<section id="summary-of-tasks" class="level3">
+<h3>Summary of tasks</h3>
 <p>In this section, you’ll learn how to create connection references in
 your solution.</p>
 <p><strong>Scenario:</strong> Configure your environment by anticipating
 future elements that will need to be updated as your solution moves from
 development to production.</p>
-<h3 id="step-by-step-instructions-1">Step-by-step instructions</h3>
+</section>
+<section id="step-by-step-instructions-1" class="level3">
+<h3>Step-by-step instructions</h3>
 <ol type="1">
 <li><p>Open the solution you created in Use Case #1.</p></li>
 <li><p>Select <strong>+ New</strong>, then go to <strong>More</strong>
@@ -1035,13 +1221,16 @@ UAT or Prod environments).</li>
 </ul>
 <hr />
 </blockquote>
-<h3 id="congratulations-youve-created-connection-references-for-the-project">🏅
-Congratulations! You’ve created connection references for the
+</section>
+<section id="-congratulations-youve-created-connection-references-for-the-project" class="level3">
+<h3>🏅 Congratulations! You’ve created connection references for the
 project</h3>
 <hr />
-<h2 id="use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source">🧱
-Use Case #3: Create an <q>Ask Me Anything</q> Agent and Add SharePoint
-Knowledge Source</h2>
+</section>
+</section>
+<section id="-use-case-3-create-an-ask-me-anything-agent-and-add-sharepoint-knowledge-source" class="level2">
+<h2>🧱 Use Case #3: Create an <q>Ask Me Anything</q> Agent and Add
+SharePoint Knowledge Source</h2>
 <p>Create a foundational intelligent agent with SharePoint integration
 for grounded AI responses.</p>
 <table>
@@ -1075,11 +1264,14 @@ knowledge source.</p>
 environment so that you can later easily package and deploy your agents
 to other environments. Your organization has extensive knowledge stored
 in SharePoint that needs to be accessible through conversational AI.</p>
-<h3 id="objective-1">Objective</h3>
+<section id="objective-1" class="level3">
+<h3>Objective</h3>
 <p>Create a new agent with SharePoint knowledge integration that
 provides grounded, cited responses.</p>
 <hr />
-<h3 id="step-by-step-instructions-2">Step-by-step instructions</h3>
+</section>
+<section id="step-by-step-instructions-2" class="level3">
+<h3>Step-by-step instructions</h3>
 <ol type="1">
 <li><p>Navigate to the Copilot Studio home page at <a href="https://copilotstudio.microsoft.com/">copilotstudio.microsoft.com</a></p></li>
 <li><p>Go to the Solutions menu (located in the left-hand menu under the
@@ -1139,10 +1331,13 @@ inputs, decisions, and outputs for that activity.</li>
 </ul>
 </blockquote>
 <hr />
-<h3 id="congratulations-youve-completed-use-case-3">🏅 Congratulations!
-You’ve completed Use Case #3</h3>
+</section>
+<section id="-congratulations-youve-completed-use-case-3" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case #3</h3>
 <hr />
-<h3 id="test-your-understanding-1">Test your understanding</h3>
+</section>
+<section id="test-your-understanding-1" class="level3">
+<h3>Test your understanding</h3>
 <p><strong>Key takeaways:</strong></p>
 <ul>
 <li><strong>Solution Management</strong> – Using solutions ensures
@@ -1154,8 +1349,10 @@ citations</li>
 source citations, ensuring transparency and trust in responses</li>
 </ul>
 <hr />
-<h2 id="use-case-4-configure-suggested-prompts">🔄 Use Case #4:
-Configure Suggested Prompts</h2>
+</section>
+</section>
+<section id="-use-case-4-configure-suggested-prompts" class="level2">
+<h2>🔄 Use Case #4: Configure Suggested Prompts</h2>
 <p>Guide users toward your agent’s best capabilities through strategic
 prompt suggestions.</p>
 <table>
@@ -1186,7 +1383,8 @@ crafted prompts.</p>
 <p><strong>Scenario:</strong> Help users discover the full capabilities
 of your agent by providing clear, actionable suggestions that
 demonstrate different use cases.</p>
-<h3 id="step-by-step-instructions-3">Step-by-step instructions</h3>
+<section id="step-by-step-instructions-3" class="level3">
+<h3>Step-by-step instructions</h3>
 <ol type="1">
 <li><p>Go to the <strong>overview</strong> tab for your agent</p></li>
 <li><p>Go to the Suggested prompts section and copy paste the following
@@ -1234,18 +1432,23 @@ these suggested prompts.</li>
 </ul>
 </blockquote>
 <hr />
-<h3 id="congratulations-youve-completed-use-case-4">🏅 Congratulations!
-You’ve completed Use Case #4</h3>
+</section>
+<section id="-congratulations-youve-completed-use-case-4" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case #4</h3>
 <hr />
-<h3 id="test-your-understanding-2">Test your understanding</h3>
+</section>
+<section id="test-your-understanding-2" class="level3">
+<h3>Test your understanding</h3>
 <ul>
 <li>How do suggested prompts improve user adoption and engagement with
 your agent?</li>
 <li>What makes an effective suggested prompt versus a generic one?</li>
 </ul>
 <hr />
-<h2 id="use-case-5-deploy-to-microsoft-365-copilot">🔄 Use Case #5:
-Deploy to Microsoft 365 Copilot</h2>
+</section>
+</section>
+<section id="-use-case-5-deploy-to-microsoft-365-copilot" class="level2">
+<h2>🔄 Use Case #5: Deploy to Microsoft 365 Copilot</h2>
 <p>Make the agent available in Microsoft 365 Copilot for seamless user
 access.</p>
 <table>
@@ -1275,7 +1478,8 @@ access</td>
 <p><strong>Scenario:</strong> Deploy your agent where employees already
 work, ensuring maximum adoption by integrating directly into their daily
 Microsoft 365 workflow.</p>
-<h3 id="step-by-step-instructions-4">Step-by-step instructions</h3>
+<section id="step-by-step-instructions-4" class="level3">
+<h3>Step-by-step instructions</h3>
 <ol type="1">
 <li><p>Go to the agent and select <strong>Publish</strong></p></li>
 <li><p>Go to <strong>Channels</strong></p></li>
@@ -1315,10 +1519,13 @@ Microsoft Teams</em>, select <strong>Cancel</strong>, and the select
 Test the agent with the first two prompts.</li>
 </ol>
 <hr />
-<h3 id="congratulations-youve-completed-use-case-5">🏅 Congratulations!
-You’ve completed Use Case #5</h3>
+</section>
+<section id="-congratulations-youve-completed-use-case-5" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case #5</h3>
 <hr />
-<h3 id="test-your-understanding-3">Test your understanding</h3>
+</section>
+<section id="test-your-understanding-3" class="level3">
+<h3>Test your understanding</h3>
 <ul>
 <li>Why is deploying to Microsoft 365 Copilot more effective than
 standalone deployment for enterprise scenarios?</li>
@@ -1326,8 +1533,10 @@ standalone deployment for enterprise scenarios?</li>
 channels?</li>
 </ul>
 <hr />
-<h2 id="use-case-6-create-a-child-it-support-agent">🔄 Use Case #6:
-Create a child IT Support Agent</h2>
+</section>
+</section>
+<section id="-use-case-6-create-a-child-it-support-agent" class="level2">
+<h2>🔄 Use Case #6: Create a child IT Support Agent</h2>
 <p>Integrate real-time incident management for comprehensive support
 capabilities and demonstrate agent scoping techniques.</p>
 <table>
@@ -1363,8 +1572,8 @@ By integrating ServiceNow directly into your agent, you’re creating a
 specialized IT support capability that showcases agent scoping - where
 specific tools and knowledge are targeted for particular use cases,
 improving productivity and reducing support burden.</p>
-<h3 id="understanding-agent-scoping-with-servicenow-integration">Understanding
-Agent Scoping with ServiceNow Integration</h3>
+<section id="understanding-agent-scoping-with-servicenow-integration" class="level3">
+<h3>Understanding Agent Scoping with ServiceNow Integration</h3>
 <p>This use case demonstrates <strong>agent scoping</strong>
 principles:</p>
 <ul>
@@ -1375,8 +1584,11 @@ automatically leverage ServiceNow tools</li>
 <li><strong>Unified Experience</strong>: Users get comprehensive support
 from a single agent interface</li>
 </ul>
-<h3 id="step-by-step-instructions-5">Step-by-step instructions</h3>
-<h4 id="create-a-child-agent">Create a child agent</h4>
+</section>
+<section id="step-by-step-instructions-5" class="level3">
+<h3>Step-by-step instructions</h3>
+<section id="create-a-child-agent" class="level4">
+<h4>Create a child agent</h4>
 <ol type="1">
 <li><p>Go to your Ask Me Anything agent</p></li>
 <li><p>Go to the <strong>Agents</strong> tab, and <strong>+ Add an
@@ -1397,8 +1609,9 @@ The agent can multiple multiple questions and queries at once.</code></pre></li>
 Use the Get ServiceNow ticket details tool to get the status of incidents.</code></pre></li>
 </ul></li>
 </ol>
-<h4 id="add-knowledge-to-the-child-agent">Add knowledge to the child
-agent</h4>
+</section>
+<section id="add-knowledge-to-the-child-agent" class="level4">
+<h4>Add knowledge to the child agent</h4>
 <ol start="4" type="1">
 <li><p>Select <strong>+ Add</strong> in the <strong>Knowledge</strong>
 section of the child agent</p></li>
@@ -1407,8 +1620,9 @@ section of the child agent</p></li>
 <strong>Created by my admin</strong></p></li>
 <li><p>Select <strong>Add</strong></p></li>
 </ol>
-<h4 id="add-servicenow-ticket-details-as-a-tool-to-the-child-agent">Add
-ServiceNow ticket details as a Tool to the child agent</h4>
+</section>
+<section id="add-servicenow-ticket-details-as-a-tool-to-the-child-agent" class="level4">
+<h4>Add ServiceNow ticket details as a Tool to the child agent</h4>
 <ol type="1">
 <li><p>Still within the <strong>IT Support Agent</strong></p></li>
 <li><p>Scroll down to <strong>Tools</strong> and <strong>+ Add a
@@ -1480,7 +1694,9 @@ queries.</p>
 <strong>1</strong></p></li>
 <li><p>Select <strong>Save</strong></p></li>
 </ol>
-<h4 id="test-your-it-support-agent">Test your IT Support Agent</h4>
+</section>
+<section id="test-your-it-support-agent" class="level4">
+<h4>Test your IT Support Agent</h4>
 <ol start="28" type="1">
 <li><p><strong>Test</strong> your agent:</p>
 <pre><code>My USB port is no longer working on my PC... what can I do? While you&#39;re here, can you also share an update for case INC0000059? It&#39;s been quite a while since I&#39;ve opened them... thanks!!</code></pre></li>
@@ -1526,17 +1742,22 @@ domains while maintaining a unified user experience. The ServiceNow
 knowledge and tools are automatically triggered for IT-related queries,
 demonstrating intelligent capability routing within a single agent.</p>
 </blockquote>
-<h2 id="publish-your-agent-and-test-the-third-suggested-prompt-regarding-ticket-status-in-m365-copilot-and-teams-if-needed.-note-you-dont-need-to-reload-your-agent-or-restart-the-conversation.-your-ask-me-anything-agent-is-now-capable-to-query-service-now-and-resolve-support-issues-based-on-service-now-knowledge-bases-as-well-as-query-incident-details-for-you.">30.
-<strong>Publish</strong> your agent and test the third Suggested prompt
-regarding ticket status in M365 Copilot (and Teams if needed). Note: you
-don’t need to reload your agent or restart the conversation. Your Ask Me
-Anything agent is now capable to query Service Now and resolve support
-issues based on Service Now Knowledge bases as well as query Incident
-details for you.</h2>
-<h3 id="congratulations-youve-completed-use-case-6">🏅 Congratulations!
-You’ve completed Use Case #6</h3>
+</section>
+</section>
+</section>
+<section id="30-publish-your-agent-and-test-the-third-suggested-prompt-regarding-ticket-status-in-m365-copilot-and-teams-if-needed-note-you-dont-need-to-reload-your-agent-or-restart-the-conversation-your-ask-me-anything-agent-is-now-capable-to-query-service-now-and-resolve-support-issues-based-on-service-now-knowledge-bases-as-well-as-query-incident-details-for-you" class="level2">
+<h2>30. <strong>Publish</strong> your agent and test the third Suggested
+prompt regarding ticket status in M365 Copilot (and Teams if needed).
+Note: you don’t need to reload your agent or restart the conversation.
+Your Ask Me Anything agent is now capable to query Service Now and
+resolve support issues based on Service Now Knowledge bases as well as
+query Incident details for you.</h2>
+<section id="-congratulations-youve-completed-use-case-6" class="level3">
+<h3>🏅 Congratulations! You’ve completed Use Case #6</h3>
 <hr />
-<h3 id="test-your-understanding-4">Test your understanding</h3>
+</section>
+<section id="test-your-understanding-4" class="level3">
+<h3>Test your understanding</h3>
 <ul>
 <li>How does ServiceNow integration enhance the employee experience
 compared to traditional ticket lookup methods?</li>
@@ -1544,7 +1765,10 @@ compared to traditional ticket lookup methods?</li>
 integration?</li>
 </ul>
 <hr />
-<h2 id="summary-of-learnings">🏆 Summary of learnings</h2>
+</section>
+</section>
+<section id="-summary-of-learnings" class="level2">
+<h2>🏆 Summary of learnings</h2>
 <p>True learning comes from doing, questioning, and reflecting—so let’s
 put your skills to the test.</p>
 <p>To maximize the impact of your <q>Ask me anything</q> agent:</p>
@@ -1560,8 +1784,8 @@ a single agent to do everything, build a multi-agent system where the
 main agent delegates tasks to a child agent.</li>
 </ul>
 <hr />
-<h3 id="conclusions-and-recommendations">Conclusions and
-recommendations</h3>
+<section id="conclusions-and-recommendations" class="level3">
+<h3>Conclusions and recommendations</h3>
 <p><strong>Ask me anything agent golden rules:</strong></p>
 <ul>
 <li>Start with high-value, frequently asked questions to demonstrate
@@ -1582,5 +1806,8 @@ hub that transforms how employees access information, reduces support
 burden, and improves organizational efficiency through conversational
 AI.</p>
 <hr />
+</section>
+</section>
+</section>
 </body>
 </html>
