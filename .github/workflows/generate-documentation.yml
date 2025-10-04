@@ -68,8 +68,8 @@ jobs:
         run: |
           echo "🔧 Installing Puppeteer for stable HTML to PDF conversion..."
           
-          # Install Puppeteer globally for PDF generation
-          npm install -g puppeteer
+          # Install Puppeteer locally for PDF generation
+          npm install puppeteer
           echo "✅ Puppeteer installed successfully"
           
           # Install emoji and international fonts for better PDF rendering
