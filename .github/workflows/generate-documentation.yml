@@ -23,7 +23,6 @@ on:
       - "labs/*/*.md"           # Lab markdown content
       - "labs/*/images/**"      # Lab images and assets
       - ".github/styles/**"     # CSS styling files
-      - ".github/workflows/generate-documentation.yml"  # This workflow file
   
   # Allow manual execution from GitHub Actions UI
   workflow_dispatch:
@@ -209,30 +208,33 @@ jobs:
                 # ---------------------------------------------------------
                 echo "  🧹 Post-processing HTML for web optimization..."
                 
+                # Define path to generated HTML file
+                html_output_file="../../dist/${lab_name}/${lab_name}.html"
+                
                 # Remove Pandoc's title block header (keep <title> in <head>)
-                sed -i '/<header id="title-block-header">/,/<\/header>/d' "${lab_name}.html"
+                sed -i '/<header id="title-block-header">/,/<\/header>/d' "$html_output_file"
                 
                 # Clean up empty or malformed IDs that break navigation
-                sed -i 's/id=""//g' "${lab_name}.html"
-                sed -i 's/id="[[:space:]]*"//g' "${lab_name}.html"
+                sed -i 's/id=""//g' "$html_output_file"
+                sed -i 's/id="[[:space:]]*"//g' "$html_output_file"
                 
                 # Fix anchor link formatting from conversion artifacts
-                sed -i 's/href="#[[:space:]]*\([^"[:space:]]*\)[[:space:]]*"/href="#\1"/g' "${lab_name}.html"
+                sed -i 's/href="#[[:space:]]*\([^"[:space:]]*\)[[:space:]]*"/href="#\1"/g' "$html_output_file"
                 
                 # Add name attributes to headers for better anchor compatibility
                 # This ensures that both id="section" and name="section" work for navigation
-                sed -i 's/<h\([1-6]\) id="\([^"]*\)"/<h\1 id="\2" name="\2"/g' "${lab_name}.html"
+                sed -i 's/<h\([1-6]\) id="\([^"]*\)"/<h\1 id="\2" name="\2"/g' "$html_output_file"
                 
                 # Also add standalone anchor tags before headers as backup
-                sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)"/<a name="\2"><\/a><h\1 id="\2" name="\3"/g' "${lab_name}.html"
+                sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)"/<a name="\2"><\/a><h\1 id="\2" name="\3"/g' "$html_output_file"
                 
                 # Make external links open in new window
                 # Add target="_blank" and rel="noopener noreferrer" to external links (http/https)
                 # This regex matches links that start with http:// or https:// and adds the attributes
-                sed -i 's/<a href="\(https\?:\/\/[^"]*\)"/<a href="\1" target="_blank" rel="noopener noreferrer"/g' "${lab_name}.html"
+                sed -i 's/<a href="\(https\?:\/\/[^"]*\)"/<a href="\1" target="_blank" rel="noopener noreferrer"/g' "$html_output_file"
                 
                 # Add simple favicon for consistent branding (blue circle with L)
-                sed -i 's|</head>|  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">\n</head>|' "${lab_name}.html"
+                sed -i 's|</head>|  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJCNTc5QSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDUiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+">\n</head>|' "$html_output_file"
                 
                 echo "✓ Successfully converted $lab_name to HTML with favicon"
               else
@@ -289,7 +291,7 @@ jobs:
             fi
           done
 
-          echo "Generated HTML count: $(find labs -name "*.html" -type f | wc -l)"
+          echo "Generated HTML count: $(find dist -name "*.html" -type f | wc -l 2>/dev/null || echo "0")"
 
       # =================================================================
       # STEP 4: HTML TO PDF CONVERSION
@@ -303,11 +305,11 @@ jobs:
         run: |
           echo "📄 Starting PDF generation for all labs..."
           
-          # Process each lab directory with an HTML file
+          # Process each lab directory with an HTML file in dist
           for lab_dir in labs/*/; do
             if [ -d "$lab_dir" ]; then
               lab_name=$(basename "$lab_dir")
-              html_file="${lab_dir}${lab_name}.html"
+              html_file="dist/${lab_name}/${lab_name}.html"
               
               if [ -f "$html_file" ]; then
                 echo "🔄 Processing: $lab_name"
@@ -317,21 +319,19 @@ jobs:
                 
                 # Debug: Check HTML file before PDF conversion
                 echo "Checking HTML structure for $lab_name:"
+                echo "HTML file location: $html_file"
                 
                 # Check if title-block-header still exists (should be removed)
-                if grep -q "title-block-header" "${lab_name}.html"; then
+                if grep -q "title-block-header" "$html_file"; then
                   echo "⚠️  WARNING: title-block-header still found in HTML before PDF conversion"
                   echo "Attempting to remove it now..."
-                  sed -i '/<header id="title-block-header">/,/<\/header>/d' "${lab_name}.html"
+                  sed -i '/<header id="title-block-header">/,/<\/header>/d' "$html_file"
                 else
                   echo "✓ No title-block-header found in HTML - clean for PDF conversion"
                 fi
                 
                 # Optimize HTML for PDF bookmarks - ensure headers have proper structure
                 echo "Optimizing HTML for PDF bookmarks..."
-                
-                # Define path to generated HTML file
-                html_file="../../dist/${lab_name}/${lab_name}.html"
                 
                 # Ensure all headers have both id and name attributes for better PDF navigation
                 sed -i 's/<h\([1-6]\) id="\([^"]*\)"[^>]*>/<h\1 id="\2" name="\2">/g' "$html_file"
@@ -354,16 +354,14 @@ jobs:
                 # Convert HTML to PDF using Puppeteer with internal links preserved
                 echo "Generating PDF with Puppeteer (preserving internal navigation)..."
                 lab_title=$(grep -m 1 '<title>' "$html_file" | sed 's/<[^>]*>//g' | sed 's/^[ \t]*//;s/[ \t]*$//' || echo "$lab_name")
+                pdf_output_file="dist/${lab_name}/${lab_name}.pdf"
                 
-                if node "../../.github/scripts/generate-pdf.js" "$html_file" "../../dist/${lab_name}/${lab_name}.pdf" "$lab_title"; then
+                if node ".github/scripts/generate-pdf.js" "$html_file" "$pdf_output_file" "$lab_title"; then
                   echo "✓ Successfully converted $lab_name HTML to PDF with internal links"
                 else
                   echo "✗ Failed to convert $lab_name HTML to PDF with Puppeteer"
                   echo "  This might be due to internal link navigation issues in PDF generation"
                 fi
-                
-                # Change back to root directory
-                cd - > /dev/null
               else
                 echo "✗ HTML file not found for $lab_name"
               fi
@@ -398,7 +396,9 @@ jobs:
           fi
 
           # Sync with latest remote changes to avoid push conflicts during long runs
-          git pull --rebase --autostash origin main
+          # Use the current branch instead of hardcoded main
+          current_branch=$(git branch --show-current)
+          git pull --rebase --autostash origin "$current_branch"
 
           # Add all generated files from dist directory
           git add dist/
