@@ -162,10 +162,10 @@ jobs:
           echo "🧹 Cleaning up HTML structure..."
           sed -i '/<header id="title-block-header">/,/<\/header>/d' _site/index.html
           
-          # Apply professional table styling with consistent column widths
-          echo "📏 Applying table styling and column width normalization..."
+          # Apply professional table styling - let CSS handle column widths
+          echo "📏 Applying table styling class for CSS-based column sizing..."
           perl -0pi -e 's/<table style="width:100%;">/<table class="lab-table" style="width:100%;">/' _site/index.html
-          perl -0pi -e 's|<colgroup>.*?</colgroup>|<colgroup><col style="width: 25%" /><col style="width: 10%" /><col style="width: 65%" /></colgroup>|s' _site/index.html
+          perl -0pi -e 's|<colgroup>.*?</colgroup>||s' _site/index.html
 
           # Configure external links to open in new tabs for better user experience
           echo "🔗 Configuring external links to open in new tabs..."

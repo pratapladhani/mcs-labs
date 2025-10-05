@@ -118,7 +118,7 @@ table {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
   overflow: hidden;
-  table-layout: fixed;
+  table-layout: auto; /* Allow auto-sizing based on content */
 }
 
 th, td {
@@ -145,70 +145,84 @@ tr:hover {
   transition: background-color 0.2s ease;
 }
 
-/* Default column widths for 4-column tables (like Lab Details) */
-/* Pattern: Level (10%), Persona (15%), Duration (15%), Purpose (60%) */
+/* Flexible column widths for better content adaptation */
+/* Instead of fixed percentages, use min/max-width for natural sizing */
+
+/* Make short columns (like Level, Duration) more compact */
 table thead tr th:nth-child(1):nth-last-child(4),
-table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
-table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
-table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(4),
 table tbody tr td:nth-child(1):nth-last-child(4),
-table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2),
-table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3),
-table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(4) {
-  width: auto;
-}
-
-/* First column (Level, etc.) - narrow */
-table thead tr th:nth-child(1):nth-last-child(4),
-table tbody tr td:nth-child(1):nth-last-child(4) {
-  width: 10% !important;
-}
-
-/* Second column (Persona, etc.) - medium */
-table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
-table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2) {
-  width: 15% !important;
-}
-
-/* Third column (Duration, etc.) - medium */
 table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
 table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3) {
-  width: 15% !important;
+  width: 1%; /* Shrink to content */
+  white-space: nowrap; /* Prevent wrapping for short content */
+  min-width: 80px; /* Minimum readable width */
+  max-width: 150px; /* Maximum before wrapping */
 }
 
-/* Fourth column (Purpose, etc.) - wide for long text */
+/* Medium columns (like Persona) get moderate sizing */
+table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
+table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2) {
+  width: auto;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+/* Long text columns (like Purpose, Overview) get remaining space */
 table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(4),
 table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(4) {
-  width: 60% !important;
+  width: auto; /* Take remaining space */
+  min-width: 200px; /* Ensure readability */
 }
 
-/* Column widths for homepage lab table (3 columns) */
+/* Flexible column widths for homepage lab table (3 columns) */
 table.lab-table {
-  table-layout: fixed !important;
+  table-layout: auto; /* Allow natural sizing */
 }
 
+/* Title column - takes most space but adapts to content */
 table.lab-table th:nth-child(1), table.lab-table td:nth-child(1) {
-  width: 65% !important;
+  width: auto;
+  min-width: 300px; /* Ensure titles are readable */
 }
 
+/* Download links column - compact */
 table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) {
-  width: 10% !important;
+  width: 1%; /* Shrink to content */
   text-align: center;
   white-space: nowrap;
+  min-width: 80px;
 }
 
+/* Overview column - flexible but reasonable */
 table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) {
-  width: 25% !important;
+  width: auto;
+  min-width: 200px;
+  max-width: 400px; /* Prevent extremely wide text blocks */
 }
 
 /* Responsive tables */
 @media (max-width: 768px) {
   table {
     font-size: 0.9em;
+    table-layout: auto; /* Ensure auto-sizing on mobile */
   }
   
   th, td {
     padding: 8px 12px;
+    min-width: unset; /* Remove min-width constraints on mobile */
+  }
+  
+  /* Allow text wrapping on mobile for better fit */
+  table thead tr th:nth-child(1):nth-last-child(4),
+  table tbody tr td:nth-child(1):nth-last-child(4),
+  table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
+  table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3) {
+    white-space: normal; /* Allow wrapping on mobile */
+  }
+  
+  /* Reduce homepage table title min-width on mobile */
+  table.lab-table th:nth-child(1), table.lab-table td:nth-child(1) {
+    min-width: 200px;
   }
 }
 
