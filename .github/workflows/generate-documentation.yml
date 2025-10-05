@@ -219,8 +219,13 @@ jobs:
               # Check if file has horizontal rules that aren't proper YAML front matter
               if grep -q '^---$' "${lab_name}_processed.md"; then
                 first_line=$(head -1 "${lab_name}_processed.md")
-                if [ "$first_line" != "---" ]; then
-                  echo "  ⚠️  Detected horizontal rules in content - disabling YAML front matter parsing"
+                second_line=$(sed -n '2p' "${lab_name}_processed.md")
+                
+                # Disable YAML parsing if:
+                # 1. First line is not "---" (horizontal rules in content)
+                # 2. First line is "---" but second line is also "---" (empty YAML block)
+                if [ "$first_line" != "---" ] || [ "$second_line" = "---" ]; then
+                  echo "  ⚠️  Detected horizontal rules in content or invalid YAML front matter - disabling YAML parsing"
                   yaml_disabled_format="markdown-yaml_metadata_block+auto_identifiers+gfm_auto_identifiers+emoji+header_attributes"
                 fi
               fi
