@@ -94,11 +94,17 @@ jobs:
         run: |
           echo "🌐 Starting HTML conversion for all lab directories..."
           
+          # Create dist directory structure
+          mkdir -p dist
+          
           # Process each lab directory containing a README.md file
           for lab_dir in labs/*/; do
             if [ -d "$lab_dir" ] && [ -f "${lab_dir}README.md" ]; then
               lab_name=$(basename "$lab_dir")
               echo "📝 Processing lab: $lab_name"
+              
+              # Create output directory for this lab
+              mkdir -p "dist/$lab_name"
               
               # Enter lab directory to ensure relative image paths work correctly
               cd "$lab_dir"
@@ -178,7 +184,7 @@ jobs:
               # Try Pandoc conversion with detailed error output for debugging
               set +e  # Temporarily disable exit on error for better error handling
               pandoc_output=$(pandoc "${lab_name}_processed.md" \
-                -o "${lab_name}.html" \
+                -o "../../dist/${lab_name}/${lab_name}.html" \
                 --standalone \
                 --self-contained \
                 --css="../../.github/styles/html.css" \
@@ -193,7 +199,7 @@ jobs:
               pandoc_exit_code=$?
               set -e  # Re-enable exit on error
               
-              if [ $pandoc_exit_code -eq 0 ] && [ -f "${lab_name}.html" ]; then
+              if [ $pandoc_exit_code -eq 0 ] && [ -f "../../dist/${lab_name}/${lab_name}.html" ]; then
                 echo "    ✅ HTML conversion successful"
                 
                 # ---------------------------------------------------------
@@ -240,7 +246,7 @@ jobs:
                 # Try fallback conversion without CSS and complex options
                 echo "  🔄 Trying fallback HTML method for $lab_name..."
                 set +e  # Disable exit on error for fallback
-                fallback_output=$(pandoc "${lab_name}_processed.md" -o "${lab_name}.html" \
+                fallback_output=$(pandoc "${lab_name}_processed.md" -o "../../dist/${lab_name}/${lab_name}.html" \
                   --standalone \
                   --section-divs \
                   --toc \
@@ -253,11 +259,11 @@ jobs:
                 fallback_exit_code=$?
                 set -e  # Re-enable exit on error
                 
-                if [ $fallback_exit_code -eq 0 ] && [ -f "${lab_name}.html" ]; then
+                if [ $fallback_exit_code -eq 0 ] && [ -f "../../dist/${lab_name}/${lab_name}.html" ]; then
                   echo "  ✅ Fallback HTML conversion succeeded for $lab_name"
                   
                   # Remove the title block header for fallback conversion too
-                  sed -i '/<header id="title-block-header">/,/<\/header>/d' "${lab_name}.html"
+                  sed -i '/<header id="title-block-header">/,/<\/header>/d' "../../dist/${lab_name}/${lab_name}.html"
                 else
                   echo "  ❌ FALLBACK ALSO FAILED for $lab_name"
                   echo "  🔍 Fallback exit code: $fallback_exit_code"
@@ -323,18 +329,21 @@ jobs:
                 # Optimize HTML for PDF bookmarks - ensure headers have proper structure
                 echo "Optimizing HTML for PDF bookmarks..."
                 
+                # Define path to generated HTML file
+                html_file="../../dist/${lab_name}/${lab_name}.html"
+                
                 # Ensure all headers have both id and name attributes for better PDF navigation
-                sed -i 's/<h\([1-6]\) id="\([^"]*\)"[^>]*>/<h\1 id="\2" name="\2">/g' "${lab_name}.html"
+                sed -i 's/<h\([1-6]\) id="\([^"]*\)"[^>]*>/<h\1 id="\2" name="\2">/g' "$html_file"
                 
                 # Add anchor targets before headers for better PDF internal linking
-                sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)">/<a id="\2" name="\2"><\/a><h\1 id="\2" name="\3">/g' "${lab_name}.html"
+                sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)">/<a id="\2" name="\2"><\/a><h\1 id="\2" name="\3">/g' "$html_file"
                 
                 # Debug: Show what internal links are available for PDF navigation
                 echo "Preserving internal links for PDF navigation..."
-                internal_link_count=$(grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "${lab_name}.html" | wc -l)
+                internal_link_count=$(grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "$html_file" | wc -l)
                 if [ "$internal_link_count" -gt 0 ]; then
                   echo "Found $internal_link_count internal links to preserve in PDF:"
-                  grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "${lab_name}.html" | head -3
+                  grep -o '<a href="#[^"]*"[^>]*>[^<]*</a>' "$html_file" | head -3
                 else
                   echo "No HTML internal links found"
                 fi
@@ -343,9 +352,9 @@ jobs:
                 
                 # Convert HTML to PDF using Puppeteer with internal links preserved
                 echo "Generating PDF with Puppeteer (preserving internal navigation)..."
-                lab_title=$(grep -m 1 '<title>' "${lab_name}.html" | sed 's/<[^>]*>//g' | sed 's/^[ \t]*//;s/[ \t]*$//' || echo "$lab_name")
+                lab_title=$(grep -m 1 '<title>' "$html_file" | sed 's/<[^>]*>//g' | sed 's/^[ \t]*//;s/[ \t]*$//' || echo "$lab_name")
                 
-                if node "../../.github/scripts/generate-pdf.js" "${lab_name}.html" "${lab_name}.pdf" "$lab_title"; then
+                if node "../../.github/scripts/generate-pdf.js" "$html_file" "../../dist/${lab_name}/${lab_name}.pdf" "$lab_title"; then
                   echo "✓ Successfully converted $lab_name HTML to PDF with internal links"
                 else
                   echo "✗ Failed to convert $lab_name HTML to PDF with Puppeteer"
@@ -360,12 +369,12 @@ jobs:
             fi
           done
 
-          echo "Generated PDF count: $(find labs -name "*.pdf" -type f | wc -l)"
+          echo "Generated PDF count: $(find dist -name "*.pdf" -type f | wc -l 2>/dev/null || echo "0")"
 
       # =================================================================
       # STEP 5: COMMIT GENERATED DOCUMENTS
       # =================================================================
-      # Save generated HTML and PDF files back to the repository
+      # Save generated HTML and PDF files to the dist directory
       # for distribution and GitHub Pages deployment
       # =================================================================
       - name: 💾 Commit Generated Documents to Repository
@@ -378,16 +387,20 @@ jobs:
 
           echo ""
           echo "Checking for generated files to add:"
-          echo "PDF files:"
-          find labs -name "*.pdf" -type f
-          echo "HTML files:"
-          find labs -name "*.html" -type f
+          if [ -d "dist" ]; then
+            echo "PDF files:"
+            find dist -name "*.pdf" -type f 2>/dev/null || echo "No PDF files found"
+            echo "HTML files:"
+            find dist -name "*.html" -type f 2>/dev/null || echo "No HTML files found"
+          else
+            echo "Dist directory not found"
+          fi
 
           # Sync with latest remote changes to avoid push conflicts during long runs
           git pull --rebase --autostash origin main
 
-          # Add all generated files
-          git add labs/
+          # Add all generated files from dist directory
+          git add dist/
 
           # Check if there are changes to commit
           if git diff --staged --quiet; then

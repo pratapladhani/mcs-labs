@@ -172,8 +172,9 @@ jobs:
           for lab_dir in labs/*/; do
             if [ -d "$lab_dir" ]; then
               lab_name=$(basename "$lab_dir")
-              html_file="${lab_dir}${lab_name}.html"
-              pdf_file="${lab_dir}${lab_name}.pdf"
+              # Look for generated files in dist directory
+              html_file="dist/${lab_name}/${lab_name}.html"
+              pdf_file="dist/${lab_name}/${lab_name}.pdf"
               
               echo "  🔍 Processing lab: $lab_name"
               
@@ -191,7 +192,7 @@ jobs:
                   echo "    ⚠️  PDF not found: $pdf_file"
                 fi
                 
-                # Copy associated images directory if it exists
+                # Copy associated images directory from source labs directory
                 if [ -d "${lab_dir}images" ]; then
                   cp -r "${lab_dir}images" "_site/labs/$lab_name/"
                   echo "    🖼️  Images copied: ${lab_dir}images"
