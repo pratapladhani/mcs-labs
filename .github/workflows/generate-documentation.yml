@@ -76,15 +76,16 @@ jobs:
           echo "✅ Dependencies installed successfully"
           
           # Install emoji and international fonts for better PDF rendering
+          # Note: We use Puppeteer (not LaTeX) for PDF generation, so texlive packages are not needed
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends fonts-noto-color-emoji fonts-noto-sans fonts-noto-serif || echo "⚠️ Warning: Could not install some fonts"
           echo "✅ Font installation completed"
 
-          # Verify tool versions
+          # Verify tool versions (suppress LaTeX package suggestions since we use Puppeteer for PDFs)
           echo "🔍 Verifying installations:"
-          pandoc --version | head -2
+          pandoc --version 2>/dev/null | head -2 || echo "Pandoc version check failed"
           node --version
-          npm list -g puppeteer --depth=0 || echo "Puppeteer version check skipped"
+          npm list puppeteer --depth=0 2>/dev/null || echo "Puppeteer: $(npm list puppeteer --depth=0 2>&1 | grep puppeteer || echo 'not found globally, but available locally')"
         timeout-minutes: 8
 
       # =================================================================
@@ -375,47 +376,18 @@ jobs:
           echo "Generated PDF count: $(find dist -name "*.pdf" -type f | wc -l 2>/dev/null || echo "0")"
 
       # =================================================================
-      # STEP 5: COMMIT GENERATED DOCUMENTS
+      # STEP 5: UPLOAD GENERATED DOCUMENTS AS ARTIFACTS
       # =================================================================
-      # Save generated HTML and PDF files to the dist directory
-      # for distribution and GitHub Pages deployment
+      # Save generated HTML and PDF files as workflow artifacts
+      # for the deployment workflow to consume
       # =================================================================
-      - name: 💾 Commit Generated Documents to Repository
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-          echo "Current git status:"
-          git status
-
-          echo ""
-          echo "Checking for generated files to add:"
-          if [ -d "dist" ]; then
-            echo "PDF files:"
-            find dist -name "*.pdf" -type f 2>/dev/null || echo "No PDF files found"
-            echo "HTML files:"
-            find dist -name "*.html" -type f 2>/dev/null || echo "No HTML files found"
-          else
-            echo "Dist directory not found"
-          fi
-
-          # Sync with latest remote changes to avoid push conflicts during long runs
-          # Use the current branch instead of hardcoded main
-          current_branch=$(git branch --show-current)
-          git pull --rebase --autostash origin "$current_branch"
-
-          # Add all generated files from dist directory
-          git add dist/
-
-          # Check if there are changes to commit
-          if git diff --staged --quiet; then
-            echo "No generated files to commit"
-          else
-            echo "Committing generated PDF and HTML files..."
-            git commit -m "Auto-generated PDFs and HTML files for lab documentation [skip ci]"
-            echo "Pushing changes..."
-            git push
-          fi
+      - name: � Upload Generated Documents as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab-documentation
+          path: dist/
+          retention-days: 30
+          if-no-files-found: error
 
 # =============================================================================
 # END OF WORKFLOW: Generate Lab Documentation (HTML & PDF)

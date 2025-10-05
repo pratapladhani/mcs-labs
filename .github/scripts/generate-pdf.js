@@ -22,7 +22,7 @@ async function generatePDF(htmlFilePath, outputPath, title = '') {
     
     // Launch browser with optimized settings for GitHub Actions
     browser = await puppeteer.launch({
-      headless: 'new',
+      headless: true,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',

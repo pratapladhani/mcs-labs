@@ -7,9 +7,9 @@
     "generate-pdf": "node .github/scripts/generate-pdf.js"
   },
   "devDependencies": {
-    "puppeteer": "^21.0.0"
+    "puppeteer": "^24.15.0"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   }
 }
