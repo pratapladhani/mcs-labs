@@ -8,8 +8,6 @@ This guide provides step-by-step instructions for creating an MBR (Monthly Busin
 | ----- | ------- | -------- | ------- |
 | 100 | Maker/Developer | 20 minutes | After completing this lab, participants will be able to create a conversational agent hosted in SharePoint. You'll learn how to add knowledge sources, test and publish to SharePoint. |
 
-<!-- Fix table rendering issue -->
-
 ---
 
 ## 📚 Table of Contents
@@ -58,7 +56,7 @@ After implementing an agent, the director simply prompts the system to scan the 
 ## 🎓 Core Concepts Overview
 
 | Concept | Why it matters |
-|---------|----------------|
+| ------- | -------------- |
 | **Conversational Agent** | Powers natural, chat-like interactions so users can ask about MBR themes, risks, and takeaways without needing to dig through files manually |
 | **Knowledge** | Enables the agent to read and understand content from past MBR decks stored in SharePoint, so it can extract relevant insights and patterns |
 | **Testing in Copilot Studio** | Helps you validate that the agent understands user intent and returns accurate, useful responses before it's shared with others |
@@ -93,7 +91,7 @@ In this lab, you'll build a conversational MBR agent that streamlines how manage
 ## 🧩 Use Cases Covered
 
 | Step | Use Case | Value added | Effort |
-|------|----------|-------------|--------|
+| ---- | -------- | ----------- | ------ |
 | 1 | [Create SharePoint site and upload MBR documents](#-use-case-1-create-sharepoint-site-and-upload-mbr-documents) | Establish centralized document repository for MBR data that the agent can access | 10 min |
 | 2 | [Build and deploy MBR agent](#-use-case-2-build-and-deploy-mbr-agent) | Create intelligent agent that analyzes MBR documents and provides instant insights | 10 min |
 
@@ -108,7 +106,7 @@ In this lab, you'll build a conversational MBR agent that streamlines how manage
 Set up a dedicated SharePoint site with MBR documents that will serve as the knowledge source for your agent.
 
 | Use case | Value added | Estimated effort |
-|----------|-------------|------------------|
+| -------- | ----------- | ---------------- |
 | Create SharePoint site and upload MBR documents | Establish centralized document repository for MBR data that the agent can access | 10 minutes |
 
 **Summary of tasks**
@@ -207,7 +205,7 @@ Create a SharePoint site with MBR documents that will serve as the knowledge sou
 Create an intelligent conversational agent that can analyze your MBR documents and provide instant insights.
 
 | Use case | Value added | Estimated effort |
-|----------|-------------|------------------|
+| -------- | ----------- | ---------------- |
 | Build and deploy MBR agent | Create intelligent agent that analyzes MBR documents and provides instant insights | 10 minutes |
 
 **Summary of tasks**
