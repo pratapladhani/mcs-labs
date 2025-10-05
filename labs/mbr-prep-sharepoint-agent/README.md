@@ -68,6 +68,7 @@ After implementing an agent, the director simply prompts the system to scan the 
 | **SharePoint Agent Setup** | Seamlessly integrates with your existing file storage so your agent always has access to the latest MBR decks—no need to move files around |
 
 ---
+
 ## 📄 Documentation and Additional Training Links
 
 * [Microsoft Copilot Studio Documentation](https://learn.microsoft.com/en-us/microsoft-copilot-studio/)
@@ -75,12 +76,14 @@ After implementing an agent, the director simply prompts the system to scan the 
 * [Copilot Studio Triggers and Tools](https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-trigger-actions)
 
 ---
+
 ## ✅ Prerequisites
 
 * Access to Microsoft Copilot Studio with appropriate licensing
 * Microsoft 365 environment with SharePoint access
 
 ---
+
 ## 🎯 Summary of Targets
 
 In this lab, you'll build a conversational MBR agent that streamlines how managers and leaders access insights across Monthly Business Review decks. By the end of the lab, you will:
@@ -92,6 +95,7 @@ In this lab, you'll build a conversational MBR agent that streamlines how manage
 * Enable your team to ask questions like “What are the common risks this month?” and get immediate, actionable answers
 
 ---
+
 ## 🧩 Use Cases Covered
 
 | Step | Use Case | Value added | Effort |
