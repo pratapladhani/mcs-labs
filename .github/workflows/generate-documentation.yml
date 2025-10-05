@@ -18,6 +18,7 @@ on:
   push:
     branches:
       - main
+      - feature/restructure-generated-files  # Test branch for restructure
     paths:
       - "labs/*/*.md"           # Lab markdown content
       - "labs/*/images/**"      # Lab images and assets

@@ -19,11 +19,11 @@ on:
     workflows: ["📚 Generate Lab Documentation (HTML & PDF)"]
     types:
       - completed
-    branches: ["main"]
+    branches: ["main", "feature/restructure-generated-files"]
 
   # Deploy when styling changes (independent of document generation)
   push:
-    branches: ["main"]
+    branches: ["main", "feature/restructure-generated-files"]
     paths:
       - ".github/styles/**"      # CSS styling updates
       - ".github/workflows/deploy-lab-portal.yml"  # This workflow file
