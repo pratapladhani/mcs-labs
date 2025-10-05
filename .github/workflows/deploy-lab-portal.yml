@@ -136,10 +136,14 @@ jobs:
           sed -i 's/|-------|-----|----------|/|-------|----------|----------|/g' _site/README_processed.md
           
           # Transform lab table rows to create clickable titles and PDF download links
-          # Pattern: | Title | [link-text](./labs/lab-name) | Overview |
-          # Result:  | [Title](labs/lab-name/lab-name.html) | [📋 PDF](labs/lab-name/lab-name.pdf) | Overview |
+          # More flexible pattern matching to handle various spacing
           echo "🔗 Creating clickable lab titles and PDF download links..."
-          sed -i -E 's/\| ([^|]+) \| \[([^]]+)\]\(\.\/labs\/([^/]+)\) \| ([^|]+) \|/| [\1](labs\/\3\/\3.html) | [📋 PDF](labs\/\3\/\3.pdf) | \4 |/g' _site/README_processed.md
+          # Step 1: Handle the basic pattern with flexible spacing
+          sed -i -E 's/\|[ ]*([^|]+?)[ ]*\|[ ]*\[([^]]+)\]\(\.\/labs\/([^/]+)\)[ ]*\|[ ]*([^|]+?)[ ]*\|/| [\1](labs\/\3\/\3.html) | [📋 PDF](labs\/\3\/\3.pdf) | \4 |/g' _site/README_processed.md
+          
+          # Step 2: Clean up any extra whitespace in the results
+          sed -i -E 's/\|[ ]+/| /g' _site/README_processed.md
+          sed -i -E 's/[ ]+\|/ |/g' _site/README_processed.md
           
           # Convert processed README to HTML with professional styling and formatting
           echo "🎨 Converting Markdown to HTML with professional styling..."

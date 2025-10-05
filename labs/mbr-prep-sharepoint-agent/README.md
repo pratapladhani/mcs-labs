@@ -8,6 +8,8 @@ This guide provides step-by-step instructions for creating an MBR (Monthly Busin
 | ----- | ------- | -------- | ------- |
 | 100 | Maker/Developer | 20 minutes | After completing this lab, participants will be able to create a conversational agent hosted in SharePoint. You'll learn how to add knowledge sources, test and publish to SharePoint. |
 
+<!-- Fix table rendering issue -->
+
 ---
 
 ## 📚 Table of Contents

@@ -121,29 +121,55 @@ jobs:
               cp "README.md" "${lab_name}_processed.md"
               
               # Convert GitHub-style callouts to styled HTML divs
-              # These will be styled by our CSS for better visual impact
-              sed -i 's/> \[!NOTE\]/> <div class="note">**Note:** /g' "${lab_name}_processed.md"
-              sed -i 's/> \[!TIP\]/> <div class="tip">**Tip:** /g' "${lab_name}_processed.md"
-              sed -i 's/> \[!IMPORTANT\]/> <div class="warning">**Important:** /g' "${lab_name}_processed.md"
-              sed -i 's/> \[!WARNING\]/> <div class="warning">**Warning:** /g' "${lab_name}_processed.md"
-              sed -i 's/> \[!CAUTION\]/> <div class="warning">**Caution:** /g' "${lab_name}_processed.md"
-              
-              # Close callout div tags (assumes single-line callouts)
-              sed -i 's/\(> <div class="[^"]*">.*\)$/\1<\/div>/g' "${lab_name}_processed.md"
+              # Improved multi-line callout handling per reviewer feedback
+              awk '
+                BEGIN {
+                  callout = 0;
+                  callout_type = "";
+                }
+                # Detect start of callout block
+                match($0, /^> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/, m) {
+                  callout = 1;
+                  callout_type = tolower(m[1]);
+                  # Map callout type to class and label
+                  if (callout_type == "note") { class="note"; label="**Note:** "; }
+                  else if (callout_type == "tip") { class="tip"; label="**Tip:** "; }
+                  else { class="warning"; label="**" toupper(callout_type) ":** "; }
+                  # Print opening div and first line
+                  sub(/^> \[![A-Z]+\]/, "> <div class=\"" class "\">" label);
+                  print;
+                  next;
+                }
+                # Continue callout block
+                callout && /^> / {
+                  print;
+                  next;
+                }
+                # End of callout block
+                callout && !/^> / {
+                  print "</div>";
+                  callout = 0;
+                  callout_type = "";
+                  print;
+                  next;
+                }
+                # Print normal lines
+                { print; }
+              ' "${lab_name}_processed.md" > "${lab_name}_callouts.md"
+              mv "${lab_name}_callouts.md" "${lab_name}_processed.md"
               
               # ---------------------------------------------------------
               # HEADER NORMALIZATION FOR CONSISTENT NAVIGATION
-              # Remove emojis from headers BEFORE Pandoc processing to 
-              # ensure consistent TOC links and anchor IDs
+              # Remove only emojis from headers (not other symbols) to preserve tables
               # ---------------------------------------------------------
               echo "  🧹 Cleaning headers for consistent navigation..."
-              sed -i 's/^## [^a-zA-Z0-9]*\([a-zA-Z].*\)$/## \1/g' "${lab_name}_processed.md"
-              sed -i 's/^### [^a-zA-Z0-9]*\([a-zA-Z].*\)$/### \1/g' "${lab_name}_processed.md"
-              sed -i 's/^#### [^a-zA-Z0-9]*\([a-zA-Z].*\)$/#### \1/g' "${lab_name}_processed.md"
+              # More conservative approach - only remove common emojis, preserve table formatting
+              sed -i 's/^## [🎯🔧📋🌐🚀⚙️🎨📊🔄💡⭐✅❌⚠️🎉📚🧭📄✨🛠️📁🤖🔍]\+[ ]*\([a-zA-Z].*\)$/## \1/g' "${lab_name}_processed.md"
+              sed -i 's/^### [🎯🔧📋🌐🚀⚙️🎨📊🔄💡⭐✅❌⚠️🎉📚🧭📄✨🛠️📁🤖🔍]\+[ ]*\([a-zA-Z].*\)$/### \1/g' "${lab_name}_processed.md"
+              sed -i 's/^#### [🎯🔧📋🌐🚀⚙️🎨📊🔄💡⭐✅❌⚠️🎉📚🧭📄✨🛠️📁🤖🔍]\+[ ]*\([a-zA-Z].*\)$/#### \1/g' "${lab_name}_processed.md"
               
-              # Fix internal anchor links to match cleaned headers
-              # Handle emoji-containing anchor links more carefully
-              sed -i 's|(#[^a-zA-Z]*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
+              # Fix internal anchor links to match cleaned headers - more conservative
+              sed -i 's|(#[🎯🔧📋🌐🚀⚙️🎨📊🔄💡⭐✅❌⚠️🎉📚🧭📄✨🛠️📁🤖🔍]\+[ ]*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
               
               # ---------------------------------------------------------
               # EXTRACT DOCUMENT TITLE FROM H1 HEADER

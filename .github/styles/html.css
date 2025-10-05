@@ -348,18 +348,22 @@ blockquote .note, blockquote .warning, blockquote .tip, blockquote .info {
   border-radius: 6px;
 }
 
+/* Fallback for blockquote callouts: use explicit wrapper classes for better browser compatibility */
+.callout-blockquote-note,
 blockquote:has(.note) {
   background-color: #dbeafe;
   border-left: 4px solid #3b82f6;
   border-radius: 0 6px 6px 0;
 }
 
+.callout-blockquote-tip,
 blockquote:has(.tip) {
   background-color: #dcfce7;
   border-left: 4px solid #22c55e;
   border-radius: 0 6px 6px 0;
 }
 
+.callout-blockquote-warning,
 blockquote:has(.warning) {
   background-color: #fef3c7;
   border-left: 4px solid #f59e0b;
