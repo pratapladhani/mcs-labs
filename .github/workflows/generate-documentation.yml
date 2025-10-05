@@ -252,11 +252,8 @@ jobs:
                 sed -i 's/href="#[[:space:]]*\([^"[:space:]]*\)[[:space:]]*"/href="#\1"/g' "$html_output_file"
                 
                 # Add name attributes to headers for better anchor compatibility
-                # This ensures that both id="section" and name="section" work for navigation
-                sed -i 's/<h\([1-6]\) id="\([^"]*\)"/<h\1 id="\2" name="\2"/g' "$html_output_file"
-                
-                # Also add standalone anchor tags before headers as backup
-                sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)"/<a name="\2"><\/a><h\1 id="\2" name="\3"/g' "$html_output_file"
+                # Use single id attribute approach as recommended by reviewer
+                sed -i 's/<h\([1-6]\) id="\([^"]*\)"/<h\1 id="\2"/g' "$html_output_file"
                 
                 # Make external links open in new window
                 # Add target="_blank" and rel="noopener noreferrer" to external links (http/https)
@@ -363,11 +360,9 @@ jobs:
                 # Optimize HTML for PDF bookmarks - ensure headers have proper structure
                 echo "Optimizing HTML for PDF bookmarks..."
                 
-                # Ensure all headers have both id and name attributes for better PDF navigation
-                sed -i 's/<h\([1-6]\) id="\([^"]*\)"[^>]*>/<h\1 id="\2" name="\2">/g' "$html_file"
-                
-                # Add anchor targets before headers for better PDF internal linking
-                sed -i 's/<h\([1-6]\) id="\([^"]*\)" name="\([^"]*\)">/<a id="\2" name="\2"><\/a><h\1 id="\2" name="\3">/g' "$html_file"
+                # Ensure headers have clean id attributes for PDF navigation
+                # Modern approach: single id attribute with scroll-margin CSS instead of duplicate anchors
+                sed -i 's/<h\([1-6]\) id="\([^"]*\)"[^>]*>/<h\1 id="\2">/g' "$html_file"
                 
                 # Debug: Show what internal links are available for PDF navigation
                 echo "Preserving internal links for PDF navigation..."

@@ -48,9 +48,7 @@ async function generatePDF(htmlFilePath, outputPath, title = '') {
     
     // Set PDF metadata if title is provided
     if (title) {
-      await page.evaluateOnNewDocument(`
-        document.title = "${title.replace(/"/g, '\\"')}";
-      `);
+      await page.evaluate((t) => { document.title = t; }, title);
     }
     
     // Generate PDF with professional settings
