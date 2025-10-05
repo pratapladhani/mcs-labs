@@ -160,16 +160,19 @@ jobs:
               
               # ---------------------------------------------------------
               # HEADER NORMALIZATION FOR CONSISTENT NAVIGATION
-              # Remove only emojis from headers (not other symbols) to preserve tables
+              # Remove emojis and special characters from headers for clean anchor links
               # ---------------------------------------------------------
               echo "  🧹 Cleaning headers for consistent navigation..."
-              # More conservative approach - only remove common emojis, preserve table formatting
-              sed -i 's/^## [🎯🔧📋🌐🚀⚙️🎨📊🔄💡⭐✅❌⚠️🎉📚🧭📄✨🛠️📁🤖🔍🎓]\+[ ]*\([a-zA-Z].*\)$/## \1/g' "${lab_name}_processed.md"
-              sed -i 's/^### [🎯🔧📋🌐🚀⚙️🎨📊🔄💡⭐✅❌⚠️🎉📚🧭📄✨🛠️📁🤖🔍🎓]\+[ ]*\([a-zA-Z].*\)$/### \1/g' "${lab_name}_processed.md"
-              sed -i 's/^#### [🎯🔧📋🌐🚀⚙️🎨📊🔄💡⭐✅❌⚠️🎉📚🧭📄✨🛠️📁🤖🔍🎓]\+[ ]*\([a-zA-Z].*\)$/#### \1/g' "${lab_name}_processed.md"
+              # Use perl for better Unicode emoji handling (supports all emojis, not just hardcoded list)
+              # This regex matches any emoji/special character sequence at the start of a header
+              # followed by optional spaces, then captures the actual text content
+              perl -i -pe 's/^(#{2,4})\s*[^\w\s]+\s*([a-zA-Z].*)$/$1 $2/g' "${lab_name}_processed.md"
               
-              # Fix internal anchor links to match cleaned headers - more conservative
-              sed -i 's|(#[🎯🔧📋🌐🚀⚙️🎨📊🔄💡⭐✅❌⚠️🎉📚🧭📄✨🛠️📁🤖🔍🎓]\+[ ]*\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
+              # Fix internal anchor links to match cleaned headers
+              # Remove emojis and special characters from anchor links (e.g., #🌐-introduction -> #-introduction)
+              perl -i -pe 's/\(#[^\w\s-]+\s*-?\s*([a-z][^)]*)\)/(#$1)/g' "${lab_name}_processed.md"
+              # Remove leading dashes from anchor links (e.g., #-introduction -> #introduction)
+              sed -i 's|(#-\([a-zA-Z][^)]*\))|(#\1)|g' "${lab_name}_processed.md"
               
               # ---------------------------------------------------------
               # EXTRACT DOCUMENT TITLE FROM H1 HEADER
