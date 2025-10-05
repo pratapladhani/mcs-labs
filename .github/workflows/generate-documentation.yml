@@ -68,9 +68,9 @@ jobs:
         run: |
           echo "🔧 Installing Puppeteer for stable HTML to PDF conversion..."
           
-          # Install Puppeteer locally for PDF generation
-          npm install puppeteer
-          echo "✅ Puppeteer installed successfully"
+          # Install dependencies including Puppeteer for PDF generation
+          npm ci
+          echo "✅ Dependencies installed successfully"
           
           # Install emoji and international fonts for better PDF rendering
           sudo apt-get update -qq
@@ -314,8 +314,8 @@ jobs:
               if [ -f "$html_file" ]; then
                 echo "🔄 Processing: $lab_name"
                 
-                # Enter lab directory for local file access
-                cd "$lab_dir"
+                # Stay in root directory - don't change to lab directory
+                # All paths are relative to repository root
                 
                 # Debug: Check HTML file before PDF conversion
                 echo "Checking HTML structure for $lab_name:"
@@ -356,6 +356,7 @@ jobs:
                 lab_title=$(grep -m 1 '<title>' "$html_file" | sed 's/<[^>]*>//g' | sed 's/^[ \t]*//;s/[ \t]*$//' || echo "$lab_name")
                 pdf_output_file="dist/${lab_name}/${lab_name}.pdf"
                 
+                # Use absolute path from repository root
                 if node ".github/scripts/generate-pdf.js" "$html_file" "$pdf_output_file" "$lab_title"; then
                   echo "✓ Successfully converted $lab_name HTML to PDF with internal links"
                 else

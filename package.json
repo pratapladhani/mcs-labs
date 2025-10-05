@@ -1,0 +1,15 @@
+{
+  "name": "mcs-labs-documentation",
+  "version": "1.0.0",
+  "description": "Microsoft Copilot Studio Labs - Documentation Generator",
+  "private": true,
+  "scripts": {
+    "generate-pdf": "node .github/scripts/generate-pdf.js"
+  },
+  "devDependencies": {
+    "puppeteer": "^21.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
