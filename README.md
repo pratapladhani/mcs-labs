@@ -1,4 +1,27 @@
-# 🤖 Microsoft Copilot Studio Labs 🧪
+# 🤖 Microsoft C| Model Context Protocol (MCP) & Copilot Studio | [MCS-MCP Lab](https://github.com/microsoft/mcsmcp) | In this lab, you will learn how to deploy an MCP Server and integrate it with Microsoft Copilot Studio. You'll explore how to set up the MCP Server, enabling context-aware agents, and then how to add it into Copilot Studio for streamlined deployment and management.  |
+
+## 📚 Documentation & Contributing
+
+### Automated Documentation Generation
+This repository uses GitHub Actions to automatically convert lab markdown files into professional HTML and PDF formats:
+
+- **HTML versions**: Web-ready with styling and navigation
+- **PDF versions**: Print-ready with bookmarks and professional layout  
+- **Generated files**: Available in the `dist/` directory and deployed to [GitHub Pages](https://pratapladhani.github.io/mcs-labs/)
+
+### For Contributors
+- **📖 Full documentation**: See [Contributing Guide](./.github/CONTRIBUTING.md) for technical details
+- **🔧 Architecture**: Automated workflows, dependency management, and troubleshooting
+- **🚀 Getting started**: Just edit markdown files in `labs/` - documentation generates automatically!
+
+### Project Structure
+```
+labs/           # ← Source lab content (edit these!)
+dist/           # ← Generated HTML/PDF (auto-created)
+.github/        # ← Workflows and technical documentation
+package.json    # ← Dependencies for document generation
+```
+ilot Studio Labs 🧪
 
 | Title | URL | Overview |
 |-------|-----|----------|

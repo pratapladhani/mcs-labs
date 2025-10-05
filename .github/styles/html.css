@@ -118,7 +118,7 @@ table {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
   overflow: hidden;
-  table-layout: fixed;
+  table-layout: auto; /* Allow auto-sizing based on content */
 }
 
 th, td {
@@ -134,6 +134,7 @@ th {
   font-weight: 600;
   color: #495057;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  vertical-align: middle; /* Ensure headers are vertically centered */
 }
 
 tr:nth-child(even) {
@@ -145,71 +146,50 @@ tr:hover {
   transition: background-color 0.2s ease;
 }
 
-/* Default column widths for 4-column tables (like Lab Details) */
-/* Pattern: Level (10%), Persona (15%), Duration (15%), Purpose (60%) */
+/* Fully flexible column widths - let content determine sizing naturally */
+/* Short content columns can still prefer to be compact */
 table thead tr th:nth-child(1):nth-last-child(4),
-table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
-table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
-table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(4),
 table tbody tr td:nth-child(1):nth-last-child(4),
-table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2),
-table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3),
-table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(4) {
-  width: auto;
-}
-
-/* First column (Level, etc.) - narrow */
-table thead tr th:nth-child(1):nth-last-child(4),
-table tbody tr td:nth-child(1):nth-last-child(4) {
-  width: 10% !important;
-}
-
-/* Second column (Persona, etc.) - medium */
-table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
-table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2) {
-  width: 15% !important;
-}
-
-/* Third column (Duration, etc.) - medium */
 table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
 table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3) {
-  width: 15% !important;
+  white-space: nowrap; /* Keep short content compact */
 }
 
-/* Fourth column (Purpose, etc.) - wide for long text */
-table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(4),
-table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(4) {
-  width: 60% !important;
-}
+/* All other columns auto-size naturally - no constraints */
 
-/* Column widths for homepage lab table (3 columns) */
+/* Flexible column widths for homepage lab table (3 columns) - fully auto-sized */
 table.lab-table {
-  table-layout: fixed !important;
+  table-layout: auto; /* Allow natural sizing based on content */
 }
 
-table.lab-table th:nth-child(1), table.lab-table td:nth-child(1) {
-  width: 65% !important;
-}
-
+/* Download links column - compact and centered */
 table.lab-table th:nth-child(2), table.lab-table td:nth-child(2) {
-  width: 10% !important;
   text-align: center;
-  white-space: nowrap;
+  white-space: nowrap; /* Keep download links on one line */
 }
 
-table.lab-table th:nth-child(3), table.lab-table td:nth-child(3) {
-  width: 25% !important;
-}
+/* All columns auto-size naturally - no width constraints */
 
 /* Responsive tables */
 @media (max-width: 768px) {
   table {
     font-size: 0.9em;
+    table-layout: auto; /* Ensure auto-sizing on mobile */
   }
   
   th, td {
     padding: 8px 12px;
   }
+  
+  /* Allow text wrapping on mobile for better fit */
+  table thead tr th:nth-child(1):nth-last-child(4),
+  table tbody tr td:nth-child(1):nth-last-child(4),
+  table thead tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
+  table tbody tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3) {
+    white-space: normal; /* Allow wrapping on mobile */
+  }
+  
+  /* No specific width constraints on mobile - let content determine sizing */
 }
 
 /* Images */
