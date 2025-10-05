@@ -23,6 +23,9 @@ on:
       - "labs/*/*.md"           # Lab markdown content
       - "labs/*/images/**"      # Lab images and assets
       - ".github/styles/**"     # CSS styling files
+      - ".github/workflows/generate-documentation.yml"  # This workflow file
+      - ".github/scripts/**"    # PDF generation scripts
+      - "package.json"          # Dependencies
   
   # Allow manual execution from GitHub Actions UI
   workflow_dispatch:
