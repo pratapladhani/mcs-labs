@@ -72,7 +72,7 @@ jobs:
           echo "🔧 Installing Puppeteer for stable HTML to PDF conversion..."
           
           # Install dependencies including Puppeteer for PDF generation
-          npm ci
+          npm install
           echo "✅ Dependencies installed successfully"
           
           # Install emoji and international fonts for better PDF rendering
