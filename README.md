@@ -1,27 +1,5 @@
 # 🤖 Microsoft Copilot Studio Labs 🧪
 
-## 📚 Documentation & Contributing
-
-### Automated Documentation Generation
-This repository uses GitHub Actions to automatically convert lab markdown files into professional HTML and PDF formats:
-
-- **HTML versions**: Web-ready with styling and navigation
-- **PDF versions**: Print-ready with bookmarks and professional layout  
-- **Generated files**: Available in the `dist/` directory and deployed to [GitHub Pages](https://pratapladhani.github.io/mcs-labs/)
-
-### For Contributors
-- **📖 Full documentation**: See [Contributing Guide](./.github/CONTRIBUTING.md) for technical details
-- **🔧 Architecture**: Automated workflows, dependency management, and troubleshooting
-- **🚀 Getting started**: Just edit markdown files in `labs/` - documentation generates automatically!
-
-### Project Structure
-```
-labs/           # ← Source lab content (edit these!)
-dist/           # ← Generated HTML/PDF (auto-created)
-.github/        # ← Workflows and technical documentation
-package.json    # ← Dependencies for document generation
-```
-
 | Title | URL | Overview |
 |-------|-----|----------|
 | Create your own web-based AI assistant with agent builder | [agent-builder-web](./labs/agent-builder-web) | In this lab, you'll create a Copilot agent in Microsoft 365 Copilot Chat with Copilot Studio Lite. This agent will be designed to assist users with questions about Copilot agents. The agent will act as a learning companion or teacher, grounded in official Microsoft documentation. |
@@ -37,3 +15,28 @@ package.json    # ← Dependencies for document generation
 | Source control and deploy your agents | [pipelines-and-source-control](./labs/pipelines-and-source-control) | Deploy Copilot Studio agents with confidence using Power Platform pipelines. In this hands-on lab, you'll learn how to automate and govern your deployment process across multiple environments. From creating robust pipelines to handling post-deployment configuration and source control, you'll gain practical skills to implement repeatable ALM workflows with built-in validation, managed environments, and Git integration—ensuring every deployment is consistent, secure, and production-ready. |
 | Copilot Studio Kit | [copilot-studio-kit](./labs/copilot-studio-kit) | Automate quality assurance for your Copilot Studio agents with the Copilot Studio Kit. In this lab, you'll configure and run automated test scenarios, validate agent behavior using multiple test types, and gain actionable insights through analytics. You'll also explore advanced tools like conversation KPIs, UI customization, and governance dashboards—equipping you to ship high-quality, secure, and scalable AI agents with confidence. |
 | Model Context Protocol (MCP) & Copilot Studio | [MCS-MCP Lab](https://github.com/microsoft/mcsmcp) | In this lab, you will learn how to deploy an MCP Server and integrate it with Microsoft Copilot Studio. You’ll explore how to set up the MCP Server, enabling context-aware agents, and then how to add it into Copilot Studio for streamlined deployment and management.  |
+
+## 📚 Documentation & Contributing
+
+### Automated HTML and PDF Generation
+
+This repository uses GitHub Actions to automatically convert lab markdown files into professional HTML and PDF formats:
+
+- **HTML versions**: Web-ready with styling and navigation
+- **PDF versions**: Print-ready with bookmarks and professional layout  
+- **Generated files**: Available in the `dist/` directory and deployed to [GitHub Pages](https://pratapladhani.github.io/mcs-labs/)
+
+### For Contributors
+
+- **📖 Full documentation**: See [Contributing Guide](./.github/CONTRIBUTING.md) for technical details
+- **🔧 Architecture**: Automated workflows, dependency management, and troubleshooting
+- **🚀 Getting started**: Just edit markdown files in `labs/` - documentation generates automatically!
+
+### Project Structure
+
+```
+labs/           # ← Source lab content (edit these!)
+dist/           # ← Generated HTML/PDF (auto-created)
+.github/        # ← Workflows and technical documentation
+package.json    # ← Dependencies for document generation
+```
