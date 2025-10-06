@@ -4,7 +4,8 @@
   "description": "Microsoft Copilot Studio Labs - Documentation Generator",
   "private": true,
   "scripts": {
-    "generate-pdf": "node .github/scripts/generate-pdf.js"
+    "generate-pdf": "node .github/scripts/generate-pdf.js",
+    "transform-homepage": "node .github/scripts/transform-homepage-links.js"
   },
   "devDependencies": {
     "puppeteer": "^24.15.0"

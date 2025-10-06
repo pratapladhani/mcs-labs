@@ -437,23 +437,9 @@ jobs:
         run: |
           echo "🏠 Converting root README.md to homepage HTML..."
           
-          # Create processed copy of README for web display
-          echo "📝 Processing README content for web display..."
-          cp README.md dist/README_processed.md
-          
-          # Transform the lab table headers for better web presentation
-          echo "📊 Updating table headers for download functionality..."
-          sed -i 's/| Title | URL | Overview |/| Title | Download | Overview |/g' dist/README_processed.md
-          sed -i 's/|-------|-----|----------|/|-------|----------|----------|/g' dist/README_processed.md
-          
-          # Transform lab table rows to create clickable titles and PDF download links
-          echo "🔗 Creating clickable lab titles and PDF download links..."
-          # Step 1: Handle the basic pattern with flexible spacing
-          sed -i -E 's/\|[ ]*([^|]+?)[ ]*\|[ ]*\[([^]]+)\]\(\.\/labs\/([^/]+)\)[ ]*\|[ ]*([^|]+?)[ ]*\|/| [\1](\3\/\3.html) | [📋 PDF](\3\/\3.pdf) | \4 |/g' dist/README_processed.md
-          
-          # Step 2: Clean up any extra whitespace in the results
-          sed -i -E 's/\|[ ]+/| /g' dist/README_processed.md
-          sed -i -E 's/[ ]+\|/ |/g' dist/README_processed.md
+          # Use robust Node.js script to transform README links using Markdown AST
+          echo "🔄 Transforming homepage links using robust Markdown AST parser..."
+          node .github/scripts/transform-homepage-links.js README.md dist/README_processed.md
           
           # Convert processed README to HTML with professional styling
           echo "🎨 Converting Markdown to HTML with professional styling..."
