@@ -63,7 +63,7 @@ This repository uses GitHub Actions to automatically convert lab markdown files 
     "puppeteer": "^24.15.0"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   }
 }
 ```

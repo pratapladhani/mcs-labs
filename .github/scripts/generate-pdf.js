@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Simple PDF Gen    // Set PDF metadata if title is provided
-    if (title) {
-      await page.evaluate((t) => { document.title = t; }, title);
-    } using Puppeteer
- * Replaces wkhtmltopdf for more stable PDF generation in GitHub Actions
+ * Simple PDF generator using Puppeteer.
+ * Generates PDFs from HTML files with optional title metadata.
+ * Intended to replace wkhtmltopdf for more stable PDF generation in GitHub Actions.
  */
 
 const puppeteer = require('puppeteer');
