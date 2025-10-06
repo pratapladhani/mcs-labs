@@ -3,9 +3,10 @@
 # =============================================================================
 # This workflow converts lab markdown files to HTML and PDF formats with:
 # - Professional styling and layout
-# - Working PDF bookmarks and table of contents
+# - Working PDF bookmarks and table of contents  
 # - Clean internal link handling
 # - Consistent branding and navigation
+# - Robust homepage link transformation
 # =============================================================================
 
 name: 📚 Generate Lab Documentation (HTML & PDF)
