@@ -249,7 +249,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 > [!TIP]
 > The description helps the AI know when to use this tool and what it does.
 
-10. Under **Additional details**, change **Authentication** to **Maker-provided credentials**
+10. Under **Additional details**, change **Credentials to use** to **Maker-provided credentials**
 
 11. For **Record Type**, set a **Custom value** and choose `Incident`
 

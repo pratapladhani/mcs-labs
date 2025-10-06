@@ -583,7 +583,7 @@ This use case demonstrates **agent scoping** principles:
 > [!TIP]
 > The description will help the AI know when to use that tool, so it's important to have clear instructions WHEN and WHEN NOT to use this tool. This is a key aspect of agent scoping - being specific about tool usage.
 
-7. Under **Additional details**, change **Authentication** to **Maker-provided credentials**
+7. Under **Additional details**, change **Credentials to use** to **Maker-provided credentials**
 
 > [!IMPORTANT]
 > In production scenarios, you may want to use the user context when making the connection to ServiceNow. Here, your context (as the author) is used by end-users of your agent when searching for incidents.

@@ -660,7 +660,7 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 16. Click **Additional details**.
 
-17. Under **Authentication**, select **Maker-provided credentials**.
+17. Under **Credentials to use**, select **Maker-provided credentials**.
 
 > [!IMPORTANT]  
 > Always use Maker-provided credentials for autonomous agents. This allows tools to run without user interaction.
