@@ -306,7 +306,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   2. Click **+ Add a topic**, and choose **From blank**.
 
-  3. Name the topic: `Log Search Results`, by clicking on the **Untitled** on the top left.L
+  3. Name the topic: `Log Search Results`, by clicking on the **Untitled** on the top left.
 
   4. Under **Describe what this topic does**, enter `Use this to log search results`.
 
