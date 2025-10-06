@@ -46,6 +46,13 @@ async function generatePDF(htmlFilePath, outputPath, title = '') {
       timeout: 30000 
     });
     
+    // Inject PDF-specific styles
+    const pdfCssPath = path.join(__dirname, '..', 'styles', 'pdf.css');
+    if (fs.existsSync(pdfCssPath)) {
+      await page.addStyleTag({ path: pdfCssPath });
+      console.log('🎨 Applied PDF-specific styling');
+    }
+    
     // Set PDF metadata if title is provided
     if (title) {
       await page.evaluate((t) => { document.title = t; }, title);

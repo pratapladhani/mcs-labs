@@ -103,12 +103,12 @@ npm install  # Reads package.json, installs exact compatible versions
 1. Create new directory in `labs/`
 2. Add `README.md` with lab content
 3. Include images in `images/` subdirectory
-4. Commit changes - workflows will automatically generate HTML/PDF
+4. Commit changes - workflows will automatically generate HTML/PDF artifacts
 
 ### Modifying Existing Labs
 1. Edit the `README.md` file in the lab directory
-2. Commit changes - workflows will regenerate documentation
-3. Generated files will be updated in `dist/` directory
+2. Commit changes - workflows will regenerate documentation artifacts
+3. Generated files are available as downloadable artifacts from workflow runs
 
 ### Styling Changes
 1. Modify `.github/styles/html.css` for HTML appearance
@@ -141,11 +141,13 @@ gh run view [RUN_ID] --log-failed        # View detailed failure logs
 ### Generated Files
 - HTML files: `dist/{lab-name}/{lab-name}.html`
 - PDF files: `dist/{lab-name}/{lab-name}.pdf`
-- Automatically committed with message: `"Auto-generated PDFs and HTML files for lab documentation [skip ci]"`
+- Available as downloadable artifacts from workflow runs (not committed to repository)
 
 ### File Exclusions
+
 `.gitignore` includes:
-- `dist/` directory (generated content, committed by workflows only)
+
+- `dist/` directory (generated content, excluded from repository)
 - `node_modules/` directory (temporary dependencies)
 
 ### Branch Protection
@@ -156,7 +158,7 @@ gh run view [RUN_ID] --log-failed        # View detailed failure logs
 ## 🔧 Local Development
 
 ### Prerequisites
-- Node.js 16+ (for PDF generation scripts)
+- Node.js 18+ (for PDF generation scripts)
 - Pandoc (for HTML conversion)
 - Git (for version control)
 
@@ -174,8 +176,10 @@ node .github/scripts/generate-pdf.js dist/lab-name/lab-name.html dist/lab-name/l
 ```
 
 ### Environment Variables
+
 Workflows use these GitHub-provided variables:
-- `GITHUB_TOKEN`: For committing generated files
+
+- `GITHUB_TOKEN`: For accessing repository metadata
 - `GITHUB_REPOSITORY`: For repository context
 - `GITHUB_REF`: For branch detection
 

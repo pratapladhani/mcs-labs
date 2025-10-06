@@ -1,7 +1,7 @@
 # 🤖 Microsoft Copilot Studio Labs 🧪
 
-| Title | URL | Overview |
-|-------|-----|----------|
+| Title | Download | Overview |
+|-------|----------|----------|
 | Create your own web-based AI assistant with agent builder | [agent-builder-web](./labs/agent-builder-web) | In this lab, you'll create a Copilot agent in Microsoft 365 Copilot Chat with Copilot Studio Lite. This agent will be designed to assist users with questions about Copilot agents. The agent will act as a learning companion or teacher, grounded in official Microsoft documentation. |
 | Create your own enterprise data-based AI assistant with agent builder | [agent-builder-sharepoint](./labs/agent-builder-sharepoint) | In this lab, you'll create a SharePoint-integrated AI assistant using Copilot Studio Lite. Designed to support sales operations, the agent can analyze Excel data from SharePoint, reference policy documents, and deliver insights through dynamic charts and images. Leveraging advanced capabilities like code interpreter and image generation, the Sales Admin Assistant transforms static content into interactive, intelligent responses—making sales trend tracking and policy compliance faster and easier. |
 | Set yourself up for success & discover ALM best practices | [setup-for-success](./labs/setup-for-success) | Set yourself up for success by learning ALM best practices in Microsoft Copilot Studio—because building great agents isn't enough if you can't deploy, update, or collaborate with confidence. This lab shows you how to avoid common pitfalls like manual rework, overwritten changes, and fragile deployments by structuring your solutions, managing configurations, and enabling Git-based source control from the start. |
@@ -28,13 +28,14 @@ This repository uses GitHub Actions to automatically convert lab markdown files 
 
 ### For Contributors
 
-- **📖 Full documentation**: See [Contributing Guide](./.github/CONTRIBUTING.md) for technical details
-- **🔧 Architecture**: Automated workflows, dependency management, and troubleshooting
+- **📖 Full documentation**: See [Contributing Guide](https://github.com/microsoft/mcs-labs/blob/main/.github/CONTRIBUTING.md) for technical details
+- **📝 Lab template**: Use the [Lab Template](./labs/lab-template.md) when creating new labs
+- **🔧 Architecture**: Automated workflows, dependency management, and troubleshooting  
 - **🚀 Getting started**: Just edit markdown files in `labs/` - documentation generates automatically!
 
 ### Project Structure
 
-```
+```text
 labs/           # ← Source lab content (edit these!)
 dist/           # ← Generated HTML/PDF (auto-created)
 .github/        # ← Workflows and technical documentation
