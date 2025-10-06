@@ -36,8 +36,11 @@ function transformHomepageLinks(inputPath, outputPath) {
         continue;
       }
       
-      // Check if this line contains any kind of link (internal lab or external)
-      if ((line.includes('./labs/') || line.includes('https://')) && line.startsWith('|') && line.includes('|', line.length - 10)) {
+      // Check if this line is a table row that contains links to transform
+      // Only process lines that are clearly in the main labs table (contain './labs/' relative links)
+      // OR are table rows with external links (for MCP lab)
+      if (line.startsWith('|') && line.includes('|', line.length - 10) && 
+         (line.includes('./labs/') || (line.includes('https://github.com/microsoft/mcsmcp')))) {
         // Extract the parts using a simpler approach
         const parts = line.split('|').map(part => part.trim()).filter(part => part);
         
