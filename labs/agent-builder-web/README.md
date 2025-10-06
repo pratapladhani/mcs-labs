@@ -2,6 +2,8 @@
 
 Create an intelligent agent in Copilot that delivers contextual, multi-part answers using instructions and data from the Web.
 
+<!-- Trigger workflow to test restructured file generation -->
+
 ---
 
 ## 🧭 Lab Details

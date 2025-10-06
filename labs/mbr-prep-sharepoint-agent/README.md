@@ -1,5 +1,7 @@
 # Create a Monthly Business Review (MBR) Agent
 
+---
+
 This guide provides step-by-step instructions for creating an MBR (Monthly Business Review) Agent, which is designed to streamline the preparation process for MBRs. By following the guide, users will learn how to query resources and obtain quick answers, ultimately enhancing efficiency and organization for business reviews. It's a valuable tool for anyone looking to optimize their workflow and ensure they are well-prepared for important business discussions. 
 
 ---
@@ -58,7 +60,7 @@ After implementing an agent, the director simply prompts the system to scan the 
 ## 🎓 Core Concepts Overview
 
 | Concept | Why it matters |
-|---------|----------------|
+| ------- | -------------- |
 | **Conversational Agent** | Powers natural, chat-like interactions so users can ask about MBR themes, risks, and takeaways without needing to dig through files manually |
 | **Knowledge** | Enables the agent to read and understand content from past MBR decks stored in SharePoint, so it can extract relevant insights and patterns |
 | **Testing in Copilot Studio** | Helps you validate that the agent understands user intent and returns accurate, useful responses before it's shared with others |
@@ -66,6 +68,7 @@ After implementing an agent, the director simply prompts the system to scan the 
 | **SharePoint Agent Setup** | Seamlessly integrates with your existing file storage so your agent always has access to the latest MBR decks—no need to move files around |
 
 ---
+
 ## 📄 Documentation and Additional Training Links
 
 * [Microsoft Copilot Studio Documentation](https://learn.microsoft.com/en-us/microsoft-copilot-studio/)
@@ -73,12 +76,14 @@ After implementing an agent, the director simply prompts the system to scan the 
 * [Copilot Studio Triggers and Tools](https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-trigger-actions)
 
 ---
+
 ## ✅ Prerequisites
 
 * Access to Microsoft Copilot Studio with appropriate licensing
 * Microsoft 365 environment with SharePoint access
 
 ---
+
 ## 🎯 Summary of Targets
 
 In this lab, you'll build a conversational MBR agent that streamlines how managers and leaders access insights across Monthly Business Review decks. By the end of the lab, you will:
@@ -90,10 +95,11 @@ In this lab, you'll build a conversational MBR agent that streamlines how manage
 * Enable your team to ask questions like “What are the common risks this month?” and get immediate, actionable answers
 
 ---
+
 ## 🧩 Use Cases Covered
 
 | Step | Use Case | Value added | Effort |
-|------|----------|-------------|--------|
+| ---- | -------- | ----------- | ------ |
 | 1 | [Create SharePoint site and upload MBR documents](#-use-case-1-create-sharepoint-site-and-upload-mbr-documents) | Establish centralized document repository for MBR data that the agent can access | 10 min |
 | 2 | [Build and deploy MBR agent](#-use-case-2-build-and-deploy-mbr-agent) | Create intelligent agent that analyzes MBR documents and provides instant insights | 10 min |
 
@@ -108,7 +114,7 @@ In this lab, you'll build a conversational MBR agent that streamlines how manage
 Set up a dedicated SharePoint site with MBR documents that will serve as the knowledge source for your agent.
 
 | Use case | Value added | Estimated effort |
-|----------|-------------|------------------|
+| -------- | ----------- | ---------------- |
 | Create SharePoint site and upload MBR documents | Establish centralized document repository for MBR data that the agent can access | 10 minutes |
 
 **Summary of tasks**
@@ -207,7 +213,7 @@ Create a SharePoint site with MBR documents that will serve as the knowledge sou
 Create an intelligent conversational agent that can analyze your MBR documents and provide instant insights.
 
 | Use case | Value added | Estimated effort |
-|----------|-------------|------------------|
+| -------- | ----------- | ---------------- |
 | Build and deploy MBR agent | Create intelligent agent that analyzes MBR documents and provides instant insights | 10 minutes |
 
 **Summary of tasks**
