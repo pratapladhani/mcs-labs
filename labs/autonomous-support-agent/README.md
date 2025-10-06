@@ -249,7 +249,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 > [!TIP]
 > The description helps the AI know when to use this tool and what it does.
 
-10. Under **Additional details**, change **Authentication** to **Maker-provided credentials**
+10. Under **Additional details**, change **Credentials to use** to **Maker-provided credentials**
 
 11. For **Record Type**, set a **Custom value** and choose `Incident`
 
@@ -285,7 +285,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 21. Update the description to: `Use this operation to reply to the email received`
 
-22. Under **Additional details**, set authentication to **Maker-provided credentials**
+22. Under **Additional details**, set **Credentials to use** to **Maker-provided credentials**
 
 23. For the **To** input, keep **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
 
@@ -309,14 +309,14 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 #### Configuring Agent Instructions and AI Settings
 
-27. Navigate to **Overview** and then **Instructions**
+27. Navigate to **Overview** and then click the **Edit** for **Instructions**
 
 28. **Paste** the following comprehensive instructions:
 ```
 1. Understand and isolate each question from the received email body.
 For each individual question, do a separate **knowledge search** using the configured knowledge sources.
 2. If a ticket ID is mentioned, for example INC0000059, check if an update is available using the <Get ServiceNow ticket details> tool.
-3. Once you have gathered knowledge and ticket information, use the <Reply to email> tool to reply to the original email received. Your reply should use the same language as the initial user email (e.g., if the questions are in French, reply in French, etc.)`\
+3. Once you have gathered knowledge and ticket information, use the <Reply to email> tool to reply to the original email received. Your reply should use the same language as the initial user email (e.g., if the questions are in French, reply in French, etc.)
 ```
 
 > [!IMPORTANT]
@@ -327,7 +327,7 @@ For each individual question, do a separate **knowledge search** using the confi
 
 ![alt text](images/instructions-and-tools.png)
 
-29. **Publish** your agent to activate it
+29. Click on **Save** to save the instructions and **Publish** your agent to activate it
 
 #### Testing Your Complete Agent
 
@@ -418,7 +418,7 @@ For each individual question, do a separate **knowledge search** using the confi
 
 5. Update the description to: `Create a Teams chat with the user who has sent the email.`
 
-6. Under **Additional details**, set authentication to **Maker-provided credentials**
+6. Under **Additional details**, set *Credentials to use* to **Maker-provided credentials**
 
 7. For the **Members to add** inputs, keep **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
 
@@ -437,7 +437,7 @@ For each individual question, do a separate **knowledge search** using the confi
 
 13. Update the description to: `Send a Teams message in the chat conversation that was created with the user.`
 
-14. Under **Additional details**, set authentication to **Maker-provided credentials**
+14. Under **Additional details**, set *Credentials to use* to **Maker-provided credentials**
 
 15. For the **Inputs**:
     - For **Post as**, select **Custom value** and set it to `User`
@@ -454,7 +454,7 @@ For each individual question, do a separate **knowledge search** using the confi
 
 16. Click **Save** to finalize the tool configuration
 
-17. Update your instructions to look like the following:
+17. Update your instructions in the **Overview** tab to look like the following:
 ```
 1. Understand and isolate each question from the received email body.
 For each individual question, do a separate **knowledge search** using the configured knowledge sources.

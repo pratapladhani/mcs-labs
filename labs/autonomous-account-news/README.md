@@ -109,9 +109,9 @@ In this lab, you will build an autonomous news assistant agent that:
 
 ## ⚖️ Instructions by Use Case
 
-  ### 🧱 Use Case #1: Create and Configure an Autonomous Agent
+### 🧱 Use Case #1: Create and Configure an Autonomous Agent
 
-  Set up an autonomous agent with a recurring trigger that automatically activates on a schedule.
+Set up an autonomous agent with a recurring trigger that automatically activates on a schedule.
 
   | Use case                                 | Value added                                                                             | Estimated effort |
   | ---------------------------------------- | --------------------------------------------------------------------------------------- | ---------------- |
@@ -123,11 +123,11 @@ In this lab, you will build an autonomous news assistant agent that:
 
   **Scenario:** Your account team wants to proactively identify external signals (such as news) that may affect large deals. Instead of manually launching the agent, you'll configure a recurring trigger that runs automatically.
 
-  **Objective** Create an autonomous agent with a scheduled trigger that initiates the opportunity analysis process.
+**Objective** Create an autonomous agent with a scheduled trigger that initiates the opportunity analysis process.
 
-  #### Step-by-step instructions
+#### Step-by-step instructions
 
-  **Creating the Agent and Solution Setup**
+**Creating the Agent and Solution Setup**
 
   1. Navigate to the Copilot Studio home page at https://copilotstudio.microsoft.com.
 
@@ -137,18 +137,18 @@ In this lab, you will build an autonomous news assistant agent that:
 
   4. Select **New**, then choose **Agent**.
 
-  > [!TIP]
-  > If you have set one of your solutions as the default solution, you can also create a new agent directly from Copilot Studio's home page by clicking **New agent**. It will automatically create the agent in your default solution.
+> [!TIP]
+> If you have set one of your solutions as the default solution, you can also create a new agent directly from Copilot Studio's home page by clicking **New agent**. It will automatically create the agent in your default solution.
 
   5. Select **Skip to configure** to bypass the setup wizard.
 
   6. Name your agent: `Account News Assistant`.
 
-  7. Click **Create** to establish your new agent.
+7. Click **Create** to establish your new agent.
 
-  #### Adding a Recurring Trigger
+#### Adding a Recurring Trigger
 
-  1.  In the agent's **Overview** tab, scroll to the **Triggers** section.
+1.  In the agent's **Overview** tab, scroll to the **Triggers** section.
 
   2.  Click **Add a new Trigger** and select **Recurrence**.
 
@@ -160,18 +160,18 @@ In this lab, you will build an autonomous news assistant agent that:
 
   6.  Under **Additional instructions to the agent when it's invoked by this trigger**, clear any default content and replace it with: `Analyze Opportunities`.
 
-  7.  Click **Next** and **Create** the trigger.
+  7.  Click **Create trigger** to create the trigger.
 
-  > [!TIP]
-  > The instruction *Analyze Opportunities* functions similarly to a conversational instruction. When triggered, the agent will try to follow this directive using its orchestration logic—factoring in global instructions and tool definitions (covered in later steps).
+> [!TIP]
+> The instruction *Analyze Opportunities* functions similarly to a conversational instruction. When triggered, the agent will try to follow this directive using its orchestration logic—factoring in global instructions and tool definitions (covered in later steps).
 
-  ---
+---
 
-  ### 🏅 Congratulations! You've completed Use Case #1!
+### 🏅 Congratulations! You've completed Use Case #1!
 
-  ---
+---
 
-  ### 🧱 Use Case #2: Add a Tool to Fetch High-Value Opportunities from the Sales App
+### 🧱 Use Case #2: Add a Tool to Fetch High-Value Opportunities from the Sales App
 
   Configure a Dataverse connector tool that retrieves large, open opportunities using a pre-defined filter query.
 
@@ -185,11 +185,11 @@ In this lab, you will build an autonomous news assistant agent that:
 
   **Scenario:** You want your autonomous agent to process Sales App opportunities that are still active and exceed a revenue threshold. The agent will use this data to generate downstream insights and summaries.
 
-  **Objective** Set up a Dataverse tool that can be invoked by the Orchestrator to pull high-value, open opportunities based on business-defined filters.
+**Objective** Set up a Dataverse tool that can be invoked by the Orchestrator to pull high-value, open opportunities based on business-defined filters.
 
-  #### Step-by-step instructions
+#### Step-by-step instructions
 
-  1. Navigate to **Tools** in the top-level menu.
+1. Navigate to **Tools** in the top-level menu.
 
   2. Select **+ Add a tool**.
 
@@ -197,8 +197,8 @@ In this lab, you will build an autonomous news assistant agent that:
 
   4. Choose an existing Dataverse connection or add a new one ().
 
-  > [!IMPORTANT]  
-  > Create the connection using OAuth and sign in with your workshop credentials. Your user requires permission to access Opportunity records, which is provided as part of the workshop.
+> [!IMPORTANT]  
+> Create the connection using OAuth and sign in with your workshop credentials. Your user requires permission to access Opportunity records, which is provided as part of the workshop.
 
   5. Select **Add and configure**.
 
@@ -206,15 +206,15 @@ In this lab, you will build an autonomous news assistant agent that:
     - **Name:** `Get Opportunity records`
     - **Description:** `This operation gets Opportunity records`
 
-  > [!IMPORTANT]  
-  > Clear and specific tool names and descriptions help the Orchestrator understand the tool's purpose. Names can even be more influential than descriptions.
+> [!IMPORTANT]  
+> Clear and specific tool names and descriptions help the Orchestrator understand the tool's purpose. Names can even be more influential than descriptions.
 
   7. Select **Additional details**.
 
-  8. Under **Authentication**, select **Maker-provided credentials**.
+  8. Under **Credentials to use**, select **Maker-provided credentials**.
 
-  > [!IMPORTANT]  
-  > Always use Maker-provided credentials for autonomous agents. This option allows tools to run without requiring user interaction.
+> [!IMPORTANT]  
+> Always use Maker-provided credentials for autonomous agents. This option allows tools to run without requiring user interaction.
 
   9. Under **Inputs**, change **Environments** to the following:
       - **Fill using**: `Custom value`
@@ -237,13 +237,13 @@ In this lab, you will build an autonomous news assistant agent that:
   12. To test your tool is correctly configured, you can type `Get opportunities` in the test canvas. Your agent should retrieve high-value opportunities based on the configured threshold.
    ![alt text](images/test-get-opptys.png)
 
-  ---
+---
 
-  ### 🏅 Congratulations! You've completed Use Case #2!
+### 🏅 Congratulations! You've completed Use Case #2!
 
-  ---
+---
 
-  ### 🧱 Use Case #3: Analyze Opportunities Using Web Search and Deep Reasoning
+### 🧱 Use Case #3: Analyze Opportunities Using Web Search and Deep Reasoning
 
   Enable your agent to find relevant news articles for each opportunity and reason over them using Copilot Studio's Deep Reasoning feature.
 
@@ -257,17 +257,17 @@ In this lab, you will build an autonomous news assistant agent that:
 
   **Scenario:** Your sellers want timely news updates related to high-value opportunities. Your agent will search for articles relevant to each opportunity and assess their relevance using generative reasoning.
 
-  **Objective** Use generative orchestration to search for opportunity-related content and determine its value using the Deep Reasoning feature.
+**Objective** Use generative orchestration to search for opportunity-related content and determine its value using the Deep Reasoning feature.
 
-  #### Step-by-step instructions
+#### Step-by-step instructions
 
-  1. Open your agent and go to **Settings**.
+1. Open your agent and go to **Settings**.
 
   2. In the left-hand menu, select **Generative AI**.
 
   3. Turn **On** the toggle for **Deep Reasoning (preview)**.
 
-  4. Also turn **On** the toggle for **Use information from the Web**.
+  4. Also turn **On** the toggle for **Use information from the Web**. Then click **Save** to save these settings. Once saved, close the settings using the **X** on the top right.
 
   5. To validate web search functionality, enter a test instruction such as: `Search for news on "Microsoft opens a new Datacenter"` in the test canvas. Your agent should retrieve relevant articles from the web.
 
@@ -275,13 +275,13 @@ In this lab, you will build an autonomous news assistant agent that:
    
       ![alt text](images/web-and-reasoning.png)
 
-  ---
+---
 
-  ### 🏅 Congratulations! You've completed Use Case #3!
+### 🏅 Congratulations! You've completed Use Case #3!
 
-  ---
+---
 
-  ### 🧱 Use Case #4: Store Content Using Topics and Global Variables
+### 🧱 Use Case #4: Store Content Using Topics and Global Variables
 
   Enable the agent to persist and reuse important data using pre-authored topics and global variables.
 
@@ -295,18 +295,18 @@ In this lab, you will build an autonomous news assistant agent that:
 
   **Scenario:** This is a technical step aimed at improving output accuracy. Without structured context, your agent might include irrelevant information or miss key data when generating reports. By persisting search results and relevance assessments in global variables, the agent can focus precisely on the intended content.
 
-  **Objective** Create two topics that store search and analysis results in global variables.
+**Objective** Create two topics that store search and analysis results in global variables.
 
-  > [!IMPORTANT]  
-  > Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
+> [!IMPORTANT]  
+> Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
 
-  #### Step-by-step instructions
+#### Step-by-step instructions
 
   1. In your agent, navigate to the **Topics** section.
 
   2. Click **+ Add a topic**, and choose **From blank**.
 
-  3. Name the topic: `Log Search Results`.
+  3. Name the topic: `Log Search Results`, by clicking on the **Untitled** on the top left.
 
   4. Under **Describe what this topic does**, enter `Use this to log search results`.
 
@@ -328,8 +328,8 @@ In this lab, you will build an autonomous news assistant agent that:
       - Citation names and URLs
       ```
 
-  > [!IMPORTANT]  
-  > The description will guide the agent to populate this variable with a structured JSON format. You don't need to enforce a specific schema—just ensure it's easy for the agent to interpret in downstream steps.
+> [!IMPORTANT]  
+> The description will guide the agent to populate this variable with a structured JSON format. You don't need to enforce a specific schema—just ensure it's easy for the agent to interpret in downstream steps.
 
   10. In the authoring canvas: 
       - Select on **(+)** to add a node. 
@@ -341,47 +341,47 @@ In this lab, you will build an autonomous news assistant agent that:
   
   11. Click **Save**
 
-  > [!TIP]  
-  > You can also copy and paste the YAML content below into your agent using the code editor. 
-  > 
-  > ```yaml
-  > kind: AdaptiveDialog
-  > inputs:
-  >   - kind: AutomaticTaskInput
-  >     propertyName: searchResults
-  >     description: |-
-  >       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
-  >       The JSON object should contain:
-  >       - Opportunity IDs
-  >       - Search results related to those opportunities
-  >       - Citation names and URLs
-  >     shouldPromptUser: true
-  > 
-  > modelDescription: Use this to log search results
-  > beginDialog:
-  >   kind: OnRecognizedIntent
-  >   id: main
-  >   intent: {}
-  >   actions:
-  >     - kind: SetVariable
-  >       id: setVariable_J3g8bd
-  >       variable: Global.searchResults
-  >       value: =Topic.searchResults
-  > 
-  > inputType:
-  >   properties:
-  >     searchResults:
-  >       displayName: searchResults
-  >       description: |-
-  >         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
-  >         The JSON object should contain:
-  >         - Opportunity IDs
-  >         - Search results related to those opportunities
-  >         - Citation names and URLs
-  >       type: String
-  > 
-  > OutputType: {}
-  > ```
+> [!TIP]  
+> You can also copy and paste the YAML content below into your agent using the code editor. 
+> 
+> ```yaml
+> kind: AdaptiveDialog
+> inputs:
+>   - kind: AutomaticTaskInput
+>     propertyName: searchResults
+>     description: |-
+>       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
+>       The JSON object should contain:
+>       - Opportunity IDs
+>       - Search results related to those opportunities
+>       - Citation names and URLs
+>     shouldPromptUser: true
+> 
+> modelDescription: Use this to log search results
+> beginDialog:
+>   kind: OnRecognizedIntent
+>   id: main
+>   intent: {}
+>   actions:
+>     - kind: SetVariable
+>       id: setVariable_J3g8bd
+>       variable: Global.searchResults
+>       value: =Topic.searchResults
+> 
+> inputType:
+>   properties:
+>     searchResults:
+>       displayName: searchResults
+>       description: |-
+>         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
+>         The JSON object should contain:
+>         - Opportunity IDs
+>         - Search results related to those opportunities
+>         - Citation names and URLs
+>       type: String
+> 
+> OutputType: {}
+> ```
 
   13. In **Topics**, select **+ Add a topic**, and choose **From blank** again.
 
@@ -417,47 +417,47 @@ In this lab, you will build an autonomous news assistant agent that:
 
   23. You can copy and paste the YAML content below into your agent using the code editor. 
 
-  > [!TIP]  
-  > You can also copy and paste the YAML content below into your agent using the code editor. 
-  > 
-  > ```yaml
-  > kind: AdaptiveDialog
-  > inputs:
-  >   - kind: AutomaticTaskInput
-  >     propertyName: relevantNewsForOpportunities
-  >     description: |-
-  >       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
-  >       The JSON object should contain:
-  >       - Opportunity IDs
-  >       - Relevant news summaries
-  >       - Relevance explanations
-  >     shouldPromptUser: true
-  > 
-  > modelDescription: Use this to log relevant news for opportunities
-  > beginDialog:
-  >   kind: OnRecognizedIntent
-  >   id: main
-  >   intent: {}
-  >   actions:
-  >     - kind: SetVariable
-  >       id: setVariable_5ZOEWA
-  >       variable: Global.relevantNewsForOpportunities
-  >       value: =Topic.relevantNewsForOpportunities
-  > 
-  > inputType:
-  >   properties:
-  >     searchResults:
-  >       displayName: relevantNewsForOpportunities
-  >       description: |-
-  >         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
-  >         The JSON object should contain:
-  >         - Opportunity IDs
-  >         - Relevant news summaries
-  >         - Relevance explanations
-  >       type: String
-  > 
-  > OutputType: {}
-  > ```
+> [!TIP]  
+> You can also copy and paste the YAML content below into your agent using the code editor. 
+> 
+> ```yaml
+> kind: AdaptiveDialog
+> inputs:
+>   - kind: AutomaticTaskInput
+>     propertyName: relevantNewsForOpportunities
+>     description: |-
+>       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
+>       The JSON object should contain:
+>       - Opportunity IDs
+>       - Relevant news summaries
+>       - Relevance explanations
+>     shouldPromptUser: true
+> 
+> modelDescription: Use this to log relevant news for opportunities
+> beginDialog:
+>   kind: OnRecognizedIntent
+>   id: main
+>   intent: {}
+>   actions:
+>     - kind: SetVariable
+>       id: setVariable_5ZOEWA
+>       variable: Global.relevantNewsForOpportunities
+>       value: =Topic.relevantNewsForOpportunities
+> 
+> inputType:
+>   properties:
+>     searchResults:
+>       displayName: relevantNewsForOpportunities
+>       description: |-
+>         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
+>         The JSON object should contain:
+>         - Opportunity IDs
+>         - Relevant news summaries
+>         - Relevance explanations
+>       type: String
+> 
+> OutputType: {}
+> ```
 
   24. Click **Save**.
 
@@ -506,12 +506,11 @@ In this lab, you will build an autonomous news assistant agent that:
   
 
 
-  ---
+---
 
-  ### 🏅 Congratulations! You've completed Use Case #4!
+### 🏅 Congratulations! You've completed Use Case #4!
 
-  ---
-
+---
 
 ### 🧱 Use Case #5: Create and Send a Structured HTML Report via Email
 
@@ -525,8 +524,8 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
  **Objective** Configure HTML templating and email delivery for your autonomous agent.
 
-  > [!IMPORTANT]  
-  > Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
+> [!IMPORTANT]  
+> Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
 
 #### Step-by-step instructions
 
@@ -634,10 +633,10 @@ Automate the final step: format relevant news into a clean, branded email for ac
 </html>"
 ```
 
-  > [!IMPORTANT]  
-  > The HTML template functions as a **one-shot example** that guides the agent's generation process. When the agent is asked to produce an HTML report, it will refer to this template to determine how to format the content, structure the sections, and organize links.
-  >
-  > The agent will also extract useful signals from the template — for instance, it may use the Sales App domain structure (e.g., `workshop-hub.crm.dynamics.com`) to dynamically generate opportunity links for each retrieved opportunity
+> [!IMPORTANT]  
+> The HTML template functions as a **one-shot example** that guides the agent's generation process. When the agent is asked to produce an HTML report, it will refer to this template to determine how to format the content, structure the sections, and organize links.
+>
+> The agent will also extract useful signals from the template — for instance, it may use the Sales App domain structure (e.g., `workshop-hub.crm.dynamics.com`) to dynamically generate opportunity links for each retrieved opportunity
   
 7. Save the **Conversation start** topic
 
@@ -661,10 +660,10 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 16. Click **Additional details**.
 
-17. Under **Authentication**, select **Maker-provided credentials**.
+17. Under **Credentials to use**, select **Maker-provided credentials**.
 
-  > [!IMPORTANT]  
-  > Always use Maker-provided credentials for autonomous agents. This allows tools to run without user interaction.
+> [!IMPORTANT]  
+> Always use Maker-provided credentials for autonomous agents. This allows tools to run without user interaction.
 
 20. Under **Inputs**:
 

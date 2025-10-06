@@ -607,7 +607,8 @@ This use case demonstrates **agent scoping** principles:
     ```
 
 > [!TIP]
-> Again, these instructions will be used by AI to understand how determine how to pass that information to the ServiceNow connector. In this case, how to use the very specific OData formatting of ServiceNow queries.
+> - Again, these instructions will be used by AI to understand how determine how to pass that information to the ServiceNow connector. In this case, how to use the very specific OData formatting of ServiceNow queries.
+> - If you get a "There is an error: 'DuplicateItem'" error, toggle to **Custom value**, then switch back to **Dynamically fill with AI** and set the customized **description** again.
 
 11. Select **+ Add input** and choose **Limit**
 

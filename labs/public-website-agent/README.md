@@ -273,7 +273,7 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 > [!TIP]
 > - You may need to select the connection so that the buttons are not grayed out.
 
-9. Under **Additional details**, set **Authentication** to **Maker-provided credentials**.
+9. Under **Additional details**, set **Credentials to use** to **Maker-provided credentials**.
 
 > [!CAUTION]
 > - When using **Maker-provided credentials**, the end-user of the agent isn't prompted to use its own context and connection to connect to the service. Instead, it's using the context and connection of the person who has configured the agent.

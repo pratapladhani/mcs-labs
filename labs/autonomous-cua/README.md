@@ -253,7 +253,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 1. Update the description to: `Use this operation to reply to the email received`
 
-1. Under **Additional details**, set authentication to **Maker-provided credentials**
+1. Under **Additional details**, set **Credentials to use** to **Maker-provided credentials**
 
 1. Customize the **To** input and set its **Description** to:
     `Use the "from" email of the triggering received email.`
