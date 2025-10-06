@@ -359,7 +359,7 @@ For each individual question, do a separate **knowledge search** using the confi
 > 
 > ![alt text](images/test-trigger.png)
 
-32. Check the execution of your  autonomus agent by going to the **Activity** tab. Select the **Refresh** icon until you see the execution.
+32. Check the execution of your  autonomous agent by going to the **Activity** tab. Select the **Refresh** icon until you see the execution.
 
 33. Check the emails in your **Sent** folder in Outlook to see the actual reply the user autonomously sent.
 
@@ -400,7 +400,7 @@ For each individual question, do a separate **knowledge search** using the confi
 * Think about other ServiceNow operations (create tickets, update status) that could enhance the automation
 * Plan how you might extend this pattern to other communication channels like Teams or chat interfaces
 
-**Challenge Yoursef: Add Teams communication**:
+**Challenge Yourself: Add Teams communication**:
 
 ---
 
@@ -449,7 +449,7 @@ For each individual question, do a separate **knowledge search** using the confi
         ```    
     - For **Message**, leave **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
         ```
-        Polite message greeting the user and telling them you have replied to their email. Provide a one phrase summary of the response you provided to their query. Finish by offering to schedule a call if they to talk through it if they'd like.
+        Polite message greeting the user and telling them you have replied to their email. Provide a one phrase summary of the response you provided to their query. Finish by offering to schedule a call if they'd like to talk through it.
         ```     
 
 16. Click **Save** to finalize the tool configuration
@@ -466,9 +466,9 @@ For each individual question, do a separate **knowledge search** using the confi
 
 18. Test your new and improved agent by sending a test trigger using the Test Pane.
 
-19. Ensure that you've send a Teams chat at [teams.microsoft.com](https://teams.microsoft.com)
+19. Ensure that you've sent a Teams chat at [teams.microsoft.com](https://teams.microsoft.com)
 
-20. Congratualtions! You've gone above and beyond by adding Teams Chat capabilities to your autonomus agent!
+20. Congratulations! You've gone above and beyond by adding Teams Chat capabilities to your autonomous agent!
 
 ---
 
