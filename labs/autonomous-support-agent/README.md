@@ -285,7 +285,7 @@ In this section, you'll learn how to integrate knowledge sources, configure Serv
 
 21. Update the description to: `Use this operation to reply to the email received`
 
-22. Under **Additional details**, set *Credentials to use* to **Maker-provided credentials**
+22. Under **Additional details**, set **Credentials to use** to **Maker-provided credentials**
 
 23. For the **To** input, keep **Dynamically fill with AI**, click on **Customize** to set its **Description** to:
 
