@@ -36,8 +36,8 @@ function transformHomepageLinks(inputPath, outputPath) {
         continue;
       }
       
-      // Check if this line contains a lab link
-      if (line.includes('./labs/') && line.startsWith('|') && line.includes('|', line.length - 10)) {
+      // Check if this line contains any kind of link (internal lab or external)
+      if ((line.includes('./labs/') || line.includes('https://')) && line.startsWith('|') && line.includes('|', line.length - 10)) {
         // Extract the parts using a simpler approach
         const parts = line.split('|').map(part => part.trim()).filter(part => part);
         
@@ -46,7 +46,7 @@ function transformHomepageLinks(inputPath, outputPath) {
           const linkCol = parts[1];
           const overviewCol = parts[2];
           
-          // Check if the link column contains a lab link
+          // Check if the link column contains a lab link first
           const labLinkMatch = linkCol.match(/\[([^\]]+)\]\(\.\/labs\/([^)]+)\)/);
           
           if (labLinkMatch) {
@@ -64,7 +64,8 @@ function transformHomepageLinks(inputPath, outputPath) {
           if (externalLinkMatch) {
             const [, linkText, url] = externalLinkMatch;
             console.log(`  → Kept external link: ${url}`);
-            lines[i] = `| [${titleCol}](${url}) | [🔗 External](${url}) | ${overviewCol} |`;
+            // Keep the original title, but link the download column to the external URL
+            lines[i] = `| ${titleCol} | [🔗 ${linkText}](${url}) | ${overviewCol} |`;
           }
         }
       }
