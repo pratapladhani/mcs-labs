@@ -29,7 +29,7 @@ This repository uses GitHub Actions to automatically convert lab markdown files 
 ### For Contributors
 
 - **📖 Full documentation**: See [Contributing Guide](https://github.com/microsoft/mcs-labs/blob/main/.github/CONTRIBUTING.md) for technical details
-- **📝 Lab template**: Use the [Lab Template](./labs/lab-template.md) when creating new labs
+- **📝 Lab template**: Use the [Lab Template](https://github.com/microsoft/mcs-labs/blob/main/labs/lab-template.md) when creating new labs
 - **🔧 Architecture**: Automated workflows, dependency management, and troubleshooting  
 - **🚀 Getting started**: Just edit markdown files in `labs/` - documentation generates automatically!
 
