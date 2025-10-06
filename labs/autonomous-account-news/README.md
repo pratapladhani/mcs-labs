@@ -137,8 +137,8 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   4. Select **New**, then choose **Agent**.
 
-  > [!TIP]
-  > If you have set one of your solutions as the default solution, you can also create a new agent directly from Copilot Studio's home page by clicking **New agent**. It will automatically create the agent in your default solution.
+> [!TIP]
+> If you have set one of your solutions as the default solution, you can also create a new agent directly from Copilot Studio's home page by clicking **New agent**. It will automatically create the agent in your default solution.
 
   5. Select **Skip to configure** to bypass the setup wizard.
 
@@ -160,10 +160,10 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   6.  Under **Additional instructions to the agent when it's invoked by this trigger**, clear any default content and replace it with: `Analyze Opportunities`.
 
-  7.  Click **Next** and **Create** the trigger.
+  7.  Click **Create trigger** to create the trigger.
 
-  > [!TIP]
-  > The instruction *Analyze Opportunities* functions similarly to a conversational instruction. When triggered, the agent will try to follow this directive using its orchestration logic—factoring in global instructions and tool definitions (covered in later steps).
+> [!TIP]
+> The instruction *Analyze Opportunities* functions similarly to a conversational instruction. When triggered, the agent will try to follow this directive using its orchestration logic—factoring in global instructions and tool definitions (covered in later steps).
 
 ---
 
@@ -197,8 +197,8 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   4. Choose an existing Dataverse connection or add a new one ().
 
-  > [!IMPORTANT]  
-  > Create the connection using OAuth and sign in with your workshop credentials. Your user requires permission to access Opportunity records, which is provided as part of the workshop.
+> [!IMPORTANT]  
+> Create the connection using OAuth and sign in with your workshop credentials. Your user requires permission to access Opportunity records, which is provided as part of the workshop.
 
   5. Select **Add and configure**.
 
@@ -206,15 +206,15 @@ Set up an autonomous agent with a recurring trigger that automatically activates
     - **Name:** `Get Opportunity records`
     - **Description:** `This operation gets Opportunity records`
 
-  > [!IMPORTANT]  
-  > Clear and specific tool names and descriptions help the Orchestrator understand the tool's purpose. Names can even be more influential than descriptions.
+> [!IMPORTANT]  
+> Clear and specific tool names and descriptions help the Orchestrator understand the tool's purpose. Names can even be more influential than descriptions.
 
   7. Select **Additional details**.
 
   8. Under **Authentication**, select **Maker-provided credentials**.
 
-  > [!IMPORTANT]  
-  > Always use Maker-provided credentials for autonomous agents. This option allows tools to run without requiring user interaction.
+> [!IMPORTANT]  
+> Always use Maker-provided credentials for autonomous agents. This option allows tools to run without requiring user interaction.
 
   9. Under **Inputs**, change **Environments** to the following:
       - **Fill using**: `Custom value`
@@ -328,8 +328,8 @@ Set up an autonomous agent with a recurring trigger that automatically activates
       - Citation names and URLs
       ```
 
-  > [!IMPORTANT]  
-  > The description will guide the agent to populate this variable with a structured JSON format. You don't need to enforce a specific schema—just ensure it's easy for the agent to interpret in downstream steps.
+> [!IMPORTANT]  
+> The description will guide the agent to populate this variable with a structured JSON format. You don't need to enforce a specific schema—just ensure it's easy for the agent to interpret in downstream steps.
 
   10. In the authoring canvas: 
       - Select on **(+)** to add a node. 
@@ -341,47 +341,47 @@ Set up an autonomous agent with a recurring trigger that automatically activates
   
   11. Click **Save**
 
-  > [!TIP]  
-  > You can also copy and paste the YAML content below into your agent using the code editor. 
+> [!TIP]  
+> You can also copy and paste the YAML content below into your agent using the code editor. 
+> 
+> ```yaml
+> kind: AdaptiveDialog
+> inputs:
+>   - kind: AutomaticTaskInput
+>     propertyName: searchResults
+>     description: |-
+>       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
+>       The JSON object should contain:
+>       - Opportunity IDs
+>       - Search results related to those opportunities
+>       - Citation names and URLs
+>     shouldPromptUser: true
   > 
-  > ```yaml
-  > kind: AdaptiveDialog
-  > inputs:
-  >   - kind: AutomaticTaskInput
-  >     propertyName: searchResults
-  >     description: |-
-  >       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
-  >       The JSON object should contain:
-  >       - Opportunity IDs
-  >       - Search results related to those opportunities
-  >       - Citation names and URLs
-  >     shouldPromptUser: true
+> modelDescription: Use this to log search results
+> beginDialog:
+>   kind: OnRecognizedIntent
+>   id: main
+>   intent: {}
+>   actions:
+>     - kind: SetVariable
+>       id: setVariable_J3g8bd
+>       variable: Global.searchResults
+>       value: =Topic.searchResults
   > 
-  > modelDescription: Use this to log search results
-  > beginDialog:
-  >   kind: OnRecognizedIntent
-  >   id: main
-  >   intent: {}
-  >   actions:
-  >     - kind: SetVariable
-  >       id: setVariable_J3g8bd
-  >       variable: Global.searchResults
-  >       value: =Topic.searchResults
+> inputType:
+>   properties:
+>     searchResults:
+>       displayName: searchResults
+>       description: |-
+>         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
+>         The JSON object should contain:
+>         - Opportunity IDs
+>         - Search results related to those opportunities
+>         - Citation names and URLs
+>       type: String
   > 
-  > inputType:
-  >   properties:
-  >     searchResults:
-  >       displayName: searchResults
-  >       description: |-
-  >         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs
-  >         The JSON object should contain:
-  >         - Opportunity IDs
-  >         - Search results related to those opportunities
-  >         - Citation names and URLs
-  >       type: String
-  > 
-  > OutputType: {}
-  > ```
+> OutputType: {}
+> ```
 
   13. In **Topics**, select **+ Add a topic**, and choose **From blank** again.
 
@@ -417,47 +417,47 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   23. You can copy and paste the YAML content below into your agent using the code editor. 
 
-  > [!TIP]  
-  > You can also copy and paste the YAML content below into your agent using the code editor. 
+> [!TIP]  
+> You can also copy and paste the YAML content below into your agent using the code editor. 
+> 
+> ```yaml
+> kind: AdaptiveDialog
+> inputs:
+>   - kind: AutomaticTaskInput
+>     propertyName: relevantNewsForOpportunities
+>     description: |-
+>       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
+>       The JSON object should contain:
+>       - Opportunity IDs
+>       - Relevant news summaries
+>       - Relevance explanations
+>     shouldPromptUser: true
   > 
-  > ```yaml
-  > kind: AdaptiveDialog
-  > inputs:
-  >   - kind: AutomaticTaskInput
-  >     propertyName: relevantNewsForOpportunities
-  >     description: |-
-  >       A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
-  >       The JSON object should contain:
-  >       - Opportunity IDs
-  >       - Relevant news summaries
-  >       - Relevance explanations
-  >     shouldPromptUser: true
+> modelDescription: Use this to log relevant news for opportunities
+> beginDialog:
+>   kind: OnRecognizedIntent
+>   id: main
+>   intent: {}
+>   actions:
+>     - kind: SetVariable
+>       id: setVariable_5ZOEWA
+>       variable: Global.relevantNewsForOpportunities
+>       value: =Topic.relevantNewsForOpportunities
   > 
-  > modelDescription: Use this to log relevant news for opportunities
-  > beginDialog:
-  >   kind: OnRecognizedIntent
-  >   id: main
-  >   intent: {}
-  >   actions:
-  >     - kind: SetVariable
-  >       id: setVariable_5ZOEWA
-  >       variable: Global.relevantNewsForOpportunities
-  >       value: =Topic.relevantNewsForOpportunities
+> inputType:
+>   properties:
+>     searchResults:
+>       displayName: relevantNewsForOpportunities
+>       description: |-
+>         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
+>         The JSON object should contain:
+>         - Opportunity IDs
+>         - Relevant news summaries
+>         - Relevance explanations
+>       type: String
   > 
-  > inputType:
-  >   properties:
-  >     searchResults:
-  >       displayName: relevantNewsForOpportunities
-  >       description: |-
-  >         A JSON representing opportunity IDs, search responses for each opportunity, with citation names and URLs, and an explanation regarding the relevance of search response to the opportunity
-  >         The JSON object should contain:
-  >         - Opportunity IDs
-  >         - Relevant news summaries
-  >         - Relevance explanations
-  >       type: String
-  > 
-  > OutputType: {}
-  > ```
+> OutputType: {}
+> ```
 
   24. Click **Save**.
 
@@ -524,8 +524,8 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
  **Objective** Configure HTML templating and email delivery for your autonomous agent.
 
-  > [!IMPORTANT]  
-  > Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
+> [!IMPORTANT]  
+> Topics in generative orchestration function similarly to tools — they accept inputs, run logic, and produce outputs. But instead of calling external APIs, they use internal logic authored in Copilot Studio. In autonomous agents, topics can operate silently without sending user-facing messages, making them ideal for structuring and transforming data as part of a multi-step orchestration process.
 
 #### Step-by-step instructions
 
@@ -633,10 +633,10 @@ Automate the final step: format relevant news into a clean, branded email for ac
 </html>"
 ```
 
-  > [!IMPORTANT]  
-  > The HTML template functions as a **one-shot example** that guides the agent's generation process. When the agent is asked to produce an HTML report, it will refer to this template to determine how to format the content, structure the sections, and organize links.
+> [!IMPORTANT]  
+> The HTML template functions as a **one-shot example** that guides the agent's generation process. When the agent is asked to produce an HTML report, it will refer to this template to determine how to format the content, structure the sections, and organize links.
   >
-  > The agent will also extract useful signals from the template — for instance, it may use the Sales App domain structure (e.g., `workshop-hub.crm.dynamics.com`) to dynamically generate opportunity links for each retrieved opportunity
+> The agent will also extract useful signals from the template — for instance, it may use the Sales App domain structure (e.g., `workshop-hub.crm.dynamics.com`) to dynamically generate opportunity links for each retrieved opportunity
   
 7. Save the **Conversation start** topic
 
@@ -662,8 +662,8 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 17. Under **Authentication**, select **Maker-provided credentials**.
 
-  > [!IMPORTANT]  
-  > Always use Maker-provided credentials for autonomous agents. This allows tools to run without user interaction.
+> [!IMPORTANT]  
+> Always use Maker-provided credentials for autonomous agents. This allows tools to run without user interaction.
 
 20. Under **Inputs**:
 
