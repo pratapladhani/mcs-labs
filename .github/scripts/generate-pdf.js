@@ -53,9 +53,10 @@ async function generatePDF(htmlFilePath, outputPath, title = '') {
       console.log('🎨 Applied PDF-specific styling');
     }
     
-    // Set PDF metadata if title is provided
+    // Set PDF metadata if title is provided (must be done before page.pdf())
     if (title) {
       await page.evaluate((t) => { document.title = t; }, title);
+      console.log(`📄 Set PDF title metadata: "${title}"`);
     }
     
     // Generate PDF with professional settings
