@@ -211,7 +211,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   7. Select **Additional details**.
 
-  8. Under **Authentication**, select **Maker-provided credentials**.
+  8. Under **Credentials to use**, select **Maker-provided credentials**.
 
 > [!IMPORTANT]  
 > Always use Maker-provided credentials for autonomous agents. This option allows tools to run without requiring user interaction.
@@ -267,7 +267,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   3. Turn **On** the toggle for **Deep Reasoning (preview)**.
 
-  4. Also turn **On** the toggle for **Use information from the Web**.
+  4. Also turn **On** the toggle for **Use information from the Web**. Then click **Save** to save these settings. Once saved, close the settings using the **X** on the top right.
 
   5. To validate web search functionality, enter a test instruction such as: `Search for news on "Microsoft opens a new Datacenter"` in the test canvas. Your agent should retrieve relevant articles from the web.
 
@@ -306,7 +306,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   2. Click **+ Add a topic**, and choose **From blank**.
 
-  3. Name the topic: `Log Search Results`.
+  3. Name the topic: `Log Search Results`, by clicking on the **Untitled** on the top left.L
 
   4. Under **Describe what this topic does**, enter `Use this to log search results`.
 
@@ -356,7 +356,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 >       - Search results related to those opportunities
 >       - Citation names and URLs
 >     shouldPromptUser: true
-  > 
+> 
 > modelDescription: Use this to log search results
 > beginDialog:
 >   kind: OnRecognizedIntent
@@ -367,7 +367,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 >       id: setVariable_J3g8bd
 >       variable: Global.searchResults
 >       value: =Topic.searchResults
-  > 
+> 
 > inputType:
 >   properties:
 >     searchResults:
@@ -379,7 +379,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 >         - Search results related to those opportunities
 >         - Citation names and URLs
 >       type: String
-  > 
+> 
 > OutputType: {}
 > ```
 
@@ -432,7 +432,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 >       - Relevant news summaries
 >       - Relevance explanations
 >     shouldPromptUser: true
-  > 
+> 
 > modelDescription: Use this to log relevant news for opportunities
 > beginDialog:
 >   kind: OnRecognizedIntent
@@ -443,7 +443,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 >       id: setVariable_5ZOEWA
 >       variable: Global.relevantNewsForOpportunities
 >       value: =Topic.relevantNewsForOpportunities
-  > 
+> 
 > inputType:
 >   properties:
 >     searchResults:
@@ -455,7 +455,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 >         - Relevant news summaries
 >         - Relevance explanations
 >       type: String
-  > 
+> 
 > OutputType: {}
 > ```
 
@@ -635,7 +635,7 @@ Automate the final step: format relevant news into a clean, branded email for ac
 
 > [!IMPORTANT]  
 > The HTML template functions as a **one-shot example** that guides the agent's generation process. When the agent is asked to produce an HTML report, it will refer to this template to determine how to format the content, structure the sections, and organize links.
-  >
+>
 > The agent will also extract useful signals from the template — for instance, it may use the Sales App domain structure (e.g., `workshop-hub.crm.dynamics.com`) to dynamically generate opportunity links for each retrieved opportunity
   
 7. Save the **Conversation start** topic
