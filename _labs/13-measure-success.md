@@ -1,12 +1,14 @@
 ---
+layout: lab
 title: "Measure Success"
-order: 3
+order: 13
 duration: 45
-difficulty: Beginner
-lab_id: "measure-success"
-optional: true
+difficulty: 300
+lab_type: main
+permalink: /labs/measure-success/
 ---
 
+# Measure success: Track conversation outcomes and user feedback on AI responses
 
 You can't improve what you can't measure: design your agent to track successful and unsuccessful outcomes while collecting user feedback on AI-generated responses.
 
@@ -415,3 +417,4 @@ To maximize the impact of conversation outcome tracking:
 By following these principles, you'll transform your AI agent from a simple response tool into a data-driven system that continuously learns and improves, delivering measurably better user experiences and business outcomes.
 
 ---
+

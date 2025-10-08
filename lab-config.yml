@@ -6,19 +6,25 @@ core_learning_path:
   - id: agent-builder-web
     title: "Web-based AI Assistant with Agent Builder"
     duration: 45
-    difficulty: Beginner
+    difficulty: 100
     description: "Your first web-based AI assistant - start here!"
     
   - id: agent-builder-sharepoint
     title: "SharePoint AI Assistant with Agent Builder"  
     duration: 60
-    difficulty: Beginner
+    difficulty: 200
     description: "Connect to SharePoint data sources"
+    
+  - id: standard-orchestrator
+    title: "Standard Orchestrator"
+    duration: 75
+    difficulty: 100
+    description: "Multi-agent coordination patterns"
     
   - id: setup-for-success
     title: "ALM Best Practices Setup"
     duration: 60
-    difficulty: Beginner
+    difficulty: 200
     description: "Essential development lifecycle practices"
 
 # INTERMEDIATE LABS - Build on core concepts
@@ -26,19 +32,19 @@ intermediate_labs:
   - id: public-website-agent
     title: "Public Website Agent"
     duration: 90
-    difficulty: Intermediate
+    difficulty: 100
     description: "Web scraping and analysis capabilities"
     
   - id: mbr-prep-sharepoint-agent
     title: "MBR Agent Deploy to SharePoint"
     duration: 75
-    difficulty: Intermediate
+    difficulty: 100
     description: "Deploy agents to SharePoint environments"
     
   - id: ask-me-anything
     title: "Ask Me Anything Agent"
     duration: 90
-    difficulty: Intermediate
+    difficulty: 200
     description: "Advanced conversation flows and logic"
 
 # ADVANCED LABS - Autonomous agents and complex scenarios
@@ -46,19 +52,19 @@ advanced_labs:
   - id: autonomous-support-agent
     title: "Autonomous Support Agent"
     duration: 120
-    difficulty: Advanced
+    difficulty: 200
     description: "Customer service automation"
     
   - id: autonomous-account-news
     title: "Autonomous Account News Agent"
     duration: 120
-    difficulty: Advanced
+    difficulty: 200
     description: "Intelligent news aggregation and analysis"
     
   - id: autonomous-cua
     title: "Autonomous Agent with Computer-Using Agents"
     duration: 150
-    difficulty: Advanced
+    difficulty: 200
     description: "Most advanced autonomous agent capabilities"
 
 # SPECIALIZED LABS - DevOps, tools, and utilities
@@ -66,40 +72,44 @@ specialized_labs:
   - id: pipelines-and-source-control
     title: "Pipelines and Source Control"
     duration: 60
-    difficulty: Intermediate
+    difficulty: 300
     description: "ALM and DevOps practices for agents"
     
   - id: copilot-studio-kit
     title: "Copilot Studio Kit"
     duration: 60
-    difficulty: Intermediate
+    difficulty: 200
     description: "Advanced tools and utilities"
-
-# OPTIONAL LABS - Alternative versions and specialized topics
-optional_labs:
-  - id: mcp-qualify-lead
-    title: "Model Context Protocol Integration"
-    duration: 90
-    difficulty: Advanced
-    description: "External system integration using MCP"
-    
-  - id: ask-me-anything-30-mins
-    title: "Ask Me Anything Agent (30 min version)"
-    duration: 30
-    difficulty: Beginner
-    description: "Shorter version of the main Ask Me Anything lab"
-    
-  - id: standard-orchestrator
-    title: "Standard Orchestrator"
-    duration: 75
-    difficulty: Intermediate
-    description: "Multi-agent coordination patterns"
     
   - id: measure-success
     title: "Measure Success"
     duration: 45
-    difficulty: Beginner
+    difficulty: 300
     description: "Analytics and success measurement"
+    
+  - id: mcp-qualify-lead
+    title: "Model Context Protocol Integration"
+    duration: 90
+    difficulty: 200
+    description: "External system integration using MCP"
+
+# OPTIONAL LABS - Alternative versions and specialized topics
+optional_labs:
+  - id: ask-me-anything-30-mins
+    title: "Ask Me Anything Agent (30 min version)"
+    duration: 30
+    difficulty: 200
+    description: "Shorter version of the main Ask Me Anything lab"
+
+# EXTERNAL LABS - Labs hosted in other repositories
+external_labs:
+  - id: mcs-mcp-external
+    title: "Model Context Protocol (MCP) & Copilot Studio"
+    duration: 90
+    difficulty: Advanced
+    description: "Learn to deploy an MCP Server and integrate it with Microsoft Copilot Studio"
+    url: "https://github.com/microsoft/mcsmcp"
+    repository: "microsoft/mcsmcp"
 
 # PREREQUISITES - Define dependencies between labs
 prerequisites:

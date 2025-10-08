@@ -1,12 +1,14 @@
 ---
+layout: lab
 title: "ALM Best Practices Setup"
-order: 3
+order: 4
 duration: 60
-difficulty: Beginner
-lab_id: "setup-for-success"
-optional: false
+difficulty: 200
+lab_type: main
+permalink: /labs/setup-for-success/
 ---
 
+# Set yourself up for success & discover ALM best practices
 
 Build agents with confidence. Deploy with control. Master the lifecycle of your Microsoft Copilot Studio agents with best practices.
 
@@ -161,7 +163,7 @@ Set up your development environment by creating a solution and custom publisher 
 
 3. In the left navigation (under the `...` menu), select **Solutions**
 
-    ![alt text](/assets/labs/setup-for-success/images/solutions.png)
+    ![alt text](images/solutions.png)
 
 4. Select **New solution**.
 
@@ -239,7 +241,7 @@ In this section, you'll learn how to create environment variables and connection
 
 2. Select **+ New**, then go to **More** and choose **Environment variable**.
 
-![alt text](/assets/labs/setup-for-success/images/environment-variable-connection-reference.png)
+![alt text](images/environment-variable-connection-reference.png)
 
 3. In **Name**, enter: `Custom Knowledge Endpoint`
 
@@ -362,7 +364,7 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 5. Select **Initialize** (at the bottom) to create the `main` branch with a README or .gitignore.
 
-   ![alt text](/assets/labs/setup-for-success/images/azure-devops-initialize-branch.png) 
+   ![alt text](images/azure-devops-initialize-branch.png) 
     
 > 🎉 You’ve set up the Git repo! Now return to Microsoft Copilot Studio.
 
@@ -380,7 +382,7 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 11. Select **Next**, then pick the solution created in Use Case #1.
 
-![alt text](/assets/labs/setup-for-success/images/connect-to-git.png)
+![alt text](images/connect-to-git.png)
 
 12. When prompted for the branch, select **Create new branch** and name it `dev`.
 
@@ -396,11 +398,11 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 17. When ready, select **Commit**, add a comment describing the changes you're introducing (e.g., `New environment variables and connection references`).
 
-![alt text](/assets/labs/setup-for-success/images/commit.png)
+![alt text](images/commit.png)
 
 18. Once committed, you can **navigate** to your commit in Azure DevOps and see the introduced, updated, or deleted components.
 
-   ![alt text](/assets/labs/setup-for-success/images/ado-commit.png)
+   ![alt text](images/ado-commit.png)
 
 -->
 
@@ -438,7 +440,7 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 13. Select **Initialize** (at the bottom) to create the `main` branch with a README or .gitignore.
 
-   ![alt text](/assets/labs/setup-for-success/images/azure-devops-initialize-branch.png) 
+   ![alt text](images/azure-devops-initialize-branch.png) 
     
 > 🎉 You’ve set up the Git repo! Now return to Microsoft Copilot Studio.
 
@@ -456,7 +458,7 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 19. Select **Next**, then pick the solution created in Use Case #1.
 
-      ![alt text](/assets/labs/setup-for-success/images/connect-to-git.png)
+      ![alt text](images/connect-to-git.png)
 
 20. When prompted for the branch, select **Create new branch** and name it `dev`.
 
@@ -472,7 +474,7 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 
 25. When ready, select **Commit**, add a comment describing the changes you're introducing (e.g., `New solution and environment variable`).
 
-![alt text](/assets/labs/setup-for-success/images/commit.png)
+![alt text](images/commit.png)
 
 26. Once committed, you can **navigate** to your commit in Azure DevOps and see the introduced, updated, or deleted components.
 
@@ -526,3 +528,4 @@ To maximize the impact of your ALM setup in Copilot Studio:
 By following these principles, you'll establish a robust, scalable foundation for managing Copilot agents and Power Platform assets across their full lifecycle.
 
 ---
+

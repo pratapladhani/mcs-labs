@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Jekyll Lab Converter Script
+# Jekyll Lab Cdeclare -A optional_labs=(
+    ["ask-me-anything-30-mins"]="Ask Me Anything Agent (30 min version)|30|200"
+)erter Script
 # Converts existing labs to Jekyll format with front matter
 
 echo "🔄 Converting labs to Jekyll format..."
@@ -10,25 +12,25 @@ mkdir -p _labs
 
 # Lab configuration with order, title, duration, and difficulty
 declare -A labs=(
-    ["agent-builder-web"]="1|Web-based AI Assistant with Agent Builder|45|Beginner"
-    ["agent-builder-sharepoint"]="2|SharePoint AI Assistant with Agent Builder|60|Beginner"
-    ["setup-for-success"]="3|ALM Best Practices Setup|60|Beginner"
-    ["public-website-agent"]="4|Public Website Agent|90|Intermediate"
-    ["mbr-prep-sharepoint-agent"]="5|MBR Agent Deploy to SharePoint|75|Intermediate"
-    ["ask-me-anything"]="6|Ask Me Anything Agent|90|Intermediate"
-    ["autonomous-support-agent"]="7|Autonomous Support Agent|120|Advanced"
-    ["autonomous-account-news"]="8|Autonomous Account News Agent|120|Advanced"
-    ["autonomous-cua"]="9|Autonomous Agent with Computer-Using Agents|150|Advanced"
-    ["pipelines-and-source-control"]="10|Pipelines and Source Control|60|Intermediate"
-    ["copilot-studio-kit"]="11|Copilot Studio Kit|60|Intermediate"
+    ["agent-builder-web"]="1|Web-based AI Assistant with Agent Builder|45|100"
+    ["agent-builder-sharepoint"]="2|SharePoint AI Assistant with Agent Builder|60|200"
+    ["standard-orchestrator"]="3|Standard Orchestrator|75|100"
+    ["setup-for-success"]="4|ALM Best Practices Setup|60|200"
+    ["public-website-agent"]="5|Public Website Agent|90|100"
+    ["mbr-prep-sharepoint-agent"]="6|MBR Agent Deploy to SharePoint|75|100"
+    ["ask-me-anything"]="7|Ask Me Anything Agent|90|200"
+    ["autonomous-support-agent"]="8|Autonomous Support Agent|120|200"
+    ["autonomous-account-news"]="9|Autonomous Account News Agent|120|200"
+    ["autonomous-cua"]="10|Autonomous Agent with Computer-Using Agents|150|200"
+    ["pipelines-and-source-control"]="11|Pipelines and Source Control|60|300"
+    ["copilot-studio-kit"]="12|Copilot Studio Kit|60|200"
+    ["measure-success"]="13|Measure Success|45|300"
+    ["mcp-qualify-lead"]="14|Model Context Protocol Integration|90|200"
 )
 
 # Optional labs (will be marked differently)
 declare -A optional_labs=(
-    ["mcp-qualify-lead"]="1|Model Context Protocol Integration|90|Advanced"
-    ["ask-me-anything-30-mins"]="2|Ask Me Anything Agent (30 min version)|30|Beginner"
-    ["measure-success"]="3|Measure Success|45|Beginner"
-    ["standard-orchestrator"]="4|Standard Orchestrator|75|Intermediate"
+    ["ask-me-anything-30-mins"]="1|Ask Me Anything Agent (30 min version)|30|Beginner"
 )
 
 # Function to convert a lab
