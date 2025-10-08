@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Web-based AI Assistant with Agent Builder"
-order: 2
+order: 1
 duration: 45
-difficulty: Beginner
-lab_id: "agent-builder-web"
-optional: false
+difficulty: 100
+lab_type: main
+journeys: ["quick-start", "business-user"]
+permalink: /labs/agent-builder-web/
 ---
 
+# Create your own web-based AI assistant with lite experience of Copilot Studio in Microsoft 365 Copilot (formerly Copilot Studio agent builder)
 
 Create an intelligent agent in Copilot that delivers contextual, multi-part answers using instructions and data from the Web.
 
@@ -132,26 +135,26 @@ Create, configure, and share a Copilot agent that serves as a knowledgeable guid
 > [!IMPORTANT]
 > - If the Microsoft 365 Copilot URL is `https://copilot.cloud.microsoft/` or if the Copilot pane is on the right-hand side, this means you're on the **wrong** page.
 > 
->   ![alt text](/assets/labs/agent-builder-web/images/wrong-copilot-page.png)
+>   ![alt text](images/wrong-copilot-page.png)
 > 
 > - To fix this, **close** the tab, then **go back to the SharePoint** page. Select the app launcher, and choose **Microsoft 365 Copilot** from there.
 >
->   ![alt text](/assets/labs/agent-builder-web/images/app-launcher.png)
+>   ![alt text](images/app-launcher.png)
 >
 > - The Copilot pane should be on the left-hand side of the page, and the URL should be `https://m365.cloud.microsoft/`. If you see this, you're on the right page:
 >
->   ![alt text](/assets/labs/agent-builder-web/images/correct-copilot-page.png)
+>   ![alt text](images/correct-copilot-page.png)
 > 
 > - Make sure the **logged in user** is the fictitious one used in the lab. If you need your normal work user account, **select** the name and toggle to the fictitious user account.
 >
->   ![alt text](/assets/labs/agent-builder-web/images/logged-in-user.png)
+>   ![alt text](images/logged-in-user.png)
 
 2. Go to the **Chat** tab.
 
 > [!TIP]  
 > Microsoft 365 Copilot and Copilot Chat are meant for internal, employee experiences – B2E (Business-to-Employee). When a user has access to both, they see a toggle in the user interface to switch between the Work (Microsoft 365 Copilot) and Web experiences (Copilot Chat).
 >
-> ![alt text](/assets/labs/agent-builder-web/images/m365-copilot.png)
+> ![alt text](images/m365-copilot.png)
 >  
 > **Microsoft 365 Copilot** is a per-user license ($30/user/mo.) with premium features:
 > - Advanced agents like the research and analysts Frontier ones, grounded on enterprise data and using the latest reasoning models
@@ -173,7 +176,7 @@ Create, configure, and share a Copilot agent that serves as a knowledgeable guid
 ```
 Upcoming features in Microsoft Copilot Studio roadmap
 ```
-![alt text](/assets/labs/agent-builder-web/images/simple-copilot-search.png)
+![alt text](images/simple-copilot-search.png)
 
 5. Select **Start a new chat** to reset.
 
@@ -225,7 +228,7 @@ Yes, add https://learn.microsoft.com/en-us/microsoft-365-copilot/ and https://le
 
 14. You can test your agent in the test pane. When ready, select **Create**.
 
-![alt text](/assets/labs/agent-builder-web/images/agent-builder.png)
+![alt text](images/agent-builder.png)
 
 #### Share and test your agent
 
@@ -242,7 +245,7 @@ What are the differences between Microsoft 365 Copilot and Copilot Chat?
 > [!TIP]
 >  If your training tenant is getting throttled because of lack of AI capacity (to prioritize production workloads), you may see a message like this: `Sorry, I wasn't able to respond to that. Is there something else I can help with?`. It's OK, **just test your agent while configuring it**, and not after you created it. You may try again later.
 
->   ![alt text](/assets/labs/agent-builder-web/images/copilot-error.png)
+>   ![alt text](images/copilot-error.png)
 
 > [!IMPORTANT]  
 > If you need to update a declarative agent, select `...` next to the agent name and select **Edit**, or go to **Create agent** then navigate to **My agents** in the breadcrumbs.
@@ -304,3 +307,4 @@ Now that you've built your own learning-focused agent, take a moment to evaluate
 By applying these practices, your Copilot agent will not only deliver accurate information—it will help users grow their knowledge, challenge their thinking, and explore the full potential of the Microsoft 365 Copilot ecosystem.
 
 ---
+

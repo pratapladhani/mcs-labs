@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Autonomous Agent with Computer-Using Agents"
-order: 6
+order: 10
 duration: 150
-difficulty: Advanced
-lab_id: "autonomous-cua"
-optional: false
+difficulty: 300
+lab_type: main
+journeys: ["autonomous-ai", "developer"]
+permalink: /labs/autonomous-cua/
 ---
 
+# Autonomous Portfolio Lookup Agent with Computer-Using Agents (CUA)
 
 Build an autonomous Copilot Studio agent that retrieves financial portfolio data from internal legacy systems that lack API connectivity.
 
@@ -242,7 +245,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
     - The left panel shows your instructions and a step-by-step log of the tool’s reasoning and actions.
     - The right panel shows a preview of the actions on the machine you set up for computer use.
 
-  ![alt text](/assets/labs/autonomous-cua/images/test_CUA.jpg)
+  ![alt text](images/test_CUA.jpg)
 
 18. Select **Finish testing**
 
@@ -286,7 +289,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 > [!IMPORTANT]
 > For each of the placeholder <...> in the description, use / to insert the tools you just configured in your instructions.
 
-  ![alt text](/assets/labs/autonomous-cua/images/agent_instructions.jpg)
+  ![alt text](images/agent_instructions.jpg)
 
 31. **Save** the instructions
 
@@ -314,7 +317,7 @@ Learn how to integrate and configure tools for desktop automation and email comm
 
 1. Select the trigger instance and then **Start testing**
 
-  ![alt text](/assets/labs/autonomous-cua/images/test_trigger.jpg)
+  ![alt text](images/test_trigger.jpg)
 
 38. Check your emails for the agent’s reply.
 
@@ -358,3 +361,4 @@ To maximize the impact of autonomous agents for legacy system integration:
 By following these principles, you'll enable secure, scalable, and efficient automation for legacy systems, empowering your organization to make faster, data-driven decisions.
 
 ---
+

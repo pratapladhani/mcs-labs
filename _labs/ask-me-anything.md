@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Ask Me Anything Agent"
-order: 4
+order: 7
 duration: 90
-difficulty: Intermediate
-lab_id: "ask-me-anything"
-optional: false
+difficulty: 200
+lab_type: main
+journeys: ["business-user"]
+permalink: /labs/ask-me-anything/
 ---
 
+# Create an 'Ask me anything' agent for your employees
 
 Empower employees with answers that matter – Build an intelligent agent that connects to your knowledge and data.
 
@@ -168,7 +171,7 @@ Create a new agent with SharePoint knowledge integration that provides grounded,
 
 8. Go to **Knowledge**
 
-  ![alt text](/assets/labs/ask-me-anything/images/knowledge-sharepoint.png)
+  ![alt text](images/knowledge-sharepoint.png)
 
 9. Select **SharePoint**, and paste the SharePoint Knowledge URL and select **Add**.
 
@@ -280,7 +283,7 @@ Make the agent available in Microsoft 365 Copilot for your users.
 
 8. Select **See agent in Microsoft 365** 
 
-   ![alt text](/assets/labs/ask-me-anything/images/m365-copilot-channel.png)
+   ![alt text](images/m365-copilot-channel.png)
 
 9. In the **Microsoft 365 Copilot** experience, the agent description will pop up. Select **Add**
 
@@ -354,7 +357,7 @@ Let's start by asking for the user country at the beginning of the conversation.
 
 6. Select the **Get user** connector action and **Submit**.
 
-  ![alt text](/assets/labs/ask-me-anything/images/add-tool-connector.png)
+  ![alt text](images/add-tool-connector.png)
 
 > [!IMPORTANT]
 > - If you don't see the **Get user** action, select another of the Microsoft Entra ID actions, such as **Create user**  and **Submit**.
@@ -369,7 +372,7 @@ Let's start by asking for the user country at the beginning of the conversation.
 
 9. In the **Inputs** tab, for **User Id or Principal Name**, select `...`, go the the **System** tab, and select **User.Id**.
 
-![alt text](/assets/labs/ask-me-anything/images/select-user-id.png)
+![alt text](images/select-user-id.png)
 
 10. **Save**
 
@@ -385,7 +388,7 @@ Let's start by asking for the user country at the beginning of the conversation.
 
 6. Select the **Get user** connector action and **Submit**.
 
-  ![alt text](/assets/labs/ask-me-anything/images/add-tool-connector.png)
+  ![alt text](images/add-tool-connector.png)
 
 7. In the **Get user** node, select `...` and **Properties** 
 
@@ -393,7 +396,7 @@ Let's start by asking for the user country at the beginning of the conversation.
 
 9. In the **Inputs** tab, for **User Id or Principal Name**, select `...`, go the the **System** tab, and select **User.Id**.
 
-![alt text](/assets/labs/ask-me-anything/images/select-user-id.png)
+![alt text](images/select-user-id.png)
 
 10. Give your topic a name, such as `Office Location` and **Save**
 
@@ -407,15 +410,15 @@ Hello!
 
 15. Navigate to the **Topics** tab, open the **Office Location** topic, and to see what values are returned from the connector, enter the **Variables** pane in the topic command bar. Go the **Test** to see the variable values at runtime (i.e., as you are testing in the conversation test pane).
   
-  ![alt text](/assets/labs/ask-me-anything/images/variables-pane.png)
+  ![alt text](images/variables-pane.png)
 
 16. Select **Value** under the **GetUser** record, and **expand** it to see if the expected value was returned.
 
-![alt text](/assets/labs/ask-me-anything/images/user-record-entra-id.png)
+![alt text](images/user-record-entra-id.png)
 
 17. Because we will need to use that variable value in other parts and topics of the agent, select the **GetUser** variable and make it **Global**.
 
-![alt text](/assets/labs/ask-me-anything/images/set-global-variable.png)
+![alt text](images/set-global-variable.png)
 
 18. **Save**
 
@@ -438,7 +441,7 @@ Use this tool for questions about leave policy, time off, etc.
 > [!TIP]
 > The **Activity.Text** variable is super useful because it captures the last message/text the user has typed in or selected when interacting with the agent.
 
-![alt text](/assets/labs/ask-me-anything/images/activity-text.png)
+![alt text](images/activity-text.png)
 
 21. Go to the **properties** of the **Create generative answers** node
 
@@ -459,7 +462,7 @@ Use this tool for questions about leave policy, time off, etc.
 > - Use the formula provided in the **Lab Resources** (specific per training).
 > - Notice how the formula concatenates the SharePoint URL with the office location, effectively using context to target the correct source and location for the content.
 
-  ![alt text](/assets/labs/ask-me-anything/images/sharepoint-formulas.png)
+  ![alt text](images/sharepoint-formulas.png)
 
 27. Select **Insert** once done, then **Save** your topic
 
@@ -489,7 +492,7 @@ Always append the user country () in knowledge search queries (e.g., "<question>
 
 32. We also need to set the variable value in-between the parenthesis. **Type** `/` and select **Power Fx**.
 
-  ![alt text](/assets/labs/ask-me-anything/images/instructions-formula.png)
+  ![alt text](images/instructions-formula.png)
 
 33. **Type** `Global.GetUser.officeLocation` and select **Insert**
 
@@ -503,7 +506,7 @@ What benefits do employees get?
 
 36. Notice how the query is **rewritten** to take into account the **variables** you provided, like country, **augmenting the chances** of returning the correct results for summarization.
 
-![alt text](/assets/labs/ask-me-anything/images/rewritten-search-query.png)
+![alt text](images/rewritten-search-query.png)
 
 ---
 
@@ -547,7 +550,7 @@ This use case demonstrates **agent scoping** principles:
 
 2. Go to the **Agents** tab, and **+ Add an agent**
 
-    ![alt text](/assets/labs/ask-me-anything/images/add-agent.png)
+    ![alt text](images/add-agent.png)
 
 3. Update 
     - Its **Name** to: `IT Support Agent`
@@ -632,7 +635,7 @@ This use case demonstrates **agent scoping** principles:
 > - Creates user-friendly responses with proper formatting
 > - Combines ServiceNow data with other knowledge sources when needed
 
-  ![alt text](/assets/labs/ask-me-anything/images/multi-agent-servicenow.png)
+  ![alt text](images/multi-agent-servicenow.png)
 
 29. **Observe** how your agent now demonstrates scoped capabilities:
     - **Tool Selection**: Automatically chooses the right ServiceNow tool based on user intent
@@ -727,7 +730,7 @@ In this section, you'll configure any third-party knowledge to enrich knowledge 
 
 13. Under **Save response as**, select **Create a new variable**, select the variable name that was created (e.g., **Var1**) and rename it `KnowledgeResults`.
 
-![alt text](/assets/labs/ask-me-anything/images/http-request.png)
+![alt text](images/http-request.png)
 
 14. Add a new node, **Variable management** > **Set a variable value**
 
@@ -761,7 +764,7 @@ In this section, you'll configure any third-party knowledge to enrich knowledge 
 > Notice how the knowledge step returned results that contain citations to a fictitious knowledge base.
 
 
-  ![alt text](/assets/labs/ask-me-anything/images/custom-knowledge-source.png)
+  ![alt text](images/custom-knowledge-source.png)
 
 ---
 
@@ -848,7 +851,7 @@ Use this tool to help users with meeting notes
 
 14. **Save** your prompt
 
-    ![alt text](/assets/labs/ask-me-anything/images/prompt.png)
+    ![alt text](images/prompt.png)
 
 14. **Save** the topic.
 
@@ -931,7 +934,7 @@ Use this tool to help users with meeting notes
   
     Don't forget to remove the double quotes.
 
-    ![alt text](/assets/labs/ask-me-anything/images/adaptive-card-formula.png)
+    ![alt text](images/adaptive-card-formula.png)
 
 24. **Save** your topic
 
@@ -947,7 +950,7 @@ Use this tool to help users with meeting notes
   Please help me with my meeting notes
   ```
 
-![alt text](/assets/labs/ask-me-anything/images/meeting-notes-adaptive-card.png)
+![alt text](images/meeting-notes-adaptive-card.png)
 
 > [!IMPORTANT]
 > Note: the lab ends here, but imagine storing these in system of records, for example Dataverse, as a next step, after the user has confirmed the content.
@@ -1000,3 +1003,4 @@ To maximize the impact of your "Ask me anything" agent:
 By following these principles, you'll create an intelligent knowledge hub that transforms how employees access information, reduces support burden, and improves organizational efficiency through conversational AI.
 
 ---
+

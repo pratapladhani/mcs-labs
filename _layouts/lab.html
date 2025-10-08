@@ -21,24 +21,33 @@ layout: default
 
     <footer class="lab-footer">
         <div class="lab-navigation">
-            {% assign labs = site.labs | sort: 'order' %}
+            {% assign labs = site.labs | where: "lab_type", "main" | sort: 'order' %}
+            {% assign prev_lab = null %}
+            {% assign next_lab = null %}
+            {% assign found_current = false %}
+            
             {% for lab in labs %}
-                {% if lab.url == page.url %}
-                    {% assign current_index = forloop.index0 %}
+                {% if found_current == true %}
+                    {% assign next_lab = lab %}
                     {% break %}
+                {% endif %}
+                
+                {% if lab.url == page.url %}
+                    {% assign found_current = true %}
+                {% else %}
+                    {% unless found_current %}
+                        {% assign prev_lab = lab %}
+                    {% endunless %}
                 {% endif %}
             {% endfor %}
             
-            {% if current_index > 0 %}
-                {% assign prev_lab = labs[current_index | minus: 1] %}
+            {% if prev_lab %}
                 <a href="{{ prev_lab.url | relative_url }}" class="nav-button prev">
                     ← {{ prev_lab.title }}
                 </a>
             {% endif %}
             
-            {% assign next_index = current_index | plus: 1 %}
-            {% if next_index < labs.size %}
-                {% assign next_lab = labs[next_index] %}
+            {% if next_lab %}
                 <a href="{{ next_lab.url | relative_url }}" class="nav-button next">
                     {{ next_lab.title }} →
                 </a>

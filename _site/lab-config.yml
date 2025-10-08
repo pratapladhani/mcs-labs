@@ -1,0 +1,159 @@
+# Lab Learning Progression Configuration
+# This file defines the order and organization of labs for optimal learning experience
+
+# CORE LEARNING PATH - Essential foundation (complete in order)
+core_learning_path:
+  - id: agent-builder-web
+    title: "Web-based AI Assistant with Agent Builder"
+    duration: 45
+    difficulty: 100
+    description: "Your first web-based AI assistant - start here!"
+    journeys: ["quick-start", "business-user"]
+    
+  - id: agent-builder-sharepoint
+    title: "SharePoint AI Assistant with Agent Builder"  
+    duration: 60
+    difficulty: 200
+    description: "Connect to SharePoint data sources"
+    journeys: ["quick-start", "business-user"]
+    
+  - id: standard-orchestrator
+    title: "Standard Orchestrator"
+    duration: 75
+    difficulty: 100
+    description: "Multi-agent coordination patterns"
+    journeys: ["developer"]
+    
+  - id: setup-for-success
+    title: "ALM Best Practices Setup"
+    duration: 60
+    difficulty: 200
+    description: "Essential development lifecycle practices"
+    journeys: ["developer"]
+
+# INTERMEDIATE LABS - Build on core concepts
+intermediate_labs:
+  - id: public-website-agent
+    title: "Public Website Agent"
+    duration: 90
+    difficulty: 200
+    description: "Web scraping and analysis capabilities"
+    journeys: ["quick-start", "business-user"]
+    
+  - id: mbr-prep-sharepoint-agent
+    title: "MBR Agent Deploy to SharePoint"
+    duration: 75
+    difficulty: 200
+    description: "Deploy agents to SharePoint environments"
+    journeys: ["business-user"]
+    
+  - id: ask-me-anything
+    title: "Ask Me Anything Agent"
+    duration: 90
+    difficulty: 200
+    description: "Advanced conversation flows and logic"
+    journeys: ["business-user"]
+
+# ADVANCED LABS - Autonomous agents and complex scenarios
+advanced_labs:
+  - id: autonomous-support-agent
+    title: "Autonomous Support Agent"
+    duration: 120
+    difficulty: 300
+    description: "Customer service automation"
+    journeys: ["autonomous-ai", "business-user"]
+    
+  - id: autonomous-account-news
+    title: "Autonomous Account News Agent"
+    duration: 120
+    difficulty: 300
+    description: "Intelligent news aggregation and analysis"
+    journeys: ["autonomous-ai"]
+    
+  - id: autonomous-cua
+    title: "Autonomous Agent with Computer-Using Agents"
+    duration: 150
+    difficulty: 300
+    description: "Most advanced autonomous agent capabilities"
+    journeys: ["autonomous-ai", "developer"]
+
+# SPECIALIZED LABS - DevOps, tools, and utilities
+specialized_labs:
+  - id: pipelines-and-source-control
+    title: "Pipelines and Source Control"
+    duration: 90
+    difficulty: 300
+    description: "ALM and DevOps practices for agents"
+    journeys: ["developer"]
+    
+  - id: copilot-studio-kit
+    title: "Copilot Studio Kit"
+    duration: 60
+    difficulty: 200
+    description: "Advanced tools and utilities"
+    journeys: ["developer"]
+    
+  - id: measure-success
+    title: "Measure Success"
+    duration: 45
+    difficulty: 300
+    description: "Analytics and success measurement"
+    journeys: ["business-user"]
+    
+  - id: mcp-qualify-lead
+    title: "Model Context Protocol Integration"
+    duration: 120
+    difficulty: 300
+    description: "External system integration using MCP"
+    journeys: ["developer"]
+
+# OPTIONAL LABS - Alternative versions and specialized topics
+optional_labs:
+  - id: ask-me-anything-30-mins
+    title: "Ask Me Anything Agent (30 min version)"
+    duration: 30
+    difficulty: 200
+    description: "Shorter version of the main Ask Me Anything lab"
+
+# EXTERNAL LABS - Labs hosted in other repositories
+external_labs:
+  - id: mcs-mcp-external
+    title: "Model Context Protocol (MCP) & Copilot Studio"
+    duration: 90
+    difficulty: Advanced
+    description: "Learn to deploy an MCP Server and integrate it with Microsoft Copilot Studio"
+    url: "https://github.com/microsoft/mcsmcp"
+    repository: "microsoft/mcsmcp"
+
+# PREREQUISITES - Define dependencies between labs
+prerequisites:
+  public-website-agent: [agent-builder-web, agent-builder-sharepoint]
+  mbr-prep-sharepoint-agent: [agent-builder-sharepoint, setup-for-success]
+  ask-me-anything: [agent-builder-web, agent-builder-sharepoint]
+  autonomous-support-agent: [ask-me-anything]
+  autonomous-account-news: [public-website-agent, ask-me-anything]
+  autonomous-cua: [autonomous-support-agent]
+  pipelines-and-source-control: [setup-for-success]
+  mcp-qualify-lead: [ask-me-anything]
+
+# LEARNING TRACKS - Suggested paths for different goals
+learning_tracks:
+  beginner:
+    name: "Getting Started"
+    description: "New to Copilot Studio? Start here!"
+    labs: [agent-builder-web, agent-builder-sharepoint, setup-for-success]
+    
+  business_user:
+    name: "Business Solutions"
+    description: "Focus on business applications"
+    labs: [agent-builder-web, agent-builder-sharepoint, public-website-agent, mbr-prep-sharepoint-agent, ask-me-anything]
+    
+  developer:
+    name: "Developer Track"
+    description: "Technical implementation focus"
+    labs: [agent-builder-web, setup-for-success, pipelines-and-source-control, ask-me-anything, mcp-qualify-lead]
+    
+  autonomous_expert:
+    name: "Autonomous Agents"
+    description: "Advanced autonomous agent development"
+    labs: [agent-builder-web, agent-builder-sharepoint, ask-me-anything, autonomous-support-agent, autonomous-account-news, autonomous-cua]

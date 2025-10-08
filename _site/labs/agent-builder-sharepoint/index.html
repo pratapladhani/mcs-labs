@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharePoint AI Assistant with Agent Builder | Microsoft Copilot Studio Labs</title>
+    <link rel="stylesheet" href="/mcs-labs/assets/css/style.css">
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>SharePoint AI Assistant with Agent Builder | Microsoft Copilot Studio Labs</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="SharePoint AI Assistant with Agent Builder" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Create your own SharePoint-based AI assistant with the lite experience of Copilot Studio in Microsoft 365 Copilot (formerly Copilot Studio agent builder) Build an intelligent sales admin assistant that analyzes SharePoint data using code interpreter and image generation features in Copilot Studio Lite. 🧭 Lab Details Level Persona Duration Purpose 200 Intermediate Maker 20 minutes After completing this lab, attendees will be able to create a Copilot agent that integrates SharePoint documents, uses code interpreter for data analysis, and generates visual content to support sales operations. 📚 Table of Contents Introduction Prerequisites Summary of Targets Use Cases Covered Instructions by Use Case Use Case #1: Access SharePoint documents Use Case #2: Create your Sales Admin Assistant agent Use Case #3: Test advanced AI capabilities Summary of Learnings 🌐 Introduction This lab builds on the Copilot Studio Lite experience by integrating SharePoint documents and enabling advanced AI capabilities. You’ll create a Sales Admin Assistant that can analyze Excel data, reference policy documents, generate charts through code interpretation, and create visual content. [!NOTE] This lab assumes familiarity with the basic Copilot Studio lite concepts covered in the web-based agent builder lab. ✅ Prerequisites Access to Microsoft 365 Copilot or Copilot Chat Access to a SharePoint site with sample sales data Ability to create and configure Copilot agents 🎯 Summary of Targets By the end of the lab, your Sales Admin Assistant will be able to: Access and analyze data from SharePoint Excel files Reference sales policies from SharePoint documents Generate dynamic charts and graphs using code interpreter Create visual content with image generation capabilities Provide insights on sales trends and performance metrics 🧩 Use Cases Covered Step Use Case Value added Effort 1 Access SharePoint documents Establish data sources for the agent 5 min 2 Create your Sales Admin Assistant agent Build an agent with SharePoint integration and advanced capabilities 10 min 3 Test advanced AI capabilities Validate code interpreter, image generation, and data analysis features 5 min 🛠️ Instructions by Use Case 📁 Use Case #1: Access SharePoint documents Prepare the SharePoint documents that will serve as knowledge sources for your Sales Admin Assistant. Step-by-step instructions Navigate to SharePoint Navigate to your organization’s SharePoint site Go to the Documents tab Open the Sales folder [!IMPORTANT] The URL of the SharePoint site is available in Lab Resources (specific per training). Locate the following sample files: Sales Excel file: A spreadsheet containing sales data with columns for dates, product lines, revenue, and quarters Sales policy document: A Word document containing sales policies, procedures, and guidelines Open the Excel file. Look at the data structure: Ensure it contains sales data across multiple quarters/years Verify product line categorization Open the Word policy document and review: Sales procedures and guidelines Policy information that might inform sales decisions Any specific requirements or compliance information 🤖 Use Case #2: Create your Sales Admin Assistant agent Build a specialized agent with SharePoint integration and advanced AI capabilities. Step-by-step instructions Create the agent Navigate to Microsoft 365 Copilot Chat and go to the Chat tab. On the side pane, expand Agents and select Create agent. When prompted to describe the agent, use this specific prompt: You are a Sales Admin Assistant. Your job is to help sales managers track revenue and identify trends across product lines. You understand product hierarchies, time periods (e.g. quarters, fiscal years), and sales metrics. Users can ask questions like &#39;Graph the sales for the last 2 years with a breakdown per product line and quarter&#39;. You always respond in a friendly and professional tone, aiming to be helpful and insightful. Confirm the suggested agent name when prompted. Go to the Configure tab Under capabilities, enable: Code interpreter (for data analysis and chart generation) Image generator (for creating visual content) Finalize configuration Navigate to the Configure tab to review and refine: Agent name and description Instructions Starter prompts Configure knowledge sources Now head over to the Knowledge section Under Knowledge, select the Search bar Go to the Files tab. Select both the Sales Policy Document and Sales documents You will see them being added as SharePoint documents [!TIP] If you can’t see the files you just opened, an alternative approach is to paste and add the SharePoint URL of the Sales folder. Another alternative approach is to download the files locally and upload them to your agent. When satisfied with the configuration, select Create. 🧪 Use Case #3: Test advanced AI capabilities Validate your agent’s ability to work with SharePoint data and advanced AI features. Step-by-step instructions Test policy knowledge Select Go to agent to start testing. First, test the agent’s knowledge of your sales policy: What are the key guidelines in our sales policy regarding customer discounts? Verify the agent references your SharePoint policy document and provides accurate information. Test code interpreter with data analysis Start a new chat and test the code interpreter capability with a data analysis request: How are sales trending for home appliances? If offered to get a visual chart of this breakdown, confirm. Observe how the agent: Accesses your Excel data Uses code interpreter to process the data Generates dynamic charts and visualizations Provides insights based on the analysis Test image generation Start a new chat and test the image generation capability with a relevant request: Design a professional badge for the first place winner of our 2026 sales contest. It should look modern and premium, with gold colors, the text &#39;1st Place – Sales Contest 2026&#39;, and a ribbon or trophy element. [!TIP] Notice how you can also invoke a specific agent by using @ in the standard Chat area. Update your agents and explore additional capabilities Select … next to your agent name in the side bar navigation, and choose Edit Select the Sales agent you created In the Configure tab, explore additional knowledge capabilities: All Websites (or specific websites) All SharePoint data (or specific files or sites) All Teams data (or data from specific group chats, meetings, or channels) Your Emails Knowledge sources enabled by your organization at the tenant level, through Copilot Connectors (e.g., ServiceNow) 🏅 Congratulations! You’ve created an advanced SharePoint-integrated Copilot agent! 🔁 Summary of Learnings Key achievements and insights from this lab: Technical Capabilities Mastered SharePoint Integration – Connected agent to organizational documents and data sources Code Interpreter – Enabled dynamic data analysis and chart generation. Image Generation – Created relevant visual content for business presentations Business Value Delivered Data-Driven Insights – Transform raw sales data into actionable intelligence Policy Compliance – Ensure sales activities align with organizational guidelines Professional Presentations – Generate presentation-ready visuals and charts Operational Efficiency – Streamline sales reporting and analysis workflows Best Practices Applied Specific Instructions – Tailored agent behavior to sales management needs Relevant Knowledge Sources – Grounded responses in actual business documents Advanced Features – Leveraged code interpreter and image generation appropriately Professional Tone – Maintained business-appropriate communication style" />
+<meta property="og:description" content="Create your own SharePoint-based AI assistant with the lite experience of Copilot Studio in Microsoft 365 Copilot (formerly Copilot Studio agent builder) Build an intelligent sales admin assistant that analyzes SharePoint data using code interpreter and image generation features in Copilot Studio Lite. 🧭 Lab Details Level Persona Duration Purpose 200 Intermediate Maker 20 minutes After completing this lab, attendees will be able to create a Copilot agent that integrates SharePoint documents, uses code interpreter for data analysis, and generates visual content to support sales operations. 📚 Table of Contents Introduction Prerequisites Summary of Targets Use Cases Covered Instructions by Use Case Use Case #1: Access SharePoint documents Use Case #2: Create your Sales Admin Assistant agent Use Case #3: Test advanced AI capabilities Summary of Learnings 🌐 Introduction This lab builds on the Copilot Studio Lite experience by integrating SharePoint documents and enabling advanced AI capabilities. You’ll create a Sales Admin Assistant that can analyze Excel data, reference policy documents, generate charts through code interpretation, and create visual content. [!NOTE] This lab assumes familiarity with the basic Copilot Studio lite concepts covered in the web-based agent builder lab. ✅ Prerequisites Access to Microsoft 365 Copilot or Copilot Chat Access to a SharePoint site with sample sales data Ability to create and configure Copilot agents 🎯 Summary of Targets By the end of the lab, your Sales Admin Assistant will be able to: Access and analyze data from SharePoint Excel files Reference sales policies from SharePoint documents Generate dynamic charts and graphs using code interpreter Create visual content with image generation capabilities Provide insights on sales trends and performance metrics 🧩 Use Cases Covered Step Use Case Value added Effort 1 Access SharePoint documents Establish data sources for the agent 5 min 2 Create your Sales Admin Assistant agent Build an agent with SharePoint integration and advanced capabilities 10 min 3 Test advanced AI capabilities Validate code interpreter, image generation, and data analysis features 5 min 🛠️ Instructions by Use Case 📁 Use Case #1: Access SharePoint documents Prepare the SharePoint documents that will serve as knowledge sources for your Sales Admin Assistant. Step-by-step instructions Navigate to SharePoint Navigate to your organization’s SharePoint site Go to the Documents tab Open the Sales folder [!IMPORTANT] The URL of the SharePoint site is available in Lab Resources (specific per training). Locate the following sample files: Sales Excel file: A spreadsheet containing sales data with columns for dates, product lines, revenue, and quarters Sales policy document: A Word document containing sales policies, procedures, and guidelines Open the Excel file. Look at the data structure: Ensure it contains sales data across multiple quarters/years Verify product line categorization Open the Word policy document and review: Sales procedures and guidelines Policy information that might inform sales decisions Any specific requirements or compliance information 🤖 Use Case #2: Create your Sales Admin Assistant agent Build a specialized agent with SharePoint integration and advanced AI capabilities. Step-by-step instructions Create the agent Navigate to Microsoft 365 Copilot Chat and go to the Chat tab. On the side pane, expand Agents and select Create agent. When prompted to describe the agent, use this specific prompt: You are a Sales Admin Assistant. Your job is to help sales managers track revenue and identify trends across product lines. You understand product hierarchies, time periods (e.g. quarters, fiscal years), and sales metrics. Users can ask questions like &#39;Graph the sales for the last 2 years with a breakdown per product line and quarter&#39;. You always respond in a friendly and professional tone, aiming to be helpful and insightful. Confirm the suggested agent name when prompted. Go to the Configure tab Under capabilities, enable: Code interpreter (for data analysis and chart generation) Image generator (for creating visual content) Finalize configuration Navigate to the Configure tab to review and refine: Agent name and description Instructions Starter prompts Configure knowledge sources Now head over to the Knowledge section Under Knowledge, select the Search bar Go to the Files tab. Select both the Sales Policy Document and Sales documents You will see them being added as SharePoint documents [!TIP] If you can’t see the files you just opened, an alternative approach is to paste and add the SharePoint URL of the Sales folder. Another alternative approach is to download the files locally and upload them to your agent. When satisfied with the configuration, select Create. 🧪 Use Case #3: Test advanced AI capabilities Validate your agent’s ability to work with SharePoint data and advanced AI features. Step-by-step instructions Test policy knowledge Select Go to agent to start testing. First, test the agent’s knowledge of your sales policy: What are the key guidelines in our sales policy regarding customer discounts? Verify the agent references your SharePoint policy document and provides accurate information. Test code interpreter with data analysis Start a new chat and test the code interpreter capability with a data analysis request: How are sales trending for home appliances? If offered to get a visual chart of this breakdown, confirm. Observe how the agent: Accesses your Excel data Uses code interpreter to process the data Generates dynamic charts and visualizations Provides insights based on the analysis Test image generation Start a new chat and test the image generation capability with a relevant request: Design a professional badge for the first place winner of our 2026 sales contest. It should look modern and premium, with gold colors, the text &#39;1st Place – Sales Contest 2026&#39;, and a ribbon or trophy element. [!TIP] Notice how you can also invoke a specific agent by using @ in the standard Chat area. Update your agents and explore additional capabilities Select … next to your agent name in the side bar navigation, and choose Edit Select the Sales agent you created In the Configure tab, explore additional knowledge capabilities: All Websites (or specific websites) All SharePoint data (or specific files or sites) All Teams data (or data from specific group chats, meetings, or channels) Your Emails Knowledge sources enabled by your organization at the tenant level, through Copilot Connectors (e.g., ServiceNow) 🏅 Congratulations! You’ve created an advanced SharePoint-integrated Copilot agent! 🔁 Summary of Learnings Key achievements and insights from this lab: Technical Capabilities Mastered SharePoint Integration – Connected agent to organizational documents and data sources Code Interpreter – Enabled dynamic data analysis and chart generation. Image Generation – Created relevant visual content for business presentations Business Value Delivered Data-Driven Insights – Transform raw sales data into actionable intelligence Policy Compliance – Ensure sales activities align with organizational guidelines Professional Presentations – Generate presentation-ready visuals and charts Operational Efficiency – Streamline sales reporting and analysis workflows Best Practices Applied Specific Instructions – Tailored agent behavior to sales management needs Relevant Knowledge Sources – Grounded responses in actual business documents Advanced Features – Leveraged code interpreter and image generation appropriately Professional Tone – Maintained business-appropriate communication style" />
+<link rel="canonical" href="http://0.0.0.0:4000/mcs-labs/labs/agent-builder-sharepoint/" />
+<meta property="og:url" content="http://0.0.0.0:4000/mcs-labs/labs/agent-builder-sharepoint/" />
+<meta property="og:site_name" content="Microsoft Copilot Studio Labs" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-10-08T15:03:33-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="SharePoint AI Assistant with Agent Builder" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-10-08T15:03:33-05:00","datePublished":"2025-10-08T15:03:33-05:00","description":"Create your own SharePoint-based AI assistant with the lite experience of Copilot Studio in Microsoft 365 Copilot (formerly Copilot Studio agent builder) Build an intelligent sales admin assistant that analyzes SharePoint data using code interpreter and image generation features in Copilot Studio Lite. 🧭 Lab Details Level Persona Duration Purpose 200 Intermediate Maker 20 minutes After completing this lab, attendees will be able to create a Copilot agent that integrates SharePoint documents, uses code interpreter for data analysis, and generates visual content to support sales operations. 📚 Table of Contents Introduction Prerequisites Summary of Targets Use Cases Covered Instructions by Use Case Use Case #1: Access SharePoint documents Use Case #2: Create your Sales Admin Assistant agent Use Case #3: Test advanced AI capabilities Summary of Learnings 🌐 Introduction This lab builds on the Copilot Studio Lite experience by integrating SharePoint documents and enabling advanced AI capabilities. You’ll create a Sales Admin Assistant that can analyze Excel data, reference policy documents, generate charts through code interpretation, and create visual content. [!NOTE] This lab assumes familiarity with the basic Copilot Studio lite concepts covered in the web-based agent builder lab. ✅ Prerequisites Access to Microsoft 365 Copilot or Copilot Chat Access to a SharePoint site with sample sales data Ability to create and configure Copilot agents 🎯 Summary of Targets By the end of the lab, your Sales Admin Assistant will be able to: Access and analyze data from SharePoint Excel files Reference sales policies from SharePoint documents Generate dynamic charts and graphs using code interpreter Create visual content with image generation capabilities Provide insights on sales trends and performance metrics 🧩 Use Cases Covered Step Use Case Value added Effort 1 Access SharePoint documents Establish data sources for the agent 5 min 2 Create your Sales Admin Assistant agent Build an agent with SharePoint integration and advanced capabilities 10 min 3 Test advanced AI capabilities Validate code interpreter, image generation, and data analysis features 5 min 🛠️ Instructions by Use Case 📁 Use Case #1: Access SharePoint documents Prepare the SharePoint documents that will serve as knowledge sources for your Sales Admin Assistant. Step-by-step instructions Navigate to SharePoint Navigate to your organization’s SharePoint site Go to the Documents tab Open the Sales folder [!IMPORTANT] The URL of the SharePoint site is available in Lab Resources (specific per training). Locate the following sample files: Sales Excel file: A spreadsheet containing sales data with columns for dates, product lines, revenue, and quarters Sales policy document: A Word document containing sales policies, procedures, and guidelines Open the Excel file. Look at the data structure: Ensure it contains sales data across multiple quarters/years Verify product line categorization Open the Word policy document and review: Sales procedures and guidelines Policy information that might inform sales decisions Any specific requirements or compliance information 🤖 Use Case #2: Create your Sales Admin Assistant agent Build a specialized agent with SharePoint integration and advanced AI capabilities. Step-by-step instructions Create the agent Navigate to Microsoft 365 Copilot Chat and go to the Chat tab. On the side pane, expand Agents and select Create agent. When prompted to describe the agent, use this specific prompt: You are a Sales Admin Assistant. Your job is to help sales managers track revenue and identify trends across product lines. You understand product hierarchies, time periods (e.g. quarters, fiscal years), and sales metrics. Users can ask questions like &#39;Graph the sales for the last 2 years with a breakdown per product line and quarter&#39;. You always respond in a friendly and professional tone, aiming to be helpful and insightful. Confirm the suggested agent name when prompted. Go to the Configure tab Under capabilities, enable: Code interpreter (for data analysis and chart generation) Image generator (for creating visual content) Finalize configuration Navigate to the Configure tab to review and refine: Agent name and description Instructions Starter prompts Configure knowledge sources Now head over to the Knowledge section Under Knowledge, select the Search bar Go to the Files tab. Select both the Sales Policy Document and Sales documents You will see them being added as SharePoint documents [!TIP] If you can’t see the files you just opened, an alternative approach is to paste and add the SharePoint URL of the Sales folder. Another alternative approach is to download the files locally and upload them to your agent. When satisfied with the configuration, select Create. 🧪 Use Case #3: Test advanced AI capabilities Validate your agent’s ability to work with SharePoint data and advanced AI features. Step-by-step instructions Test policy knowledge Select Go to agent to start testing. First, test the agent’s knowledge of your sales policy: What are the key guidelines in our sales policy regarding customer discounts? Verify the agent references your SharePoint policy document and provides accurate information. Test code interpreter with data analysis Start a new chat and test the code interpreter capability with a data analysis request: How are sales trending for home appliances? If offered to get a visual chart of this breakdown, confirm. Observe how the agent: Accesses your Excel data Uses code interpreter to process the data Generates dynamic charts and visualizations Provides insights based on the analysis Test image generation Start a new chat and test the image generation capability with a relevant request: Design a professional badge for the first place winner of our 2026 sales contest. It should look modern and premium, with gold colors, the text &#39;1st Place – Sales Contest 2026&#39;, and a ribbon or trophy element. [!TIP] Notice how you can also invoke a specific agent by using @ in the standard Chat area. Update your agents and explore additional capabilities Select … next to your agent name in the side bar navigation, and choose Edit Select the Sales agent you created In the Configure tab, explore additional knowledge capabilities: All Websites (or specific websites) All SharePoint data (or specific files or sites) All Teams data (or data from specific group chats, meetings, or channels) Your Emails Knowledge sources enabled by your organization at the tenant level, through Copilot Connectors (e.g., ServiceNow) 🏅 Congratulations! You’ve created an advanced SharePoint-integrated Copilot agent! 🔁 Summary of Learnings Key achievements and insights from this lab: Technical Capabilities Mastered SharePoint Integration – Connected agent to organizational documents and data sources Code Interpreter – Enabled dynamic data analysis and chart generation. Image Generation – Created relevant visual content for business presentations Business Value Delivered Data-Driven Insights – Transform raw sales data into actionable intelligence Policy Compliance – Ensure sales activities align with organizational guidelines Professional Presentations – Generate presentation-ready visuals and charts Operational Efficiency – Streamline sales reporting and analysis workflows Best Practices Applied Specific Instructions – Tailored agent behavior to sales management needs Relevant Knowledge Sources – Grounded responses in actual business documents Advanced Features – Leveraged code interpreter and image generation appropriately Professional Tone – Maintained business-appropriate communication style","headline":"SharePoint AI Assistant with Agent Builder","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/mcs-labs/labs/agent-builder-sharepoint/"},"url":"http://0.0.0.0:4000/mcs-labs/labs/agent-builder-sharepoint/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="/mcs-labs/">Microsoft Copilot Studio Labs</a></h1>
+            <nav>
+                <a href="/mcs-labs/">Home</a>
+                <a href="/mcs-labs/labs/">All Labs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-content">
+        <div class="container">
+            <article class="lab-content">
+    <header class="lab-header">
+        <h1>SharePoint AI Assistant with Agent Builder</h1>
+        
+        <div class="lab-meta">
+            <span class="duration">⏱️ 60 minutes</span>
+            
+            <span class="difficulty">📊 200</span>
+            
+        </div>
+        
+    </header>
+
+    <div class="lab-body">
+        <h1 id="create-your-own-sharepoint-based-ai-assistant-with-the-lite-experience-of-copilot-studio-in-microsoft-365-copilot-formerly-copilot-studio-agent-builder">Create your own SharePoint-based AI assistant with the lite experience of Copilot Studio in Microsoft 365 Copilot (formerly Copilot Studio agent builder)</h1>
+
+<p>Build an intelligent sales admin assistant that analyzes SharePoint data using code interpreter and image generation features in Copilot Studio Lite.</p>
+
+<hr />
+
+<h2 id="-lab-details">🧭 Lab Details</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Level</th>
+      <th>Persona</th>
+      <th>Duration</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>200</td>
+      <td>Intermediate Maker</td>
+      <td>20 minutes</td>
+      <td>After completing this lab, attendees will be able to create a Copilot agent that integrates SharePoint documents, uses code interpreter for data analysis, and generates visual content to support sales operations.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-table-of-contents">📚 Table of Contents</h2>
+
+<ul>
+  <li><a href="#-introduction">Introduction</a></li>
+  <li><a href="#-prerequisites">Prerequisites</a></li>
+  <li><a href="#-summary-of-targets">Summary of Targets</a></li>
+  <li><a href="#-use-cases-covered">Use Cases Covered</a></li>
+  <li><a href="#️-instructions-by-use-case">Instructions by Use Case</a>
+    <ul>
+      <li><a href="#-use-case-1-access-sharepoint-documents">Use Case #1: Access SharePoint documents</a></li>
+      <li><a href="#-use-case-2-create-your-sales-admin-assistant-agent">Use Case #2: Create your Sales Admin Assistant agent</a></li>
+      <li><a href="#-use-case-3-test-advanced-ai-capabilities">Use Case #3: Test advanced AI capabilities</a></li>
+    </ul>
+  </li>
+  <li><a href="#-summary-of-learnings">Summary of Learnings</a></li>
+</ul>
+
+<hr />
+
+<h2 id="-introduction">🌐 Introduction</h2>
+
+<p>This lab builds on the Copilot Studio Lite experience by integrating SharePoint documents and enabling advanced AI capabilities. You’ll create a Sales Admin Assistant that can analyze Excel data, reference policy documents, generate charts through code interpretation, and create visual content.</p>
+
+<blockquote>
+  <p>[!NOTE]<br />
+This lab assumes familiarity with the basic Copilot Studio lite concepts covered in the <a href="../agent-builder-web/README.md">web-based agent builder lab</a>.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="-prerequisites">✅ Prerequisites</h2>
+
+<ul>
+  <li>Access to Microsoft 365 Copilot or Copilot Chat</li>
+  <li>Access to a SharePoint site with sample sales data</li>
+  <li>Ability to create and configure Copilot agents</li>
+</ul>
+
+<hr />
+
+<h2 id="-summary-of-targets">🎯 Summary of Targets</h2>
+
+<p>By the end of the lab, your Sales Admin Assistant will be able to:</p>
+
+<ul>
+  <li>Access and analyze data from SharePoint Excel files</li>
+  <li>Reference sales policies from SharePoint documents</li>
+  <li>Generate dynamic charts and graphs using code interpreter</li>
+  <li>Create visual content with image generation capabilities</li>
+  <li>Provide insights on sales trends and performance metrics</li>
+</ul>
+
+<hr />
+
+<h2 id="-use-cases-covered">🧩 Use Cases Covered</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Use Case</th>
+      <th>Value added</th>
+      <th>Effort</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><a href="#-use-case-1-access-sharepoint-documents">Access SharePoint documents</a></td>
+      <td>Establish data sources for the agent</td>
+      <td>5 min</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><a href="#-use-case-2-create-your-sales-admin-assistant-agent">Create your Sales Admin Assistant agent</a></td>
+      <td>Build an agent with SharePoint integration and advanced capabilities</td>
+      <td>10 min</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><a href="#-use-case-3-test-advanced-ai-capabilities">Test advanced AI capabilities</a></td>
+      <td>Validate code interpreter, image generation, and data analysis features</td>
+      <td>5 min</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="️-instructions-by-use-case">🛠️ Instructions by Use Case</h2>
+
+<hr />
+
+<h2 id="-use-case-1-access-sharepoint-documents">📁 Use Case #1: Access SharePoint documents</h2>
+
+<p>Prepare the SharePoint documents that will serve as knowledge sources for your Sales Admin Assistant.</p>
+
+<h3 id="step-by-step-instructions">Step-by-step instructions</h3>
+
+<h4 id="navigate-to-sharepoint">Navigate to SharePoint</h4>
+
+<ol>
+  <li>Navigate to your organization’s SharePoint site
+    <ul>
+      <li>Go to the <strong>Documents</strong> tab</li>
+      <li>Open the <strong>Sales</strong> folder</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p>[!IMPORTANT]
+ The URL of the SharePoint site is available in <strong>Lab Resources</strong> (specific per training).</p>
+</blockquote>
+
+<ol>
+  <li>Locate the following sample files:
+    <ul>
+      <li><strong>Sales Excel file</strong>: A spreadsheet containing sales data with columns for dates, product lines, revenue, and quarters</li>
+      <li><strong>Sales policy document</strong>: A Word document containing sales policies, procedures, and guidelines</li>
+    </ul>
+  </li>
+  <li>Open the <strong>Excel file</strong>. Look at the data structure:
+    <ul>
+      <li>Ensure it contains sales data across multiple quarters/years</li>
+      <li>Verify product line categorization</li>
+    </ul>
+  </li>
+  <li>Open the <strong>Word policy document</strong> and review:
+    <ul>
+      <li>Sales procedures and guidelines</li>
+      <li>Policy information that might inform sales decisions</li>
+      <li>Any specific requirements or compliance information</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="-use-case-2-create-your-sales-admin-assistant-agent">🤖 Use Case #2: Create your Sales Admin Assistant agent</h2>
+
+<p>Build a specialized agent with SharePoint integration and advanced AI capabilities.</p>
+
+<h3 id="step-by-step-instructions-1">Step-by-step instructions</h3>
+
+<h4 id="create-the-agent">Create the agent</h4>
+
+<ol>
+  <li>
+    <p>Navigate to <a href="https://m365.cloud.microsoft/chat/?auth=2&amp;home=1">Microsoft 365 Copilot Chat</a> and go to the <strong>Chat</strong> tab.</p>
+  </li>
+  <li>
+    <p>On the side pane, expand <strong>Agents</strong> and select <strong>Create agent</strong>.</p>
+  </li>
+  <li>
+    <p>When prompted to <strong>describe the agent</strong>, use this specific prompt:</p>
+  </li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You are a Sales Admin Assistant. Your job is to help sales managers track revenue and identify trends across product lines. You understand product hierarchies, time periods (e.g. quarters, fiscal years), and sales metrics. Users can ask questions like 'Graph the sales for the last 2 years with a breakdown per product line and quarter'. You always respond in a friendly and professional tone, aiming to be helpful and insightful.
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p><strong>Confirm</strong> the suggested agent name when prompted.</p>
+  </li>
+  <li>
+    <p>Go to the <strong>Configure</strong> tab</p>
+  </li>
+</ol>
+
+<!--
+![alt text](images/knowledge-files.png)
+Commented out; screenshots need update due to CPS updates.  Last minute change to labs required so will do at a later date
+> [!TIP]
+> If you can't see the files you just opened, an alternative approach is just to **paste** and **add** the SharePoint URL of the Sales folder.
+> 
+>    ![alt text](images/sharepoint-url-fallback.png)
+-->
+
+<ol>
+  <li>Under <strong>capabilities</strong>, enable:
+    <ul>
+      <li><strong>Code interpreter</strong> (for data analysis and chart generation)</li>
+      <li><strong>Image generator</strong> (for creating visual content)</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="finalize-configuration">Finalize configuration</h4>
+
+<ol>
+  <li>Navigate to the <strong>Configure</strong> tab to review and refine:
+    <ul>
+      <li>Agent name and description</li>
+      <li>Instructions</li>
+      <li>Starter prompts</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="configure-knowledge-sources">Configure knowledge sources</h4>
+
+<ol>
+  <li>Now head over to the <strong>Knowledge</strong> section
+    <ul>
+      <li>Under <strong>Knowledge</strong>, select the <strong>Search bar</strong></li>
+      <li>Go to the <strong>Files</strong> tab.</li>
+      <li>Select both the <strong>Sales Policy Document</strong> and <strong>Sales</strong> documents</li>
+      <li>You will see them being added as SharePoint documents</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p>[!TIP]</p>
+  <ul>
+    <li>If you can’t see the files you just opened, an alternative approach is to <strong>paste</strong> and <strong>add</strong> the SharePoint URL of the Sales folder.</li>
+    <li>Another alternative approach is to <strong>download</strong> the files locally and <strong>upload</strong> them to your agent.</li>
+  </ul>
+</blockquote>
+
+<ol>
+  <li>When satisfied with the configuration, select <strong>Create</strong>.</li>
+</ol>
+
+<hr />
+
+<h2 id="-use-case-3-test-advanced-ai-capabilities">🧪 Use Case #3: Test advanced AI capabilities</h2>
+
+<p>Validate your agent’s ability to work with SharePoint data and advanced AI features.</p>
+
+<h3 id="step-by-step-instructions-2">Step-by-step instructions</h3>
+
+<h4 id="test-policy-knowledge">Test policy knowledge</h4>
+
+<ol>
+  <li>
+    <p>Select <strong>Go to agent</strong> to start testing.</p>
+  </li>
+  <li>
+    <p>First, test the agent’s <strong>knowledge</strong> of your sales policy:</p>
+  </li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>What are the key guidelines in our sales policy regarding customer discounts?
+</code></pre></div></div>
+
+<ol>
+  <li>Verify the agent references your SharePoint policy document and provides accurate information.</li>
+</ol>
+
+<h4 id="test-code-interpreter-with-data-analysis">Test code interpreter with data analysis</h4>
+
+<ol>
+  <li><strong>Start a new chat</strong> and test the <strong>code interpreter</strong> capability with a data analysis request:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>How are sales trending for home appliances?
+</code></pre></div></div>
+
+<ol>
+  <li><em>If</em> offered to get a visual chart of this breakdown, <strong>confirm</strong>.</li>
+</ol>
+
+<p><img src="images/sales-data-analysis.png" alt="alt text" /></p>
+
+<p><img src="images/code-interpreter.png" alt="alt text" /></p>
+
+<ol>
+  <li><strong>Observe</strong> how the agent:
+    <ul>
+      <li>Accesses your Excel data</li>
+      <li>Uses code interpreter to process the data</li>
+      <li>Generates dynamic charts and visualizations</li>
+      <li>Provides insights based on the analysis</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="test-image-generation">Test image generation</h4>
+
+<ol>
+  <li><strong>Start a new chat</strong> and test the <strong>image generation</strong> capability with a relevant request:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Design a professional badge for the first place winner of our 2026 sales contest. It should look modern and premium, with gold colors, the text '1st Place – Sales Contest 2026', and a ribbon or trophy element.
+</code></pre></div></div>
+
+<p><img src="images/image-generator.png" alt="alt text" /></p>
+
+<blockquote>
+  <p>[!TIP]
+Notice how you can also invoke a specific agent by using <strong>@</strong> in the standard <strong>Chat</strong> area.</p>
+</blockquote>
+
+<h4 id="update-your-agents-and-explore-additional-capabilities">Update your agents and explore additional capabilities</h4>
+
+<ol>
+  <li>
+    <p>Select <strong>…</strong> next to your agent name in the side bar navigation, and choose <strong>Edit</strong></p>
+  </li>
+  <li>
+    <p>Select the Sales agent you created</p>
+  </li>
+  <li>
+    <p>In the <strong>Configure</strong> tab, explore additional <strong>knowledge</strong> capabilities:</p>
+    <ul>
+      <li>All <strong>Websites</strong> (or specific websites)</li>
+      <li>All <strong>SharePoint</strong> data (or specific files or sites)</li>
+      <li>All <strong>Teams</strong> data (or data from specific group chats, meetings, or channels)</li>
+      <li>Your <strong>Emails</strong></li>
+      <li>Knowledge sources enabled by your organization at the tenant level, through <strong>Copilot Connectors</strong> (e.g., ServiceNow)</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="-congratulations-youve-created-an-advanced-sharepoint-integrated-copilot-agent">🏅 Congratulations! You’ve created an advanced SharePoint-integrated Copilot agent!</h3>
+
+<hr />
+
+<h2 id="-summary-of-learnings">🔁 Summary of Learnings</h2>
+
+<p>Key achievements and insights from this lab:</p>
+
+<h3 id="technical-capabilities-mastered">Technical Capabilities Mastered</h3>
+<ul>
+  <li><strong>SharePoint Integration</strong> – Connected agent to organizational documents and data sources</li>
+  <li><strong>Code Interpreter</strong> – Enabled dynamic data analysis and chart generation.</li>
+  <li><strong>Image Generation</strong> – Created relevant visual content for business presentations</li>
+</ul>
+
+<h3 id="business-value-delivered">Business Value Delivered</h3>
+<ul>
+  <li><strong>Data-Driven Insights</strong> – Transform raw sales data into actionable intelligence</li>
+  <li><strong>Policy Compliance</strong> – Ensure sales activities align with organizational guidelines</li>
+  <li><strong>Professional Presentations</strong> – Generate presentation-ready visuals and charts</li>
+  <li><strong>Operational Efficiency</strong> – Streamline sales reporting and analysis workflows</li>
+</ul>
+
+<h3 id="best-practices-applied">Best Practices Applied</h3>
+<ul>
+  <li><strong>Specific Instructions</strong> – Tailored agent behavior to sales management needs</li>
+  <li><strong>Relevant Knowledge Sources</strong> – Grounded responses in actual business documents</li>
+  <li><strong>Advanced Features</strong> – Leveraged code interpreter and image generation appropriately</li>
+  <li><strong>Professional Tone</strong> – Maintained business-appropriate communication style</li>
+</ul>
+
+<hr />
+
+
+    </div>
+
+    <footer class="lab-footer">
+        <div class="lab-navigation">
+            
+            
+            
+            
+            
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                    
+                    
+            
+            
+                <a href="/mcs-labs/labs/agent-builder-web/" class="nav-button prev">
+                    ← Web-based AI Assistant with Agent Builder
+                </a>
+            
+            
+            
+                <a href="/mcs-labs/labs/standard-orchestrator/" class="nav-button next">
+                    Standard Orchestrator →
+                </a>
+            
+        </div>
+    </footer>
+</article>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Microsoft Copilot Studio Labs</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Context Protocol Integration | Microsoft Copilot Studio Labs</title>
+    <link rel="stylesheet" href="/mcs-labs/assets/css/style.css">
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Model Context Protocol Integration | Microsoft Copilot Studio Labs</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Model Context Protocol Integration" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Prioritize Hot Leads with AI: Connect to Dynamics 365 Sales Using Model Context Protocol Empower sellers to focus on what matters most—high-value leads. 🧱 Lab Details Level Persona Duration Purpose 200 Maker/Developer 15 minutes After completing this lab, participants will be able to connect to Dynamics 365 Sales with Model Context Protocol to identify and prioritize high-value leads, enabling sellers to focus their time and effort where it counts most. You’ll learn how to configure the Model Context Protocol, connect to Dynamics 365 Sales, and use AI to analyze and qualify leads. 📚 Table of Contents Why This Matters Introduction Core Concepts Overview Documentation and Additional Training Links Prerequisites Summary of Targets Use Cases Covered Instructions by Use Case Use Case #1: Create and Configure an Agent Use Case #2: Configure Model Context Protocol (Dataverse and D365 Sales) Use Case #3: Test the Complete Workflow 🤔 Why This Matters For sales leaders and CRM admins - Lead overload is a common problem. Think of a sales team like a firefighter squad: Without AI prioritization: They’re chasing every alarm, wasting time and missing real fires. With AI prioritization: They focus on the biggest, hottest leads – fast and smart. Common challenges solved by this lab: “We’re missing hot leads because we can’t triage fast enough.” “Our sellers are overwhelmed with too many low-priority leads.” “We need a smarter way to focus our sales efforts.” In just 15 minutes, you’ll learn how to use AI to help your sales team work smarter—not harder. 🌐 Introduction In today’s competitive sales environment, identifying and acting on the right leads at the right time is critical. Sellers are often overwhelmed by the volume of leads and lack the tools to quickly determine which ones are worth pursuing. Real-world example: A sales team receives hundreds of leads per week. Without automation, they spend hours reviewing CRM data. As a result, some of the best opportunities are missed or delayed. With D365 Sales Model Context Protocol and AI: AI analyzes lead data, engagement history, and contextual signals to surface the most promising leads. Sellers get a prioritized list—no guesswork, no delay. 🎓 Core Concepts Overview Concept Why it matters Model Context Protocol Enables AI to securely access tools, data, and prompts through a standard protocol D365 Sales Model Context Protocol Enables AI to access and reason over CRM data in Dynamics 365 Sales, surfacing insights like lead quality, engagement level, and deal potential 📄 Documentation and Additional Training Links Microsoft Copilot Studio Documentation Extend your agent with Model Context Protocol Connect to Dataverse with Model Context Protocol Connect to Dynamics 365 Sales with Model Context Protocol (preview) ✅ Prerequisites Access to Microsoft Copilot Studio with appropriate licensing. Office 365 environment. Access to a Dynamics 365 Sales environment. 🎯 Summary of Targets In this lab, you’ll build a complete lead prioritization workflow that transforms how sellers in your organization identify and act on high-value opportunities. By the end of the lab, you will: Create and configure an agent. Configure Dataverse Model Context Protocol and Dynamics 365 Sales Model Context Protocol. Test the complete workflow from leads detection to lead qualification. Understand how AI can automate lead prioritization. 🧰 Use Cases Covered Step Use Case Value added Effort 1 Create and configure an agent Establishes the foundation for intelligent lead processing and workflow orchestration 5 min 2 Configure Model Context Protocol (Dataverse and D365 Sales) Enables AI to analyze CRM data in Dynamics 365 Sales and identify high-value leads 5 min 3 Test the Complete Workflow Validates the end-to-end solution and ensures reliability in real-world sales environments 5 min 🛠️ Instructions by Use Case 🧱 Use Case #1: Create and Configure an Agent Set up the foundational agent Use case Value added Estimated effort Create and configure an agent Establishes the foundation for intelligent lead processing and workflow orchestration 5 minutes Summary of tasks In this section, you’ll learn how to create a seller experience agent that helps sellers interact through a chat interface. Scenario: Your sales team is overwhelmed with incoming leads and needs quick, intelligent guidance on which ones to focus on. Objective Create a seller-facing agent. Step-by-step instructions Creating the Agent and Solution Setup Navigate to the Copilot Studio home page at https://copilotstudio.microsoft.com/ Go to the Solutions menu. Select the existing solution used in prior labs. Select New &gt; Agent. Click Skip to configure. Name the agent Seller Assistant. Click Create. [!TIP] Choose a descriptive name to make your agent easier to find and manage. 🏅 Congratulations! You’ve completed Use Case #1! Test your understanding Key takeaways: Seller Assistant Agent Foundation – You’ve created the structure for intelligent seller interactions. Solution Integration – Your agent is inside a solution for organized deployment. Lessons learned: Keep agent names clear and purpose-driven. ↺ Use Case #2: Configure Model Context Protocol (Dataverse and D365 Sales) Transform your agent by connecting it to Dataverse and D365 Sales via Model Context Protocol. Use case Value added Estimated effort Add Dataverse and D365 Sales MCP tools Connects Dynamics 365 Sales via Model Context Protocol for intelligent, sales-specific conversational experiences. 5 minutes Summary of tasks You’ll configure MCP tools to allow AI to surface prioritized leads. Scenario: Sellers face a long list of leads. The agent helps them find the most promising ones. Step-by-step instructions Adding Dataverse MCP Server Go to the Tools tab in your agent. Click + Add a tool &gt; choose Model Context Protocol &gt; select Dataverse MCP server. Click Add and configure. Rename the tool to Dataverse MCP. Under Additional details, set Credentials to use to Maker-provided credentials. Click Save. [!TIP] Dataverse MCP is needed before configuring D365 Sales MCP. Adding D365 Sales MCP Server Add a second MCP tool. Select D365 Sales MCP server. Click Add and configure. Rename to Lead Qualifier. Update description: Support identifying and focusing on high-potential leads. Set Authentication to Maker-provided credentials. Click Save. Review the tools associated. Configuring Agent Instructions Navigate to Overview &gt; Instructions. Paste these instructions: When the user says they want to see leads they should focus on: - Retrieve and present 3–5 leads: name, company, lead ID, summary When user says &quot;pick one&quot;: - Confirm selection - Show details: name, company, status, interaction, interest - Ask to qualify When user says &quot;qualify it&quot;: - Do not request lead ID again - Qualify the lead - Ask to draft follow-up email General: - Always confirm intent - Offer quick replies - Ask before proceeding - Be brief, helpful, and friendly Publish the agent. 🏅 Congratulations! You’ve completed Use Case #2! 🧪 Use Case #3: Test the Complete Workflow Use case Value added Estimated effort Test the complete workflow Validates the end-to-end solution and ensures reliability in real-world sales environments 5 minutes Summary of tasks You’ll test your configured agent by simulating a realistic sales interaction. Scenario: A seller logs into the agent and asks which leads to focus on. The agent should respond with prioritized suggestions and support lead qualification. Step-by-step instructions Send the prompt: Which leads should I focus on? Pick a lead from the list using the prompt: Pick Maria Send Yes to qualify the selected lead. Check if the lead status is updated in CRM. [!IMPORTANT] Verify in CRM that the lead was correctly qualified through your agent interaction. 🏅 Congratulations! You’ve completed Use Case #3! Test your understanding Key takeaways: End-to-end validation – You confirmed that the agent supports triage, interaction, and qualification. Seller experience simulation – The agent guides users naturally using AI-driven logic. Challenge: Apply this to your own use case What refinements would make the interaction more natural? How could the agent support follow-up actions (emails, tasks)? 🏆 Summary of learnings To maximize the impact of AI in sales workflows: Start Simple, Scale Smart – Begin with triage, then expand. Data Quality Drives Results – Ensure CRM hygiene. Design for Real-World Use – Match how sellers actually work. Iterate Based on Feedback – Improve your agent over time. Conclusions and recommendations Seller Assistant Success Principles: Test your agent using realistic scenarios. Keep D365 Sales data clean. Use secure authentication. Match the agent to how sellers work. Expand use over time (qualification, outreach). Monitor usage and iterate regularly. By following these principles, you’ll empower your sellers to focus where it counts, using AI that works the way they do." />
+<meta property="og:description" content="Prioritize Hot Leads with AI: Connect to Dynamics 365 Sales Using Model Context Protocol Empower sellers to focus on what matters most—high-value leads. 🧱 Lab Details Level Persona Duration Purpose 200 Maker/Developer 15 minutes After completing this lab, participants will be able to connect to Dynamics 365 Sales with Model Context Protocol to identify and prioritize high-value leads, enabling sellers to focus their time and effort where it counts most. You’ll learn how to configure the Model Context Protocol, connect to Dynamics 365 Sales, and use AI to analyze and qualify leads. 📚 Table of Contents Why This Matters Introduction Core Concepts Overview Documentation and Additional Training Links Prerequisites Summary of Targets Use Cases Covered Instructions by Use Case Use Case #1: Create and Configure an Agent Use Case #2: Configure Model Context Protocol (Dataverse and D365 Sales) Use Case #3: Test the Complete Workflow 🤔 Why This Matters For sales leaders and CRM admins - Lead overload is a common problem. Think of a sales team like a firefighter squad: Without AI prioritization: They’re chasing every alarm, wasting time and missing real fires. With AI prioritization: They focus on the biggest, hottest leads – fast and smart. Common challenges solved by this lab: “We’re missing hot leads because we can’t triage fast enough.” “Our sellers are overwhelmed with too many low-priority leads.” “We need a smarter way to focus our sales efforts.” In just 15 minutes, you’ll learn how to use AI to help your sales team work smarter—not harder. 🌐 Introduction In today’s competitive sales environment, identifying and acting on the right leads at the right time is critical. Sellers are often overwhelmed by the volume of leads and lack the tools to quickly determine which ones are worth pursuing. Real-world example: A sales team receives hundreds of leads per week. Without automation, they spend hours reviewing CRM data. As a result, some of the best opportunities are missed or delayed. With D365 Sales Model Context Protocol and AI: AI analyzes lead data, engagement history, and contextual signals to surface the most promising leads. Sellers get a prioritized list—no guesswork, no delay. 🎓 Core Concepts Overview Concept Why it matters Model Context Protocol Enables AI to securely access tools, data, and prompts through a standard protocol D365 Sales Model Context Protocol Enables AI to access and reason over CRM data in Dynamics 365 Sales, surfacing insights like lead quality, engagement level, and deal potential 📄 Documentation and Additional Training Links Microsoft Copilot Studio Documentation Extend your agent with Model Context Protocol Connect to Dataverse with Model Context Protocol Connect to Dynamics 365 Sales with Model Context Protocol (preview) ✅ Prerequisites Access to Microsoft Copilot Studio with appropriate licensing. Office 365 environment. Access to a Dynamics 365 Sales environment. 🎯 Summary of Targets In this lab, you’ll build a complete lead prioritization workflow that transforms how sellers in your organization identify and act on high-value opportunities. By the end of the lab, you will: Create and configure an agent. Configure Dataverse Model Context Protocol and Dynamics 365 Sales Model Context Protocol. Test the complete workflow from leads detection to lead qualification. Understand how AI can automate lead prioritization. 🧰 Use Cases Covered Step Use Case Value added Effort 1 Create and configure an agent Establishes the foundation for intelligent lead processing and workflow orchestration 5 min 2 Configure Model Context Protocol (Dataverse and D365 Sales) Enables AI to analyze CRM data in Dynamics 365 Sales and identify high-value leads 5 min 3 Test the Complete Workflow Validates the end-to-end solution and ensures reliability in real-world sales environments 5 min 🛠️ Instructions by Use Case 🧱 Use Case #1: Create and Configure an Agent Set up the foundational agent Use case Value added Estimated effort Create and configure an agent Establishes the foundation for intelligent lead processing and workflow orchestration 5 minutes Summary of tasks In this section, you’ll learn how to create a seller experience agent that helps sellers interact through a chat interface. Scenario: Your sales team is overwhelmed with incoming leads and needs quick, intelligent guidance on which ones to focus on. Objective Create a seller-facing agent. Step-by-step instructions Creating the Agent and Solution Setup Navigate to the Copilot Studio home page at https://copilotstudio.microsoft.com/ Go to the Solutions menu. Select the existing solution used in prior labs. Select New &gt; Agent. Click Skip to configure. Name the agent Seller Assistant. Click Create. [!TIP] Choose a descriptive name to make your agent easier to find and manage. 🏅 Congratulations! You’ve completed Use Case #1! Test your understanding Key takeaways: Seller Assistant Agent Foundation – You’ve created the structure for intelligent seller interactions. Solution Integration – Your agent is inside a solution for organized deployment. Lessons learned: Keep agent names clear and purpose-driven. ↺ Use Case #2: Configure Model Context Protocol (Dataverse and D365 Sales) Transform your agent by connecting it to Dataverse and D365 Sales via Model Context Protocol. Use case Value added Estimated effort Add Dataverse and D365 Sales MCP tools Connects Dynamics 365 Sales via Model Context Protocol for intelligent, sales-specific conversational experiences. 5 minutes Summary of tasks You’ll configure MCP tools to allow AI to surface prioritized leads. Scenario: Sellers face a long list of leads. The agent helps them find the most promising ones. Step-by-step instructions Adding Dataverse MCP Server Go to the Tools tab in your agent. Click + Add a tool &gt; choose Model Context Protocol &gt; select Dataverse MCP server. Click Add and configure. Rename the tool to Dataverse MCP. Under Additional details, set Credentials to use to Maker-provided credentials. Click Save. [!TIP] Dataverse MCP is needed before configuring D365 Sales MCP. Adding D365 Sales MCP Server Add a second MCP tool. Select D365 Sales MCP server. Click Add and configure. Rename to Lead Qualifier. Update description: Support identifying and focusing on high-potential leads. Set Authentication to Maker-provided credentials. Click Save. Review the tools associated. Configuring Agent Instructions Navigate to Overview &gt; Instructions. Paste these instructions: When the user says they want to see leads they should focus on: - Retrieve and present 3–5 leads: name, company, lead ID, summary When user says &quot;pick one&quot;: - Confirm selection - Show details: name, company, status, interaction, interest - Ask to qualify When user says &quot;qualify it&quot;: - Do not request lead ID again - Qualify the lead - Ask to draft follow-up email General: - Always confirm intent - Offer quick replies - Ask before proceeding - Be brief, helpful, and friendly Publish the agent. 🏅 Congratulations! You’ve completed Use Case #2! 🧪 Use Case #3: Test the Complete Workflow Use case Value added Estimated effort Test the complete workflow Validates the end-to-end solution and ensures reliability in real-world sales environments 5 minutes Summary of tasks You’ll test your configured agent by simulating a realistic sales interaction. Scenario: A seller logs into the agent and asks which leads to focus on. The agent should respond with prioritized suggestions and support lead qualification. Step-by-step instructions Send the prompt: Which leads should I focus on? Pick a lead from the list using the prompt: Pick Maria Send Yes to qualify the selected lead. Check if the lead status is updated in CRM. [!IMPORTANT] Verify in CRM that the lead was correctly qualified through your agent interaction. 🏅 Congratulations! You’ve completed Use Case #3! Test your understanding Key takeaways: End-to-end validation – You confirmed that the agent supports triage, interaction, and qualification. Seller experience simulation – The agent guides users naturally using AI-driven logic. Challenge: Apply this to your own use case What refinements would make the interaction more natural? How could the agent support follow-up actions (emails, tasks)? 🏆 Summary of learnings To maximize the impact of AI in sales workflows: Start Simple, Scale Smart – Begin with triage, then expand. Data Quality Drives Results – Ensure CRM hygiene. Design for Real-World Use – Match how sellers actually work. Iterate Based on Feedback – Improve your agent over time. Conclusions and recommendations Seller Assistant Success Principles: Test your agent using realistic scenarios. Keep D365 Sales data clean. Use secure authentication. Match the agent to how sellers work. Expand use over time (qualification, outreach). Monitor usage and iterate regularly. By following these principles, you’ll empower your sellers to focus where it counts, using AI that works the way they do." />
+<link rel="canonical" href="http://0.0.0.0:4000/mcs-labs/labs/mcp-qualify-lead/" />
+<meta property="og:url" content="http://0.0.0.0:4000/mcs-labs/labs/mcp-qualify-lead/" />
+<meta property="og:site_name" content="Microsoft Copilot Studio Labs" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-10-08T15:03:33-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Model Context Protocol Integration" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-10-08T15:03:33-05:00","datePublished":"2025-10-08T15:03:33-05:00","description":"Prioritize Hot Leads with AI: Connect to Dynamics 365 Sales Using Model Context Protocol Empower sellers to focus on what matters most—high-value leads. 🧱 Lab Details Level Persona Duration Purpose 200 Maker/Developer 15 minutes After completing this lab, participants will be able to connect to Dynamics 365 Sales with Model Context Protocol to identify and prioritize high-value leads, enabling sellers to focus their time and effort where it counts most. You’ll learn how to configure the Model Context Protocol, connect to Dynamics 365 Sales, and use AI to analyze and qualify leads. 📚 Table of Contents Why This Matters Introduction Core Concepts Overview Documentation and Additional Training Links Prerequisites Summary of Targets Use Cases Covered Instructions by Use Case Use Case #1: Create and Configure an Agent Use Case #2: Configure Model Context Protocol (Dataverse and D365 Sales) Use Case #3: Test the Complete Workflow 🤔 Why This Matters For sales leaders and CRM admins - Lead overload is a common problem. Think of a sales team like a firefighter squad: Without AI prioritization: They’re chasing every alarm, wasting time and missing real fires. With AI prioritization: They focus on the biggest, hottest leads – fast and smart. Common challenges solved by this lab: “We’re missing hot leads because we can’t triage fast enough.” “Our sellers are overwhelmed with too many low-priority leads.” “We need a smarter way to focus our sales efforts.” In just 15 minutes, you’ll learn how to use AI to help your sales team work smarter—not harder. 🌐 Introduction In today’s competitive sales environment, identifying and acting on the right leads at the right time is critical. Sellers are often overwhelmed by the volume of leads and lack the tools to quickly determine which ones are worth pursuing. Real-world example: A sales team receives hundreds of leads per week. Without automation, they spend hours reviewing CRM data. As a result, some of the best opportunities are missed or delayed. With D365 Sales Model Context Protocol and AI: AI analyzes lead data, engagement history, and contextual signals to surface the most promising leads. Sellers get a prioritized list—no guesswork, no delay. 🎓 Core Concepts Overview Concept Why it matters Model Context Protocol Enables AI to securely access tools, data, and prompts through a standard protocol D365 Sales Model Context Protocol Enables AI to access and reason over CRM data in Dynamics 365 Sales, surfacing insights like lead quality, engagement level, and deal potential 📄 Documentation and Additional Training Links Microsoft Copilot Studio Documentation Extend your agent with Model Context Protocol Connect to Dataverse with Model Context Protocol Connect to Dynamics 365 Sales with Model Context Protocol (preview) ✅ Prerequisites Access to Microsoft Copilot Studio with appropriate licensing. Office 365 environment. Access to a Dynamics 365 Sales environment. 🎯 Summary of Targets In this lab, you’ll build a complete lead prioritization workflow that transforms how sellers in your organization identify and act on high-value opportunities. By the end of the lab, you will: Create and configure an agent. Configure Dataverse Model Context Protocol and Dynamics 365 Sales Model Context Protocol. Test the complete workflow from leads detection to lead qualification. Understand how AI can automate lead prioritization. 🧰 Use Cases Covered Step Use Case Value added Effort 1 Create and configure an agent Establishes the foundation for intelligent lead processing and workflow orchestration 5 min 2 Configure Model Context Protocol (Dataverse and D365 Sales) Enables AI to analyze CRM data in Dynamics 365 Sales and identify high-value leads 5 min 3 Test the Complete Workflow Validates the end-to-end solution and ensures reliability in real-world sales environments 5 min 🛠️ Instructions by Use Case 🧱 Use Case #1: Create and Configure an Agent Set up the foundational agent Use case Value added Estimated effort Create and configure an agent Establishes the foundation for intelligent lead processing and workflow orchestration 5 minutes Summary of tasks In this section, you’ll learn how to create a seller experience agent that helps sellers interact through a chat interface. Scenario: Your sales team is overwhelmed with incoming leads and needs quick, intelligent guidance on which ones to focus on. Objective Create a seller-facing agent. Step-by-step instructions Creating the Agent and Solution Setup Navigate to the Copilot Studio home page at https://copilotstudio.microsoft.com/ Go to the Solutions menu. Select the existing solution used in prior labs. Select New &gt; Agent. Click Skip to configure. Name the agent Seller Assistant. Click Create. [!TIP] Choose a descriptive name to make your agent easier to find and manage. 🏅 Congratulations! You’ve completed Use Case #1! Test your understanding Key takeaways: Seller Assistant Agent Foundation – You’ve created the structure for intelligent seller interactions. Solution Integration – Your agent is inside a solution for organized deployment. Lessons learned: Keep agent names clear and purpose-driven. ↺ Use Case #2: Configure Model Context Protocol (Dataverse and D365 Sales) Transform your agent by connecting it to Dataverse and D365 Sales via Model Context Protocol. Use case Value added Estimated effort Add Dataverse and D365 Sales MCP tools Connects Dynamics 365 Sales via Model Context Protocol for intelligent, sales-specific conversational experiences. 5 minutes Summary of tasks You’ll configure MCP tools to allow AI to surface prioritized leads. Scenario: Sellers face a long list of leads. The agent helps them find the most promising ones. Step-by-step instructions Adding Dataverse MCP Server Go to the Tools tab in your agent. Click + Add a tool &gt; choose Model Context Protocol &gt; select Dataverse MCP server. Click Add and configure. Rename the tool to Dataverse MCP. Under Additional details, set Credentials to use to Maker-provided credentials. Click Save. [!TIP] Dataverse MCP is needed before configuring D365 Sales MCP. Adding D365 Sales MCP Server Add a second MCP tool. Select D365 Sales MCP server. Click Add and configure. Rename to Lead Qualifier. Update description: Support identifying and focusing on high-potential leads. Set Authentication to Maker-provided credentials. Click Save. Review the tools associated. Configuring Agent Instructions Navigate to Overview &gt; Instructions. Paste these instructions: When the user says they want to see leads they should focus on: - Retrieve and present 3–5 leads: name, company, lead ID, summary When user says &quot;pick one&quot;: - Confirm selection - Show details: name, company, status, interaction, interest - Ask to qualify When user says &quot;qualify it&quot;: - Do not request lead ID again - Qualify the lead - Ask to draft follow-up email General: - Always confirm intent - Offer quick replies - Ask before proceeding - Be brief, helpful, and friendly Publish the agent. 🏅 Congratulations! You’ve completed Use Case #2! 🧪 Use Case #3: Test the Complete Workflow Use case Value added Estimated effort Test the complete workflow Validates the end-to-end solution and ensures reliability in real-world sales environments 5 minutes Summary of tasks You’ll test your configured agent by simulating a realistic sales interaction. Scenario: A seller logs into the agent and asks which leads to focus on. The agent should respond with prioritized suggestions and support lead qualification. Step-by-step instructions Send the prompt: Which leads should I focus on? Pick a lead from the list using the prompt: Pick Maria Send Yes to qualify the selected lead. Check if the lead status is updated in CRM. [!IMPORTANT] Verify in CRM that the lead was correctly qualified through your agent interaction. 🏅 Congratulations! You’ve completed Use Case #3! Test your understanding Key takeaways: End-to-end validation – You confirmed that the agent supports triage, interaction, and qualification. Seller experience simulation – The agent guides users naturally using AI-driven logic. Challenge: Apply this to your own use case What refinements would make the interaction more natural? How could the agent support follow-up actions (emails, tasks)? 🏆 Summary of learnings To maximize the impact of AI in sales workflows: Start Simple, Scale Smart – Begin with triage, then expand. Data Quality Drives Results – Ensure CRM hygiene. Design for Real-World Use – Match how sellers actually work. Iterate Based on Feedback – Improve your agent over time. Conclusions and recommendations Seller Assistant Success Principles: Test your agent using realistic scenarios. Keep D365 Sales data clean. Use secure authentication. Match the agent to how sellers work. Expand use over time (qualification, outreach). Monitor usage and iterate regularly. By following these principles, you’ll empower your sellers to focus where it counts, using AI that works the way they do.","headline":"Model Context Protocol Integration","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/mcs-labs/labs/mcp-qualify-lead/"},"url":"http://0.0.0.0:4000/mcs-labs/labs/mcp-qualify-lead/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="/mcs-labs/">Microsoft Copilot Studio Labs</a></h1>
+            <nav>
+                <a href="/mcs-labs/">Home</a>
+                <a href="/mcs-labs/labs/">All Labs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-content">
+        <div class="container">
+            <article class="lab-content">
+    <header class="lab-header">
+        <h1>Model Context Protocol Integration</h1>
+        
+        <div class="lab-meta">
+            <span class="duration">⏱️ 120 minutes</span>
+            
+            <span class="difficulty">📊 300</span>
+            
+        </div>
+        
+    </header>
+
+    <div class="lab-body">
+        <h1 id="prioritize-hot-leads-with-ai-connect-to-dynamics-365-sales-using-model-context-protocol">Prioritize Hot Leads with AI: Connect to Dynamics 365 Sales Using Model Context Protocol</h1>
+
+<p>Empower sellers to focus on what matters most—high-value leads.</p>
+
+<hr />
+
+<h2 id="-lab-details">🧱 Lab Details</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Level</th>
+      <th>Persona</th>
+      <th>Duration</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>200</td>
+      <td>Maker/Developer</td>
+      <td>15 minutes</td>
+      <td>After completing this lab, participants will be able to connect to Dynamics 365 Sales with Model Context Protocol to identify and prioritize high-value leads, enabling sellers to focus their time and effort where it counts most. You’ll learn how to configure the Model Context Protocol, connect to Dynamics 365 Sales, and use AI to analyze and qualify leads.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-table-of-contents">📚 Table of Contents</h2>
+
+<ul>
+  <li><a href="#-why-this-matters">Why This Matters</a></li>
+  <li><a href="#-introduction">Introduction</a></li>
+  <li><a href="#-core-concepts-overview">Core Concepts Overview</a></li>
+  <li><a href="#-documentation-and-additional-training-links">Documentation and Additional Training Links</a></li>
+  <li><a href="#-prerequisites">Prerequisites</a></li>
+  <li><a href="#-summary-of-targets">Summary of Targets</a></li>
+  <li><a href="#-use-cases-covered">Use Cases Covered</a></li>
+  <li><a href="#️-instructions-by-use-case">Instructions by Use Case</a>
+    <ul>
+      <li><a href="#-use-case-1-create-and-configure-an-agent">Use Case #1: Create and Configure an Agent</a></li>
+      <li><a href="#-use-case-2-configure-model-context-protocol-dataverse-and-d365-sales">Use Case #2: Configure Model Context Protocol (Dataverse and D365 Sales)</a></li>
+      <li><a href="#-use-case-3-test-the-complete-workflow">Use Case #3: Test the Complete Workflow</a></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="-why-this-matters">🤔 Why This Matters</h2>
+
+<p><strong>For sales leaders and CRM admins</strong> - Lead overload is a common problem.</p>
+
+<p>Think of a sales team like a firefighter squad:</p>
+
+<ul>
+  <li><strong>Without AI prioritization</strong>: They’re chasing every alarm, wasting time and missing real fires.</li>
+  <li><strong>With AI prioritization</strong>: They focus on the biggest, hottest leads – fast and smart.</li>
+</ul>
+
+<p><strong>Common challenges solved by this lab:</strong></p>
+
+<ul>
+  <li>“We’re missing hot leads because we can’t triage fast enough.”</li>
+  <li>“Our sellers are overwhelmed with too many low-priority leads.”</li>
+  <li>“We need a smarter way to focus our sales efforts.”</li>
+</ul>
+
+<p><strong>In just 15 minutes, you’ll learn how to use AI to help your sales team work smarter—not harder.</strong></p>
+
+<hr />
+
+<h2 id="-introduction">🌐 Introduction</h2>
+
+<p>In today’s competitive sales environment, identifying and acting on the right leads at the right time is critical. Sellers are often overwhelmed by the volume of leads and lack the tools to quickly determine which ones are worth pursuing.</p>
+
+<p><strong>Real-world example:</strong> A sales team receives hundreds of leads per week. Without automation, they spend hours reviewing CRM data. As a result, some of the best opportunities are missed or delayed.</p>
+
+<p>With D365 Sales Model Context Protocol and AI: AI analyzes lead data, engagement history, and contextual signals to surface the most promising leads. Sellers get a prioritized list—no guesswork, no delay.</p>
+
+<hr />
+
+<h2 id="-core-concepts-overview">🎓 Core Concepts Overview</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Concept</th>
+      <th>Why it matters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Model Context Protocol</strong></td>
+      <td>Enables AI to securely access tools, data, and prompts through a standard protocol</td>
+    </tr>
+    <tr>
+      <td><strong>D365 Sales Model Context Protocol</strong></td>
+      <td>Enables AI to access and reason over CRM data in Dynamics 365 Sales, surfacing insights like lead quality, engagement level, and deal potential</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-documentation-and-additional-training-links">📄 Documentation and Additional Training Links</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/copilot-studio/overview">Microsoft Copilot Studio Documentation</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/copilot-studio/extend-agent-model-context">Extend your agent with Model Context Protocol</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/connect-model-context">Connect to Dataverse with Model Context Protocol</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/connect-d365-sales-model-context">Connect to Dynamics 365 Sales with Model Context Protocol (preview)</a></li>
+</ul>
+
+<hr />
+
+<h2 id="-prerequisites">✅ Prerequisites</h2>
+
+<ul>
+  <li>Access to Microsoft Copilot Studio with appropriate licensing.</li>
+  <li>Office 365 environment.</li>
+  <li>Access to a Dynamics 365 Sales environment.</li>
+</ul>
+
+<hr />
+
+<h2 id="-summary-of-targets">🎯 Summary of Targets</h2>
+
+<p>In this lab, you’ll build a complete lead prioritization workflow that transforms how sellers in your organization identify and act on high-value opportunities. By the end of the lab, you will:</p>
+
+<ul>
+  <li>Create and configure an agent.</li>
+  <li>Configure Dataverse Model Context Protocol and Dynamics 365 Sales Model Context Protocol.</li>
+  <li>Test the complete workflow from leads detection to lead qualification.</li>
+  <li>Understand how AI can automate lead prioritization.</li>
+</ul>
+
+<hr />
+
+<h2 id="-use-cases-covered">🧰 Use Cases Covered</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Use Case</th>
+      <th>Value added</th>
+      <th>Effort</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><a href="#-use-case-1-create-and-configure-an-agent">Create and configure an agent</a></td>
+      <td>Establishes the foundation for intelligent lead processing and workflow orchestration</td>
+      <td>5 min</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><a href="#-use-case-2-configure-model-context-protocol-dataverse-and-d365-sales">Configure Model Context Protocol (Dataverse and D365 Sales)</a></td>
+      <td>Enables AI to analyze CRM data in Dynamics 365 Sales and identify high-value leads</td>
+      <td>5 min</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><a href="#-use-case-3-test-the-complete-workflow">Test the Complete Workflow</a></td>
+      <td>Validates the end-to-end solution and ensures reliability in real-world sales environments</td>
+      <td>5 min</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="️-instructions-by-use-case">🛠️ Instructions by Use Case</h2>
+
+<hr />
+
+<h2 id="-use-case-1-create-and-configure-an-agent">🧱 Use Case #1: Create and Configure an Agent</h2>
+
+<p>Set up the foundational agent</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Use case</th>
+      <th>Value added</th>
+      <th>Estimated effort</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Create and configure an agent</td>
+      <td>Establishes the foundation for intelligent lead processing and workflow orchestration</td>
+      <td>5 minutes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Summary of tasks</strong></p>
+
+<p>In this section, you’ll learn how to create a seller experience agent that helps sellers interact through a chat interface.</p>
+
+<p><strong>Scenario:</strong> Your sales team is overwhelmed with incoming leads and needs quick, intelligent guidance on which ones to focus on.</p>
+
+<h3 id="objective">Objective</h3>
+
+<p>Create a seller-facing agent.</p>
+
+<hr />
+
+<h3 id="step-by-step-instructions">Step-by-step instructions</h3>
+
+<h4 id="creating-the-agent-and-solution-setup">Creating the Agent and Solution Setup</h4>
+
+<ol>
+  <li>Navigate to the Copilot Studio home page at https://copilotstudio.microsoft.com/</li>
+  <li>Go to the <strong>Solutions</strong> menu.</li>
+  <li>Select the existing solution used in prior labs.</li>
+  <li>Select <strong>New</strong> &gt; <strong>Agent</strong>.</li>
+  <li>Click <strong>Skip to configure</strong>.</li>
+  <li>Name the agent <strong>Seller Assistant</strong>.</li>
+  <li>Click <strong>Create</strong>.</li>
+</ol>
+
+<blockquote>
+  <p>[!TIP]
+Choose a descriptive name to make your agent easier to find and manage.</p>
+</blockquote>
+
+<hr />
+
+<h3 id="-congratulations-youve-completed-use-case-1">🏅 Congratulations! You’ve completed Use Case #1!</h3>
+
+<h3 id="test-your-understanding">Test your understanding</h3>
+
+<p><strong>Key takeaways:</strong></p>
+
+<ul>
+  <li><strong>Seller Assistant Agent Foundation</strong> – You’ve created the structure for intelligent seller interactions.</li>
+  <li><strong>Solution Integration</strong> – Your agent is inside a solution for organized deployment.</li>
+</ul>
+
+<p><strong>Lessons learned:</strong></p>
+<ul>
+  <li>Keep agent names clear and purpose-driven.</li>
+</ul>
+
+<hr />
+
+<h2 id="-use-case-2-configure-model-context-protocol-dataverse-and-d365-sales">↺ Use Case #2: Configure Model Context Protocol (Dataverse and D365 Sales)</h2>
+
+<p>Transform your agent by connecting it to Dataverse and D365 Sales via Model Context Protocol.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Use case</th>
+      <th>Value added</th>
+      <th>Estimated effort</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Add Dataverse and D365 Sales MCP tools</td>
+      <td>Connects Dynamics 365 Sales via Model Context Protocol for intelligent, sales-specific conversational experiences.</td>
+      <td>5 minutes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Summary of tasks</strong></p>
+
+<p>You’ll configure MCP tools to allow AI to surface prioritized leads.</p>
+
+<p><strong>Scenario:</strong> Sellers face a long list of leads. The agent helps them find the most promising ones.</p>
+
+<h3 id="step-by-step-instructions-1">Step-by-step instructions</h3>
+
+<h4 id="adding-dataverse-mcp-server">Adding Dataverse MCP Server</h4>
+
+<ol>
+  <li>Go to the <strong>Tools</strong> tab in your agent.</li>
+  <li>Click <strong>+ Add a tool</strong> &gt; choose <strong>Model Context Protocol</strong> &gt; select <strong>Dataverse MCP server</strong>.
+<img src="images/DataverseMCPServer.png" alt="Dataverse MCP Server" /></li>
+  <li>Click <strong>Add and configure</strong>.</li>
+  <li>Rename the tool to <strong>Dataverse MCP</strong>.</li>
+  <li>Under <strong>Additional details</strong>, set <strong>Credentials to use</strong> to <strong>Maker-provided credentials</strong>.</li>
+  <li>Click <strong>Save</strong>.</li>
+</ol>
+
+<blockquote>
+  <p>[!TIP]
+Dataverse MCP is needed before configuring D365 Sales MCP.</p>
+</blockquote>
+
+<h4 id="adding-d365-sales-mcp-server">Adding D365 Sales MCP Server</h4>
+
+<ol>
+  <li>Add a second MCP tool.</li>
+  <li>Select <strong>D365 Sales MCP server</strong>.
+<img src="images/D365MCPServer.png" alt="D365 MCP Server" /></li>
+  <li>Click <strong>Add and configure</strong>.</li>
+  <li>Rename to <strong>Lead Qualifier</strong>.</li>
+  <li>Update description: <em>Support identifying and focusing on high-potential leads.</em></li>
+  <li>Set <strong>Authentication</strong> to <strong>Maker-provided credentials</strong>.</li>
+  <li>Click <strong>Save</strong>.</li>
+  <li>Review the tools associated.
+<img src="images/D365MCPServerTools.png" alt="D365 MCP Server tools" /></li>
+</ol>
+
+<h4 id="configuring-agent-instructions">Configuring Agent Instructions</h4>
+
+<ol>
+  <li>Navigate to <strong>Overview &gt; Instructions</strong>.</li>
+  <li>Paste these instructions:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>When the user says they want to see leads they should focus on:
+- Retrieve and present 3–5 leads: name, company, lead ID, summary
+
+When user says "pick one":
+- Confirm selection
+- Show details: name, company, status, interaction, interest
+- Ask to qualify
+
+When user says "qualify it":
+- Do not request lead ID again
+- Qualify the lead
+- Ask to draft follow-up email
+
+General:
+- Always confirm intent
+- Offer quick replies
+- Ask before proceeding
+- Be brief, helpful, and friendly
+</code></pre></div></div>
+
+<ol>
+  <li>Publish the agent.</li>
+</ol>
+
+<hr />
+
+<h3 id="-congratulations-youve-completed-use-case-2">🏅 Congratulations! You’ve completed Use Case #2!</h3>
+
+<hr />
+
+<h2 id="-use-case-3-test-the-complete-workflow">🧪 Use Case #3: Test the Complete Workflow</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Use case</th>
+      <th>Value added</th>
+      <th>Estimated effort</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Test the complete workflow</td>
+      <td>Validates the end-to-end solution and ensures reliability in real-world sales environments</td>
+      <td>5 minutes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Summary of tasks</strong></p>
+
+<p>You’ll test your configured agent by simulating a realistic sales interaction.</p>
+
+<p><strong>Scenario:</strong> A seller logs into the agent and asks which leads to focus on. The agent should respond with prioritized suggestions and support lead qualification.</p>
+
+<h3 id="step-by-step-instructions-2">Step-by-step instructions</h3>
+
+<ol>
+  <li>Send the prompt: <strong>Which leads should I focus on?</strong>
+<img src="images/TestLeadToFocusOn.png" alt="Test leads to focus on" /></li>
+  <li>Pick a lead from the list using the prompt: <strong>Pick Maria</strong>
+<img src="images/TestPickALead.png" alt="Test pick a lead" /></li>
+  <li>Send <strong>Yes</strong> to qualify the selected lead.
+<img src="images/TestQualifyLead.png" alt="Test qualify a lead" /></li>
+  <li>Check if the lead status is updated in CRM.
+<img src="images/TestLeadQualifiedinCRM.png" alt="Test lead qualified in the CRM" /></li>
+</ol>
+
+<blockquote>
+  <p>[!IMPORTANT] Verify in CRM that the lead was correctly qualified through your agent interaction.</p>
+</blockquote>
+
+<hr />
+
+<h3 id="-congratulations-youve-completed-use-case-3">🏅 Congratulations! You’ve completed Use Case #3!</h3>
+
+<h3 id="test-your-understanding-1">Test your understanding</h3>
+
+<p><strong>Key takeaways:</strong></p>
+
+<ul>
+  <li><strong>End-to-end validation</strong> – You confirmed that the agent supports triage, interaction, and qualification.</li>
+  <li><strong>Seller experience simulation</strong> – The agent guides users naturally using AI-driven logic.</li>
+</ul>
+
+<p><strong>Challenge: Apply this to your own use case</strong></p>
+
+<ul>
+  <li>What refinements would make the interaction more natural?</li>
+  <li>How could the agent support follow-up actions (emails, tasks)?</li>
+</ul>
+
+<hr />
+
+<h2 id="-summary-of-learnings">🏆 Summary of learnings</h2>
+
+<p>To maximize the impact of AI in sales workflows:</p>
+
+<ul>
+  <li><strong>Start Simple, Scale Smart</strong> – Begin with triage, then expand.</li>
+  <li><strong>Data Quality Drives Results</strong> – Ensure CRM hygiene.</li>
+  <li><strong>Design for Real-World Use</strong> – Match how sellers actually work.</li>
+  <li><strong>Iterate Based on Feedback</strong> – Improve your agent over time.</li>
+</ul>
+
+<hr />
+
+<h3 id="conclusions-and-recommendations">Conclusions and recommendations</h3>
+
+<p><strong>Seller Assistant Success Principles:</strong></p>
+
+<ul>
+  <li>Test your agent using realistic scenarios.</li>
+  <li>Keep D365 Sales data clean.</li>
+  <li>Use secure authentication.</li>
+  <li>Match the agent to how sellers work.</li>
+  <li>Expand use over time (qualification, outreach).</li>
+  <li>Monitor usage and iterate regularly.</li>
+</ul>
+
+<p>By following these principles, you’ll empower your sellers to focus where it counts, using AI that works the way they do.</p>
+
+<hr />
+
+    </div>
+
+    <footer class="lab-footer">
+        <div class="lab-navigation">
+            
+            
+            
+            
+            
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+                
+                
+                
+            
+            
+            
+                <a href="/mcs-labs/labs/measure-success/" class="nav-button prev">
+                    ← Measure Success
+                </a>
+            
+            
+            
+        </div>
+    </footer>
+</article>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Microsoft Copilot Studio Labs</p>
+        </div>
+    </footer>
+</body>
+</html>

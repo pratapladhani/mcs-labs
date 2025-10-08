@@ -1,12 +1,13 @@
 ---
+layout: lab
 title: "Ask Me Anything Agent (30 min version)"
-order: 13
 duration: 30
-difficulty: Beginner
-lab_id: "ask-me-anything-30-mins"
-optional: true
+difficulty: 200
+lab_type: optional
+permalink: /labs/ask-me-anything-30-mins/
 ---
 
+# Create an 'Ask me anything' agent for your employees
 
 Empower employees with answers that matter – Build an intelligent agent that connects to your knowledge and data.
 
@@ -213,7 +214,7 @@ Set up your development environment by creating a solution and custom publisher 
 
 3. In the left navigation (under the `...` menu), select **Solutions**
 
-    ![alt text](/assets/labs/ask-me-anything-30-mins/images/solutions.png)
+    ![alt text](images/solutions.png)
 
 4. Select **New solution**.
 
@@ -295,7 +296,7 @@ In this section, you'll learn how to create connection references in your soluti
 
 2. Select **+ New**, then go to **More** and choose **Connection Reference**.
 
-![alt text](/assets/labs/ask-me-anything-30-mins/images/environment-variable-connection-reference.png)
+![alt text](images/environment-variable-connection-reference.png)
 
 3. In the solution, select **New**, then go to **More** and choose **Connection reference**.
 
@@ -372,7 +373,7 @@ Create a new agent with SharePoint knowledge integration that provides grounded,
 
 8. Go to **Knowledge**, either from the Knowledge section of the Overview tab or the Knowledge tab. Click on **Add Knowledge**
 
-  ![alt text](/assets/labs/ask-me-anything-30-mins/images/knowledge-sharepoint.png)
+  ![alt text](images/knowledge-sharepoint.png)
 
 9. Select **SharePoint**, and paste the SharePoint Knowledge URL and select **Add**.
 
@@ -491,7 +492,7 @@ Make the agent available in Microsoft 365 Copilot for your users.
 
 8. Select **See agent in Microsoft 365**
 
-   ![alt text](/assets/labs/ask-me-anything-30-mins/images/m365-copilot-channel.png)
+   ![alt text](images/m365-copilot-channel.png)
 
 9. In the **Microsoft 365 Copilot** experience, the agent description will pop up. Select **Add**
 
@@ -547,7 +548,7 @@ This use case demonstrates **agent scoping** principles:
 
 2. Go to the **Agents** tab, and **+ Add an agent**
 
-    ![alt text](/assets/labs/ask-me-anything-30-mins/images/add-agent.png)
+    ![alt text](images/add-agent.png)
 
 3. Update
     - Its **Name** to: `IT Support Agent`
@@ -640,7 +641,7 @@ This use case demonstrates **agent scoping** principles:
 > - Creates user-friendly responses with proper formatting
 > - Combines ServiceNow data with other knowledge sources when needed
 
-  ![alt text](/assets/labs/ask-me-anything-30-mins/images/multi-agent-servicenow.png)
+  ![alt text](images/multi-agent-servicenow.png)
 
 29. **Observe** how your agent now demonstrates scoped capabilities:
     - **Tool Selection**: Automatically chooses the right ServiceNow tool based on user intent
@@ -691,3 +692,4 @@ To maximize the impact of your "Ask me anything" agent:
 By following these principles, you'll create an intelligent knowledge hub that transforms how employees access information, reduces support burden, and improves organizational efficiency through conversational AI.
 
 ---
+

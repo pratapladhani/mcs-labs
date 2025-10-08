@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Standard Orchestrator"
-order: 9
+order: 3
 duration: 75
-difficulty: Intermediate
-lab_id: "standard-orchestrator"
-optional: false
+difficulty: 100
+lab_type: main
+journeys: ["developer"]
+permalink: /labs/standard-orchestrator/
 ---
 
+# Create Your First Agent in Microsoft Copilot Studio
 
 Create and publish your first intelligent copilot using Microsoft Copilot Studio.
 
@@ -161,7 +164,7 @@ Create a fully functioning agent with one manually authored topic and one AI-gen
    I want to build an agent for my customer support. It is an assistant for Contoso customers, helping to answer common questions and help with common tasks, like checking an order status
    ```
 
-   ![image-20250630151311597](/assets/labs/standard-orchestrator/assets/MCS-CreateAgentWithDescription.png)
+   ![image-20250630151311597](assets/MCS-CreateAgentWithDescription.png)
 
 4. When asked about a name for your agent, respond:
    ```
@@ -179,7 +182,7 @@ Create a fully functioning agent with one manually authored topic and one AI-gen
    ``````
 
 7. Don’t forget to **confirm** the utilization of the website in the chat panel.
-   ![image-20250630155417793](/assets/labs/standard-orchestrator/assets/image-20250630155417793.png)
+   ![image-20250630155417793](assets/image-20250630155417793.png)
 
 8. You will also get asked **topics or tasks** the agent **shouldn’t help with or talk about**.
    ``````
@@ -187,7 +190,7 @@ Create a fully functioning agent with one manually authored topic and one AI-gen
    ``````
 
 9. Go to **Solutions** (under the `...` menu in the left-hand bar navigation). If you completed the setup lab, select the solution you had created. If you don't have a solution, create a new one. 
-   ![image-20250630151727003](/assets/labs/standard-orchestrator/assets/image-20250630151727003.png) 
+   ![image-20250630151727003](assets/image-20250630151727003.png) 
 
 10. After attach your agent to the right Solution, select **Create** button.
 
@@ -200,7 +203,7 @@ Create a fully functioning agent with one manually authored topic and one AI-gen
 #### Finalize creation
 
 11. **Disable** the *Generative AI Orchestration* feature to switch back to manual topic triggering.
-    <img src="/assets/labs/standard-orchestrator/assets/image-20250630154221194.png" alt="image-20250630154221194" style="zoom:50%;" />
+    <img src="assets/image-20250630154221194.png" alt="image-20250630154221194" style="zoom:50%;" />
 
 12. Test your copilot with **Standard Orchestration**.
 
@@ -213,7 +216,7 @@ Create a fully functioning agent with one manually authored topic and one AI-gen
 1. Navigate to **Topics** tab
 
 2. Create **From blank**, name it `Check Order Status`
-   ![image-20250630160834150](/assets/labs/standard-orchestrator/assets/image-20250630160834150.png)
+   ![image-20250630160834150](assets/image-20250630160834150.png)
 
 3. **Add** trigger phrases:
 
@@ -225,7 +228,7 @@ Create a fully functioning agent with one manually authored topic and one AI-gen
    has my order shipped
    ```
 
-   ![image-20250630161253327](/assets/labs/standard-orchestrator/assets/image-20250630161253327.png)
+   ![image-20250630161253327](assets/image-20250630161253327.png)
 
    > [!TIP]
    >
@@ -244,7 +247,7 @@ Create a fully functioning agent with one manually authored topic and one AI-gen
 
 6. Save user response to variable `OrderRequest`
 
-   ![image-20250630162138827](/assets/labs/standard-orchestrator/assets/image-20250630162138827.png)
+   ![image-20250630162138827](assets/image-20250630162138827.png)
 
    > [!TIP]
    >
@@ -259,7 +262,7 @@ Create a fully functioning agent with one manually authored topic and one AI-gen
 
 8. Add **Go to another topic** > **End of conversation**
 
-   ![image-20250630162640337](/assets/labs/standard-orchestrator/assets/image-20250630162640337.png)
+   ![image-20250630162640337](assets/image-20250630162640337.png)
 
 9. **Save** your topic
 
@@ -344,12 +347,12 @@ In this section, you'll:
 2. Set to **No authentication**
 
 3. **Save** settings
-   ![image-20250630164053732](/assets/labs/standard-orchestrator/assets/image-20250630164053732.png)
+   ![image-20250630164053732](assets/image-20250630164053732.png)
 
 4. Close **setting** panel
 
 5. Go to **Channels** tab > click **Publish**
-   ![image-20250630164242686](/assets/labs/standard-orchestrator/assets/image-20250630164242686.png)
+   ![image-20250630164242686](assets/image-20250630164242686.png)
 
 6. Wait for green confirmation banner
 
@@ -364,10 +367,10 @@ In this section, you'll:
 7. Select **Demo Website** channel
 
 8. Click the Copy button to copy the demo website URL
-   ![image-20250630165411478](/assets/labs/standard-orchestrator/assets/image-20250630165411478.png)
+   ![image-20250630165411478](assets/image-20250630165411478.png)
 
 9. **Open** the demo **URL** in a **private** browsing session
-   ![image-20250630165946443](/assets/labs/standard-orchestrator/assets/image-20250630165946443.png)
+   ![image-20250630165946443](assets/image-20250630165946443.png)
 
 10. **Test** with `I have an issue with my laptop and need to open a support ticket`
 
@@ -417,3 +420,4 @@ To maximize your Copilot Studio experience:
 By following these principles, you'll be well on your way to building intelligent, useful agents that drive real value.
 
 ---
+

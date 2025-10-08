@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Copilot Studio Kit"
-order: 11
+order: 12
 duration: 60
-difficulty: Intermediate
-lab_id: "copilot-studio-kit"
-optional: false
+difficulty: 200
+lab_type: main
+journeys: ["developer"]
+permalink: /labs/copilot-studio-kit/
 ---
 
+# Deliver high-quality, scalable agents with Copilot Studio Kit
 
 Automate quality assurance for your Copilot Studio agents with the Copilot Studio Kit. In this lab, you'll configure and run automated test scenarios, validate agent behavior using multiple test types, and gain actionable insights through analytics. You'll also explore advanced tools like conversation KPIs, UI customization, and governance dashboards—equipping you to ship high-quality, secure, and scalable AI agents with confidence.
 
@@ -310,9 +313,9 @@ In this section, you'll explore the full range of capabilities beyond testing, i
 
 2. **Review the dashboard features** that provide aggregated conversation data in Dataverse, making it easier to understand conversation outcomes without analyzing complex transcripts.
 
-    ![alt text](/assets/labs/copilot-studio-kit/images/conversation-kpis.png)
+    ![alt text](images/conversation-kpis.png)
 
-    ![alt text](/assets/labs/copilot-studio-kit/images/conversation-transcript-viewer.png)
+    ![alt text](images/conversation-transcript-viewer.png)
 
 > [!TIP]
 > Conversation KPIs simplify performance tracking by providing structured data that can be easily exported and analyzed in Power BI or other reporting tools.
@@ -321,17 +324,17 @@ In this section, you'll explore the full range of capabilities beyond testing, i
 
 3. **Explore Agent Inventory** which provides administrators with a tenant-wide view of all Copilot Studio agents, including usage patterns and configuration details.
 
-    ![alt text](/assets/labs/copilot-studio-kit/images/agent-inventory.png)
+    ![alt text](images/agent-inventory.png)
 
 #### Investigate User Experience Tools
 
 4. **Visit the Webchat Playground** to explore visual customization options for your agent's chat interface, including colors, fonts, and branding elements.
 
-    ![alt text](/assets/labs/copilot-studio-kit/images/web-chat-playground.png)
+    ![alt text](images/web-chat-playground.png)
 
 5. **Examine the Adaptive Cards Gallery** which provides pre-built templates for rich interactive responses that enhance user engagement.
 
-![alt text](/assets/labs/copilot-studio-kit/images/adaptive-cards-gallery.png)
+![alt text](images/adaptive-cards-gallery.png)
 
 > [!TIP]
 > Use the Webchat Playground to generate HTML with custom styles that match your organization's branding guidelines.

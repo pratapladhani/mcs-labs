@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Autonomous Support Agent"
-order: 5
+order: 8
 duration: 120
-difficulty: Advanced
-lab_id: "autonomous-support-agent"
-optional: false
+difficulty: 300
+lab_type: main
+journeys: ["autonomous-ai", "business-user"]
+permalink: /labs/autonomous-support-agent/
 ---
 
+# Autonomous Support Agent - Unlock new levels of productivity with AI automation
 
 Let AI do the work and automate processes more easily than ever with autonomous agents that handle user support inquiries automatically.
 
@@ -333,7 +336,7 @@ For each individual question, do a separate **knowledge search** using the confi
 > [!TIP]
 > Note: the UX may differ and you don't have that option, leave the description as-is.
 
-![alt text](/assets/labs/autonomous-support-agent/images/instructions-and-tools.png)
+![alt text](images/instructions-and-tools.png)
 
 29. Click on **Save** to save the instructions and **Publish** your agent to activate it
 
@@ -365,7 +368,7 @@ For each individual question, do a separate **knowledge search** using the confi
 > [!TIP]
 > You don't need to repeat the original trigger event to make more tests. In the **Test** pane, you can select `...`, choose **Test trigger** and then select the desired trigger and from there, decide to execute a past trigger again.
 > 
-> ![alt text](/assets/labs/autonomous-support-agent/images/test-trigger.png)
+> ![alt text](images/test-trigger.png)
 
 32. Check the execution of your  autonomous agent by going to the **Activity** tab. Select the **Refresh** icon until you see the execution.
 
@@ -386,7 +389,7 @@ For each individual question, do a separate **knowledge search** using the confi
 >   - Fallback
 >   - Multiple topics matched
 
-![alt text](/assets/labs/autonomous-support-agent/images/autonomous-agent-plan.png)
+![alt text](images/autonomous-agent-plan.png)
 
 ---
 
@@ -508,3 +511,4 @@ To maximize the impact of autonomous support agents:
 By following these principles, you'll create reliable autonomous agents that enhance user satisfaction, reduce support team workload, and scale your organization's support capabilities efficiently and effectively.
 
 ---
+

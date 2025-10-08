@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Pipelines and Source Control"
-order: 15
-duration: 60
-difficulty: Intermediate
-lab_id: "pipelines-and-source-control"
-optional: true
+order: 11
+duration: 90
+difficulty: 300
+lab_type: main
+journeys: ["developer"]
+permalink: /labs/pipelines-and-source-control/
 ---
 
+# Deploy with confidence: Power Platform pipelines & ALM
 
 Master the deployment of your Microsoft Copilot Studio agents across environments using Power Platform pipelines. Learn the complete lifecycle from development to production.
 
@@ -185,7 +188,7 @@ the agent. Tell the agent to "Provision a PROD environment".  You are limited to
 
 9. **Save** the pipeline configuration.
 
-![alt text](/assets/labs/pipelines-and-source-control/images/pipeline.png)
+![alt text](images/pipeline.png)
 
 #### Test your pipeline
 

@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "MBR Agent Deploy to SharePoint"
-order: 12
+order: 6
 duration: 75
-difficulty: Intermediate
-lab_id: "mbr-prep-sharepoint-agent"
-optional: false
+difficulty: 200
+lab_type: main
+journeys: ["business-user"]
+permalink: /labs/mbr-prep-sharepoint-agent/
 ---
 
+# Create a Monthly Business Review (MBR) Agent
 
 ---
 
@@ -143,55 +146,55 @@ Create a SharePoint site with MBR documents that will serve as the knowledge sou
 
 1. Go to [m365.cloud.microsoft/apps/](https://m365.cloud.microsoft/apps/?from=PortalHome&auth=2) and select **SharePoint**
 
-![SharePoint](.//assets/labs/mbr-prep-sharepoint-agent/assets/select-sharepoint.jpeg)
+![SharePoint](./assets/select-sharepoint.jpeg)
 
 
 2. Select **Create Site**
 
-![Create Site](.//assets/labs/mbr-prep-sharepoint-agent/assets/create-site.png)
+![Create Site](./assets/create-site.png)
 
 
 3. Select **Team Site**
 
-![Team Site](.//assets/labs/mbr-prep-sharepoint-agent/assets/team-site.png)
+![Team Site](./assets/team-site.png)
 
 
 4. Select **Standard team**
 
-![Standard Team](.//assets/labs/mbr-prep-sharepoint-agent/assets/select-template.png)
+![Standard Team](./assets/select-template.png)
 
 5. Select **Use Template**
 
-![Use Template](.//assets/labs/mbr-prep-sharepoint-agent/assets/use-template.png)
+![Use Template](./assets/use-template.png)
 
 6. Put `MBR - <Your User Name>` in the Site Name and Select **Next**
 
-![Create Site](.//assets/labs/mbr-prep-sharepoint-agent/assets/site-name.png)
+![Create Site](./assets/site-name.png)
 
 7. Click **Finish**
 
-![Select Finish](.//assets/labs/mbr-prep-sharepoint-agent/assets/select-finish-site-creation.jpeg)
+![Select Finish](./assets/select-finish-site-creation.jpeg)
 
 #### Upload MBR documents
 
 > [!IMPORTANT]
 > **For training participants:** If you are following this lab as part of a guided training session, the MBR documents have already been uploaded to SharePoint at the location specified in your **Lab Resources**. You can skip this use case and proceed directly to [Use Case #2](#-use-case-2-build-and-deploy-mbr-agent).
 
-8. Navigate to the [sample files folder](.//assets/labs/mbr-prep-sharepoint-agent/assets/) and download the sample files
+8. Navigate to the [sample files folder](./assets/) and download the sample files
 
 9. Select `Documents` in the left navigation
 
-![Open Document Library](.//assets/labs/mbr-prep-sharepoint-agent/assets/select-document-library.jpeg)
+![Open Document Library](./assets/select-document-library.jpeg)
 
 
 10. Select `Upload`
 
-![Upload Files](.//assets/labs/mbr-prep-sharepoint-agent/assets/select-upload.jpeg)
+![Upload Files](./assets/select-upload.jpeg)
 
 
 11. Select all the sample files you just downloaded and click `Open`
 
-![Select Open](.//assets/labs/mbr-prep-sharepoint-agent/assets/select-sample-files.jpeg)
+![Select Open](./assets/select-sample-files.jpeg)
 
 ---
 
@@ -242,108 +245,108 @@ Create, configure, test, and deploy a conversational MBR agent that leverages Sh
 
 1. Open a new browser tab and navigate to [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com). Select **Create**
 
-![Select Create](.//assets/labs/mbr-prep-sharepoint-agent/assets/create-agent.jpeg)
+![Select Create](./assets/create-agent.jpeg)
 
 2. Select **New agent**
 
-![Select New Agent](.//assets/labs/mbr-prep-sharepoint-agent/assets/new-agent.jpeg)
+![Select New Agent](./assets/new-agent.jpeg)
 
 3. Select the **Configure** tab
 
 4. In the **Name** field type `MBR Agent`. In the **Description** field type,  `This agent helps in preparing for Monthly Business Reviews. It queries MBR resources and provides quick answers`
 
-![Fill out Agent Details](.//assets/labs/mbr-prep-sharepoint-agent/assets/agent-name.jpeg)
+![Fill out Agent Details](./assets/agent-name.jpeg)
 
 5. Select `...` to go into **Edit advanced settings**. Make sure the agent is created as part of one of your **solutions**.
 
 6. Select **Create**
 
-![Select Create](.//assets/labs/mbr-prep-sharepoint-agent/assets/create-button.jpeg)
+![Select Create](./assets/create-button.jpeg)
 
 #### Add SharePoint knowledge source
 
 7. Select **Add knowledge**
 
-![Select Add Knowledge](.//assets/labs/mbr-prep-sharepoint-agent/assets/add-knowledge.jpeg)
+![Select Add Knowledge](./assets/add-knowledge.jpeg)
 
 8. Select **SharePoint**
 
-![Select SharePoint](.//assets/labs/mbr-prep-sharepoint-agent/assets/sharepoint-knowledge.jpeg)
+![Select SharePoint](./assets/sharepoint-knowledge.jpeg)
 
 9. **Paste** the URL of your SharePoint site folder where the MBR documents are located in the text input
 
 > [!IMPORTANT]
 > If these files have already been uploaded for you, use the URL provided in **Lab Resources** (specific per training).
 
-![Paste SharePoint URL](.//assets/labs/mbr-prep-sharepoint-agent/assets/sharepoint-url.jpeg)
+![Paste SharePoint URL](./assets/sharepoint-url.jpeg)
 
 10. Select **Add**
 
-![Select Add Knowledge](.//assets/labs/mbr-prep-sharepoint-agent/assets/add-sp-knowledge1.jpeg)
+![Select Add Knowledge](./assets/add-sp-knowledge1.jpeg)
 
 11. Select **Add** again
 
-![Select Add](.//assets/labs/mbr-prep-sharepoint-agent/assets/add-knowledge2.jpeg)
+![Select Add](./assets/add-knowledge2.jpeg)
 
 #### Test the agent
 
 12. Now we need to test our agent to see if it returns answers from our knowledge. 
 
-![Test Panel](.//assets/labs/mbr-prep-sharepoint-agent/assets/empty-test-panel.jpeg)
+![Test Panel](./assets/empty-test-panel.jpeg)
 
 13. Type `what deals are currently in the negotiation stage?` and send the message.
 
-![Test the agent](.//assets/labs/mbr-prep-sharepoint-agent/assets/test1.jpeg)
+![Test the agent](./assets/test1.jpeg)
 
 14. **Review** the answer in the test window and notice the logic in the Activity Pane on the left hand side
 
-![Review the answer](.//assets/labs/mbr-prep-sharepoint-agent/assets/review-answer.jpeg)
+![Review the answer](./assets/review-answer.jpeg)
 
 #### Publish and deploy to SharePoint
 
 15. Now that we know the agent is working, we need to publish our changes by selecting the **Publish** button in the upper right hand corner.
 
-![Select Publish](.//assets/labs/mbr-prep-sharepoint-agent/assets/publish.jpeg)
+![Select Publish](./assets/publish.jpeg)
 
 16. Now it's time to deploy our agent to SharePoint. Select the **Channels** tab.
 
-![Select Channels](.//assets/labs/mbr-prep-sharepoint-agent/assets/channels-tab.jpeg)
+![Select Channels](./assets/channels-tab.jpeg)
 
 17. Select **SharePoint**
 
-![Select SharePoint](.//assets/labs/mbr-prep-sharepoint-agent/assets/channels-sharepoint.jpeg)
+![Select SharePoint](./assets/channels-sharepoint.jpeg)
 
 18. **Select** or **search** the SharePoint site you created in the previous steps from the list of options
 
 > [!IMPORTANT] Only sites where the user has **Edit** permissions can be used. Otherwise, an error will be displayed.
 
-![Select the SharePoint Site](.//assets/labs/mbr-prep-sharepoint-agent/assets/sharepoint-dropdown.jpeg)
+![Select the SharePoint Site](./assets/sharepoint-dropdown.jpeg)
 
 19. Select **Deploy**
 
-![Select Deploy](.//assets/labs/mbr-prep-sharepoint-agent/assets/deploy.jpeg)
+![Select Deploy](./assets/deploy.jpeg)
 
 #### Test the deployed agent
 
 20. Select the `...` next to the Deployed text and select **Copy Agent Url**. Open a new browser tab and paste in the URL.
 
-![Select Copy Site URL](.//assets/labs/mbr-prep-sharepoint-agent/assets/copy-url.jpeg)
+![Select Copy Site URL](./assets/copy-url.jpeg)
 
 21. Your agent will open up in SharePoint. Test it out by typing `What are the top 3 blockers?` in the text input and pressing `Return`
 
-![Testing the agent](.//assets/labs/mbr-prep-sharepoint-agent/assets/deployed-test1.jpeg)
+![Testing the agent](./assets/deployed-test1.jpeg)
 
 22. Review the answer and note that it provides links to the referenced documents.
 
-![Review the first test](.//assets/labs/mbr-prep-sharepoint-agent/assets/deployed-review1.jpeg)
+![Review the first test](./assets/deployed-review1.jpeg)
 
 23. Perform another test by typing `Which reps requested additional pre-sales support?` and pressing `Return`
 
-![Testing the agent](.//assets/labs/mbr-prep-sharepoint-agent/assets/deployed-test2.jpeg)
+![Testing the agent](./assets/deployed-test2.jpeg)
 
 24. Review your response. Congratulations! You've built and deployed your SharePoint MBR Agent!
 
-![Review the second test results](.//assets/labs/mbr-prep-sharepoint-agent/assets/dpeloyed-review2.jpeg)
+![Review the second test results](./assets/dpeloyed-review2.jpeg)
 
 ---
 
@@ -404,3 +407,4 @@ To maximize the impact of your MBR Agent:
 By following these principles, you'll create MBR agents that not only provide accurate information but transform how leadership teams prepare for and conduct business reviews, turning hours of manual document review into minutes of intelligent conversation.
 
 ---
+

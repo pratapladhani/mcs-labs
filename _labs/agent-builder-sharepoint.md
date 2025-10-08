@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "SharePoint AI Assistant with Agent Builder"
-order: 3
+order: 2
 duration: 60
-difficulty: Beginner
-lab_id: "agent-builder-sharepoint"
-optional: false
+difficulty: 200
+lab_type: main
+journeys: ["quick-start", "business-user"]
+permalink: /labs/agent-builder-sharepoint/
 ---
 
+# Create your own SharePoint-based AI assistant with the lite experience of Copilot Studio in Microsoft 365 Copilot (formerly Copilot Studio agent builder)
 
 Build an intelligent sales admin assistant that analyzes SharePoint data using code interpreter and image generation features in Copilot Studio Lite.
 
@@ -130,12 +133,12 @@ You are a Sales Admin Assistant. Your job is to help sales managers track revenu
 5. Go to the **Configure** tab
 
 <!--
-![alt text](/assets/labs/agent-builder-sharepoint/images/knowledge-files.png)
+![alt text](images/knowledge-files.png)
 Commented out; screenshots need update due to CPS updates.  Last minute change to labs required so will do at a later date
 > [!TIP]
 > If you can't see the files you just opened, an alternative approach is just to **paste** and **add** the SharePoint URL of the Sales folder.
 > 
->    ![alt text](/assets/labs/agent-builder-sharepoint/images/sharepoint-url-fallback.png)
+>    ![alt text](images/sharepoint-url-fallback.png)
 -->
 
 6. Under **capabilities**, enable:
@@ -193,9 +196,9 @@ How are sales trending for home appliances?
 
 5. *If* offered to get a visual chart of this breakdown, **confirm**.
 
-![alt text](/assets/labs/agent-builder-sharepoint/images/sales-data-analysis.png)
+![alt text](images/sales-data-analysis.png)
 
-![alt text](/assets/labs/agent-builder-sharepoint/images/code-interpreter.png)
+![alt text](images/code-interpreter.png)
 
 
 6. **Observe** how the agent:
@@ -212,7 +215,7 @@ How are sales trending for home appliances?
 Design a professional badge for the first place winner of our 2026 sales contest. It should look modern and premium, with gold colors, the text '1st Place – Sales Contest 2026', and a ribbon or trophy element.
 ```
 
-![alt text](/assets/labs/agent-builder-sharepoint/images/image-generator.png)
+![alt text](images/image-generator.png)
 
 > [!TIP]
 > Notice how you can also invoke a specific agent by using **@** in the standard **Chat** area.
@@ -256,3 +259,4 @@ Key achievements and insights from this lab:
 - **Professional Tone** – Maintained business-appropriate communication style
 
 ---
+

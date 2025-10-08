@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Autonomous Account News Agent"
-order: 7
+order: 9
 duration: 120
-difficulty: Advanced
-lab_id: "autonomous-account-news"
-optional: false
+difficulty: 300
+lab_type: main
+journeys: ["autonomous-ai"]
+permalink: /labs/autonomous-account-news/
 ---
 
+# Build an Autonomous Account News Assistant Agent
 
 Empower sellers with timely insights – Build an autonomous Copilot Studio agent that periodically scans your Sales App for high-value opportunities, finds related news, and sends curated reports.
 
@@ -243,7 +246,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
   10. Click **Save** to finalize the tool configuration.
 
   12. To test your tool is correctly configured, you can type `Get opportunities` in the test canvas. Your agent should retrieve high-value opportunities based on the configured threshold.
-   ![alt text](/assets/labs/autonomous-account-news/images/test-get-opptys.png)
+   ![alt text](images/test-get-opptys.png)
 
 ---
 
@@ -281,7 +284,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   6. To validate Deep Reasoning, enter a prompt such as: `Use deep reasoning to evaluate the importance of these news`. The agent should respond with a structured and detailed analysis of the content, demonstrating its ability to assess relevance and significance.
    
-      ![alt text](/assets/labs/autonomous-account-news/images/web-and-reasoning.png)
+      ![alt text](images/web-and-reasoning.png)
 
 ---
 
@@ -345,7 +348,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
       - For **Set variable**, create a new variable, make it **Global**, and name it `searchResults`. 
       - In **To value** select `Topic.searchResults`
 
-      ![alt text](/assets/labs/autonomous-account-news/images/log-search-results.png)
+      ![alt text](images/log-search-results.png)
   
   11. Click **Save**
 
@@ -496,11 +499,11 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   30. The instructions should now appear as follows:
 
-      ![Instructions After Topics](/assets/labs/autonomous-account-news/images/instructions-after-topics.png)
+      ![Instructions After Topics](images/instructions-after-topics.png)
 
   31.  To test your configuration so far, invoke the trigger you created in Use Case #1. Navigate to the **Overview** tab, scroll to **Triggers**, and click **Test trigger** next to **Analyze opportunities**. A test run should appear as follows:
     
-        ![Instructions After Topics](/assets/labs/autonomous-account-news/images/test-run-after-topics.png)
+        ![Instructions After Topics](images/test-run-after-topics.png)
 
 1.   Optionally, validate that the inputs for your topics were populated correctly:
       - In the **Log Search Results** topic, confirm that the input named `searchResults` contains a JSON object with:
@@ -701,7 +704,7 @@ Automate the final step: format relevant news into a clean, branded email for ac
    - For `<Send a summary report>`, use **Tool** > *Send a summary report* (select it from the list)
 
 26. **Save** your agent's instructions. The instructions should appear as follows:
- ![Instructions After Topics](/assets/labs/autonomous-account-news/images/final-instructions.png)
+ ![Instructions After Topics](images/final-instructions.png)
 
 27. Navigate to the **Triggers** section and click **Test trigger** on the `Analyze Opportunities` trigger.
 
@@ -712,12 +715,13 @@ Automate the final step: format relevant news into a clean, branded email for ac
    - It invoked the **Send a summary report** tool and sent an email to your test address
 
 29. A successful autonomous run of your new agent should appear as follows:
-    ![Instructions After Topics](/assets/labs/autonomous-account-news/images/final-run.png)
+    ![Instructions After Topics](images/final-run.png)
 
-    ![alt text](/assets/labs/autonomous-account-news/images/opportunity-news-email.png)
+    ![alt text](images/opportunity-news-email.png)
 
 ---
 
 ### 🏅 Congratulations! You've completed Use Case #5!
 
 ---
+

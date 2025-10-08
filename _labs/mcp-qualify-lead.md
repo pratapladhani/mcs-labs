@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Model Context Protocol Integration"
-order: 10
-duration: 90
-difficulty: Advanced
-lab_id: "mcp-qualify-lead"
-optional: false
+order: 14
+duration: 120
+difficulty: 300
+lab_type: main
+journeys: ["developer"]
+permalink: /labs/mcp-qualify-lead/
 ---
 
+# Prioritize Hot Leads with AI: Connect to Dynamics 365 Sales Using Model Context Protocol
 
 Empower sellers to focus on what matters most—high-value leads.
 
@@ -187,7 +190,7 @@ You’ll configure MCP tools to allow AI to surface prioritized leads.
 
 1. Go to the **Tools** tab in your agent.
 2. Click **+ Add a tool** > choose **Model Context Protocol** > select **Dataverse MCP server**.
-![Dataverse MCP Server](/assets/labs/mcp-qualify-lead/images/DataverseMCPServer.png)
+![Dataverse MCP Server](images/DataverseMCPServer.png)
 3. Click **Add and configure**.
 4. Rename the tool to **Dataverse MCP**.
 5. Under **Additional details**, set **Credentials to use** to **Maker-provided credentials**.
@@ -200,14 +203,14 @@ You’ll configure MCP tools to allow AI to surface prioritized leads.
 
 1. Add a second MCP tool.
 2. Select **D365 Sales MCP server**.
-![D365 MCP Server](/assets/labs/mcp-qualify-lead/images/D365MCPServer.png)
+![D365 MCP Server](images/D365MCPServer.png)
 3. Click **Add and configure**.
 4. Rename to **Lead Qualifier**.
 5. Update description: *Support identifying and focusing on high-potential leads.*
 6. Set **Authentication** to **Maker-provided credentials**.
 7. Click **Save**.
 8. Review the tools associated.
-![D365 MCP Server tools](/assets/labs/mcp-qualify-lead/images/D365MCPServerTools.png)
+![D365 MCP Server tools](images/D365MCPServerTools.png)
 
 
 #### Configuring Agent Instructions
@@ -259,13 +262,13 @@ You’ll test your configured agent by simulating a realistic sales interaction.
 ### Step-by-step instructions
 
 1. Send the prompt: **Which leads should I focus on?**
-![Test leads to focus on](/assets/labs/mcp-qualify-lead/images/TestLeadToFocusOn.png)
+![Test leads to focus on](images/TestLeadToFocusOn.png)
 2. Pick a lead from the list using the prompt: **Pick Maria**
-![Test pick a lead](/assets/labs/mcp-qualify-lead/images/TestPickALead.png)
+![Test pick a lead](images/TestPickALead.png)
 3. Send **Yes** to qualify the selected lead.
-![Test qualify a lead](/assets/labs/mcp-qualify-lead/images/TestQualifyLead.png)
+![Test qualify a lead](images/TestQualifyLead.png)
 4. Check if the lead status is updated in CRM.
-![Test lead qualified in the CRM](/assets/labs/mcp-qualify-lead/images/TestLeadQualifiedinCRM.png)
+![Test lead qualified in the CRM](images/TestLeadQualifiedinCRM.png)
 
 > [!IMPORTANT] Verify in CRM that the lead was correctly qualified through your agent interaction.
 

@@ -1,12 +1,15 @@
 ---
+layout: lab
 title: "Public Website Agent"
-order: 8
+order: 5
 duration: 90
-difficulty: Intermediate
-lab_id: "public-website-agent"
-optional: false
+difficulty: 200
+lab_type: main
+journeys: ["quick-start", "business-user"]
+permalink: /labs/public-website-agent/
 ---
 
+# Give your public website chatbot a brain and make it an agent
 
 Create an intelligent agent that delivers contextual, multi-part answers using your content and real-time data.
 
@@ -313,7 +316,7 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 
 15. Notice how generative orchestration performs multiple searches and triggers the weather connector to provide a comprehensive answer.
 
-![alt text](/assets/labs/public-website-agent/images/generative-orchestration.png)
+![alt text](images/generative-orchestration.png)
 
 ---
 
@@ -388,7 +391,7 @@ In this section, you'll customize built-in system topics to improve user interac
    - `Who is the current CEO of the company that owns GitHub? Where did they earn their MBA? What's the average rent for a one-bedroom apartment near that campus? What's the air quality index in that area today?`
    - `What's the temperature in the city that hosted the last Olympic Games?`
 
-    ![alt text](/assets/labs/public-website-agent/images/conversation-start.png)
+    ![alt text](images/conversation-start.png)
 
 > [!TIP]
 > - You can test your changes in a topic without needing to save. Just refresh the test pane to get the latest experience.
@@ -488,7 +491,7 @@ In this section, you'll remove authentication to make your agent publicly access
 
 9. **Copy** the demo website URL, open it in a new tab, and interact with your agent.
 
-![alt text](/assets/labs/public-website-agent/images/demo-website.gif)
+![alt text](images/demo-website.gif)
 
 > [!TIP]
 > - The demo website URL can be shared with others for quick feedback before deployment
@@ -543,3 +546,4 @@ To maximize the impact of your intelligent agent:
 By following these principles, you'll build intelligent agents that are not only useful but also delightful, trusted, and aligned with your organization's goals—transforming how users discover and interact with your content.
 
 ---
+
