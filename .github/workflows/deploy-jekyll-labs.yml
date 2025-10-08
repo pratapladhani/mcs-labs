@@ -17,15 +17,10 @@ on:
         type: boolean
 
 jobs:
-  build-and-deploy:
+  build-jekyll:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
 
     steps:
       - name: Checkout repository
@@ -49,9 +44,6 @@ jobs:
       - name: Convert labs to Jekyll format using PowerShell
         run: pwsh -File Generate-Labs.ps1
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
       - name: Install Jekyll dependencies
         run: |
           gem install bundler
@@ -59,13 +51,14 @@ jobs:
 
       - name: Build Jekyll site
         run: |
-          bundle exec jekyll build --verbose --baseurl=/mcs-labs/jekyll --destination ./_site/jekyll
+          bundle exec jekyll build --verbose
         env:
           JEKYLL_ENV: production
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Archive Jekyll site
+        uses: actions/upload-artifact@v4
         with:
+          name: jekyll-site
           path: ./_site
 
       - name: 📋 Build Summary
