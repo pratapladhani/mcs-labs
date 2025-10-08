@@ -125,6 +125,7 @@ external_labs:
     description: "Learn to deploy an MCP Server and integrate it with Microsoft Copilot Studio"
     url: "https://github.com/microsoft/mcsmcp"
     repository: "microsoft/mcsmcp"
+    journeys: ["developer"]
 
 # PREREQUISITES - Define dependencies between labs
 prerequisites:

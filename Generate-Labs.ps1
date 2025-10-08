@@ -229,6 +229,149 @@ if ($config.optional_labs -and $config.optional_labs.Count -gt 0) {
     Write-Host ""
 }
 
+# Generate Journey Pages
+Write-Host "🛤️  Generating Journey Pages..." -ForegroundColor Magenta
+
+# Ensure journeys directory exists
+New-Item -ItemType Directory -Path "journeys" -Force | Out-Null
+
+# Define journey metadata
+$journeyMeta = @{
+    "quick-start" = @{
+        title = "Quick Start Journey"
+        description = "New to Copilot Studio? Start here with our essential labs to get up and running quickly."
+        icon = "🚀"
+        difficulty = "Beginner"
+        estimated_time = "3-4 hours"
+    }
+    "business-user" = @{
+        title = "Business User Journey" 
+        description = "Perfect for business professionals who want to create powerful AI assistants without deep technical knowledge."
+        icon = "👤"
+        difficulty = "Beginner to Intermediate"
+        estimated_time = "8-12 hours"
+    }
+    "developer" = @{
+        title = "Developer Journey"
+        description = "Technical deep-dive into advanced features, integrations, and development best practices."
+        icon = "⚡"
+        difficulty = "Intermediate to Advanced"
+        estimated_time = "10-15 hours"
+    }
+    "autonomous-ai" = @{
+        title = "Autonomous AI Journey"
+        description = "Cutting-edge autonomous agents that can perform complex tasks with minimal human intervention."
+        icon = "🤖"
+        difficulty = "Advanced"
+        estimated_time = "6-8 hours"
+    }
+}
+
+foreach ($journeyName in $journeyMeta.Keys) {
+    $journey = $journeyMeta[$journeyName]
+    $journeyFile = "journeys/$journeyName.md"
+    
+    Write-Host "  📄  Creating $journeyFile..." -ForegroundColor Cyan
+    
+    # Calculate journey stats
+    $journeyLabCount = 0
+    $totalDuration = 0
+    
+    # Count labs and duration for this journey
+    foreach ($section in @('core_learning_path', 'intermediate_labs', 'advanced_labs', 'specialized_labs', 'optional_labs')) {
+        if ($config.$section) {
+            foreach ($lab in $config.$section) {
+                if ($lab.journeys -and $journeyName -in $lab.journeys) {
+                    $journeyLabCount++
+                    $totalDuration += $lab.duration
+                }
+            }
+        }
+    }
+    
+    # Generate the journey page content
+    $journeyContent = @"
+---
+layout: default
+title: $($journey.title)
+description: $($journey.description)
+journey: $journeyName
+---
+
+# $($journey.icon) $($journey.title)
+
+$($journey.description)
+
+**Difficulty Level:** $($journey.difficulty)  
+**Estimated Time:** $($journey.estimated_time)  
+**Total Labs:** $journeyLabCount labs ($totalDuration minutes)
+
+---
+
+## Labs in This Journey
+
+{% assign journey_labs = site.labs | where: 'journeys', '$journeyName' | sort: 'order' %}
+
+<div class="labs-grid">
+{% for lab in journey_labs %}
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
+    <div class="lab-header">
+      <h3><a href="{{ lab.url }}">{{ lab.title }}</a></h3>
+      <div class="lab-meta">
+        <span class="difficulty">{{ lab.difficulty }}</span>
+        <span class="duration">{{ lab.duration }}min</span>
+      </div>
+    </div>
+    
+    <div class="lab-description">
+      {{ lab.description }}
+    </div>
+    
+    {% if lab.journeys.size > 1 %}
+    <div class="lab-journeys">
+      <small>Also in: 
+      {% for j in lab.journeys %}
+        {% unless j == '$journeyName' %}
+          <span class="journey-tag">{{ j }}</span>
+        {% endunless %}
+      {% endfor %}
+      </small>
+    </div>
+    {% endif %}
+    
+    <div class="lab-actions">
+      <a href="{{ lab.url }}" class="btn btn-primary">Start Lab</a>
+    </div>
+  </div>
+{% endfor %}
+</div>
+
+{% if journey_labs.size == 0 %}
+<div class="no-labs">
+  <p>🚧 Labs for this journey are being prepared. Check back soon!</p>
+</div>
+{% endif %}
+
+---
+
+## Navigation
+
+<div class="journey-nav">
+  <a href="/" class="btn btn-secondary">← Back to Home</a>
+  {% assign other_journeys = site.data.journeys | where_exp: "j", "j.name != '$journeyName'" %}
+  {% for other in other_journeys limit: 1 %}
+  <a href="/journeys/{{ other.name }}/" class="btn btn-outline">Try {{ other.title }}</a>
+  {% endfor %}
+</div>
+"@
+
+    # Write the journey page
+    Set-Content -Path $journeyFile -Value $journeyContent -Encoding UTF8
+    Write-Host "    ✅  Created $journeyFile ($journeyLabCount labs)" -ForegroundColor Green
+}
+
+Write-Host ""
+
 # Display final statistics
 Write-Host "╔═══════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Green
 Write-Host "║                                 GENERATION COMPLETE                                   ║" -ForegroundColor Green

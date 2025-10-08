@@ -1,23 +1,23 @@
 ---
 layout: default
-title: Quick Start Journey
-description: New to Copilot Studio? Start here with our essential labs to get up and running quickly.
-journey: quick-start
+title: Developer Journey
+description: Technical deep-dive into advanced features, integrations, and development best practices.
+journey: developer
 ---
 
-# 🚀 Quick Start Journey
+# ⚡ Developer Journey
 
-New to Copilot Studio? Start here with our essential labs to get up and running quickly.
+Technical deep-dive into advanced features, integrations, and development best practices.
 
-**Difficulty Level:** Beginner  
-**Estimated Time:** 3-4 hours  
-**Total Labs:** 4 labs (225 minutes)
+**Difficulty Level:** Intermediate to Advanced  
+**Estimated Time:** 10-15 hours  
+**Total Labs:** 7 labs (600 minutes)
 
 ---
 
 ## Labs in This Journey
 
-{% assign journey_labs = site.labs | where: 'journeys', 'quick-start' | sort: 'order' %}
+{% assign journey_labs = site.labs | where: 'journeys', 'developer' | sort: 'order' %}
 
 <div class="labs-grid">
 {% for lab in journey_labs %}
@@ -38,7 +38,7 @@ New to Copilot Studio? Start here with our essential labs to get up and running 
     <div class="lab-journeys">
       <small>Also in: 
       {% for j in lab.journeys %}
-        {% unless j == 'quick-start' %}
+        {% unless j == 'developer' %}
           <span class="journey-tag">{{ j }}</span>
         {% endunless %}
       {% endfor %}
@@ -65,7 +65,7 @@ New to Copilot Studio? Start here with our essential labs to get up and running 
 
 <div class="journey-nav">
   <a href="/" class="btn btn-secondary">← Back to Home</a>
-  {% assign other_journeys = site.data.journeys | where_exp: "j", "j.name != 'quick-start'" %}
+  {% assign other_journeys = site.data.journeys | where_exp: "j", "j.name != 'developer'" %}
   {% for other in other_journeys limit: 1 %}
   <a href="/journeys/{{ other.name }}/" class="btn btn-outline">Try {{ other.title }}</a>
   {% endfor %}
