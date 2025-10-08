@@ -903,11 +903,10 @@ function filterByJourney(journeyName) {
     }
   });
   
-  document.getElementById('journey-stats').innerHTML = \`
-    <strong>Difficulty Level:</strong> \${journey.difficulty}<br>
-    <strong>Estimated Time:</strong> \${journey.estimatedTime}<br>
-    <strong>Total Labs:</strong> \${labCount} labs (\${totalDuration} minutes)
-  \`;
+  document.getElementById('journey-stats').innerHTML = 
+    '<strong>Difficulty Level:</strong> ' + journey.difficulty + '<br>' +
+    '<strong>Estimated Time:</strong> ' + journey.estimatedTime + '<br>' +
+    '<strong>Total Labs:</strong> ' + labCount + ' labs (' + totalDuration + ' minutes)';
   
   // Update active button
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
