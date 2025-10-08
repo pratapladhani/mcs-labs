@@ -689,7 +689,6 @@ description: Microsoft Copilot Studio labs - browse all or filter by learning jo
 </div>
 
 <div class="lab-filters">
-  <button onclick="showAllLabs()" class="filter-btn active" id="all-btn">All Labs</button>
   <button onclick="filterByJourney('quick-start')" class="filter-btn" id="quick-start-btn">🚀 Quick Start</button>
   <button onclick="filterByJourney('business-user')" class="filter-btn" id="business-user-btn">💼 Business User</button>
   <button onclick="filterByJourney('developer')" class="filter-btn" id="developer-btn">🔧 Developer</button>
@@ -769,9 +768,7 @@ $sectionDescription
     # Fallback: simple chronological list if no sections are defined
     $allLabsContent += @"
 
-## 📚 All Available Labs
-
-<div class="labs-grid">
+<div class="labs-grid" id="labs-container">
 {% for lab in site.labs %}
   <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}">
     <div class="lab-header">
@@ -864,9 +861,8 @@ function showAllLabs() {
   const cards = document.querySelectorAll('.lab-card');
   cards.forEach(card => card.style.display = 'block');
   
-  // Update active button
+  // Clear active buttons
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  document.getElementById('all-btn').classList.add('active');
   
   // Update URL
   history.pushState({}, '', '{{ "/labs/" | relative_url }}');
