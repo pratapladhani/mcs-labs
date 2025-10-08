@@ -18,6 +18,12 @@ body {
     padding: 0 20px;
 }
 
+/* Override container for lab pages to allow full width */
+body.lab-page .container {
+    max-width: none;
+    padding: 0;
+}
+
 /* Header */
 .site-header {
     background: #0078d4;
@@ -102,11 +108,11 @@ body {
 /* Lab Layout with Sidebar */
 .lab-layout {
     display: flex;
-    max-width: 1800px; /* Increased for wider screens */
-    width: calc(100% - 80px); /* More responsive margins */
+    width: 95%; /* Use percentage for full utilization */
+    max-width: none; /* Remove max-width constraint */
     margin: 0 auto;
-    gap: 2rem; /* Slightly larger gap for better spacing */
-    padding: 0 40px; /* Increased padding for better proportions */
+    gap: 2rem;
+    padding: 0 2.5%; /* Percentage-based padding */
     box-sizing: border-box;
 }
 
@@ -358,17 +364,17 @@ body {
 /* Responsive Design for Navigation */
 @media (min-width: 1920px) {
     .lab-layout {
-        max-width: 2200px; /* Even wider for ultra-wide screens */
-        padding: 0 60px; /* More padding for very wide screens */
-        gap: 2.5rem; /* Larger gap for better visual separation */
+        width: 92%; /* Slightly less margin on ultra-wide */
+        padding: 0 4%; /* Percentage-based padding */
+        gap: 3rem; /* Larger gap for ultra-wide screens */
     }
     
     .lab-sidebar {
-        width: 300px; /* Slightly wider sidebar for better proportions */
+        width: 320px; /* Wider sidebar for ultra-wide screens */
     }
     
     .sidebar-content {
-        padding: 2rem; /* More padding for wider sidebar */
+        padding: 2rem;
         padding-right: 1.5rem;
         padding-bottom: 2.5rem;
     }
@@ -380,8 +386,8 @@ body {
 
 @media (min-width: 1440px) and (max-width: 1919px) {
     .lab-layout {
-        max-width: 1600px; /* Good middle ground for common wide screens */
-        padding: 0 50px;
+        width: 94%; /* Use more width on wide screens */
+        padding: 0 3%; /* Percentage-based padding */
     }
     
     .lab-sidebar {
@@ -392,7 +398,8 @@ body {
 @media (max-width: 1024px) {
     .lab-layout {
         flex-direction: column;
-        padding: 0 20px; /* Reduce padding on smaller screens */
+        width: 95%;
+        padding: 0 2.5%; /* Consistent percentage-based padding */
     }
     
     .lab-sidebar {

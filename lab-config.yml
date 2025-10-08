@@ -1,161 +1,116 @@
-# Lab Learning Progression Configuration
-# This file defines the order and organization of labs for optimal learning experience
+# Simplified Lab Configuration - Auto-Discovery Based
+# Only contains journey definitions and optional section customizations
+# Labs are automatically discovered from folders and README files
 
-# CORE LEARNING PATH - Essential foundation (complete in order)
-core_learning_path:
-  - id: agent-builder-web
-    title: "Web-based AI Assistant with Agent Builder"
-    duration: 45
-    difficulty: 100
-    description: "Your first web-based AI assistant - start here!"
-    journeys: ["quick-start", "business-user"]
+# =====================================================
+# JOURNEY DEFINITIONS - Learning paths with metadata
+# =====================================================
+journeys:
+  quick-start:
+    title: "Quick Start Journey"
+    description: "New to Copilot Studio? Start here with our essential labs to get up and running quickly."
+    icon: "🚀"
+    difficulty: "Beginner"
+    estimated_time: "3-4 hours"
     
-  - id: agent-builder-sharepoint
-    title: "SharePoint AI Assistant with Agent Builder"  
-    duration: 60
-    difficulty: 200
-    description: "Connect to SharePoint data sources"
-    journeys: ["quick-start", "business-user"]
+  business-user:
+    title: "Business User Journey"
+    description: "Perfect for business professionals who want to create powerful AI assistants without deep technical knowledge."
+    icon: "💼"
+    difficulty: "Beginner to Intermediate"
+    estimated_time: "8-12 hours"
     
-  - id: standard-orchestrator
-    title: "Standard Orchestrator"
-    duration: 75
-    difficulty: 100
-    description: "Multi-agent coordination patterns"
-    journeys: ["developer", "business-user"]
+  developer:
+    title: "Developer Journey"
+    description: "Technical deep-dive into advanced features, integrations, and development best practices."
+    icon: "🔧"
+    difficulty: "Intermediate to Advanced"
+    estimated_time: "10-15 hours"
     
-  - id: setup-for-success
-    title: "ALM Best Practices Setup"
-    duration: 60
-    difficulty: 200
-    description: "Essential development lifecycle practices"
-    journeys: ["developer"]
+  autonomous-ai:
+    title: "Autonomous AI Journey"
+    description: "Cutting-edge autonomous agents that can perform complex tasks with minimal human intervention."
+    icon: "🤖"
+    difficulty: "Advanced"
+    estimated_time: "6-8 hours"
 
-# INTERMEDIATE LABS - Build on core concepts
-intermediate_labs:
-  - id: public-website-agent
-    title: "Public Website Agent"
-    duration: 90
-    difficulty: 200
-    description: "Web scraping and analysis capabilities"
-    journeys: ["quick-start", "business-user"]
+# =====================================================
+# SECTION DEFINITIONS - Optional display customization
+# =====================================================
+sections:
+  core_learning_path:
+    title: "Core Learning Path"
+    icon: "📚"
+    slug: "core"
+    type: "main"
+    description: "Essential foundation labs - start here first!"
     
-  - id: mbr-prep-sharepoint-agent
-    title: "MBR Agent Deploy to SharePoint"
-    duration: 75
-    difficulty: 200
-    description: "Deploy agents to SharePoint environments"
-    journeys: ["business-user"]
+  intermediate_labs:
+    title: "Intermediate Labs" 
+    icon: "🎯"
+    slug: "intermediate"
+    type: "main"
+    description: "Build on core concepts with practical applications"
     
-  - id: ask-me-anything
-    title: "Ask Me Anything Agent"
-    duration: 90
-    difficulty: 200
-    description: "Advanced conversation flows and logic"
-    journeys: ["business-user"]
+  advanced_labs:
+    title: "Advanced Labs"
+    icon: "🚀"
+    slug: "advanced"
+    type: "main"
+    description: "Complex scenarios and autonomous agents"
+    
+  specialized_labs:
+    title: "Specialized Labs"
+    icon: "⚡"
+    slug: "specialized"
+    type: "main"
+    description: "Development tools and success measurement"
+    
+  optional_labs:
+    title: "Optional Labs"
+    icon: "🔧"
+    slug: "optional"
+    type: "optional"
+    description: "Alternative versions and shorter formats"
+    
+  external_labs:
+    title: "External Labs"
+    icon: "🌐"
+    slug: "external"
+    type: "external"
+    description: "Labs hosted in external repositories"
 
-# ADVANCED LABS - Autonomous agents and complex scenarios
-advanced_labs:
-  - id: autonomous-support-agent
-    title: "Autonomous Support Agent"
-    duration: 120
-    difficulty: 300
-    description: "Customer service automation"
-    journeys: ["autonomous-ai", "business-user"]
-    
-  - id: autonomous-account-news
-    title: "Autonomous Account News Agent"
-    duration: 120
-    difficulty: 300
-    description: "Intelligent news aggregation and analysis"
-    journeys: ["autonomous-ai"]
-    
-  - id: autonomous-cua
-    title: "Autonomous Agent with Computer-Using Agents"
-    duration: 150
-    difficulty: 300
-    description: "Most advanced autonomous agent capabilities"
-    journeys: ["autonomous-ai", "developer"]
-
-# SPECIALIZED LABS - DevOps, tools, and utilities
-specialized_labs:
-  - id: pipelines-and-source-control
-    title: "Pipelines and Source Control"
-    duration: 90
-    difficulty: 300
-    description: "ALM and DevOps practices for agents"
-    journeys: ["developer"]
-    
-  - id: copilot-studio-kit
-    title: "Copilot Studio Kit"
-    duration: 60
-    difficulty: 200
-    description: "Advanced tools and utilities"
-    journeys: ["developer", "business-user"]
-    
-  - id: measure-success
-    title: "Measure Success"
-    duration: 45
-    difficulty: 300
-    description: "Analytics and success measurement"
-    journeys: ["business-user", "developer"]
-    
-  - id: mcp-qualify-lead
-    title: "Model Context Protocol Integration"
-    duration: 120
-    difficulty: 300
-    description: "External system integration using MCP"
-    journeys: ["developer"]
-
-# OPTIONAL LABS - Alternative versions and specialized topics
-optional_labs:
-  - id: ask-me-anything-30-mins
-    title: "Ask Me Anything Agent (30 min version)"
-    duration: 30
-    difficulty: 200
-    description: "Shorter version of the main Ask Me Anything lab"
-    journeys: ["quick-start", "business-user"]
-
-# EXTERNAL LABS - Labs hosted in other repositories
+# =====================================================
+# EXTERNAL LABS - Labs not hosted in this repository
+# =====================================================
 external_labs:
   - id: mcs-mcp-external
     title: "Model Context Protocol (MCP) & Copilot Studio"
     duration: 90
-    difficulty: Advanced
+    difficulty: "Advanced"
     description: "Learn to deploy an MCP Server and integrate it with Microsoft Copilot Studio"
     url: "https://github.com/microsoft/mcsmcp"
     repository: "microsoft/mcsmcp"
     journeys: ["developer"]
 
-# PREREQUISITES - Define dependencies between labs
-prerequisites:
-  public-website-agent: [agent-builder-web, agent-builder-sharepoint]
-  mbr-prep-sharepoint-agent: [agent-builder-sharepoint, setup-for-success]
-  ask-me-anything: [agent-builder-web, agent-builder-sharepoint]
-  autonomous-support-agent: [ask-me-anything]
-  autonomous-account-news: [public-website-agent, ask-me-anything]
-  autonomous-cua: [autonomous-support-agent]
-  pipelines-and-source-control: [setup-for-success]
-  mcp-qualify-lead: [ask-me-anything]
+# =====================================================
+# AUTO-DISCOVERY RULES (Optional - for documentation)
+# =====================================================
+# The system automatically:
+# 1. Scans labs/ folders for README.md files
+# 2. Extracts metadata from lab details tables
+# 3. Auto-assigns sections based on:
+#    - Difficulty levels (100=core, 200=intermediate, 300+=advanced)
+#    - Folder name patterns (autonomous=advanced, 30-mins=optional, etc.)
+# 4. Auto-assigns journeys based on:
+#    - Difficulty and content analysis
+#    - Keywords in titles and descriptions
+# 5. Uses intelligent defaults for missing metadata
 
-# LEARNING TRACKS - Suggested paths for different goals
-learning_tracks:
-  beginner:
-    name: "Getting Started"
-    description: "New to Copilot Studio? Start here!"
-    labs: [agent-builder-web, agent-builder-sharepoint, setup-for-success]
-    
-  business_user:
-    name: "Business Solutions"
-    description: "Focus on business applications"
-    labs: [agent-builder-web, agent-builder-sharepoint, public-website-agent, mbr-prep-sharepoint-agent, ask-me-anything]
-    
-  developer:
-    name: "Developer Track"
-    description: "Technical implementation focus"
-    labs: [agent-builder-web, setup-for-success, pipelines-and-source-control, ask-me-anything, mcp-qualify-lead]
-    
-  autonomous_expert:
-    name: "Autonomous Agents"
-    description: "Advanced autonomous agent development"
-    labs: [agent-builder-web, agent-builder-sharepoint, ask-me-anything, autonomous-support-agent, autonomous-account-news, autonomous-cua]
+# To override auto-assignment, add YAML front matter to lab README files:
+# ---
+# journeys: ["custom-journey"]
+# section: "custom_section"
+# difficulty: 150
+# duration: 45
+# ---

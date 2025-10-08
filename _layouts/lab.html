@@ -38,7 +38,8 @@ layout: default
                     {% assign journey_labs = site.labs | where_exp: "lab", "lab.journeys contains primary_journey" | sort: "order" %}
                     {% for lab in journey_labs %}
                         <a href="{{ lab.url | relative_url }}" 
-                           class="lab-nav-item {% if lab.url == page.url %}current{% endif %}">
+                           class="lab-nav-item {% if lab.url == page.url %}current{% endif %}"
+                           title="{{ lab.title }}">
                             <span class="lab-order">{{ lab.order | default: "∞" }}</span>
                             <span class="lab-title">{{ lab.title }}</span>
                             <span class="lab-duration">{{ lab.duration }}min</span>

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     {% seo %}
 </head>
-<body>
+<body class="{% if page.layout == 'lab' %}lab-page{% endif %}">
     <header class="site-header">
         <div class="container">
             <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
