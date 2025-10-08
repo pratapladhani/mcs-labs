@@ -18,16 +18,16 @@ layout: default
                 {% case primary_journey %}
                     {% when 'quick-start' %}
                         {% assign journey_title = '🚀 Quick Start Journey' %}
-                        {% assign journey_url = '/journeys/quick-start/' %}
+                        {% assign journey_url = '/labs/#quick-start' %}
                     {% when 'business-user' %}
                         {% assign journey_title = '💼 Business User Journey' %}
-                        {% assign journey_url = '/journeys/business-user/' %}
+                        {% assign journey_url = '/labs/#business-user' %}
                     {% when 'developer' %}
                         {% assign journey_title = '🔧 Developer Journey' %}
-                        {% assign journey_url = '/journeys/developer/' %}
+                        {% assign journey_url = '/labs/#developer' %}
                     {% when 'autonomous-ai' %}
                         {% assign journey_title = '🤖 Autonomous AI Journey' %}
-                        {% assign journey_url = '/journeys/autonomous-ai/' %}
+                        {% assign journey_url = '/labs/#autonomous-ai' %}
                 {% endcase %}
                 
                 <div class="journey-header">
@@ -55,13 +55,13 @@ layout: default
                             {% unless journey == primary_journey %}
                                 {% case journey %}
                                     {% when 'quick-start' %}
-                                        <a href="{{ '/journeys/quick-start/' | relative_url }}" class="other-journey">🚀 Quick Start</a>
+                                        <a href="{{ '/labs/#quick-start' | relative_url }}" class="other-journey">🚀 Quick Start</a>
                                     {% when 'business-user' %}
-                                        <a href="{{ '/journeys/business-user/' | relative_url }}" class="other-journey">💼 Business User</a>
+                                        <a href="{{ '/labs/#business-user' | relative_url }}" class="other-journey">💼 Business User</a>
                                     {% when 'developer' %}
-                                        <a href="{{ '/journeys/developer/' | relative_url }}" class="other-journey">🔧 Developer</a>
+                                        <a href="{{ '/labs/#developer' | relative_url }}" class="other-journey">🔧 Developer</a>
                                     {% when 'autonomous-ai' %}
-                                        <a href="{{ '/journeys/autonomous-ai/' | relative_url }}" class="other-journey">🤖 Autonomous AI</a>
+                                        <a href="{{ '/labs/#autonomous-ai' | relative_url }}" class="other-journey">🤖 Autonomous AI</a>
                                 {% endcase %}
                             {% endunless %}
                         {% endfor %}
@@ -148,7 +148,7 @@ layout: default
                 <!-- Navigation will be enhanced later -->
                 <div class="journey-nav-buttons">
                     {% if page.journeys and page.journeys.size > 0 %}
-                        <a href="{{ '/journeys/' | append: page.journeys[0] | append: '/' | relative_url }}" 
+                        <a href="{{ '/labs/#' | append: page.journeys[0] | relative_url }}" 
                            class="nav-button journey">
                             📚 Back to {{ page.journeys[0] | replace: '-', ' ' | capitalize }} Journey
                         </a>
