@@ -2,7 +2,7 @@ name: Deploy Jekyll Lab Browser
 
 on:
   push:
-    branches: [ main, jekyll-lab-browser ]
+    branches: [ main ]
     paths: [ 'labs/**', '_layouts/**', 'assets/**', '_config.yml', 'index.md', 'Generate-Labs.ps1', 'lab-config.yml', 'journeys/**' ]
   pull_request:
     branches: [ main ]
