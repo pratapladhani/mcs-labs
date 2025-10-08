@@ -18,7 +18,7 @@ Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. C
             <span>📊 Level 100-200</span>
             <span>📚 4 labs</span>
         </div>
-        <a href="{{ '/journeys/quick-start/' | relative_url }}" class="journey-btn">Start Journey →</a>
+        <a href="{{ '/labs/#quick-start' | relative_url }}" class="journey-btn">Start Journey →</a>
     </div>
     
     <div class="journey-card business-user">
@@ -29,7 +29,7 @@ Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. C
             <span>📊 Level 100-300</span>
             <span>📚 10 labs</span>
         </div>
-        <a href="{{ '/journeys/business-user/' | relative_url }}" class="journey-btn">Start Journey →</a>
+        <a href="{{ '/labs/#business-user' | relative_url }}" class="journey-btn">Start Journey →</a>
     </div>
     
     <div class="journey-card developer">
@@ -40,7 +40,7 @@ Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. C
             <span>📊 Level 200-300</span>
             <span>📚 6 labs</span>
         </div>
-        <a href="{{ '/journeys/developer/' | relative_url }}" class="journey-btn">Start Journey →</a>
+        <a href="{{ '/labs/#developer' | relative_url }}" class="journey-btn">Start Journey →</a>
     </div>
     
     <div class="journey-card autonomous-ai">
@@ -51,7 +51,7 @@ Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. C
             <span>📊 Level 300</span>
             <span>📚 3 labs</span>
         </div>
-        <a href="{{ '/journeys/autonomous-ai/' | relative_url }}" class="journey-btn">Start Journey →</a>
+        <a href="{{ '/labs/#autonomous-ai' | relative_url }}" class="journey-btn">Start Journey →</a>
     </div>
 </div>
 
