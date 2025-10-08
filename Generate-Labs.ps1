@@ -712,7 +712,7 @@ foreach ($sectionKey in $labsBySection.Keys) {
 }
 
 # Generate sections dynamically based on what exists
-if ($activeSections.Count -gt 0) {
+if ($false) { # Disabled - using unified approach instead
     Write-Host "  📊 Generating $($activeSections.Count) dynamic sections for All Labs page" -ForegroundColor Cyan
     
     foreach ($sectionKey in $activeSections.Keys) {
