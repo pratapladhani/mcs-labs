@@ -1,0 +1,48 @@
+---
+layout: default
+---
+
+<article class="lab-content">
+    <header class="lab-header">
+        <h1>{{ page.title }}</h1>
+        {% if page.duration %}
+        <div class="lab-meta">
+            <span class="duration">⏱️ {{ page.duration }} minutes</span>
+            {% if page.difficulty %}
+            <span class="difficulty">📊 {{ page.difficulty }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </header>
+
+    <div class="lab-body">
+        {{ content }}
+    </div>
+
+    <footer class="lab-footer">
+        <div class="lab-navigation">
+            {% assign labs = site.labs | sort: 'order' %}
+            {% for lab in labs %}
+                {% if lab.url == page.url %}
+                    {% assign current_index = forloop.index0 %}
+                    {% break %}
+                {% endif %}
+            {% endfor %}
+            
+            {% if current_index > 0 %}
+                {% assign prev_lab = labs[current_index | minus: 1] %}
+                <a href="{{ prev_lab.url | relative_url }}" class="nav-button prev">
+                    ← {{ prev_lab.title }}
+                </a>
+            {% endif %}
+            
+            {% assign next_index = current_index | plus: 1 %}
+            {% if next_index < labs.size %}
+                {% assign next_lab = labs[next_index] %}
+                <a href="{{ next_lab.url | relative_url }}" class="nav-button next">
+                    {{ next_lab.title }} →
+                </a>
+            {% endif %}
+        </div>
+    </footer>
+</article>

@@ -1,0 +1,41 @@
+# Jekyll Configuration for MCS Labs
+title: "Microsoft Copilot Studio Labs"
+description: "Hands-on labs for building AI agents with Microsoft Copilot Studio"
+baseurl: "/mcs-labs"
+url: "https://pratapladhani.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  labs:
+    output: true
+    permalink: /:collection/:name/
+
+# Default layouts
+defaults:
+  - scope:
+      path: ""
+      type: "labs"
+    values:
+      layout: "lab"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# Exclude from build
+exclude:
+  - node_modules/
+  - .github/
+  - package*.json
+  - README.md
+  - LICENSE
+  - SECURITY.md
