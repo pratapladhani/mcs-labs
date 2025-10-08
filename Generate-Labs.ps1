@@ -869,7 +869,7 @@ function showAllLabs() {
   document.getElementById('all-btn').classList.add('active');
   
   // Update URL
-  history.pushState({}, '', '/labs/');
+  history.pushState({}, '', '{{ "/labs/" | relative_url }}');
 }
 
 function filterByJourney(journeyName) {
@@ -888,11 +888,16 @@ function filterByJourney(journeyName) {
   let totalDuration = 0;
   
   cards.forEach(card => {
-    const journeys = card.dataset.journeys.split(',');
-    if (journeys.includes(journeyName)) {
-      card.style.display = 'block';
-      labCount++;
-      totalDuration += parseInt(card.dataset.duration);
+    const journeyData = card.dataset.journeys;
+    if (journeyData) {
+      const journeys = journeyData.split(',').map(j => j.trim());
+      if (journeys.includes(journeyName)) {
+        card.style.display = 'block';
+        labCount++;
+        totalDuration += parseInt(card.dataset.duration);
+      } else {
+        card.style.display = 'none';
+      }
     } else {
       card.style.display = 'none';
     }
@@ -909,14 +914,30 @@ function filterByJourney(journeyName) {
   document.getElementById(journeyName + '-btn').classList.add('active');
   
   // Update URL
-  history.pushState({}, '', \`/labs/?journey=\${journeyName}\`);
+  history.pushState({}, '', '{{ "/labs/" | relative_url }}#' + journeyName);
 }
 
-// Initialize based on URL parameters
+// Initialize based on URL hash or parameters
 document.addEventListener('DOMContentLoaded', function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const journey = urlParams.get('journey');
+  // Check for hash first (e.g., #quick-start)
+  let journey = window.location.hash.substring(1);
   
+  // Fall back to URL parameters if no hash
+  if (!journey) {
+    const urlParams = new URLSearchParams(window.location.search);
+    journey = urlParams.get('journey');
+  }
+  
+  if (journey && journeys[journey]) {
+    filterByJourney(journey);
+  } else {
+    showAllLabs();
+  }
+});
+
+// Listen for hash changes
+window.addEventListener('hashchange', function() {
+  const journey = window.location.hash.substring(1);
   if (journey && journeys[journey]) {
     filterByJourney(journey);
   } else {
