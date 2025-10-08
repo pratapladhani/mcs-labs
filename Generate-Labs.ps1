@@ -737,7 +737,7 @@ $sectionDescription
 <div class="labs-grid">
 {% for lab in site.labs %}
   {% if lab.section == '$($meta.sectionName)' %}
-  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}">
     <div class="lab-header">
       <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
       <div class="lab-meta">
@@ -751,7 +751,7 @@ $sectionDescription
     <div class="lab-journeys">
       <small>Journeys: 
       {% for journey in lab.journeys %}
-        <span class="journey-tag">{{ journey }}</span>
+        <span class="journey-tag" onclick="filterByJourney('{{ journey }}')">{{ journey }}</span>
       {% endfor %}
       </small>
     </div>
@@ -773,7 +773,7 @@ $sectionDescription
 
 <div class="labs-grid">
 {% for lab in site.labs %}
-  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}">
     <div class="lab-header">
       <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
       <div class="lab-meta">
@@ -787,7 +787,7 @@ $sectionDescription
     <div class="lab-journeys">
       <small>Journeys: 
       {% for journey in lab.journeys %}
-        <span class="journey-tag">{{ journey }}</span>
+        <span class="journey-tag" onclick="filterByJourney('{{ journey }}')">{{ journey }}</span>
       {% endfor %}
       </small>
     </div>
