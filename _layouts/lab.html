@@ -2,24 +2,101 @@
 layout: default
 ---
 
-<article class="lab-content">
-    <header class="lab-header">
-        <h1>{{ page.title }}</h1>
-        {% if page.duration %}
-        <div class="lab-meta">
-            <span class="duration">⏱️ {{ page.duration }} minutes</span>
-            {% if page.difficulty %}
-            <span class="difficulty">📊 {{ page.difficulty }}</span>
+<div class="lab-layout">
+    <!-- Left Sidebar Navigation -->
+    <aside class="lab-sidebar">
+        <div class="sidebar-content">
+            <h3>📚 Journey Labs</h3>
+            
+            {% comment %} Find which journeys this lab belongs to {% endcomment %}
+            {% assign current_journeys = page.journeys %}
+            
+            {% comment %} If lab has journeys, show navigation for the first/primary journey {% endcomment %}
+            {% if current_journeys and current_journeys.size > 0 %}
+                {% assign primary_journey = current_journeys[0] %}
+                
+                {% case primary_journey %}
+                    {% when 'quick-start' %}
+                        {% assign journey_title = '🚀 Quick Start Journey' %}
+                        {% assign journey_url = '/journeys/quick-start/' %}
+                    {% when 'business-user' %}
+                        {% assign journey_title = '💼 Business User Journey' %}
+                        {% assign journey_url = '/journeys/business-user/' %}
+                    {% when 'developer' %}
+                        {% assign journey_title = '🔧 Developer Journey' %}
+                        {% assign journey_url = '/journeys/developer/' %}
+                    {% when 'autonomous-ai' %}
+                        {% assign journey_title = '🤖 Autonomous AI Journey' %}
+                        {% assign journey_url = '/journeys/autonomous-ai/' %}
+                {% endcase %}
+                
+                <div class="journey-header">
+                    <a href="{{ journey_url | relative_url }}" class="journey-title">{{ journey_title }}</a>
+                </div>
+                
+                <nav class="journey-labs">
+                    {% assign journey_labs = site.labs | where_exp: "lab", "lab.journeys contains primary_journey" | sort: "order" %}
+                    {% for lab in journey_labs %}
+                        <a href="{{ lab.url | relative_url }}" 
+                           class="lab-nav-item {% if lab.url == page.url %}current{% endif %}">
+                            <span class="lab-order">{{ lab.order | default: "∞" }}</span>
+                            <span class="lab-title">{{ lab.title }}</span>
+                            <span class="lab-duration">{{ lab.duration }}min</span>
+                        </a>
+                    {% endfor %}
+                </nav>
+                
+                {% comment %} Show other journeys this lab belongs to {% endcomment %}
+                {% if current_journeys.size > 1 %}
+                    <div class="other-journeys">
+                        <h4>Also in:</h4>
+                        {% for journey in current_journeys %}
+                            {% unless journey == primary_journey %}
+                                {% case journey %}
+                                    {% when 'quick-start' %}
+                                        <a href="{{ '/journeys/quick-start/' | relative_url }}" class="other-journey">🚀 Quick Start</a>
+                                    {% when 'business-user' %}
+                                        <a href="{{ '/journeys/business-user/' | relative_url }}" class="other-journey">💼 Business User</a>
+                                    {% when 'developer' %}
+                                        <a href="{{ '/journeys/developer/' | relative_url }}" class="other-journey">🔧 Developer</a>
+                                    {% when 'autonomous-ai' %}
+                                        <a href="{{ '/journeys/autonomous-ai/' | relative_url }}" class="other-journey">🤖 Autonomous AI</a>
+                                {% endcase %}
+                            {% endunless %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="no-journey">
+                    <p>This lab is not part of a guided journey.</p>
+                    <a href="{{ '/labs/' | relative_url }}">Browse All Labs</a>
+                </div>
             {% endif %}
         </div>
-        {% endif %}
-    </header>
+    </aside>
 
-    <div class="lab-body">
-        {{ content }}
-    </div>
+    <!-- Main Lab Content -->
+    <article class="lab-content">
+        <header class="lab-header">
+            <h1>{{ page.title }}</h1>
+            {% if page.duration %}
+            <div class="lab-meta">
+                <span class="duration">⏱️ {{ page.duration }} minutes</span>
+                {% if page.difficulty %}
+                <span class="difficulty">📊 Level {{ page.difficulty }}</span>
+                {% endif %}
+                {% if page.lab_type %}
+                <span class="lab-type">🏷️ {{ page.lab_type | capitalize }}</span>
+                {% endif %}
+            </div>
+            {% endif %}
+        </header>
 
-    <div class="lab-downloads">
+        <div class="lab-body">
+            {{ content }}
+        </div>
+
+        <div class="lab-downloads">
         <h3>📄 Download Options</h3>
         <div class="download-links">
             {% assign pdf_url = '/dist/labs/' | append: page.slug | append: '.pdf' | relative_url %}
@@ -64,5 +141,23 @@ layout: default
                 </a>
             {% endif %}
         </div>
-    </footer>
-</article>
+        
+        <footer class="lab-footer">
+            <div class="lab-navigation">
+                <!-- Navigation will be enhanced later -->
+                <div class="journey-nav-buttons">
+                    {% if page.journeys and page.journeys.size > 0 %}
+                        <a href="{{ '/journeys/' | append: page.journeys[0] | append: '/' | relative_url }}" 
+                           class="nav-button journey">
+                            📚 Back to {{ page.journeys[0] | replace: '-', ' ' | capitalize }} Journey
+                        </a>
+                    {% endif %}
+                    <a href="{{ '/labs/' | relative_url }}" class="nav-button all-labs">
+                        📋 View All Labs
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </article>
+</div>
+<!-- End lab-layout -->

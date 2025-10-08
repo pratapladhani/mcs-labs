@@ -11,10 +11,35 @@
     <header class="site-header">
         <div class="container">
             <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
-            <nav>
+            <nav class="main-nav">
                 <a href="{{ '/' | relative_url }}">Home</a>
                 <a href="{{ '/labs/' | relative_url }}">All Labs</a>
             </nav>
+        </div>
+        
+        <!-- Journey Navigation Bar -->
+        <div class="journey-nav-bar">
+            <div class="container">
+                <nav class="journey-nav">
+                    <span class="nav-label">Learning Journeys:</span>
+                    <a href="{{ '/journeys/quick-start/' | relative_url }}" 
+                       class="journey-link {% if page.journey == 'quick-start' or page.journeys contains 'quick-start' %}active{% endif %}">
+                        🚀 Quick Start
+                    </a>
+                    <a href="{{ '/journeys/business-user/' | relative_url }}" 
+                       class="journey-link {% if page.journey == 'business-user' or page.journeys contains 'business-user' %}active{% endif %}">
+                        💼 Business User
+                    </a>
+                    <a href="{{ '/journeys/developer/' | relative_url }}" 
+                       class="journey-link {% if page.journey == 'developer' or page.journeys contains 'developer' %}active{% endif %}">
+                        🔧 Developer
+                    </a>
+                    <a href="{{ '/journeys/autonomous-ai/' | relative_url }}" 
+                       class="journey-link {% if page.journey == 'autonomous-ai' or page.journeys contains 'autonomous-ai' %}active{% endif %}">
+                        🤖 Autonomous AI
+                    </a>
+                </nav>
+            </div>
         </div>
     </header>
 
