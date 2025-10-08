@@ -47,6 +47,7 @@ jobs:
       - name: Install Jekyll dependencies
         run: |
           gem install bundler
+          bundle lock --add-platform x86_64-linux
           bundle install
 
       - name: Build Jekyll site
