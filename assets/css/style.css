@@ -331,8 +331,51 @@ body {
     transform: translateY(-1px);
 }
 
+/* Lab downloads section */
+.lab-downloads {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #0078d4;
+}
+
+.lab-downloads h3 {
+    margin: 0 0 1rem 0;
+    color: #323130;
+    font-size: 1.1rem;
+}
+
+.download-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
 .pdf-download {
-    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #0078d4;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    width: fit-content;
+}
+
+.pdf-download:hover {
+    background: #106ebe;
+    color: white;
+    text-decoration: none;
+}
+
+.download-links small {
+    color: #605e5c;
+    font-style: italic;
+    margin-top: 0.5rem;
 }
 
 /* Journey navigation cards */

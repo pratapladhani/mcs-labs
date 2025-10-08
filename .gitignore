@@ -10,6 +10,12 @@ _site/
 .jekyll-cache/
 .jekyll-metadata
 
+# Jekyll generated journey pages (auto-generated from lab-config.yml)
+journeys/
+
+# Jekyll generated lab index page (auto-generated from lab-config.yml)
+labs/index.md
+
 # Ignore generated content and build artifacts:
 dist/
 node_modules/

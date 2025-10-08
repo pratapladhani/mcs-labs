@@ -100,6 +100,36 @@ function ConvertTo-JekyllLab {
             # Read the source file
             $content = Get-Content $source_file -Raw -ErrorAction Stop
             
+            # Extract description from README content (first paragraph after title)
+            $description = ""
+            $lines = $content -split "`n"
+            $foundTitle = $false
+            $foundDescription = $false
+            
+            foreach ($line in $lines) {
+                $line = $line.Trim()
+                
+                # Skip until we find the main heading
+                if ($line -match "^#\s+") {
+                    $foundTitle = $true
+                    continue
+                }
+                
+                # After title, look for first substantial paragraph
+                if ($foundTitle -and -not $foundDescription) {
+                    if ($line -and -not $line.StartsWith("#") -and -not $line.StartsWith("---") -and -not $line.StartsWith("<!--")) {
+                        $description = $line
+                        $foundDescription = $true
+                        break
+                    }
+                }
+            }
+            
+            # Fallback to config description if we couldn't extract one
+            if (-not $description) {
+                $description = $Lab.description
+            }
+            
             # Create Jekyll front matter with journey metadata
             $front_matter = @"
 ---
@@ -116,6 +146,7 @@ title: "$title"
 `nduration: $duration
 difficulty: $difficulty
 lab_type: $LabType
+section: $SectionName
 "@
             
             # Add journeys if they exist
@@ -125,8 +156,11 @@ lab_type: $LabType
                 $front_matter += "`njourneys: $journeyString"
             }
             
+            # Add extracted description
+            $front_matter += "`ndescription: `"$description`""
+            
             $front_matter += @"
-`npermalink: /labs/$lab_key/
+
 ---
 
 $content
@@ -310,13 +344,12 @@ $($journey.description)
 
 ## Labs in This Journey
 
-{% assign journey_labs = site.labs | where: 'journeys', '$journeyName' | sort: 'order' %}
-
 <div class="labs-grid">
-{% for lab in journey_labs %}
+{% for lab in site.labs %}
+  {% if lab.journeys contains '$journeyName' %}
   <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
     <div class="lab-header">
-      <h3><a href="{{ lab.url }}">{{ lab.title }}</a></h3>
+      <h3><a href="{{ site.baseurl }}/labs/{{ lab.slug }}/">{{ lab.title }}</a></h3>
       <div class="lab-meta">
         <span class="difficulty">{{ lab.difficulty }}</span>
         <span class="duration">{{ lab.duration }}min</span>
@@ -340,17 +373,12 @@ $($journey.description)
     {% endif %}
     
     <div class="lab-actions">
-      <a href="{{ lab.url }}" class="btn btn-primary">Start Lab</a>
+      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
     </div>
   </div>
+  {% endif %}
 {% endfor %}
 </div>
-
-{% if journey_labs.size == 0 %}
-<div class="no-labs">
-  <p>🚧 Labs for this journey are being prepared. Check back soon!</p>
-</div>
-{% endif %}
 
 ---
 
@@ -369,6 +397,202 @@ $($journey.description)
     Set-Content -Path $journeyFile -Value $journeyContent -Encoding UTF8
     Write-Host "    ✅  Created $journeyFile ($journeyLabCount labs)" -ForegroundColor Green
 }
+
+# Generate All Labs Index Page
+Write-Host "📋  Generating All Labs index page..." -ForegroundColor Magenta
+
+# Ensure labs directory exists
+New-Item -ItemType Directory -Path "labs" -Force | Out-Null
+
+$allLabsContent = @"
+---
+layout: default
+title: All Labs
+description: Complete list of all Microsoft Copilot Studio labs organized by category
+---
+
+# All Labs
+
+Browse all available Microsoft Copilot Studio labs. Choose individual labs or follow our [learning journeys]({{ '/' | relative_url }}) for a guided experience.
+
+## 📚 Core Learning Path
+Essential foundation labs - complete these first!
+
+<div class="labs-grid">
+{% for lab in site.labs %}
+  {% if lab.lab_type == 'main' and lab.section == 'core' %}
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
+    <div class="lab-header">
+      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
+      <div class="lab-meta">
+        <span class="difficulty">Level {{ lab.difficulty }}</span>
+        <span class="duration">{{ lab.duration }}min</span>
+      </div>
+    </div>
+    <div class="lab-description">
+      {{ lab.description }}
+    </div>
+    <div class="lab-journeys">
+      <small>Journeys: 
+      {% for journey in lab.journeys %}
+        <span class="journey-tag">{{ journey }}</span>
+      {% endfor %}
+      </small>
+    </div>
+    <div class="lab-actions">
+      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+</div>
+
+## 🎯 Intermediate Labs
+Build on core concepts with practical applications
+
+<div class="labs-grid">
+{% for lab in site.labs %}
+  {% if lab.lab_type == 'main' and lab.section == 'intermediate' %}
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
+    <div class="lab-header">
+      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
+      <div class="lab-meta">
+        <span class="difficulty">Level {{ lab.difficulty }}</span>
+        <span class="duration">{{ lab.duration }}min</span>
+      </div>
+    </div>
+    <div class="lab-description">
+      {{ lab.description }}
+    </div>
+    <div class="lab-journeys">
+      <small>Journeys: 
+      {% for journey in lab.journeys %}
+        <span class="journey-tag">{{ journey }}</span>
+      {% endfor %}
+      </small>
+    </div>
+    <div class="lab-actions">
+      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+</div>
+
+## 🚀 Advanced Labs
+Autonomous agents and complex scenarios
+
+<div class="labs-grid">
+{% for lab in site.labs %}
+  {% if lab.lab_type == 'main' and lab.section == 'advanced' %}
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
+    <div class="lab-header">
+      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
+      <div class="lab-meta">
+        <span class="difficulty">Level {{ lab.difficulty }}</span>
+        <span class="duration">{{ lab.duration }}min</span>
+      </div>
+    </div>
+    <div class="lab-description">
+      {{ lab.description }}
+    </div>
+    <div class="lab-journeys">
+      <small>Journeys: 
+      {% for journey in lab.journeys %}
+        <span class="journey-tag">{{ journey }}</span>
+      {% endfor %}
+      </small>
+    </div>
+    <div class="lab-actions">
+      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+</div>
+
+## ⚡ Specialized Labs
+DevOps, tools, and utilities
+
+<div class="labs-grid">
+{% for lab in site.labs %}
+  {% if lab.lab_type == 'main' and lab.section == 'specialized' %}
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
+    <div class="lab-header">
+      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
+      <div class="lab-meta">
+        <span class="difficulty">Level {{ lab.difficulty }}</span>
+        <span class="duration">{{ lab.duration }}min</span>
+      </div>
+    </div>
+    <div class="lab-description">
+      {{ lab.description }}
+    </div>
+    <div class="lab-journeys">
+      <small>Journeys: 
+      {% for journey in lab.journeys %}
+        <span class="journey-tag">{{ journey }}</span>
+      {% endfor %}
+      </small>
+    </div>
+    <div class="lab-actions">
+      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+</div>
+
+## 🔧 Optional Labs
+Alternative versions and specialized topics
+
+<div class="labs-grid">
+{% for lab in site.labs %}
+  {% if lab.lab_type == 'optional' %}
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
+    <div class="lab-header">
+      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
+      <div class="lab-meta">
+        <span class="difficulty">Level {{ lab.difficulty }}</span>
+        <span class="duration">{{ lab.duration }}min</span>
+      </div>
+    </div>
+    <div class="lab-description">
+      {{ lab.description }}
+    </div>
+    <div class="lab-journeys">
+      <small>Journeys: 
+      {% for journey in lab.journeys %}
+        <span class="journey-tag">{{ journey }}</span>
+      {% endfor %}
+      </small>
+    </div>
+    <div class="lab-actions">
+      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+</div>
+
+---
+
+## 🎯 Prefer Guided Learning?
+
+Try our [learning journeys]({{ '/' | relative_url }}) for a curated, step-by-step experience:
+
+- **🚀 Quick Start**: Get results fast (4 labs)
+- **💼 Business User**: Real-world solutions (10 labs) 
+- **🔧 Developer**: Technical depth (7 labs)
+- **🤖 Autonomous AI**: Advanced agents (3 labs)
+
+<div class="navigation-actions">
+  <a href="{{ '/' | relative_url }}" class="btn btn-secondary">← Back to Journeys</a>
+</div>
+"@
+
+Set-Content -Path "labs/index.md" -Value $allLabsContent -Encoding UTF8
+Write-Host "  ✅  Created labs/index.md (All Labs page)" -ForegroundColor Green
 
 Write-Host ""
 
