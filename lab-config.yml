@@ -22,7 +22,7 @@ core_learning_path:
     duration: 75
     difficulty: 100
     description: "Multi-agent coordination patterns"
-    journeys: ["developer"]
+    journeys: ["developer", "business-user"]
     
   - id: setup-for-success
     title: "ALM Best Practices Setup"
@@ -91,14 +91,14 @@ specialized_labs:
     duration: 60
     difficulty: 200
     description: "Advanced tools and utilities"
-    journeys: ["developer"]
+    journeys: ["developer", "business-user"]
     
   - id: measure-success
     title: "Measure Success"
     duration: 45
     difficulty: 300
     description: "Analytics and success measurement"
-    journeys: ["business-user"]
+    journeys: ["business-user", "developer"]
     
   - id: mcp-qualify-lead
     title: "Model Context Protocol Integration"
@@ -114,6 +114,7 @@ optional_labs:
     duration: 30
     difficulty: 200
     description: "Shorter version of the main Ask Me Anything lab"
+    journeys: ["quick-start", "business-user"]
 
 # EXTERNAL LABS - Labs hosted in other repositories
 external_labs:
