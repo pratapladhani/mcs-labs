@@ -2,8 +2,8 @@ name: Deploy Jekyll Lab Browser
 
 on:
   push:
-    branches: [ main, feature/jekyll-lab-browser ]
-    paths: [ 'labs/**', '_layouts/**', 'assets/**', '_config.yml', 'index.md', 'convert-labs.sh' ]
+    branches: [ main, jekyll-lab-browser ]
+    paths: [ 'labs/**', '_layouts/**', 'assets/**', '_config.yml', 'index.md', 'Generate-Labs.ps1', 'lab-config.yml', 'journeys/**' ]
   pull_request:
     branches: [ main ]
 
@@ -29,10 +29,17 @@ jobs:
           ruby-version: '3.1'
           bundler-cache: true
 
-      - name: Convert labs to Jekyll format
+      - name: Install PowerShell and dependencies
         run: |
-          chmod +x convert-labs.sh
-          ./convert-labs.sh
+          # Install PowerShell 7.x
+          wget -q https://github.com/PowerShell/PowerShell/releases/download/v7.4.0/powershell_7.4.0-1.deb_amd64.deb
+          sudo dpkg -i powershell_7.4.0-1.deb_amd64.deb || sudo apt-get install -f -y
+          
+      - name: Install PowerShell YAML module
+        run: pwsh -Command "Install-Module -Name powershell-yaml -Force -Scope CurrentUser -Repository PSGallery"
+
+      - name: Convert labs to Jekyll format using PowerShell
+        run: pwsh -File Generate-Labs.ps1
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
