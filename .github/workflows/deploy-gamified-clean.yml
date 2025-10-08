@@ -1,0 +1,52 @@
+name: 🚀 Deploy Gamified Labs to GitHub Pages
+
+on:
+  push:
+    branches: [ main, feature/gamification-github-pages ]
+    paths: [ 'src/**', 'labs/**' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+        
+    - name: Build gamified site
+      run: |
+        echo "🎮 Building gamified lab portal..."
+        
+        # Create output directory
+        mkdir -p _site
+        
+        # Copy gamification assets
+        cp src/simple-tracker.html _site/index.html
+        cp -r src/js _site/
+        cp -r src/data _site/ 2>/dev/null || true
+        
+        # Make the lab processing script executable and run it
+        chmod +x .github/scripts/process-labs.sh
+        ./.github/scripts/process-labs.sh
+        
+        echo "✅ Build completed successfully!"
+        
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

@@ -148,6 +148,23 @@
             background: linear-gradient(45deg, #f8fff8, #f0fff0);
         }
 
+        .lab-card.locked {
+            opacity: 0.6;
+            border-color: #ddd;
+            background: linear-gradient(135deg, #f8f9fa 0%, #f1f1f1 100%);
+        }
+
+        .complete-btn.disabled {
+            background: #bdc3c7;
+            color: #7f8c8d;
+            cursor: not-allowed;
+        }
+
+        .complete-btn.disabled:hover {
+            background: #bdc3c7;
+            transform: none;
+        }
+
         .lab-header {
             display: flex;
             justify-content: space-between;
@@ -341,9 +358,54 @@
 
         <!-- Labs Section -->
         <div class="labs-section">
-            <h2>📚 Available Labs</h2>
-            <div class="labs-grid" id="labsGrid">
-                <!-- Labs will be populated by JavaScript -->
+            <h2>�️ Learning Paths</h2>
+            <p style="margin-bottom: 30px; color: #666;">Follow the structured learning paths below to build your Copilot Studio expertise progressively.</p>
+            
+            <!-- Core Learning Path -->
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #4CAF50; margin-bottom: 15px;">🎯 Core Learning Path (Required)</h3>
+                <p style="color: #666; margin-bottom: 20px; font-size: 0.95rem;">Essential skills every Copilot Studio practitioner needs. Complete these in order for the best learning experience.</p>
+                <div class="labs-grid" id="coreLabsGrid">
+                    <!-- Core labs will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Advanced Autonomous Track -->
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #FF9800; margin-bottom: 15px;">🤖 Advanced Autonomous Track</h3>
+                <p style="color: #666; margin-bottom: 20px; font-size: 0.95rem;">Master automation with agents that work independently. Requires completion of core path.</p>
+                <div class="labs-grid" id="autonomousLabsGrid">
+                    <!-- Autonomous labs will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Specialized Use Cases -->
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #9C27B0; margin-bottom: 15px;">🎨 Specialized Use Cases</h3>
+                <p style="color: #666; margin-bottom: 20px; font-size: 0.95rem;">Domain-specific applications and advanced tooling. Can be completed in any order after prerequisites.</p>
+                <div class="labs-grid" id="specializedLabsGrid">
+                    <!-- Specialized labs will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Optional Labs -->
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: #607D8B; margin-bottom: 15px;">📋 Optional & Alternative Labs</h3>
+                <p style="color: #666; margin-bottom: 20px; font-size: 0.95rem;">Shorter versions, bonus content, and external resources. Not required for progression.</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+                    <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; border-left: 4px solid #607D8B;">
+                        <strong>Ask Me Anything (30 min version)</strong><br>
+                        <small style="color: #666;">Condensed version of the full lab • 150 XP</small>
+                    </div>
+                    <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; border-left: 4px solid #607D8B;">
+                        <strong>Model Context Protocol (MCP)</strong><br>
+                        <small style="color: #666;">External lab on GitHub • 200 XP</small>
+                    </div>
+                    <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; border-left: 4px solid #607D8B;">
+                        <strong>Measuring Agent Success</strong><br>
+                        <small style="color: #666;">Analytics and metrics • 100 XP</small>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -354,57 +416,145 @@
     </div>
 
     <script>
-        // Simple labs data - embedded for MVP
-        const LABS_DATA = [
+        // ===================================================================
+        // ORGANIZED LAB LEARNING PROGRESSION
+        // ===================================================================
+        
+        // CORE LEARNING PATH - Sequential progression for fundamental skills
+        const CORE_LABS = [
             {
                 id: 'agent-builder-web',
                 title: 'Web-based AI Assistant with Agent Builder',
-                description: 'Create a Copilot agent in Microsoft 365 Copilot Chat with Copilot Studio Lite',
+                description: 'Start here! Create your first Copilot agent in Microsoft 365 Copilot Chat',
                 level: 100,
                 duration: 30,
-                xp: 100
+                xp: 100,
+                order: 1,
+                track: 'core',
+                prerequisites: []
             },
             {
                 id: 'agent-builder-sharepoint',
                 title: 'Enterprise Data-based AI Assistant',
-                description: 'Create a SharePoint-integrated AI assistant using Copilot Studio Lite',
+                description: 'Connect your agent to SharePoint data with advanced capabilities',
                 level: 100,
                 duration: 45,
-                xp: 150
+                xp: 150,
+                order: 2,
+                track: 'core',
+                prerequisites: ['agent-builder-web']
             },
             {
                 id: 'setup-for-success',
                 title: 'ALM Best Practices Setup',
-                description: 'Learn ALM best practices in Microsoft Copilot Studio',
+                description: 'Essential deployment and collaboration skills for production agents',
                 level: 200,
                 duration: 40,
-                xp: 200
-            },
-            {
-                id: 'autonomous-cua',
-                title: 'Autonomous Agent with Computer Use',
-                description: 'Build an autonomous agent that uses Computer use to retrieve data from legacy systems',
-                level: 300,
-                duration: 30,
-                xp: 300
+                xp: 200,
+                order: 3,
+                track: 'core',
+                prerequisites: ['agent-builder-sharepoint']
             },
             {
                 id: 'ask-me-anything',
                 title: 'Ask Me Anything Employee Agent',
-                description: 'Build a multi-agent IT Support solution using Microsoft Copilot Studio',
+                description: 'Build sophisticated multi-agent solutions with intelligent routing',
                 level: 200,
                 duration: 60,
-                xp: 250
+                xp: 250,
+                order: 4,
+                track: 'core',
+                prerequisites: ['setup-for-success']
             },
+            {
+                id: 'pipelines-and-source-control',
+                title: 'Source Control and Deploy Agents',
+                description: 'Master enterprise deployment with automated pipelines',
+                level: 200,
+                duration: 45,
+                xp: 250,
+                order: 5,
+                track: 'core',
+                prerequisites: ['ask-me-anything']
+            }
+        ];
+
+        // ADVANCED AUTONOMOUS TRACK - For automation mastery
+        const AUTONOMOUS_LABS = [
             {
                 id: 'autonomous-support-agent',
                 title: 'Autonomous Support Agent',
-                description: 'Create an intelligent autonomous support agent that automatically responds to user emails',
+                description: 'Build agents that work 24/7 without human intervention',
                 level: 300,
                 duration: 20,
-                xp: 300
+                xp: 300,
+                order: 6,
+                track: 'autonomous',
+                prerequisites: ['ask-me-anything']
+            },
+            {
+                id: 'autonomous-cua',
+                title: 'Autonomous Agent with Computer Use',
+                description: 'Breakthrough lab: agents that interact with any system using UI automation',
+                level: 300,
+                duration: 30,
+                xp: 300,
+                order: 7,
+                track: 'autonomous',
+                prerequisites: ['autonomous-support-agent']
+            },
+            {
+                id: 'autonomous-account-news',
+                title: 'Autonomous Account News Assistant',
+                description: 'Advanced: proactive agents that research and report automatically',
+                level: 300,
+                duration: 60,
+                xp: 300,
+                order: 8,
+                track: 'autonomous',
+                prerequisites: ['autonomous-cua']
             }
         ];
+
+        // SPECIALIZED USE CASES - Domain-specific applications
+        const SPECIALIZED_LABS = [
+            {
+                id: 'public-website-agent',
+                title: 'Public Website Agent',
+                description: 'Deploy customer-facing agents with branded experiences',
+                level: 200,
+                duration: 40,
+                xp: 200,
+                order: 9,
+                track: 'specialized',
+                prerequisites: ['setup-for-success']
+            },
+            {
+                id: 'mbr-prep-sharepoint-agent',
+                title: 'MBR Agent Deploy to SharePoint',
+                description: 'Business-specific agent for Monthly Business Review automation',
+                level: 200,
+                duration: 35,
+                xp: 200,
+                order: 10,
+                track: 'specialized',
+                prerequisites: ['agent-builder-sharepoint']
+            },
+            {
+                id: 'copilot-studio-kit',
+                title: 'Copilot Studio Kit',
+                description: 'Quality assurance and testing tools for professional agent development',
+                level: 200,
+                duration: 30,
+                xp: 200,
+                order: 11,
+                track: 'specialized',
+                prerequisites: ['pipelines-and-source-control']
+            }
+        ];
+
+        // Combine all labs for display
+        const LABS_DATA = [...CORE_LABS, ...AUTONOMOUS_LABS, ...SPECIALIZED_LABS];
 
         // Level thresholds
         const LEVELS = [
@@ -480,29 +630,58 @@
         }
 
         function renderLabs() {
-            const grid = document.getElementById('labsGrid');
+            // Render each track separately
+            renderLabTrack('coreLabsGrid', CORE_LABS);
+            renderLabTrack('autonomousLabsGrid', AUTONOMOUS_LABS);
+            renderLabTrack('specializedLabsGrid', SPECIALIZED_LABS);
+        }
+
+        function renderLabTrack(gridId, labs) {
+            const grid = document.getElementById(gridId);
             grid.innerHTML = '';
             
-            LABS_DATA.forEach(lab => {
+            labs.forEach(lab => {
                 const isCompleted = userProgress.completedLabs.includes(lab.id);
+                const hasPrerequisites = lab.prerequisites && lab.prerequisites.length > 0;
+                const prerequisitesMet = !hasPrerequisites || lab.prerequisites.every(prereq => 
+                    userProgress.completedLabs.includes(prereq)
+                );
                 
                 const labCard = document.createElement('div');
-                labCard.className = `lab-card ${isCompleted ? 'completed' : ''}`;
+                labCard.className = `lab-card ${isCompleted ? 'completed' : ''} ${!prerequisitesMet ? 'locked' : ''}`;
+                
+                // Add prerequisite info
+                let prerequisiteInfo = '';
+                if (hasPrerequisites && !prerequisitesMet) {
+                    const missingPrereqs = lab.prerequisites.filter(prereq => 
+                        !userProgress.completedLabs.includes(prereq)
+                    );
+                    prerequisiteInfo = `
+                        <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px; padding: 8px; margin-bottom: 10px; font-size: 0.8rem;">
+                            🔒 Complete first: ${missingPrereqs.join(', ')}
+                        </div>
+                    `;
+                }
                 
                 labCard.innerHTML = `
                     ${isCompleted ? '<div class="completion-checkmark">✓</div>' : ''}
                     <div class="lab-header">
-                        <div class="lab-level level-${lab.level}">Level ${lab.level}</div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="background: #ddd; color: #666; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; font-weight: bold;">${lab.order}</span>
+                            <div class="lab-level level-${lab.level}">Level ${lab.level}</div>
+                        </div>
                     </div>
+                    ${prerequisiteInfo}
                     <div class="lab-title">${lab.title}</div>
                     <div class="lab-description">${lab.description}</div>
                     <div class="lab-meta">
                         <span>⏱️ ${lab.duration} min</span>
                         <span class="lab-xp">+${lab.xp} XP</span>
                     </div>
-                    <button class="complete-btn ${isCompleted ? 'completed' : ''}" 
-                            onclick="toggleLabCompletion('${lab.id}', ${lab.xp})">
-                        ${isCompleted ? '✓ Completed' : 'Mark Complete'}
+                    <button class="complete-btn ${isCompleted ? 'completed' : ''} ${!prerequisitesMet ? 'disabled' : ''}" 
+                            onclick="toggleLabCompletion('${lab.id}', ${lab.xp})"
+                            ${!prerequisitesMet ? 'disabled' : ''}>
+                        ${isCompleted ? '✓ Completed' : (prerequisitesMet ? 'Mark Complete' : '🔒 Locked')}
                     </button>
                 `;
                 
