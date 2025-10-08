@@ -15,6 +15,7 @@ name: 🌐 Deploy Lab Portal to GitHub Pages
 # =============================================================================
 on:
   # Deploy when documentation generation workflow completes successfully
+  # 🛡️ SAFETY: Only deploys from main branch (preserves current system)
   workflow_run:
     workflows: ["📚 Generate Lab Documentation (HTML & PDF)"]
     types:
