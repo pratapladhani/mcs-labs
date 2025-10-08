@@ -1,6 +1,6 @@
 ---
 title: "Public Website Agent"
-order: 8
+order: 4
 duration: 90
 difficulty: Intermediate
 lab_id: "public-website-agent"

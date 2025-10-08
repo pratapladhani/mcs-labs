@@ -1,6 +1,6 @@
 ---
 title: "SharePoint AI Assistant with Agent Builder"
-order: 3
+order: 2
 duration: 60
 difficulty: Beginner
 lab_id: "agent-builder-sharepoint"

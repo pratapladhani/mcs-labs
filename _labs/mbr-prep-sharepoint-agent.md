@@ -1,6 +1,6 @@
 ---
 title: "MBR Agent Deploy to SharePoint"
-order: 12
+order: 5
 duration: 75
 difficulty: Intermediate
 lab_id: "mbr-prep-sharepoint-agent"

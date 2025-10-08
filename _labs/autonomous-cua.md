@@ -1,6 +1,6 @@
 ---
 title: "Autonomous Agent with Computer-Using Agents"
-order: 6
+order: 9
 duration: 150
 difficulty: Advanced
 lab_id: "autonomous-cua"

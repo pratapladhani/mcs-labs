@@ -1,10 +1,10 @@
 ---
 title: "Model Context Protocol Integration"
-order: 10
+order: 1
 duration: 90
 difficulty: Advanced
 lab_id: "mcp-qualify-lead"
-optional: false
+optional: true
 ---
 
 

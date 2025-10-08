@@ -1,6 +1,6 @@
 ---
 title: "ALM Best Practices Setup"
-order: 1
+order: 3
 duration: 60
 difficulty: Beginner
 lab_id: "setup-for-success"

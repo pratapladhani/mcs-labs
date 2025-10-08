@@ -10,25 +10,25 @@ mkdir -p _labs
 
 # Lab configuration with order, title, duration, and difficulty
 declare -A labs=(
-    ["setup-for-success"]="1|ALM Best Practices Setup|60|Beginner"
-    ["agent-builder-web"]="2|Web-based AI Assistant with Agent Builder|45|Beginner"
-    ["agent-builder-sharepoint"]="3|SharePoint AI Assistant with Agent Builder|60|Beginner"
-    ["ask-me-anything"]="4|Ask Me Anything Agent|90|Intermediate"
-    ["autonomous-support-agent"]="5|Autonomous Support Agent|120|Advanced"
-    ["autonomous-cua"]="6|Autonomous Agent with Computer-Using Agents|150|Advanced"
-    ["autonomous-account-news"]="7|Autonomous Account News Agent|120|Advanced"
-    ["public-website-agent"]="8|Public Website Agent|90|Intermediate"
-    ["standard-orchestrator"]="9|Standard Orchestrator|75|Intermediate"
-    ["mcp-qualify-lead"]="10|Model Context Protocol Integration|90|Advanced"
+    ["agent-builder-web"]="1|Web-based AI Assistant with Agent Builder|45|Beginner"
+    ["agent-builder-sharepoint"]="2|SharePoint AI Assistant with Agent Builder|60|Beginner"
+    ["setup-for-success"]="3|ALM Best Practices Setup|60|Beginner"
+    ["public-website-agent"]="4|Public Website Agent|90|Intermediate"
+    ["mbr-prep-sharepoint-agent"]="5|MBR Agent Deploy to SharePoint|75|Intermediate"
+    ["ask-me-anything"]="6|Ask Me Anything Agent|90|Intermediate"
+    ["autonomous-support-agent"]="7|Autonomous Support Agent|120|Advanced"
+    ["autonomous-account-news"]="8|Autonomous Account News Agent|120|Advanced"
+    ["autonomous-cua"]="9|Autonomous Agent with Computer-Using Agents|150|Advanced"
+    ["pipelines-and-source-control"]="10|Pipelines and Source Control|60|Intermediate"
     ["copilot-studio-kit"]="11|Copilot Studio Kit|60|Intermediate"
-    ["mbr-prep-sharepoint-agent"]="12|MBR Agent Deploy to SharePoint|75|Intermediate"
 )
 
 # Optional labs (will be marked differently)
 declare -A optional_labs=(
-    ["ask-me-anything-30-mins"]="13|Ask Me Anything Agent (30 min version)|30|Beginner"
-    ["measure-success"]="14|Measure Success|45|Beginner"
-    ["pipelines-and-source-control"]="15|Pipelines and Source Control|60|Intermediate"
+    ["mcp-qualify-lead"]="1|Model Context Protocol Integration|90|Advanced"
+    ["ask-me-anything-30-mins"]="2|Ask Me Anything Agent (30 min version)|30|Beginner"
+    ["measure-success"]="3|Measure Success|45|Beginner"
+    ["standard-orchestrator"]="4|Standard Orchestrator|75|Intermediate"
 )
 
 # Function to convert a lab

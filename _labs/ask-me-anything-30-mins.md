@@ -1,6 +1,6 @@
 ---
 title: "Ask Me Anything Agent (30 min version)"
-order: 13
+order: 2
 duration: 30
 difficulty: Beginner
 lab_id: "ask-me-anything-30-mins"

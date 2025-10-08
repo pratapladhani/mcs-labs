@@ -1,6 +1,6 @@
 ---
 title: "Ask Me Anything Agent"
-order: 4
+order: 6
 duration: 90
 difficulty: Intermediate
 lab_id: "ask-me-anything"

@@ -1,10 +1,10 @@
 ---
 title: "Standard Orchestrator"
-order: 9
+order: 4
 duration: 75
 difficulty: Intermediate
 lab_id: "standard-orchestrator"
-optional: false
+optional: true
 ---
 
 

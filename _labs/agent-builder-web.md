@@ -1,6 +1,6 @@
 ---
 title: "Web-based AI Assistant with Agent Builder"
-order: 2
+order: 1
 duration: 45
 difficulty: Beginner
 lab_id: "agent-builder-web"

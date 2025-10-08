@@ -1,6 +1,6 @@
 ---
 title: "Autonomous Support Agent"
-order: 5
+order: 7
 duration: 120
 difficulty: Advanced
 lab_id: "autonomous-support-agent"

@@ -1,6 +1,6 @@
 ---
 title: "Measure Success"
-order: 14
+order: 3
 duration: 45
 difficulty: Beginner
 lab_id: "measure-success"

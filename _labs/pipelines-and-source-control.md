@@ -1,10 +1,10 @@
 ---
 title: "Pipelines and Source Control"
-order: 15
+order: 10
 duration: 60
 difficulty: Intermediate
 lab_id: "pipelines-and-source-control"
-optional: true
+optional: false
 ---
 
 

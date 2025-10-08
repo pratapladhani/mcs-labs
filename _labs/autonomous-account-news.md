@@ -1,6 +1,6 @@
 ---
 title: "Autonomous Account News Agent"
-order: 7
+order: 8
 duration: 120
 difficulty: Advanced
 lab_id: "autonomous-account-news"

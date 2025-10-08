@@ -12,24 +12,27 @@ Welcome to the Microsoft Copilot Studio Labs! This collection of hands-on labs w
 ### Core Learning Path
 Start here to build your foundation in Copilot Studio:
 
-1. **Setup for Success** - ALM Best Practices
-2. **Agent Builder Web** - Your first web-based AI assistant
-3. **Agent Builder SharePoint** - Connect to SharePoint data
-4. **Ask Me Anything** - Advanced conversation flows
+1. **Agent Builder Web** - Your first web-based AI assistant
+2. **Agent Builder SharePoint** - Connect to SharePoint data
+3. **Setup for Success** - ALM Best Practices
+4. **Public Website Agent** - Web scraping and analysis
+5. **MBR SharePoint Agent** - Deploy agents to SharePoint
+6. **Ask Me Anything** - Advanced conversation flows
 
-### Autonomous Agents Track
-Build sophisticated autonomous agents:
+### Advanced Labs
+Build sophisticated autonomous agents and advanced scenarios:
 
-1. **Autonomous Support Agent** - Customer service automation
-2. **Autonomous CUA** - Computer-Using Agents
-3. **Autonomous Account News** - Intelligent news aggregation
+7. **Autonomous Support Agent** - Customer service automation
+8. **Autonomous Account News** - Intelligent news aggregation
+9. **Autonomous CUA** - Computer-Using Agents
+10. **Pipelines and Source Control** - ALM and DevOps practices
+11. **Copilot Studio Kit** - Advanced tools and utilities
 
-### Specialized Use Cases
-Explore specific integration scenarios:
+### Optional Labs
+Specialized topics and alternative versions:
 
-1. **Public Website Agent** - Web scraping and analysis
-2. **Standard Orchestrator** - Multi-agent coordination
-3. **MCP Qualify Lead** - Model Context Protocol integration
+1. **Model Context Protocol Integration** - External system integration
+2. **Ask Me Anything (30 min)** - Shorter version of the main lab
 
 ## 📚 All Labs
 
