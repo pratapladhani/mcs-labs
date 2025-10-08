@@ -26,7 +26,6 @@ jobs:
 
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
@@ -69,16 +68,15 @@ jobs:
         with:
           path: ./_site
 
-      - name: Deploy to GitHub Pages (Jekyll Preview)
-        id: deployment
-        uses: actions/deploy-pages@v4
-        with:
-          # Deploy to different path for Jekyll preview
-          artifact_name: github-pages
-          
-      - name: 📋 Deployment Summary
+      - name: 📋 Build Summary
         run: |
-          echo "🚀 Jekyll Journey System deployed!"
-          echo "📍 Preview URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}-jekyll"
-          echo "🔄 Main site still available at: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+          echo "✅ Jekyll Journey System built successfully!"
+          echo "📦 Artifact ready for deployment"
           echo "🎯 Branch: ${{ github.ref_name }}"
+          echo ""
+          echo "� Next Steps:"
+          echo "1. Go to Settings → Pages"
+          echo "2. Change Source to 'jekyll-lab-browser' branch"
+          echo "3. Your Jekyll system will be live!"
+          echo ""
+          echo "🛡️  Your main portal stays safe until you manually switch!"
