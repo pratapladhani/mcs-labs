@@ -1047,3 +1047,64 @@ body {
         text-align: center;
     }
 }
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+table tr:hover {
+    background-color: #f8f9fa;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Zebra striping for better readability */
+table tbody tr:nth-child(even) {
+    background-color: #fdfdfe;
+}
+
+table tbody tr:nth-child(even):hover {
+    background-color: #f1f3f4;
+}
+
+/* Special styling for lab details tables */
+.lab-content table {
+    font-size: 0.95rem;
+}
+
+.lab-content table th {
+    background-color: #0078d4;
+    color: white;
+    border-bottom: 2px solid #106ebe;
+}
+
+.lab-content table tbody tr:nth-child(even) {
+    background-color: #f8f9ff;
+}
+
+.lab-content table tbody tr:nth-child(even):hover {
+    background-color: #e6f2ff;
+}
