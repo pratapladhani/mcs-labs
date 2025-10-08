@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Copilot Studio Labs - Learning Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* User Stats */
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            color: white;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Labs Section */
+        .labs-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+
+        .labs-section h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .lab-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            background: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .lab-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .lab-card.completed {
+            border-color: #4CAF50;
+            background: linear-gradient(45deg, #f8fff8, #f0fff0);
+        }
+
+        .lab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .lab-level {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .lab-level.level-100 { background: #4CAF50; }
+        .lab-level.level-200 { background: #FF9800; }
+        .lab-level.level-300 { background: #F44336; }
+
+        .lab-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .lab-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .lab-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .lab-xp {
+            background: #764ba2;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .complete-btn:not(.completed) {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .complete-btn:not(.completed):hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .complete-btn.completed {
+            background: #4CAF50;
+            color: white;
+            cursor: default;
+        }
+
+        .completion-checkmark {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* XP Notification */
+        .xp-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .xp-notification.show {
+            transform: translateX(0);
+        }
+
+        .xp-notification.hide {
+            transform: translateX(400px);
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 20px;
+            font-size: 0.9rem;
+        }
+
+        .reset-btn:hover {
+            background: #d32f2f;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .labs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with User Stats -->
+        <div class="header">
+            <h1>🤖 Copilot Studio Labs</h1>
+            <p>Track your progress and earn XP by completing labs!</p>
+            
+            <div class="user-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalXP">0</div>
+                    <div class="stat-label">Total XP</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="labsCompleted">0</div>
+                    <div class="stat-label">Labs Complete</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="currentLevel">Beginner</div>
+                    <div class="stat-label">Current Level</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completionRate">0%</div>
+                    <div class="stat-label">Completion Rate</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <div class="progress-text">
+                    <strong>Level Progress:</strong> <span id="levelProgress">0 / 500 XP to next level</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+        </div>
+
+        <!-- Labs Section -->
+        <div class="labs-section">
+            <h2>📚 Available Labs</h2>
+            <div class="labs-grid" id="labsGrid">
+                <!-- Labs will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- XP Notification -->
+    <div class="xp-notification" id="xpNotification">
+        <div id="xpMessage">+100 XP earned!</div>
+    </div>
+
+    <script>
+        // Simple labs data - embedded for MVP
+        const LABS_DATA = [
+            {
+                id: 'agent-builder-web',
+                title: 'Web-based AI Assistant with Agent Builder',
+                description: 'Create a Copilot agent in Microsoft 365 Copilot Chat with Copilot Studio Lite',
+                level: 100,
+                duration: 30,
+                xp: 100
+            },
+            {
+                id: 'agent-builder-sharepoint',
+                title: 'Enterprise Data-based AI Assistant',
+                description: 'Create a SharePoint-integrated AI assistant using Copilot Studio Lite',
+                level: 100,
+                duration: 45,
+                xp: 150
+            },
+            {
+                id: 'setup-for-success',
+                title: 'ALM Best Practices Setup',
+                description: 'Learn ALM best practices in Microsoft Copilot Studio',
+                level: 200,
+                duration: 40,
+                xp: 200
+            },
+            {
+                id: 'autonomous-cua',
+                title: 'Autonomous Agent with Computer Use',
+                description: 'Build an autonomous agent that uses Computer use to retrieve data from legacy systems',
+                level: 300,
+                duration: 30,
+                xp: 300
+            },
+            {
+                id: 'ask-me-anything',
+                title: 'Ask Me Anything Employee Agent',
+                description: 'Build a multi-agent IT Support solution using Microsoft Copilot Studio',
+                level: 200,
+                duration: 60,
+                xp: 250
+            },
+            {
+                id: 'autonomous-support-agent',
+                title: 'Autonomous Support Agent',
+                description: 'Create an intelligent autonomous support agent that automatically responds to user emails',
+                level: 300,
+                duration: 20,
+                xp: 300
+            }
+        ];
+
+        // Level thresholds
+        const LEVELS = [
+            { name: 'Beginner', min: 0, max: 499 },
+            { name: 'Intermediate', min: 500, max: 1199 },
+            { name: 'Advanced', min: 1200, max: 2499 },
+            { name: 'Expert', min: 2500, max: Infinity }
+        ];
+
+        // Storage keys
+        const STORAGE_KEY = 'copilot-labs-progress';
+
+        // Initialize app
+        let userProgress = loadProgress();
+        
+        function loadProgress() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return {
+                totalXP: 0,
+                completedLabs: [],
+                completedAt: {}
+            };
+        }
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+        }
+
+        function updateUI() {
+            // Update stats
+            document.getElementById('totalXP').textContent = userProgress.totalXP;
+            document.getElementById('labsCompleted').textContent = userProgress.completedLabs.length;
+            
+            // Calculate completion rate
+            const completionRate = Math.round((userProgress.completedLabs.length / LABS_DATA.length) * 100);
+            document.getElementById('completionRate').textContent = completionRate + '%';
+            
+            // Update level
+            const currentLevel = getCurrentLevel(userProgress.totalXP);
+            document.getElementById('currentLevel').textContent = currentLevel.name;
+            
+            // Update progress bar
+            updateProgressBar(userProgress.totalXP, currentLevel);
+            
+            // Update lab cards
+            renderLabs();
+        }
+
+        function getCurrentLevel(xp) {
+            return LEVELS.find(level => xp >= level.min && xp <= level.max) || LEVELS[0];
+        }
+
+        function updateProgressBar(totalXP, currentLevel) {
+            let progressText, progressPercent;
+            
+            if (currentLevel.max === Infinity) {
+                progressText = `Max Level Reached! (${totalXP} XP)`;
+                progressPercent = 100;
+            } else {
+                const xpInLevel = totalXP - currentLevel.min;
+                const xpNeeded = currentLevel.max + 1 - currentLevel.min;
+                const nextLevelXP = currentLevel.max + 1 - totalXP;
+                
+                progressText = `${xpInLevel} / ${xpNeeded} XP to next level (${nextLevelXP} XP needed)`;
+                progressPercent = (xpInLevel / xpNeeded) * 100;
+            }
+            
+            document.getElementById('levelProgress').textContent = progressText;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+        }
+
+        function renderLabs() {
+            const grid = document.getElementById('labsGrid');
+            grid.innerHTML = '';
+            
+            LABS_DATA.forEach(lab => {
+                const isCompleted = userProgress.completedLabs.includes(lab.id);
+                
+                const labCard = document.createElement('div');
+                labCard.className = `lab-card ${isCompleted ? 'completed' : ''}`;
+                
+                labCard.innerHTML = `
+                    ${isCompleted ? '<div class="completion-checkmark">✓</div>' : ''}
+                    <div class="lab-header">
+                        <div class="lab-level level-${lab.level}">Level ${lab.level}</div>
+                    </div>
+                    <div class="lab-title">${lab.title}</div>
+                    <div class="lab-description">${lab.description}</div>
+                    <div class="lab-meta">
+                        <span>⏱️ ${lab.duration} min</span>
+                        <span class="lab-xp">+${lab.xp} XP</span>
+                    </div>
+                    <button class="complete-btn ${isCompleted ? 'completed' : ''}" 
+                            onclick="toggleLabCompletion('${lab.id}', ${lab.xp})">
+                        ${isCompleted ? '✓ Completed' : 'Mark Complete'}
+                    </button>
+                `;
+                
+                grid.appendChild(labCard);
+            });
+        }
+
+        function toggleLabCompletion(labId, xpValue) {
+            const isCompleted = userProgress.completedLabs.includes(labId);
+            
+            if (isCompleted) {
+                // Uncomplete the lab
+                userProgress.completedLabs = userProgress.completedLabs.filter(id => id !== labId);
+                userProgress.totalXP -= xpValue;
+                delete userProgress.completedAt[labId];
+                showXPNotification(-xpValue, 'Lab uncompleted');
+            } else {
+                // Complete the lab
+                userProgress.completedLabs.push(labId);
+                userProgress.totalXP += xpValue;
+                userProgress.completedAt[labId] = new Date().toISOString();
+                showXPNotification(xpValue, 'Lab completed!');
+            }
+            
+            saveProgress();
+            updateUI();
+        }
+
+        function showXPNotification(xp, message) {
+            const notification = document.getElementById('xpNotification');
+            const messageEl = document.getElementById('xpMessage');
+            
+            const sign = xp > 0 ? '+' : '';
+            messageEl.textContent = `${sign}${xp} XP - ${message}`;
+            
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+                notification.classList.add('hide');
+                setTimeout(() => {
+                    notification.classList.remove('hide');
+                }, 300);
+            }, 3000);
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                userProgress = {
+                    totalXP: 0,
+                    completedLabs: [],
+                    completedAt: {}
+                };
+                saveProgress();
+                updateUI();
+                showXPNotification(0, 'Progress reset');
+            }
+        }
+
+        // Initialize the app
+        updateUI();
+    </script>
+</body>
+</html>

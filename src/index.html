@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Copilot Studio Labs - Interactive Learning Portal</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/gamification.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <!-- Particle Background for Modern Feel -->
+    <div id="particles-js"></div>
+    
+    <!-- Header with User Dashboard -->
+    <header class="hero-section">
+        <div class="container">
+            <h1>🤖 Copilot Studio Labs</h1>
+            <p class="tagline">Level up your AI agent building skills</p>
+            
+            <!-- User Progress Overview -->
+            <div class="user-dashboard">
+                <div class="user-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalXP">0</div>
+                        <div class="stat-label">Total XP</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="labsCompleted">0</div>
+                        <div class="stat-label">Labs Complete</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="currentStreak">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="badgesEarned">0</div>
+                        <div class="stat-label">Badges</div>
+                    </div>
+                </div>
+                
+                <!-- Level Progress Bar -->
+                <div class="level-progress">
+                    <div class="level-info">
+                        <span id="currentLevel">Copilot Cadet</span>
+                        <span id="nextLevel">Agent Architect</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="levelProgress"></div>
+                    </div>
+                    <div class="xp-info">
+                        <span id="currentXP">0</span> / <span id="nextLevelXP">500</span> XP
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tab-navigation">
+        <div class="container">
+            <button class="tab-btn active" data-tab="labs">🧪 Labs</button>
+            <button class="tab-btn" data-tab="achievements">🏆 Achievements</button>
+            <button class="tab-btn" data-tab="leaderboard">🏁 Leaderboard</button>
+            <button class="tab-btn" data-tab="challenges">⚔️ Challenges</button>
+            <button class="tab-btn" data-tab="profile">👤 Profile</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Labs Section -->
+        <section id="labs-section" class="tab-content active">
+            <h2>🗺️ Learning Paths</h2>
+            
+            <!-- Learning Path Progress -->
+            <div class="learning-paths">
+                <div class="path-card beginner">
+                    <div class="path-header">
+                        <h3>🎯 Beginner Path: Copilot Cadet</h3>
+                        <div class="path-progress">
+                            <div class="progress-circle" data-progress="0">
+                                <span class="progress-text">0/4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="path-labs" id="beginner-labs"></div>
+                </div>
+
+                <div class="path-card intermediate">
+                    <div class="path-header">
+                        <h3>⚡ Intermediate Path: Automation Artisan</h3>
+                        <div class="path-progress">
+                            <div class="progress-circle" data-progress="0">
+                                <span class="progress-text">0/5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="path-labs" id="intermediate-labs"></div>
+                </div>
+
+                <div class="path-card advanced">
+                    <div class="path-header">
+                        <h3>🚀 Advanced Path: AI Innovator</h3>
+                        <div class="path-progress">
+                            <div class="progress-circle" data-progress="0">
+                                <span class="progress-text">0/4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="path-labs" id="advanced-labs"></div>
+                </div>
+            </div>
+
+            <!-- All Labs Grid -->
+            <div class="labs-grid" id="labs-grid">
+                <!-- Labs will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section id="achievements-section" class="tab-content">
+            <h2>🏆 Achievement Gallery</h2>
+            <div class="achievements-grid" id="achievements-grid">
+                <!-- Achievements will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard-section" class="tab-content">
+            <h2>🏁 Community Leaderboard</h2>
+            <div class="leaderboard-filters">
+                <button class="filter-btn active" data-filter="weekly">This Week</button>
+                <button class="filter-btn" data-filter="monthly">This Month</button>
+                <button class="filter-btn" data-filter="alltime">All Time</button>
+            </div>
+            <div class="leaderboard-table" id="leaderboard-table">
+                <!-- Leaderboard will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Challenges Section -->
+        <section id="challenges-section" class="tab-content">
+            <h2>⚔️ Special Challenges</h2>
+            <div class="challenges-grid" id="challenges-grid">
+                <!-- Challenges will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile-section" class="tab-content">
+            <h2>👤 Your Profile</h2>
+            <div class="profile-content">
+                <div class="profile-left">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <img id="userAvatar" src="https://github.com/github.png" alt="User Avatar">
+                        </div>
+                        <h3 id="userName">Anonymous Learner</h3>
+                        <p id="userTitle">Copilot Cadet</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <strong id="profileXP">0</strong>
+                                <span>Total XP</span>
+                            </div>
+                            <div class="profile-stat">
+                                <strong id="profileDays">0</strong>
+                                <span>Days Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-right">
+                    <div class="skill-radar">
+                        <canvas id="skillChart"></canvas>
+                    </div>
+                    <div class="recent-activity" id="recentActivity">
+                        <!-- Recent activity will be populated -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Achievement Modal -->
+    <div id="achievement-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="achievement-celebration">
+                <div class="achievement-icon">🏆</div>
+                <h2>Achievement Unlocked!</h2>
+                <h3 id="achievement-title"></h3>
+                <p id="achievement-description"></p>
+                <div class="achievement-xp">+<span id="achievement-xp">0</span> XP</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/gamification.js"></script>
+    <script src="js/ui-components.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

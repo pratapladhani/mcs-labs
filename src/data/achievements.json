@@ -1,0 +1,177 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2025-10-07",
+  "categories": {
+    "skill": "Skill-Based Achievements",
+    "progress": "Progress Milestones", 
+    "community": "Community Engagement",
+    "special": "Special Events"
+  },
+  "achievements": [
+    {
+      "id": "agent-architect",
+      "title": "🤖 Agent Architect",
+      "description": "Complete 3 agent-building labs",
+      "category": "skill",
+      "xpReward": 100,
+      "rarity": "common",
+      "requirements": {
+        "type": "labsCompleted",
+        "tags": ["agent-builder"],
+        "count": 3
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "automation-master",
+      "title": "🔄 Automation Master", 
+      "description": "Complete all autonomous agent labs",
+      "category": "skill",
+      "xpReward": 250,
+      "rarity": "rare",
+      "requirements": {
+        "type": "labsCompleted",
+        "tags": ["autonomous"],
+        "count": 3
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "tool-connector",
+      "title": "🛠️ Tool Connector",
+      "description": "Successfully integrate 5+ different connectors",
+      "category": "skill", 
+      "xpReward": 200,
+      "rarity": "uncommon",
+      "requirements": {
+        "type": "connectorsUsed",
+        "count": 5
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "speed-demon",
+      "title": "⚡ Speed Demon",
+      "description": "Complete 3 labs under target time",
+      "category": "progress",
+      "xpReward": 150,
+      "rarity": "uncommon",
+      "requirements": {
+        "type": "speedBonuses",
+        "count": 3
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "perfect-score",
+      "title": "🎯 Perfectionist",
+      "description": "Complete 5 labs with zero errors",
+      "category": "progress",
+      "xpReward": 300,
+      "rarity": "rare",
+      "requirements": {
+        "type": "perfectScores",
+        "count": 5
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "creative-builder",
+      "title": "🎨 Creative Builder",
+      "description": "Customize agent personality in 3 different labs",
+      "category": "skill",
+      "xpReward": 175,
+      "rarity": "uncommon",
+      "requirements": {
+        "type": "creativityBonuses",
+        "count": 3
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "first-steps",
+      "title": "👶 First Steps",
+      "description": "Complete your first lab",
+      "category": "progress",
+      "xpReward": 50,
+      "rarity": "common",
+      "requirements": {
+        "type": "labsCompleted",
+        "count": 1
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "hot-streak",
+      "title": "🔥 Hot Streak",
+      "description": "Complete labs on 7 consecutive days",
+      "category": "progress",
+      "xpReward": 400,
+      "rarity": "epic",
+      "requirements": {
+        "type": "consecutiveDays",
+        "count": 7
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "community-helper",
+      "title": "🤝 Community Helper",
+      "description": "Help others by sharing solutions or feedback",
+      "category": "community",
+      "xpReward": 200,
+      "rarity": "uncommon",
+      "requirements": {
+        "type": "communityActions",
+        "count": 5
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "innovator",
+      "title": "💡 Innovator",
+      "description": "Complete a challenge with a unique solution",
+      "category": "special",
+      "xpReward": 500,
+      "rarity": "legendary",
+      "requirements": {
+        "type": "manual",
+        "description": "Manually awarded for exceptional creativity"
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "enterprise-expert",
+      "title": "🏢 Enterprise Expert",
+      "description": "Master all advanced deployment topics",
+      "category": "skill",
+      "xpReward": 350,
+      "rarity": "epic",
+      "requirements": {
+        "type": "pathCompleted",
+        "path": "advanced"
+      },
+      "unlockedAt": null
+    },
+    {
+      "id": "problem-solver",
+      "title": "🔍 Problem Solver",
+      "description": "Complete 5 bonus challenges",
+      "category": "skill",
+      "xpReward": 250,
+      "rarity": "rare",
+      "requirements": {
+        "type": "bonusesCompleted",
+        "count": 5
+      },
+      "unlockedAt": null
+    }
+  ],
+  "rarityColors": {
+    "common": "#95a5a6",
+    "uncommon": "#3498db", 
+    "rare": "#9b59b6",
+    "epic": "#e74c3c",
+    "legendary": "#f1c40f"
+  }
+}
