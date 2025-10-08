@@ -612,11 +612,15 @@ foreach ($sectionKey in $labsBySection.Keys) {
     Write-Host ""
 }
 
-# Generate Journey Pages
-Write-Host "🛤️  Generating Journey Pages..." -ForegroundColor Magenta
+# Create Dynamic Journey Index (No Separate Journey Files)
+Write-Host "🛤️  Creating Dynamic Journey System (collections only)..." -ForegroundColor Magenta
 
-# Ensure journeys directory exists
-New-Item -ItemType Directory -Path "journeys" -Force | Out-Null
+# Remove journeys directory - no more separate files
+if (Test-Path "journeys") {
+    Write-Host "  🗑️  Removing redundant journeys folder..." -ForegroundColor Yellow
+    Remove-Item "journeys" -Recurse -Force
+    Write-Host "    ✅  Removed duplicate journey files" -ForegroundColor Green
+}
 
 # Read journey metadata from config file
 $journeyMeta = @{}
@@ -648,90 +652,15 @@ if ($config.journeys) {
     }
 }
 
+# Display journey statistics (no separate files created)
+Write-Host "�  Journey Statistics:" -ForegroundColor Cyan
 foreach ($journeyName in $journeyMeta.Keys) {
     $journey = $journeyMeta[$journeyName]
-    $journeyFile = "journeys/$journeyName.md"
-    
-    Write-Host "  📄  Creating $journeyFile..." -ForegroundColor Cyan
-    
-    # Calculate journey stats using our discovered labs
     $journeyStats = Get-JourneyStats -JourneyName $journeyName -AllLabs $allLabs
     $journeyLabCount = $journeyStats.LabCount
     $totalDuration = $journeyStats.TotalDuration
     
-    # Generate the journey page content
-    $journeyContent = @"
----
-layout: default
-title: $($journey.title)
-description: $($journey.description)
-journey: $journeyName
----
-
-# $($journey.icon) $($journey.title)
-
-$($journey.description)
-
-**Difficulty Level:** $($journey.difficulty)  
-**Estimated Time:** $($journey.estimated_time)  
-**Total Labs:** $journeyLabCount labs ($totalDuration minutes)
-
----
-
-## Labs in This Journey
-
-<div class="labs-grid">
-{% for lab in site.labs %}
-  {% if lab.journeys contains '$journeyName' %}
-  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}">
-    <div class="lab-header">
-      <h3><a href="{{ site.baseurl }}/labs/{{ lab.slug }}/">{{ lab.title }}</a></h3>
-      <div class="lab-meta">
-        <span class="difficulty">{{ lab.difficulty }}</span>
-        <span class="duration">{{ lab.duration }}min</span>
-      </div>
-    </div>
-    
-    <div class="lab-description">
-      {{ lab.description }}
-    </div>
-    
-    {% if lab.journeys.size > 1 %}
-    <div class="lab-journeys">
-      <small>Also in: 
-      {% for j in lab.journeys %}
-        {% unless j == '$journeyName' %}
-          <span class="journey-tag">{{ j }}</span>
-        {% endunless %}
-      {% endfor %}
-      </small>
-    </div>
-    {% endif %}
-    
-    <div class="lab-actions">
-      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
-    </div>
-  </div>
-  {% endif %}
-{% endfor %}
-</div>
-
----
-
-## Navigation
-
-<div class="journey-nav">
-  <a href="/" class="btn btn-secondary">← Back to Home</a>
-  {% assign other_journeys = site.data.journeys | where_exp: "j", "j.name != '$journeyName'" %}
-  {% for other in other_journeys limit: 1 %}
-  <a href="/journeys/{{ other.name }}/" class="btn btn-outline">Try {{ other.title }}</a>
-  {% endfor %}
-</div>
-"@
-
-    # Write the journey page
-    Set-Content -Path $journeyFile -Value $journeyContent -Encoding UTF8
-    Write-Host "    ✅  Created $journeyFile ($journeyLabCount labs)" -ForegroundColor Green
+    Write-Host "  $($journey.icon) $($journey.title): $journeyLabCount labs ($totalDuration minutes)" -ForegroundColor Green
 }
 
 # Generate All Labs Index Page Dynamically
@@ -744,13 +673,28 @@ New-Item -ItemType Directory -Path "labs" -Force | Out-Null
 $allLabsContent = @"
 ---
 layout: default
-title: All Labs
-description: Complete list of all Microsoft Copilot Studio labs organized by learning progression
+title: Labs
+description: Microsoft Copilot Studio labs - browse all or filter by learning journey
 ---
 
-# All Labs
+<div id="journey-header" style="display: none;" class="journey-header">
+  <h1 id="journey-title"></h1>
+  <p id="journey-description"></p>
+  <div id="journey-stats" class="journey-stats"></div>
+</div>
 
-Browse all available Microsoft Copilot Studio labs. Choose individual labs or follow our [learning journeys]({{ '/' | relative_url }}) for a guided experience.
+<div id="all-labs-header">
+  <h1>All Labs</h1>
+  <p>Browse all available Microsoft Copilot Studio labs. Choose individual labs or follow our learning journeys for a guided experience.</p>
+</div>
+
+<div class="lab-filters">
+  <button onclick="showAllLabs()" class="filter-btn active" id="all-btn">All Labs</button>
+  <button onclick="filterByJourney('quick-start')" class="filter-btn" id="quick-start-btn">🚀 Quick Start</button>
+  <button onclick="filterByJourney('business-user')" class="filter-btn" id="business-user-btn">💼 Business User</button>
+  <button onclick="filterByJourney('developer')" class="filter-btn" id="developer-btn">🔧 Developer</button>
+  <button onclick="filterByJourney('autonomous-ai')" class="filter-btn" id="autonomous-ai-btn">🤖 Autonomous AI</button>
+</div>
 
 "@
 
@@ -874,8 +818,169 @@ foreach ($journeyName in $journeyMeta.Keys) {
 
 $allLabsContent += @"
 
+## 📚 All Available Labs
+
+<div class="labs-grid" id="labs-container">
+{% for lab in site.labs %}
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}">
+    <div class="lab-header">
+      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
+      <div class="lab-meta">
+        <span class="difficulty">Level {{ lab.difficulty }}</span>
+        <span class="duration">{{ lab.duration }}min</span>
+      </div>
+    </div>
+    <div class="lab-description">
+      {{ lab.description }}
+    </div>
+    <div class="lab-journeys">
+      <small>Journeys: 
+      {% for journey in lab.journeys %}
+        <span class="journey-tag" onclick="filterByJourney('{{ journey }}')">{{ journey }}</span>
+      {% endfor %}
+      </small>
+    </div>
+    <div class="lab-actions">
+      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
+    </div>
+  </div>
+{% endfor %}
+</div>
+
+<script>
+// Journey metadata
+const journeys = {
+  'quick-start': { title: '🚀 Quick Start Journey', description: 'New to Copilot Studio? Start here with our essential labs to get up and running quickly.', difficulty: 'Beginner', estimatedTime: '3-4 hours' },
+  'business-user': { title: '💼 Business User Journey', description: 'Perfect for business users who want to create powerful AI solutions without deep technical knowledge.', difficulty: 'Intermediate', estimatedTime: '8-12 hours' },
+  'developer': { title: '🔧 Developer Journey', description: 'Advanced technical labs covering integration, automation, and complex scenarios.', difficulty: 'Advanced', estimatedTime: '10-15 hours' },
+  'autonomous-ai': { title: '🤖 Autonomous AI Journey', description: 'Cutting-edge autonomous agents and AI automation scenarios.', difficulty: 'Expert', estimatedTime: '6-8 hours' }
+};
+
+function showAllLabs() {
+  document.getElementById('all-labs-header').style.display = 'block';
+  document.getElementById('journey-header').style.display = 'none';
+  
+  // Show all lab cards
+  const cards = document.querySelectorAll('.lab-card');
+  cards.forEach(card => card.style.display = 'block');
+  
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById('all-btn').classList.add('active');
+  
+  // Update URL
+  history.pushState({}, '', '/labs/');
+}
+
+function filterByJourney(journeyName) {
+  const journey = journeys[journeyName];
+  if (!journey) return;
+  
+  // Show journey header
+  document.getElementById('all-labs-header').style.display = 'none';
+  document.getElementById('journey-header').style.display = 'block';
+  document.getElementById('journey-title').textContent = journey.title;
+  document.getElementById('journey-description').textContent = journey.description;
+  
+  // Calculate and show stats
+  const cards = document.querySelectorAll('.lab-card');
+  let labCount = 0;
+  let totalDuration = 0;
+  
+  cards.forEach(card => {
+    const journeys = card.dataset.journeys.split(',');
+    if (journeys.includes(journeyName)) {
+      card.style.display = 'block';
+      labCount++;
+      totalDuration += parseInt(card.dataset.duration);
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  
+  document.getElementById('journey-stats').innerHTML = \`
+    <strong>Difficulty Level:</strong> \${journey.difficulty}<br>
+    <strong>Estimated Time:</strong> \${journey.estimatedTime}<br>
+    <strong>Total Labs:</strong> \${labCount} labs (\${totalDuration} minutes)
+  \`;
+  
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(journeyName + '-btn').classList.add('active');
+  
+  // Update URL
+  history.pushState({}, '', \`/labs/?journey=\${journeyName}\`);
+}
+
+// Initialize based on URL parameters
+document.addEventListener('DOMContentLoaded', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const journey = urlParams.get('journey');
+  
+  if (journey && journeys[journey]) {
+    filterByJourney(journey);
+  } else {
+    showAllLabs();
+  }
+});
+</script>
+
+<style>
+.lab-filters {
+  margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #0078d4;
+  background: white;
+  color: #0078d4;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background: #e6f3ff;
+}
+
+.filter-btn.active {
+  background: #0078d4;
+  color: white;
+}
+
+.journey-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0078d4, #106ebe);
+  color: white;
+  border-radius: 12px;
+}
+
+.journey-stats {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.journey-tag {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.journey-tag:hover {
+  background: #0078d4 !important;
+  color: white !important;
+}
+</style>
+
 <div class="navigation-actions">
-  <a href="{{ '/' | relative_url }}" class="btn btn-secondary">← Back to Journeys</a>
+  <a href="{{ '/' | relative_url }}" class="btn btn-secondary">← Back to Home</a>
 </div>
 "@
 
