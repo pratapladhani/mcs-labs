@@ -18,8 +18,8 @@ body {
     padding: 0 20px;
 }
 
-/* Override container for lab pages to allow full width */
-body.lab-page .container {
+/* Override container for lab pages to allow full width - only for main content */
+body.lab-page .site-content .container {
     max-width: none;
     padding: 0;
 }
