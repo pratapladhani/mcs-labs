@@ -30,7 +30,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-          bundler-cache: true
+          bundler-cache: false
 
       - name: Install PowerShell and dependencies
         run: |
@@ -46,9 +46,9 @@ jobs:
 
       - name: Install Jekyll dependencies
         run: |
-          gem install bundler
-          bundle lock --add-platform x86_64-linux
-          bundle install
+          gem install bundler jekyll
+          bundle config set --local path 'vendor/bundle'
+          bundle install --retry 3 --jobs 4
 
       - name: Build Jekyll site
         run: |
