@@ -15,7 +15,7 @@ name: 🚀 Build and Deploy Labs
 on:
   # Trigger on changes to lab content, configurations, or styling
   push:
-    branches: [ jekyll-lab-browser ]
+    branches: [ main ]
     paths: 
       - "labs/**/*.md"           # Lab markdown content
       - "labs/**/images/**"      # Lab images and assets
