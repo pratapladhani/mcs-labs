@@ -244,12 +244,51 @@ function Test-DockerEnvironment {
     }
 }
 
+function Test-CIEnvironment {
+    <#
+    .SYNOPSIS
+        Test if running in CI environment with pandoc and node.js available
+    #>
+    
+    try {
+        # Check if pandoc is available
+        $pandocVersion = pandoc --version 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            return $false
+        }
+        
+        # Check if node.js is available
+        $nodeVersion = node --version 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            return $false
+        }
+        
+        # Check if generate-pdf.js script exists (check both current and parent directory)
+        $scriptPath = if (Test-Path ".github/scripts/generate-pdf.js") { 
+            ".github/scripts/generate-pdf.js" 
+        } elseif (Test-Path "../.github/scripts/generate-pdf.js") { 
+            "../.github/scripts/generate-pdf.js" 
+        } else { 
+            $null 
+        }
+        
+        if (-not $scriptPath) {
+            return $false
+        }
+        
+        return $true
+    } catch {
+        return $false
+    }
+}
+
 function Invoke-PDFGeneration {
     <#
     .SYNOPSIS
-        Generate PDFs for all specified labs using Docker
+        Generate PDFs for all specified labs using Docker or CI tools
     .DESCRIPTION
-        Processes each lab through Docker-based PDF generation pipeline
+        Processes each lab through Docker-based PDF generation pipeline (local)
+        or direct pandoc/node.js commands (CI environment)
     #>
     param(
         [Parameter(Mandatory)]$AllLabs,
@@ -258,14 +297,20 @@ function Invoke-PDFGeneration {
     
     Write-Host "📄  Starting PDF generation..." -ForegroundColor Yellow
     
-    # Test Docker environment
-    if (-not (Test-DockerEnvironment)) {
-        Write-Host "❌  Docker not available or not running. Skipping PDF generation." -ForegroundColor Red
-        Write-Host "    To generate PDFs, ensure Docker is installed and running." -ForegroundColor Yellow
+    # Determine environment and available tools
+    $useDocker = Test-DockerEnvironment
+    $useCITools = Test-CIEnvironment
+    
+    if ($useDocker) {
+        Write-Host "✅  Docker environment detected - using containerized PDF generation" -ForegroundColor Green
+    } elseif ($useCITools) {
+        Write-Host "✅  CI environment detected - using direct pandoc/node.js PDF generation" -ForegroundColor Green
+    } else {
+        Write-Host "❌  Neither Docker nor CI tools available. Skipping PDF generation." -ForegroundColor Red
+        Write-Host "    Local: Start Docker with 'docker-compose up -d'" -ForegroundColor Yellow
+        Write-Host "    CI: Ensure pandoc and node.js are installed" -ForegroundColor Yellow
         return @()
     }
-    
-    Write-Host "✅  Docker environment validated" -ForegroundColor Green
     
     # Generate PDFs for each lab
     $results = @()
@@ -276,7 +321,7 @@ function Invoke-PDFGeneration {
         $processed++
         Write-Host "📝  Processing PDF $processed/$total`: $($lab.id)" -ForegroundColor Cyan
         
-        $result = New-PDFForLab -Lab $lab -Paths $Paths
+        $result = New-PDFForLab -Lab $lab -Paths $Paths -UseDocker $useDocker
         $results += $result
         
         if ($result.Success) {
@@ -302,11 +347,12 @@ function Invoke-PDFGeneration {
 function New-PDFForLab {
     <#
     .SYNOPSIS
-        Generate a PDF for a specific lab using Docker Compose Jekyll environment
+        Generate a PDF for a specific lab using Docker or CI tools
     #>
     param(
         [Parameter(Mandatory)]$Lab,
-        [Parameter(Mandatory)]$Paths
+        [Parameter(Mandatory)]$Paths,
+        [bool]$UseDocker = $true
     )
     
     $startTime = Get-Date
@@ -360,48 +406,102 @@ function New-PDFForLab {
         $tempFile = Join-Path $distPath "README_processed.md"
         Set-Content -Path $tempFile -Value $processedContent -Encoding UTF8
         
-        # Create HTML using Docker Compose
-        $htmlFile = "dist/$($Lab.id)/$($Lab.id).html"
-        $createHtmlCmd = "cd dist/$($Lab.id) && pandoc README_processed.md -o $($Lab.id).html --standalone --css='../../.github/styles/html.css' --html-q-tags --section-divs --metadata title=`"$escapedTitle`" -f markdown+auto_identifiers+gfm_auto_identifiers+emoji -t html5"
-        
-        docker-compose exec jekyll-dev bash -c "mkdir -p dist/$($Lab.id)" 2>&1 | Out-Null
-        $htmlResult = docker-compose exec jekyll-dev bash -c "$createHtmlCmd" 2>&1
-        
-        # Check if HTML was created
-        $htmlCheckResult = docker-compose exec jekyll-dev bash -c "test -f $htmlFile && echo 'exists' || echo 'missing'" 2>&1
-        if ($htmlCheckResult -match "exists") {
-            # Generate PDF using Node.js script
-            $createPdfCmd = "node .github/scripts/generate-pdf.js $htmlFile assets/pdfs/$($Lab.id).pdf `"$escapedTitle`""
-            $pdfResult = docker-compose exec jekyll-dev bash -c "$createPdfCmd" 2>&1
+        # Choose execution method based on environment
+        if ($UseDocker) {
+            # Docker-based execution (local development)
+            $htmlFile = "dist/$($Lab.id)/$($Lab.id).html"
+            $createHtmlCmd = "cd dist/$($Lab.id) && pandoc README_processed.md -o $($Lab.id).html --standalone --css='../../.github/styles/html.css' --html-q-tags --section-divs --metadata title=`"$escapedTitle`" -f markdown+auto_identifiers+gfm_auto_identifiers+emoji -t html5"
             
-            # Clean up temporary files
-            docker-compose exec jekyll-dev rm -f $htmlFile dist/$($Lab.id)/README_processed.md 2>&1 | Out-Null
-            Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
+            docker-compose exec jekyll-dev bash -c "mkdir -p dist/$($Lab.id)" 2>&1 | Out-Null
+            $htmlResult = docker-compose exec jekyll-dev bash -c "$createHtmlCmd" 2>&1
             
-            # Check if PDF was created
-            if (Test-Path $pdfPath) {
-                $processingTime = ((Get-Date) - $startTime).TotalSeconds
-                return @{
-                    LabId = $Lab.id
-                    Success = $true
-                    Error = $null
-                    ProcessingTime = $processingTime
-                }
+            # Check if HTML was created
+            $htmlCheckResult = docker-compose exec jekyll-dev bash -c "test -f $htmlFile && echo 'exists' || echo 'missing'" 2>&1
+            if ($htmlCheckResult -match "exists") {
+                # Generate PDF using Node.js script
+                $createPdfCmd = "node .github/scripts/generate-pdf.js $htmlFile assets/pdfs/$($Lab.id).pdf `"$escapedTitle`""
+                $pdfResult = docker-compose exec jekyll-dev bash -c "$createPdfCmd" 2>&1
+                
+                # Clean up temporary files
+                docker-compose exec jekyll-dev rm -f $htmlFile dist/$($Lab.id)/README_processed.md 2>&1 | Out-Null
+                Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
+                $htmlCreated = $true
             } else {
-                return @{
-                    LabId = $Lab.id
-                    Success = $false
-                    Error = "PDF file not created: $pdfResult"
-                    ProcessingTime = 0
+                $htmlCreated = $false
+                $htmlResult = "Docker HTML creation failed: $htmlResult"
+            }
+        } else {
+            # Direct execution (CI environment)
+            $htmlFile = Join-Path $distPath "$($Lab.id).html"
+            $cssPath = ".github/styles/html.css"  # Relative path from working directory
+            
+            # Create HTML using direct pandoc command
+            try {
+                $pandocArgs = @(
+                    $tempFile
+                    "-o", $htmlFile
+                    "--standalone"
+                    "--css", $cssPath
+                    "--html-q-tags"
+                    "--section-divs"
+                    "--metadata", "title=$escapedTitle"
+                    "-f", "markdown+auto_identifiers+gfm_auto_identifiers+emoji"
+                    "-t", "html5"
+                )
+                
+                & pandoc @pandocArgs 2>&1 | Out-Null
+                if ($LASTEXITCODE -eq 0 -and (Test-Path $htmlFile)) {
+                    $htmlCreated = $true
+                } else {
+                    $htmlCreated = $false
+                    $htmlResult = "Direct pandoc execution failed with exit code: $LASTEXITCODE"
                 }
+            } catch {
+                $htmlCreated = $false
+                $htmlResult = "Direct pandoc execution error: $($_.Exception.Message)"
+            }
+            
+            # Generate PDF using direct Node.js command
+            if ($htmlCreated) {
+                try {
+                    $nodeArgs = @(
+                        ".github/scripts/generate-pdf.js"
+                        $htmlFile
+                        $pdfPath
+                        $escapedTitle
+                    )
+                    
+                    & node @nodeArgs 2>&1 | Out-Null
+                    if ($LASTEXITCODE -ne 0) {
+                        $pdfResult = "Direct node.js execution failed with exit code: $LASTEXITCODE"
+                    }
+                } catch {
+                    $pdfResult = "Direct node.js execution error: $($_.Exception.Message)"
+                }
+                
+                # Clean up temporary files
+                Remove-Item -Path $htmlFile -Force -ErrorAction SilentlyContinue
+                Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
+            }
+        }
+        
+        # Check final result
+        if ($htmlCreated -and (Test-Path $pdfPath)) {
+            $processingTime = ((Get-Date) - $startTime).TotalSeconds
+            return @{
+                LabId = $Lab.id
+                Success = $true
+                Error = $null
+                ProcessingTime = $processingTime
             }
         } else {
             # Clean up temp file even on failure
             Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
+            $errorMsg = if (-not $htmlCreated) { "Failed to create HTML: $htmlResult" } else { "PDF file not created: $pdfResult" }
             return @{
                 LabId = $Lab.id
                 Success = $false
-                Error = "Failed to create HTML: $htmlResult"
+                Error = $errorMsg
                 ProcessingTime = 0
             }
         }
@@ -953,6 +1053,208 @@ function New-IndexPage {
     } catch {
         Write-Host "❌  Failed to generate index.md: $($_.Exception.Message)" -ForegroundColor Red
     }
+}
+
+function New-RootHomepage {
+    <#
+    .SYNOPSIS
+        Generate dynamic root index.md homepage with journey cards
+    #>
+    param($Config, $Paths, $AllLabs)
+    
+    Write-Host "🏠  Generating root homepage index.md..." -ForegroundColor Yellow
+    
+    # Calculate stats for each journey
+    $journeyStats = @{}
+    if ($Config.journeys) {
+        foreach ($journeyKey in $Config.journeys.Keys) {
+            $labCount = 0
+            $totalDuration = 0
+            
+            foreach ($lab in $AllLabs) {
+                if ($lab.journeys -and $journeyKey -in $lab.journeys) {
+                    $labCount++
+                    $totalDuration += $lab.duration
+                }
+            }
+            
+            $journeyStats[$journeyKey] = @{
+                LabCount = $labCount
+                TotalDuration = $totalDuration
+                Hours = [math]::Round($totalDuration / 60, 1)
+            }
+        }
+    }
+    
+    # Build journey cards dynamically
+    $journeyCards = @()
+    if ($Config.journeys) {
+        foreach ($journeyKey in $Config.journeys.Keys) {
+            $journey = $Config.journeys[$journeyKey]
+            $stats = $journeyStats[$journeyKey]
+            
+            $icon = if ($journey.icon) { $journey.icon } else { "🔧" }
+            $title = if ($journey.title) { $journey.title } else { $journeyKey }
+            $description = if ($journey.description) { $journey.description } else { "Learning journey for $title" }
+            $difficulty = if ($journey.difficulty) { $journey.difficulty } else { "Intermediate" }
+            
+            # Format time display
+            $timeDisplay = if ($stats.Hours -lt 1) { 
+                "$($stats.TotalDuration) mins" 
+            } elseif ($stats.Hours -ge 2) { 
+                "$([math]::Floor($stats.Hours))-$([math]::Ceiling($stats.Hours)) hours" 
+            } else { 
+                "$($stats.Hours) hours" 
+            }
+            
+            $journeyCards += @"
+    <div class="journey-card $journeyKey">
+        <h3>$icon $($title.Replace(' Journey', ''))</h3>
+        <p>$description</p>
+        <div class="journey-meta">
+            <span>⏱️ $timeDisplay</span>
+            <span>📊 $difficulty</span>
+            <span>📚 $($stats.LabCount) labs</span>
+        </div>
+        <a href="{{ '/labs/#$journeyKey' | relative_url }}" class="journey-btn">Start Journey →</a>
+    </div>
+"@
+        }
+    }
+    
+    # Build the complete homepage content
+    $homepageContent = Build-RootHomepageContent -JourneyCards $journeyCards
+    
+    # Write to root index.md file
+    $rootIndexPath = Join-Path $Paths.basePath "index.md"
+    try {
+        $homepageContent | Set-Content $rootIndexPath -Encoding UTF8 -ErrorAction Stop
+        Write-Host "✅  Generated root homepage with $($Config.journeys.Keys.Count) journey cards" -ForegroundColor Green
+    } catch {
+        Write-Host "❌  Failed to generate root homepage: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
+function Build-RootHomepageContent {
+    <#
+    .SYNOPSIS
+        Build the complete root homepage content
+    #>
+    param($JourneyCards)
+    
+    $journeyCardsHtml = $JourneyCards -join "`n`n"
+    
+    return @"
+---
+layout: default
+title: Home
+---
+
+# Microsoft Copilot Studio Labs
+
+Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. Choose your learning journey based on your goals and experience level.
+
+## 🎯 **Choose Your Learning Journey**
+
+<div class="journey-cards">
+$journeyCardsHtml
+</div>
+
+---
+
+## 🎯 **Getting Started**
+
+1. **Choose your journey** above based on your goals and experience
+2. **Follow the guided path** with labs specifically selected for your needs
+3. **Build hands-on skills** with real Microsoft Copilot Studio projects
+4. **Progress at your own pace** - each journey is self-contained
+
+**Ready to build amazing AI agents?** Pick your journey and start learning! 🎉
+
+- Join the community discussions for questions and insights
+- Practice with your own use cases after completing each lab
+
+Happy learning! 🎉
+
+<style>
+.journey-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.journey-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 4px solid;
+}
+
+.journey-card.quick-start {
+    border-left-color: #0277bd;
+}
+
+.journey-card.business-user {
+    border-left-color: #7b1fa2;
+}
+
+.journey-card.developer {
+    border-left-color: #2e7d32;
+}
+
+.journey-card.autonomous-ai {
+    border-left-color: #ef6c00;
+}
+
+.journey-card.bootcamp {
+    border-left-color: #d32f2f;
+}
+
+.journey-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.journey-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    font-size: 1.25rem;
+}
+
+.journey-card p {
+    color: #666;
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+}
+
+.journey-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.journey-btn {
+    display: inline-block;
+    background: #0078d4;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.journey-btn:hover {
+    background: #106ebe;
+    text-decoration: none;
+}
+</style>
+"@
 }
 
 function Build-IndexPageContent {
@@ -1592,6 +1894,9 @@ function Invoke-LabGeneration {
         
         # Generate index.md file with dynamic journey definitions
         New-IndexPage -Config $config -Paths $paths -AllLabs $allLabs
+        
+        # Generate root homepage
+        New-RootHomepage -Config $config -Paths $paths -AllLabs $allLabs
         
         # Show final statistics
         $processingTime = (Get-Date) - $startTime

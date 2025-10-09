@@ -176,7 +176,7 @@ jobs:
               if pandoc "${lab_name}_processed.md" \
                 -o "../../dist/${lab_name}/${lab_name}.html" \
                 --standalone \
-                --self-contained \
+                --embed-resources \
                 --css="../../.github/styles/html.css" \
                 --html-q-tags \
                 --section-divs \
