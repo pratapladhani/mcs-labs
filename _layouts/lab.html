@@ -37,13 +37,15 @@ layout: default
                     <a href="{{ journey_url | relative_url }}" class="journey-title">{{ journey_title }}</a>
                 </div>
                 
-                <nav class="journey-labs">
-                    {% assign journey_labs = site.labs | where_exp: "lab", "lab.journeys contains primary_journey" | sort: "order" %}
+                <nav class="journey-labs" id="journey-labs-nav">
+                    {% assign journey_labs = site.labs | where_exp: "lab", "lab.journeys contains primary_journey" | sort: "title" %}
                     {% for lab in journey_labs %}
                         <a href="{{ lab.url | relative_url }}" 
                            class="lab-nav-item {% if lab.url == page.url %}current{% endif %}"
-                           title="{{ lab.title }}">
-                            <span class="lab-order">{{ lab.order | default: "∞" }}</span>
+                           title="{{ lab.title }}"
+                           data-journeys="{{ lab.journeys | join: ',' }}"
+                           data-section="{{ lab.section }}">
+                            <span class="lab-order" data-lab-order></span>
                             <span class="lab-title">{{ lab.title }}</span>
                             <span class="lab-duration">{{ lab.duration }}min</span>
                         </a>
@@ -94,6 +96,13 @@ layout: default
                 <span class="lab-type">🏷️ {{ page.lab_type | capitalize }}</span>
                 {% endif %}
             </div>
+            {% if page.lab_type != 'external' %}
+            <div class="lab-header-actions">
+                <a href="{{ '/assets/pdfs/' | relative_url }}{{ page.slug }}.pdf" class="btn btn-secondary download-pdf-header" target="_blank">
+                    📄 Download PDF
+                </a>
+            </div>
+            {% endif %}
         </div>
         {% endif %}
 
@@ -166,3 +175,104 @@ layout: default
     </article>
 </div>
 <!-- End lab-layout -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check for filter context in URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterJourney = urlParams.get('journey');
+    const filterSection = urlParams.get('section');
+    
+    // Get the current lab's journeys and section
+    const currentJourneys = {{ page.journeys | jsonify }};
+    const currentSection = {{ page.section | jsonify }};
+    
+    // Determine which filter context to use
+    let activeFilter = null;
+    let activeFilterType = null;
+    
+    if (filterJourney && currentJourneys && currentJourneys.includes(filterJourney)) {
+        activeFilter = filterJourney;
+        activeFilterType = 'journey';
+    } else if (filterSection && currentSection === filterSection) {
+        activeFilter = filterSection;
+        activeFilterType = 'section';
+    } else if (currentJourneys && currentJourneys.length > 0) {
+        // Default to primary journey if no filter context
+        activeFilter = currentJourneys[0];
+        activeFilterType = 'journey';
+    }
+    
+    if (!activeFilter) return;
+    
+    // Get all lab navigation items
+    const navItems = document.querySelectorAll('.lab-nav-item');
+    let sequenceNumber = 1;
+    
+    // Filter and number labs based on active filter
+    navItems.forEach(function(item) {
+        let shouldShow = false;
+        
+        if (activeFilterType === 'journey') {
+            const itemJourneys = item.dataset.journeys ? item.dataset.journeys.split(',').map(j => j.trim()) : [];
+            shouldShow = itemJourneys.includes(activeFilter);
+        } else if (activeFilterType === 'section') {
+            shouldShow = item.dataset.section === activeFilter;
+        }
+        
+        if (shouldShow) {
+            const orderSpan = item.querySelector('[data-lab-order]');
+            if (orderSpan) {
+                orderSpan.textContent = sequenceNumber;
+                sequenceNumber++;
+            }
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    
+    // Update all navigation links to preserve query string
+    const currentQueryString = window.location.search;
+    if (currentQueryString) {
+        // Update lab navigation links
+        const labNavItems = document.querySelectorAll('.lab-nav-item');
+        labNavItems.forEach(function(link) {
+            const baseUrl = link.href.split('?')[0];
+            link.href = baseUrl + currentQueryString;
+        });
+        
+        // Update journey title link
+        const journeyTitleLink = document.querySelector('.journey-title');
+        if (journeyTitleLink && journeyTitleLink.href) {
+            const baseUrl = journeyTitleLink.href.split('?')[0].split('#')[0];
+            const hash = journeyTitleLink.href.includes('#') ? '#' + journeyTitleLink.href.split('#')[1] : '';
+            journeyTitleLink.href = baseUrl + currentQueryString + hash;
+        }
+        
+        // Update footer navigation links
+        const navButtons = document.querySelectorAll('.nav-button');
+        navButtons.forEach(function(link) {
+            if (link.href && !link.href.includes('?')) {
+                const baseUrl = link.href.split('#')[0];
+                const hash = link.href.includes('#') ? '#' + link.href.split('#')[1] : '';
+                link.href = baseUrl + currentQueryString + hash;
+            }
+        });
+    }
+    
+    // Update the journey title if we have filter context
+    if (activeFilterType === 'journey' && filterJourney) {
+        const journeyTitle = document.querySelector('.journey-title');
+        if (journeyTitle) {
+            // Add filter context indicator
+            const filterIndicator = document.createElement('span');
+            filterIndicator.className = 'filter-context';
+            filterIndicator.textContent = ' (filtered)';
+            filterIndicator.style.fontSize = '0.8em';
+            filterIndicator.style.color = '#666';
+            journeyTitle.appendChild(filterIndicator);
+        }
+    }
+});
+</script>

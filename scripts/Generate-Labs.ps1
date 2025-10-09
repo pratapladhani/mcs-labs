@@ -1,383 +1,434 @@
-# PowerShell Lab Generation Script
-# Reads from lab-config.yml and generates semantic filenames matching original lab folder names
+# PowerShell Lab Generation Script - Refactored Version
+# Unified script for PDF generation and Jekyll processing with comprehensive documentation
 
+#region Script Parameters and Help
 param(
-    [switch]$Help = $false
+    [string[]]$SelectedJourneys = @(),
+    [switch]$SkipPDFs = $false,
+    [switch]$ShowHelp = $false,
+    [switch]$GeneratePDFs = $false,
+    [switch]$LocalTest = $false
 )
 
-if ($Help) {
-    Write-Host @"
-╔═════════════════════════════════════════════════════════════════════════════}
+# Handle legacy parameter mapping
+if ($GeneratePDFs) { $SkipPDFs = $false }
+if ($LocalTest) { $SkipPDFs = $false }
 
-# If no valid journeys were loaded, use defaults
-if ($journeyMeta.Keys.Count -eq 0) {
-    Write-Host "⚠️  No valid journey definitions found, using defaults..." -ForegroundColor Yellow
-    $journeyMeta = @{
-        "quick-start" = @{ title = "Quick Start Journey"; description = "Essential labs to get started quickly"; icon = "🚀"; difficulty = "Beginner"; estimated_time = "3-4 hours" }
-        "business-user" = @{ title = "Business User Journey"; description = "Business solutions and applications"; icon = "💼"; difficulty = "Intermediate"; estimated_time = "8-12 hours" }
-        "developer" = @{ title = "Developer Journey"; description = "Technical depth and development practices"; icon = "🔧"; difficulty = "Advanced"; estimated_time = "10-15 hours" }
-        "autonomous-ai" = @{ title = "Autonomous AI Journey"; description = "Advanced autonomous agents"; icon = "🤖"; difficulty = "Expert"; estimated_time = "6-8 hours" }
-    }
-}╗
-║                             MCS Labs - Jekyll Generator                               ║
-╚═══════════════════════════════════════════════════════════════════════════════════════╝
+if ($ShowHelp) {
+    Write-Host @"
+╔═════════════════════════════════════════════════════════════════════════════════════════╗
+║                             MCS Labs - Jekyll Generator (Refactored)                     ║
+╚═════════════════════════════════════════════════════════════════════════════════════════╝
 
 USAGE:
-    .\Generate-Labs.ps1 [-Help]
+    .\Generate-Labs-Complete.ps1 [-SelectedJourneys <string[]>] [-SkipPDFs] [-GeneratePDFs] [-LocalTest] [-ShowHelp]
 
 DESCRIPTION:
-    Generates Jekyll-compatible markdown files from lab configuration with semantic filenames
-    that match the original lab folder names (e.g., agent-builder-web.md).
+    Refactored and well-documented version of the lab generation script.
+    Generates Jekyll-compatible markdown files and optionally PDFs from lab configuration.
     
-    Generated files include proper front matter, journey metadata, and permalinks for the
-    4-journey navigation system (Quick Start, Business User, Developer, Autonomous AI).
+    Features comprehensive error handling, modular functions, and detailed logging.
+
+PARAMETERS:
+    -SelectedJourneys    Array of journey names to filter labs (e.g., @("business-user", "developer"))
+    -SkipPDFs           Skip PDF generation (Jekyll files only)
+    -GeneratePDFs       Generate PDFs for all labs (requires Docker)
+    -LocalTest          Complete local testing: generate Jekyll files + PDFs + build site
+    -ShowHelp           Show this help message
+
+EXAMPLES:
+    .\Generate-Labs-Complete.ps1                                    # Generate all labs with PDFs
+    .\Generate-Labs-Complete.ps1 -SkipPDFs                         # Jekyll files only
+    .\Generate-Labs-Complete.ps1 -SelectedJourneys @("business-user") # Business user journey only
+    .\Generate-Labs-Complete.ps1 -LocalTest                        # Complete local test
 
 REQUIREMENTS:
     - PowerShell 5.1+ or PowerShell Core
     - powershell-yaml module (auto-installed if missing)
     - lab-config.yml configuration file
-    - Source lab files in labs/[lab-id]/README.md
+    - Docker (for PDF generation)
 
 OUTPUT:
-    Generated files are placed in _labs/ directory for Jekyll processing.
+    - Generated files are placed in _labs/ directory for Jekyll processing
+    - PDF files are generated in labs/[lab-id]/ directories
 
 "@ -ForegroundColor Cyan
     exit 0
 }
+#endregion
 
-Write-Host "╔═══════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║                             MCS Labs - Jekyll Generator                               ║" -ForegroundColor Cyan
-Write-Host "╚═══════════════════════════════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
-Write-Host ""
-Write-Host "🏷️  Generating semantic filenames (matching lab folder names)" -ForegroundColor Yellow
+#region Core Initialization and Environment Setup
+# ============================================================================
+# CORE INITIALIZATION FUNCTIONS
+# ============================================================================
 
-# Install PowerShell YAML module if not present
-if (-not (Get-Module -ListAvailable -Name powershell-yaml)) {
-    Write-Host "📦  Installing PowerShell YAML module..." -ForegroundColor Yellow
+function Initialize-Environment {
+    <#
+    .SYNOPSIS
+        Initialize the script environment, install dependencies, and validate requirements
+    #>
+    
+    Write-Host "╔═══════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
+    Write-Host "║                       MCS Labs - Jekyll Generator (Refactored)                        ║" -ForegroundColor Cyan
+    Write-Host "╚═══════════════════════════════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "🔧  Initializing environment..." -ForegroundColor Yellow
+    
+    # Install PowerShell YAML module if not present
+    if (-not (Get-Module -ListAvailable -Name powershell-yaml)) {
+        Write-Host "📦  Installing PowerShell YAML module..." -ForegroundColor Yellow
+        try {
+            Install-Module -Name powershell-yaml -Force -Scope CurrentUser -ErrorAction Stop
+            Write-Host "✅  PowerShell YAML module installed successfully" -ForegroundColor Green
+        } catch {
+            Write-Host "❌  Failed to install PowerShell YAML module: $($_.Exception.Message)" -ForegroundColor Red
+            exit 1
+        }
+    }
+    
+    Import-Module powershell-yaml -ErrorAction Stop
+    Write-Host "✅  Environment initialized successfully" -ForegroundColor Green
+}
+
+function Get-Configuration {
+    <#
+    .SYNOPSIS
+        Load and parse the lab-config.yml configuration file
+    .DESCRIPTION
+        Validates configuration file existence and parses YAML content
+    #>
+    
+    # Validate lab-config.yml exists (check both current directory and parent)
+    $configPath = if (Test-Path "./lab-config.yml") { 
+        "./lab-config.yml" 
+    } elseif (Test-Path "../lab-config.yml") { 
+        "../lab-config.yml" 
+    } else { 
+        $null 
+    }
+    
+    if (-not $configPath) {
+        Write-Host "❌  lab-config.yml not found in current or parent directory" -ForegroundColor Red
+        Write-Host "    Please ensure the lab-config.yml file exists in the repository root" -ForegroundColor Yellow
+        exit 1
+    }
+    
+    Write-Host "📖  Reading lab configuration from $configPath..." -ForegroundColor Green
+    
+    # Read and parse lab-config.yml
     try {
-        Install-Module -Name powershell-yaml -Force -Scope CurrentUser -ErrorAction Stop
-        Write-Host "✅  PowerShell YAML module installed successfully" -ForegroundColor Green
+        $configContent = Get-Content $configPath -Raw -ErrorAction Stop
+        $config = ConvertFrom-Yaml $configContent -ErrorAction Stop
+        
+        Write-Host "✅  Configuration loaded successfully" -ForegroundColor Green
+        return $config
     } catch {
-        Write-Host "❌  Failed to install PowerShell YAML module: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "❌  Failed to read or parse lab-config.yml: $($_.Exception.Message)" -ForegroundColor Red
         exit 1
     }
 }
 
-Import-Module powershell-yaml -ErrorAction Stop
-
-# Validate lab-config.yml exists (check both current directory and parent)
-$configPath = if (Test-Path "./lab-config.yml") { "./lab-config.yml" } elseif (Test-Path "../lab-config.yml") { "../lab-config.yml" } else { $null }
-
-if (-not $configPath) {
-    Write-Host "❌  lab-config.yml not found in current or parent directory" -ForegroundColor Red
-    Write-Host "    Please ensure the lab-config.yml file exists in the repository root" -ForegroundColor Yellow
-    exit 1
-}
-
-Write-Host "📖  Reading lab configuration from $configPath..." -ForegroundColor Green
-
-# Define base paths (works whether run from root or scripts folder)
-$basePath = if (Test-Path "./labs") { "." } else { ".." }
-$labsPath = "$basePath/labs"
-$outputPath = "$basePath/_labs"
-$indexPath = "$basePath/labs/index.md"
-
-# Read and parse lab-config.yml
-try {
-    $configContent = Get-Content $configPath -Raw -ErrorAction Stop
-    $config = ConvertFrom-Yaml $configContent -ErrorAction Stop
-} catch {
-    Write-Host "❌  Failed to read or parse lab-config.yml: $($_.Exception.Message)" -ForegroundColor Red
-    exit 1
-}
-
-Write-Host "📁  Creating _labs directory..." -ForegroundColor Green
-New-Item -ItemType Directory -Path $outputPath -Force | Out-Null
-
-# Extract lab orders from config
-$labOrders = @{}
-if ($config.lab_orders) {
-    Write-Host "📋  Loading lab order configuration..." -ForegroundColor Green
-    $labOrders = $config.lab_orders
-    Write-Host "  ✅ Loaded order values for $($labOrders.Keys.Count) labs" -ForegroundColor Green
-}
-
-# Extract lab journeys from config
-$script:labJourneys = @{}
-if ($config.lab_journeys) {
-    Write-Host "🎯  Loading lab journey configuration..." -ForegroundColor Green
-    $script:labJourneys = $config.lab_journeys
-    Write-Host "  ✅ Loaded journey assignments for $($script:labJourneys.Keys.Count) labs" -ForegroundColor Green
-}
-
-# Function to process a lab with enhanced error handling
-function ConvertTo-JekyllLab {
-    param(
-        [Parameter(Mandatory)]$Lab,
-        [Parameter(Mandatory)][int]$Order,
-        [Parameter(Mandatory)][string]$SectionName,
-        [Parameter(Mandatory)][string]$LabType
-    )
+function Get-Paths {
+    <#
+    .SYNOPSIS
+        Determine and validate all required file paths
+    .DESCRIPTION
+        Works whether run from root or scripts folder, creates output directories if needed
+    #>
     
-    $lab_key = $Lab.id
-    $title = $Lab.title
-    $duration = $Lab.duration
-    $difficulty = $Lab.difficulty
-    $journeys = $Lab.journeys
+    # Define base paths (works whether run from root or scripts folder)
+    $basePath = if (Test-Path "./labs") { "." } else { ".." }
+    $labsPath = "$basePath/labs"
+    $outputPath = "$basePath/_labs"
+    $indexPath = "$basePath/labs/index.md"
     
-    $source_file = "$basePath/labs/$lab_key/README.md"
-    $target_file = "$outputPath/$lab_key.md"  # Always use semantic names
+    # Validate that labs directory exists
+    if (-not (Test-Path $labsPath)) {
+        Write-Host "❌  Labs directory not found: $labsPath" -ForegroundColor Red
+        exit 1
+    }
     
-    if (Test-Path $source_file) {
-        Write-Host "  📝  Processing $SectionName`: $lab_key -> $(Split-Path $target_file -Leaf)" -ForegroundColor Cyan
+    # Create output directory if it doesn't exist
+    if (-not (Test-Path $outputPath)) {
+        New-Item -ItemType Directory -Path $outputPath -Force | Out-Null
+        Write-Host "📁  Created output directory: $outputPath" -ForegroundColor Green
+    }
+    
+    return @{
+        basePath = $basePath
+        labsPath = $labsPath
+        outputPath = $outputPath
+        indexPath = $indexPath
+    }
+}
+
+function Get-LabJourneyAssignments {
+    <#
+    .SYNOPSIS
+        Extract lab journey assignments from configuration
+    #>
+    param([Parameter(Mandatory)]$Config)
+    
+    # Create a hashtable for lab journey assignments
+    $labJourneys = @{}
+    
+    # Process explicit lab journey assignments from config (direct hashtable access)
+    if ($Config.lab_journeys) {
+        foreach ($labId in $Config.lab_journeys.Keys) {
+            $assignedJourneys = $Config.lab_journeys[$labId]
+            
+            if ($assignedJourneys -and $assignedJourneys.Count -gt 0) {
+                $labJourneys[[string]$labId] = $assignedJourneys
+            }
+        }
+    }
+    
+    Write-Host "🎯  Loaded journey assignments for $($labJourneys.Keys.Count) labs" -ForegroundColor Green
+    return $labJourneys
+}
+
+function Show-StartupInfo {
+    <#
+    .SYNOPSIS
+        Display startup information and processing parameters
+    #>
+    param([string[]]$SelectedJourneys, [bool]$SkipPDFs)
+    
+    Write-Host "🚀  Starting lab generation process..." -ForegroundColor Yellow
+    
+    if ($SelectedJourneys.Count -gt 0) {
+        Write-Host "🎯  Selected journeys: $($SelectedJourneys -join ', ')" -ForegroundColor Cyan
+    } else {
+        Write-Host "🌐  Processing all journeys" -ForegroundColor Cyan
+    }
+    
+    if ($SkipPDFs) {
+        Write-Host "⏭️   PDF generation: SKIPPED" -ForegroundColor Yellow
+    } else {
+        Write-Host "📄  PDF generation: ENABLED" -ForegroundColor Green
+    }
+    Write-Host ""
+}
+
+#endregion
+
+#region PDF Generation Functions
+# ============================================================================
+# PDF GENERATION FUNCTIONS
+# ============================================================================
+
+function Test-DockerEnvironment {
+    <#
+    .SYNOPSIS
+        Test if Docker Compose environment is available and Jekyll container is running
+    #>
+    
+    try {
+        # Check if docker-compose is available
+        $dockerComposeVersion = docker-compose --version 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            return $false
+        }
         
-        try {
-            # Read the source file
-            $content = Get-Content $source_file -Raw -ErrorAction Stop
-            
-            # Extract description from README content (first paragraph after title)
-            $description = ""
-            $lines = $content -split "`n"
-            $foundTitle = $false
-            $foundDescription = $false
-            
-            foreach ($line in $lines) {
-                $line = $line.Trim()
-                
-                # Skip until we find the main heading
-                if ($line -match "^#\s+") {
-                    $foundTitle = $true
-                    continue
-                }
-                
-                # After title, look for first substantial paragraph
-                if ($foundTitle -and -not $foundDescription) {
-                    if ($line -and -not $line.StartsWith("#") -and -not $line.StartsWith("---") -and -not $line.StartsWith("<!--")) {
-                        $description = $line
-                        $foundDescription = $true
-                        break
-                    }
-                }
-            }
-            
-            # Fallback to config description if we couldn't extract one
-            if (-not $description) {
-                $description = $Lab.description
-            }
-            
-            # Create Jekyll front matter with journey metadata
-            $front_matter = @"
----
-layout: lab
-title: "$title"
-"@
-            
-            # Add order (now that we have configured values for all labs)
-            $front_matter += "`norder: $Order"
-            
-            $front_matter += @"
-`nduration: $duration
-difficulty: $difficulty
-lab_type: $LabType
-section: $SectionName
-"@
-            
-            # Add journeys if they exist
-            if ($journeys -and $journeys.Count -gt 0) {
-                $journeyArray = $journeys | ForEach-Object { "`"$_`"" }
-                $journeyString = "[" + ($journeyArray -join ", ") + "]"
-                $front_matter += "`njourneys: $journeyString"
-            }
-            
-            # Add extracted description
-            $front_matter += "`ndescription: `"$description`""
-            
-            # Clean up content - remove leading/trailing whitespace and normalize newlines
-            $cleanContent = $content.Trim()
-            
-            # Remove duplicate title from content if it matches (avoid double headers in PDF)
-            $lines = $cleanContent -split "`n"
-            if ($lines.Count -gt 0 -and $lines[0] -match "^#\s+(.+)") {
-                $contentTitle = $matches[1].Trim()
-                if ($contentTitle -eq $title) {
-                    # Remove the first line (duplicate title) and any following empty lines
-                    $lines = $lines[1..($lines.Length-1)]
-                    while ($lines.Count -gt 0 -and [string]::IsNullOrWhiteSpace($lines[0])) {
-                        $lines = $lines[1..($lines.Length-1)]
-                    }
-                    $cleanContent = $lines -join "`n"
-                }
-            }
-            
-            $front_matter += @"
-
----
-
-$cleanContent
-"@
-            
-            # Write to target file
-            $front_matter | Set-Content $target_file -Encoding UTF8 -ErrorAction Stop
-            Write-Host "    ✅  Created $(Split-Path $target_file -Leaf)" -ForegroundColor Green
+        # Check if Jekyll development container is running
+        $dockerCheck = docker-compose ps jekyll-dev 2>&1
+        if ($dockerCheck -match "jekyll-dev.*Up") {
             return $true
-        } catch {
-            Write-Host "    ❌  Failed to process $lab_key`: $($_.Exception.Message)" -ForegroundColor Red
-            return $false
-        }
-    } else {
-        # Check if this is an external lab (has url or repository field)
-        if ($Lab.url -or $Lab.repository) {
-            Write-Host "  🌐  Processing external $SectionName`: $lab_key -> $(Split-Path $target_file -Leaf)" -ForegroundColor Cyan
-            
-            try {
-                # Use description from config for external labs
-                $description = if ($Lab.description) { $Lab.description } else { "External lab hosted at $($Lab.url)" }
-                
-                # Create Jekyll front matter for external lab
-                $front_matter = @"
----
-layout: lab
-title: "$title"
-"@
-                
-                # Add order (now that we have configured values for all labs)
-                $front_matter += "`norder: $Order"
-                
-                $front_matter += @"
-`nduration: $duration
-difficulty: $difficulty
-lab_type: $LabType
-section: $SectionName
-external: true
-"@
-                
-                # Add external URL and repository info
-                if ($Lab.url) {
-                    $front_matter += "`nurl: `"$($Lab.url)`""
-                }
-                if ($Lab.repository) {
-                    $front_matter += "`nrepository: `"$($Lab.repository)`""
-                }
-                
-                # Add journeys if they exist
-                if ($journeys -and $journeys.Count -gt 0) {
-                    $journeyArray = $journeys | ForEach-Object { "`"$_`"" }
-                    $journeyString = "[" + ($journeyArray -join ", ") + "]"
-                    $front_matter += "`njourneys: $journeyString"
-                }
-                
-                # Add description
-                $front_matter += "`ndescription: `"$description`""
-                
-                # Create content for external lab (title already in front matter)
-                $external_content = @"
-
----
-
-$description
-
-## 🌐 External Repository
-
-This lab is hosted in an external repository. Click the link below to access the full lab content:
-
-**Repository**: [$($Lab.repository)]($($Lab.url))
-
-## Lab Details
-
-- **Duration**: $duration minutes
-- **Difficulty**: $difficulty
-- **Type**: External Lab
-
-## Getting Started
-
-1. Navigate to the [external repository]($($Lab.url))
-2. Follow the README instructions in that repository
-3. Complete the lab exercises as directed
-
----
-
-*This is an external lab. All content and instructions are maintained in the linked repository.*
-"@
-                
-                $front_matter += $external_content
-                
-                # Write to target file
-                $front_matter | Set-Content $target_file -Encoding UTF8 -ErrorAction Stop
-                Write-Host "    ✅  Created external lab $(Split-Path $target_file -Leaf)" -ForegroundColor Green
-                return $true
-            } catch {
-                Write-Host "    ❌  Failed to process external lab $lab_key`: $($_.Exception.Message)" -ForegroundColor Red
-                return $false
-            }
         } else {
-            Write-Host "    ⚠️   Source file not found: $source_file" -ForegroundColor Yellow
+            Write-Host "    ⚠️   Jekyll development container not running" -ForegroundColor Yellow
+            Write-Host "    💡  Start with: docker-compose up -d" -ForegroundColor Yellow
             return $false
         }
+    } catch {
+        return $false
     }
 }
 
-# Track processing statistics
-$totalLabs = 0
-$processedLabs = 0
-$failedLabs = 0
-$order = 1
-
-Write-Host "🔄  Converting labs with journey metadata..." -ForegroundColor Yellow
-Write-Host ""
-
-# Process all lab sections dynamically
-# Auto-generate section metadata from config or use intelligent defaults
-$sectionMeta = @{}
-
-# ===== HELPER FUNCTIONS =====
-
-function Get-UnifiedCollection {
+function Invoke-PDFGeneration {
+    <#
+    .SYNOPSIS
+        Generate PDFs for all specified labs using Docker
+    .DESCRIPTION
+        Processes each lab through Docker-based PDF generation pipeline
+    #>
     param(
-        [Parameter(Mandatory)]$Collection,
-        [string[]]$SkipKeys = @()
+        [Parameter(Mandatory)]$AllLabs,
+        [Parameter(Mandatory)]$Paths
     )
     
-    $result = @{}
+    Write-Host "📄  Starting PDF generation..." -ForegroundColor Yellow
     
-    if ($Collection -is [System.Collections.Hashtable]) {
-        foreach ($key in $Collection.Keys) {
-            if ($key -notin $SkipKeys) {
-                $result[$key] = $Collection[$key]
-            }
-        }
-    } else {
-        foreach ($property in $Collection.PSObject.Properties) {
-            if ($property.Name -notin $SkipKeys) {
-                $result[$property.Name] = $property.Value
-            }
-        }
+    # Test Docker environment
+    if (-not (Test-DockerEnvironment)) {
+        Write-Host "❌  Docker not available or not running. Skipping PDF generation." -ForegroundColor Red
+        Write-Host "    To generate PDFs, ensure Docker is installed and running." -ForegroundColor Yellow
+        return @()
     }
     
-    return $result
-}
-
-function Get-JourneyStats {
-    param(
-        [Parameter(Mandatory)]$JourneyName,
-        [Parameter(Mandatory)]$AllLabs
-    )
+    Write-Host "✅  Docker environment validated" -ForegroundColor Green
     
-    $labCount = 0
-    $totalDuration = 0
+    # Generate PDFs for each lab
+    $results = @()
+    $processed = 0
+    $total = $AllLabs.Count
     
     foreach ($lab in $AllLabs) {
-        if ($lab.journeys -and $JourneyName -in $lab.journeys) {
-            $labCount++
-            $totalDuration += $lab.duration
+        $processed++
+        Write-Host "📝  Processing PDF $processed/$total`: $($lab.id)" -ForegroundColor Cyan
+        
+        $result = New-PDFForLab -Lab $lab -Paths $Paths
+        $results += $result
+        
+        if ($result.Success) {
+            Write-Host "    ✅  PDF generated successfully" -ForegroundColor Green
+        } else {
+            Write-Host "    ❌  PDF generation failed: $($result.Error)" -ForegroundColor Red
         }
     }
     
-    return @{ LabCount = $labCount; TotalDuration = $totalDuration }
+    # Summary
+    $successful = ($results | Where-Object { $_.Success }).Count
+    $failed = $results.Count - $successful
+    
+    Write-Host "`n📊  PDF Generation Summary:" -ForegroundColor Yellow
+    Write-Host "    ✅  Successful: $successful/$($results.Count)" -ForegroundColor Green
+    if ($failed -gt 0) {
+        Write-Host "    ❌  Failed: $failed" -ForegroundColor Red
+    }
+    
+    return $results
 }
 
-# ===== AUTO-DISCOVERY FUNCTIONS =====
+function New-PDFForLab {
+    <#
+    .SYNOPSIS
+        Generate a PDF for a specific lab using Docker Compose Jekyll environment
+    #>
+    param(
+        [Parameter(Mandatory)]$Lab,
+        [Parameter(Mandatory)]$Paths
+    )
+    
+    $startTime = Get-Date
+    $labPath = Join-Path $Paths.labsPath $Lab.id
+    $readmePath = Join-Path $labPath "README.md"
+    $pdfPath = Join-Path $Paths.basePath "assets/pdfs/$($Lab.id).pdf"
+    
+    # Skip if source doesn't exist (external labs)
+    if (-not (Test-Path $readmePath)) {
+        return @{
+            LabId = $Lab.id
+            Success = $false
+            Error = "Source README.md not found (external lab)"
+            ProcessingTime = 0
+        }
+    }
+    
+    try {
+        # Prepare title and escape for bash commands
+        $labTitle = $Lab.title
+        $escapedTitle = $labTitle -replace '"', '\"'
+        
+        # Create necessary directories
+        $distPath = Join-Path $Paths.basePath "dist/$($Lab.id)"
+        $assetsPath = Join-Path $Paths.basePath "assets/pdfs"
+        New-Item -ItemType Directory -Path $distPath -Force | Out-Null
+        New-Item -ItemType Directory -Path $assetsPath -Force | Out-Null
+        
+        # Read and preprocess content to avoid duplicate titles
+        $content = Get-Content $readmePath -Raw -ErrorAction Stop
+        $lines = $content -split "`n"
+        $processedLines = @()
+        $foundFirstTitle = $false
+        
+        foreach ($line in $lines) {
+            if (-not $foundFirstTitle -and $line -match '^#\s+(.+)') {
+                $foundFirstTitle = $true
+                continue  # Skip the first title line
+            }
+            $processedLines += $line
+        }
+        
+        # Remove leading empty lines
+        while ($processedLines.Count -gt 0 -and [string]::IsNullOrWhiteSpace($processedLines[0])) {
+            $processedLines = $processedLines[1..($processedLines.Length-1)]
+        }
+        
+        $processedContent = $processedLines -join "`n"
+        
+        # Write processed content to temporary file
+        $tempFile = Join-Path $distPath "README_processed.md"
+        Set-Content -Path $tempFile -Value $processedContent -Encoding UTF8
+        
+        # Create HTML using Docker Compose
+        $htmlFile = "dist/$($Lab.id)/$($Lab.id).html"
+        $createHtmlCmd = "cd dist/$($Lab.id) && pandoc README_processed.md -o $($Lab.id).html --standalone --css='../../.github/styles/html.css' --html-q-tags --section-divs --metadata title=`"$escapedTitle`" -f markdown+auto_identifiers+gfm_auto_identifiers+emoji -t html5"
+        
+        docker-compose exec jekyll-dev bash -c "mkdir -p dist/$($Lab.id)" 2>&1 | Out-Null
+        $htmlResult = docker-compose exec jekyll-dev bash -c "$createHtmlCmd" 2>&1
+        
+        # Check if HTML was created
+        $htmlCheckResult = docker-compose exec jekyll-dev bash -c "test -f $htmlFile && echo 'exists' || echo 'missing'" 2>&1
+        if ($htmlCheckResult -match "exists") {
+            # Generate PDF using Node.js script
+            $createPdfCmd = "node .github/scripts/generate-pdf.js $htmlFile assets/pdfs/$($Lab.id).pdf `"$escapedTitle`""
+            $pdfResult = docker-compose exec jekyll-dev bash -c "$createPdfCmd" 2>&1
+            
+            # Clean up temporary files
+            docker-compose exec jekyll-dev rm -f $htmlFile dist/$($Lab.id)/README_processed.md 2>&1 | Out-Null
+            Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
+            
+            # Check if PDF was created
+            if (Test-Path $pdfPath) {
+                $processingTime = ((Get-Date) - $startTime).TotalSeconds
+                return @{
+                    LabId = $Lab.id
+                    Success = $true
+                    Error = $null
+                    ProcessingTime = $processingTime
+                }
+            } else {
+                return @{
+                    LabId = $Lab.id
+                    Success = $false
+                    Error = "PDF file not created: $pdfResult"
+                    ProcessingTime = 0
+                }
+            }
+        } else {
+            # Clean up temp file even on failure
+            Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
+            return @{
+                LabId = $Lab.id
+                Success = $false
+                Error = "Failed to create HTML: $htmlResult"
+                ProcessingTime = 0
+            }
+        }
+    } catch {
+        return @{
+            LabId = $Lab.id
+            Success = $false
+            Error = $_.Exception.Message
+            ProcessingTime = 0
+        }
+    }
+}
+
+#endregion
+
+#region Lab Discovery and Processing
+# ============================================================================
+# LAB DISCOVERY AND PROCESSING FUNCTIONS
+# ============================================================================
 
 function Get-LabFromReadme {
+    <#
+    .SYNOPSIS
+        Parse lab information from README.md file
+    .DESCRIPTION
+        Extracts title, duration, difficulty, description and other metadata from README content
+    #>
     param(
         [Parameter(Mandatory)][string]$LabPath,
         [Parameter(Mandatory)][string]$LabId
@@ -396,21 +447,15 @@ function Get-LabFromReadme {
         $lab = @{
             id = $LabId
             title = ""
-            duration = 30  # Default duration
-            difficulty = 100  # Default difficulty
+            duration = 30  # Default duration in minutes
+            difficulty = 100  # Default difficulty level
             description = ""
             journeys = @()
             section = ""  # Will be auto-assigned if not specified
             tags = @()
         }
         
-        # Look for YAML front matter first
-        if ($content -match '^---\s*\n(.*?)\n---\s*\n') {
-            Write-Host "  📋  Found YAML front matter in $LabId" -ForegroundColor Cyan
-            # TODO: Parse YAML front matter when we add it to README files
-        }
-        
-        # Parse structured content
+        # Parse lab content
         $inTable = $false
         $foundTitle = $false
         
@@ -431,7 +476,7 @@ function Get-LabFromReadme {
                 $lab.description = $line
             }
             
-            # Parse lab details table
+            # Parse lab details table (Level | Persona | Duration | Purpose format)
             if ($line -match "Level.*Persona.*Duration.*Purpose") {
                 $inTable = $true
                 continue
@@ -448,18 +493,9 @@ function Get-LabFromReadme {
             }
         }
         
-        # Auto-assign section based on difficulty and folder patterns
+        # Auto-assign section based on difficulty and naming patterns
         if (-not $lab.section) {
             $lab.section = Get-AutoSection -LabId $LabId -Difficulty $lab.difficulty
-        }
-        
-        # Assign journeys from config or auto-assign based on difficulty and keywords
-        if ($script:labJourneys.ContainsKey($LabId)) {
-            $lab.journeys = $script:labJourneys[$LabId]
-            Write-Host "    🎯 Using explicit journey assignment: $($lab.journeys -join ', ')" -ForegroundColor Magenta
-        } elseif ($lab.journeys.Count -eq 0) {
-            $lab.journeys = Get-AutoJourneys -Lab $lab
-            Write-Host "    🤖 Using automatic journey assignment: $($lab.journeys -join ', ')" -ForegroundColor Yellow
         }
         
         return $lab
@@ -471,12 +507,16 @@ function Get-LabFromReadme {
 }
 
 function Get-AutoSection {
+    <#
+    .SYNOPSIS
+        Automatically determine section assignment based on lab characteristics
+    #>
     param(
         [string]$LabId,
         [int]$Difficulty
     )
     
-    # Section assignment based on patterns and difficulty
+    # Section assignment based on naming patterns and difficulty
     if ($LabId -match "external|mcp-external") { return "external_labs" }
     if ($LabId -match "30-mins|optional") { return "optional_labs" }
     if ($LabId -match "autonomous") { return "advanced_labs" }
@@ -489,6 +529,10 @@ function Get-AutoSection {
 }
 
 function Get-AutoJourneys {
+    <#
+    .SYNOPSIS
+        Automatically assign journeys based on lab content analysis
+    #>
     param($Lab)
     
     $journeys = @()
@@ -525,16 +569,36 @@ function Get-AutoJourneys {
 }
 
 function Get-AllLabsFromFolders {
+    <#
+    .SYNOPSIS
+        Discover all labs by scanning lab folders and external lab configuration
+    #>
+    param(
+        [Parameter(Mandatory)]$Config,
+        [Parameter(Mandatory)]$Paths,
+        [Parameter(Mandatory)]$LabJourneys
+    )
+    
     $discoveredLabs = @()
-    $labFolders = Get-ChildItem "$basePath/labs" -Directory | Where-Object { 
+    $labFolders = Get-ChildItem $Paths.labsPath -Directory | Where-Object { 
         $_.Name -ne "lab-template.md" -and (Test-Path (Join-Path $_.FullName "README.md"))
     }
     
     Write-Host "🔍  Auto-discovering labs from folders..." -ForegroundColor Yellow
     
+    # Process local lab folders
     foreach ($folder in $labFolders) {
         $lab = Get-LabFromReadme -LabPath $folder.FullName -LabId $folder.Name
         if ($lab) {
+            # Assign journeys from config or auto-assign
+            if ($LabJourneys.ContainsKey($folder.Name)) {
+                $lab.journeys = $LabJourneys[$folder.Name]
+                Write-Host "    🎯 Using explicit journey assignment: $($lab.journeys -join ', ')" -ForegroundColor Magenta
+            } else {
+                $lab.journeys = Get-AutoJourneys -Lab $lab
+                Write-Host "    🤖 Using automatic journey assignment: $($lab.journeys -join ', ')" -ForegroundColor Yellow
+            }
+            
             $discoveredLabs += $lab
             Write-Host "  ✅  Discovered: $($folder.Name)" -ForegroundColor Green
         } else {
@@ -542,10 +606,10 @@ function Get-AllLabsFromFolders {
         }
     }
     
-    # Add external labs from config if they exist (they won't have local folders)
-    if ($config.external_labs) {
+    # Add external labs from configuration
+    if ($Config.external_labs) {
         Write-Host "🌐  Adding external labs from config..." -ForegroundColor Cyan
-        foreach ($externalLab in $config.external_labs) {
+        foreach ($externalLab in $Config.external_labs) {
             $lab = @{
                 id = $externalLab.id
                 title = $externalLab.title
@@ -553,7 +617,7 @@ function Get-AllLabsFromFolders {
                 difficulty = if ($externalLab.difficulty -match '\d+') { [int]($externalLab.difficulty -replace '\D','') } else { 200 }
                 description = $externalLab.description
                 journeys = if ($externalLab.journeys) { $externalLab.journeys } else { @("developer") }
-                section = "external_labs"
+                section = if ($externalLab.section) { $externalLab.section } else { "external_labs" }
                 url = $externalLab.url
                 repository = $externalLab.repository
             }
@@ -566,185 +630,356 @@ function Get-AllLabsFromFolders {
     return $discoveredLabs
 }
 
-# ===== END AUTO-DISCOVERY FUNCTIONS =====
+#endregion
 
-# Load section definitions from config file
-if ($config.sections) {
-    Write-Host "📋  Loading section definitions from config..." -ForegroundColor Cyan
+#region Jekyll Generation Functions
+# ============================================================================
+# JEKYLL GENERATION FUNCTIONS
+# ============================================================================
+
+function ConvertTo-JekyllLab {
+    <#
+    .SYNOPSIS
+        Convert a lab object to Jekyll-compatible markdown file
+    .DESCRIPTION
+        Creates Jekyll front matter and processes content for web display
+    #>
+    param(
+        [Parameter(Mandatory)]$Lab,
+        [Parameter(Mandatory)][int]$Order,
+        [Parameter(Mandatory)][string]$SectionName,
+        [Parameter(Mandatory)][string]$LabType,
+        [Parameter(Mandatory)]$Paths
+    )
     
-    $sections = Get-UnifiedCollection -Collection $config.sections
-    foreach ($sectionKey in $sections.Keys) {
-        $sectionData = $sections[$sectionKey]
-        if ($sectionData -and $sectionData.title) {
-            $sectionMeta[$sectionKey] = @{
-                displayName = $sectionData.title
-                icon = $sectionData.icon
-                sectionName = $sectionData.slug
-                labType = if ($sectionData.type) { $sectionData.type } else { "main" }
-                description = $sectionData.description
+    $lab_key = $Lab.id
+    $title = $Lab.title
+    $duration = $Lab.duration
+    $difficulty = $Lab.difficulty
+    $journeys = $Lab.journeys
+    
+    $source_file = "$($Paths.basePath)/labs/$lab_key/README.md"
+    $target_file = "$($Paths.outputPath)/$lab_key.md"  # Always use semantic names
+    
+    if (Test-Path $source_file) {
+        return New-LocalLabFile -Lab $Lab -Order $Order -SectionName $SectionName -LabType $LabType -SourceFile $source_file -TargetFile $target_file
+    } elseif ($Lab.url -or $Lab.repository) {
+        return New-ExternalLabFile -Lab $Lab -Order $Order -SectionName $SectionName -LabType $LabType -TargetFile $target_file
+    } else {
+        Write-Host "    ⚠️   Source file not found: $source_file" -ForegroundColor Yellow
+        return $false
+    }
+}
+
+function New-LocalLabFile {
+    <#
+    .SYNOPSIS
+        Create Jekyll file for local lab with README.md content
+    #>
+    param($Lab, $Order, $SectionName, $LabType, $SourceFile, $TargetFile)
+    
+    Write-Host "  📝  Processing $SectionName`: $($Lab.id) -> $(Split-Path $TargetFile -Leaf)" -ForegroundColor Cyan
+    
+    try {
+        # Read and process source content
+        $content = Get-Content $SourceFile -Raw -ErrorAction Stop
+        
+        # Extract description if not already set
+        $description = Get-LabDescription -Content $content -Lab $Lab
+        
+        # Create Jekyll front matter
+        $frontMatter = Build-JekyllFrontMatter -Lab $Lab -Order $Order -SectionName $SectionName -LabType $LabType -Description $description
+        
+        # Process content (remove duplicate titles, normalize formatting)
+        $cleanContent = Get-CleanLabContent -Content $content -Title $Lab.title
+        
+        # Combine front matter and content
+        $finalContent = $frontMatter + "`n`n---`n`n" + $cleanContent
+        
+        # Write to target file
+        $finalContent | Set-Content $TargetFile -Encoding UTF8 -ErrorAction Stop
+        Write-Host "    ✅  Created $(Split-Path $TargetFile -Leaf)" -ForegroundColor Green
+        return $true
+    } catch {
+        Write-Host "    ❌  Failed to process $($Lab.id)`: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function New-ExternalLabFile {
+    <#
+    .SYNOPSIS
+        Create Jekyll file for external lab with repository links
+    #>
+    param($Lab, $Order, $SectionName, $LabType, $TargetFile)
+    
+    Write-Host "  🌐  Processing external $SectionName`: $($Lab.id) -> $(Split-Path $TargetFile -Leaf)" -ForegroundColor Cyan
+    
+    try {
+        $description = if ($Lab.description) { $Lab.description } else { "External lab hosted at $($Lab.url)" }
+        
+        # Create Jekyll front matter for external lab
+        $frontMatter = Build-JekyllFrontMatter -Lab $Lab -Order $Order -SectionName $SectionName -LabType $LabType -Description $description -IsExternal $true
+        
+        # Create external lab content template
+        $externalContent = Build-ExternalLabContent -Lab $Lab -Description $description
+        
+        # Combine front matter and content
+        $finalContent = $frontMatter + "`n`n---`n`n" + $externalContent
+        
+        # Write to target file
+        $finalContent | Set-Content $TargetFile -Encoding UTF8 -ErrorAction Stop
+        Write-Host "    ✅  Created external lab $(Split-Path $TargetFile -Leaf)" -ForegroundColor Green
+        return $true
+    } catch {
+        Write-Host "    ❌  Failed to process external lab $($Lab.id)`: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function Get-LabDescription {
+    <#
+    .SYNOPSIS
+        Extract description from README content or use configured description
+    #>
+    param($Content, $Lab)
+    
+    $description = ""
+    $lines = $Content -split "`n"
+    $foundTitle = $false
+    
+    foreach ($line in $lines) {
+        $line = $line.Trim()
+        
+        # Skip until we find the main heading
+        if ($line -match "^#\s+") {
+            $foundTitle = $true
+            continue
+        }
+        
+        # After title, look for first substantial paragraph
+        if ($foundTitle -and $line -and 
+            -not $line.StartsWith("#") -and -not $line.StartsWith("---") -and -not $line.StartsWith("<!--")) {
+            $description = $line
+            break
+        }
+    }
+    
+    # Fallback to config description if we couldn't extract one
+    if (-not $description) {
+        $description = $Lab.description
+    }
+    
+    return $description
+}
+
+function Build-JekyllFrontMatter {
+    <#
+    .SYNOPSIS
+        Build Jekyll front matter YAML for a lab
+    #>
+    param($Lab, $Order, $SectionName, $LabType, $Description, [bool]$IsExternal = $false)
+    
+    $frontMatter = @"
+---
+layout: lab
+title: "$($Lab.title)"
+order: $Order
+duration: $($Lab.duration)
+difficulty: $($Lab.difficulty)
+lab_type: $LabType
+section: $SectionName
+"@
+    
+    if ($IsExternal) {
+        $frontMatter += "`nexternal: true"
+        if ($Lab.url) {
+            $frontMatter += "`nurl: `"$($Lab.url)`""
+        }
+        if ($Lab.repository) {
+            $frontMatter += "`nrepository: `"$($Lab.repository)`""
+        }
+    }
+    
+    # Add journeys if they exist
+    if ($Lab.journeys -and $Lab.journeys.Count -gt 0) {
+        $journeyArray = $Lab.journeys | ForEach-Object { "`"$_`"" }
+        $journeyString = "[" + ($journeyArray -join ", ") + "]"
+        $frontMatter += "`njourneys: $journeyString"
+    }
+    
+    # Add description (escape quotes)
+    $escapedDescription = $Description -replace '"', '\"'
+    $frontMatter += "`ndescription: `"$escapedDescription`""
+    
+    return $frontMatter
+}
+
+function Get-CleanLabContent {
+    <#
+    .SYNOPSIS
+        Clean and normalize lab content for Jekyll processing
+    #>
+    param($Content, $Title)
+    
+    # Clean up content - remove leading/trailing whitespace and normalize newlines
+    $cleanContent = $Content.Trim()
+    
+    # Remove duplicate title from content if it matches (avoid double headers)
+    $lines = $cleanContent -split "`n"
+    if ($lines.Count -gt 0 -and $lines[0] -match "^#\s+(.+)") {
+        $contentTitle = $matches[1].Trim()
+        if ($contentTitle -eq $Title) {
+            # Remove the first line (duplicate title) and any following empty lines
+            $lines = $lines[1..($lines.Length-1)]
+            while ($lines.Count -gt 0 -and [string]::IsNullOrWhiteSpace($lines[0])) {
+                $lines = $lines[1..($lines.Length-1)]
             }
-            Write-Host "  ✅ Loaded section: $sectionKey" -ForegroundColor Green
-        }
-    }
-}
-
-# If no valid sections were loaded, use intelligent defaults
-if ($sectionMeta.Keys.Count -eq 0) {
-    Write-Host "🤖  No valid section definitions found, using intelligent defaults..." -ForegroundColor Yellow
-    $sectionMeta = @{
-        "core_learning_path" = @{ displayName = "Core Learning Path"; icon = "📚"; sectionName = "core"; labType = "main"; description = "Essential foundation labs" }
-        "intermediate_labs" = @{ displayName = "Intermediate Labs"; icon = "🎯"; sectionName = "intermediate"; labType = "main"; description = "Build on core concepts" }
-        "advanced_labs" = @{ displayName = "Advanced Labs"; icon = "🚀"; sectionName = "advanced"; labType = "main"; description = "Complex scenarios" }
-        "specialized_labs" = @{ displayName = "Specialized Labs"; icon = "⚡"; sectionName = "specialized"; labType = "main"; description = "Tools and utilities" }
-        "optional_labs" = @{ displayName = "Optional Labs"; icon = "🔧"; sectionName = "optional"; labType = "optional"; description = "Alternative versions" }
-        "external_labs" = @{ displayName = "External Labs"; icon = "�"; sectionName = "external"; labType = "external"; description = "External repositories" }
-    }
-}
-
-
-
-# ===== AUTO-DISCOVERY PROCESSING =====
-
-# Get all labs from folder scanning
-$allLabs = Get-AllLabsFromFolders
-
-# Group labs by section
-$labsBySection = @{}
-foreach ($lab in $allLabs) {
-    $section = $lab.section
-    if (-not $labsBySection[$section]) {
-        $labsBySection[$section] = @()
-    }
-    $labsBySection[$section] += $lab
-}
-
-# Process each discovered section
-foreach ($sectionKey in $labsBySection.Keys) {
-    $sectionLabs = $labsBySection[$sectionKey]
-    
-    # Get section metadata (with fallback if not defined)
-    $meta = $sectionMeta[$sectionKey]
-    if (-not $meta) {
-        $meta = @{ 
-            displayName = $sectionKey -replace '_', ' ' -replace '\b\w', { $_.Value.ToUpper() }; 
-            icon = "📁"; 
-            sectionName = $sectionKey -replace '_.*', ''; 
-            labType = if ($sectionKey -eq "optional_labs") { "optional" } elseif ($sectionKey -eq "external_labs") { "external" } else { "main" }
-            description = "Auto-discovered section"
+            $cleanContent = $lines -join "`n"
         }
     }
     
-    Write-Host "$($meta.icon)  $($meta.displayName) ($($sectionLabs.Count) labs)" -ForegroundColor Magenta
+    return $cleanContent
+}
+
+function Build-ExternalLabContent {
+    <#
+    .SYNOPSIS
+        Build content template for external labs
+    #>
+    param($Lab, $Description)
     
-    foreach ($lab in $sectionLabs) {
-        $totalLabs++
+    return @"
+$Description
+
+## 🌐 External Repository
+
+This lab is hosted in an external repository. Click the link below to access the full lab content:
+
+**Repository**: [$($Lab.repository)]($($Lab.url))
+
+## Lab Details
+
+- **Duration**: $($Lab.duration) minutes
+- **Difficulty**: $($Lab.difficulty)
+- **Type**: External Lab
+
+## Getting Started
+
+1. Navigate to the [external repository]($($Lab.url))
+2. Follow the README instructions in that repository
+3. Complete the lab exercises as directed
+
+---
+
+*This is an external lab. All content and instructions are maintained in the linked repository.*
+"@
+}
+
+#endregion
+
+#region Index Page Generation
+# ============================================================================
+# INDEX PAGE GENERATION FUNCTIONS
+# ============================================================================
+
+function New-IndexPage {
+    <#
+    .SYNOPSIS
+        Generate dynamic index.md file with journey and section definitions from configuration
+    #>
+    param($Config, $Paths, $AllLabs)
+    
+    Write-Host "📄  Generating dynamic index.md page..." -ForegroundColor Yellow
+    
+    # Build journey filter buttons dynamically
+    $journeyButtons = @()
+    if ($Config.journeys) {
+        foreach ($journeyKey in $Config.journeys.Keys) {
+            $journey = $Config.journeys[$journeyKey]
+            $icon = if ($journey.icon) { $journey.icon } else { "🔧" }
+            $title = if ($journey.title) { $journey.title } else { $journeyKey }
+            
+            $journeyButtons += "    <button onclick=`"filterByJourney('$journeyKey')`" class=`"filter-btn`" id=`"$journeyKey-btn`">$icon $title</button>"
+        }
+    }
+    
+    # Build section filter buttons dynamically from discovered lab sections
+    $sectionButtons = @()
+    $discoveredSections = $AllLabs | Group-Object -Property section | Sort-Object Name
+    
+    foreach ($sectionGroup in $discoveredSections) {
+        $sectionKey = $sectionGroup.Name
+        $labCount = $sectionGroup.Count
         
-        # Use configured order or fallback to sequential/default
-        if ($labOrders.ContainsKey($lab.id)) {
-            $labOrder = $labOrders[$lab.id]
-        } elseif ($meta.labType -eq "optional") {
-            $labOrder = 0  # Optional labs get 0 if not configured
-        } else {
-            $labOrder = $order  # Sequential fallback
+        # Get section metadata from config or use defaults
+        $sectionMeta = if ($Config.sections -and $Config.sections[$sectionKey]) { 
+            $Config.sections[$sectionKey] 
+        } else { 
+            @{ title = $sectionKey; icon = "📁" } 
         }
         
-        if (ConvertTo-JekyllLab -Lab $lab -Order $labOrder -SectionName $meta.sectionName -LabType $meta.labType) {
-            $processedLabs++
-        } else {
-            $failedLabs++
-        }
+        $icon = if ($sectionMeta.icon) { $sectionMeta.icon } else { "📁" }
+        $title = if ($sectionMeta.title) { $sectionMeta.title } else { $sectionKey }
         
-        if ($meta.labType -ne "optional") { $order++ }
+        $sectionButtons += "    <button onclick=`"filterBySection('$sectionKey')`" class=`"filter-btn section-btn`" id=`"$sectionKey-btn`">$icon $title</button>"
+        
+        Write-Host "    🔧 Generated section filter: $title ($labCount labs)" -ForegroundColor Cyan
     }
-    Write-Host ""
-}
-
-# Create Dynamic Journey Index (No Separate Journey Files)
-Write-Host "🛤️  Creating Dynamic Journey System (collections only)..." -ForegroundColor Magenta
-
-# Remove journeys directory - no more separate files
-if (Test-Path "journeys") {
-    Write-Host "  🗑️  Removing redundant journeys folder..." -ForegroundColor Yellow
-    Remove-Item "journeys" -Recurse -Force
-    Write-Host "    ✅  Removed duplicate journey files" -ForegroundColor Green
-}
-
-# Read journey metadata from config file
-$journeyMeta = @{}
-if ($config.journeys) {
-    Write-Host "🛤️  Loading journey definitions from config..." -ForegroundColor Cyan
     
-    $journeys = Get-UnifiedCollection -Collection $config.journeys
-    foreach ($journeyName in $journeys.Keys) {
-        $journeyData = $journeys[$journeyName]
-        if ($journeyData -and $journeyData.title -and $journeyData.description) {
-            $journeyMeta[$journeyName] = @{
-                title = $journeyData.title
-                description = $journeyData.description
-                icon = $journeyData.icon
-                difficulty = $journeyData.difficulty
-                estimated_time = $journeyData.estimated_time
-            }
-            Write-Host "  ✅ Loaded journey: $journeyName" -ForegroundColor Green
+    # Build JavaScript journey definitions dynamically
+    $journeyDefinitions = @()
+    if ($Config.journeys) {
+        foreach ($journeyKey in $Config.journeys.Keys) {
+            $journey = $Config.journeys[$journeyKey]
+            $title = if ($journey.title) { $journey.title } else { $journeyKey }
+            $icon = if ($journey.icon) { $journey.icon } else { "🔧" }
+            $description = if ($journey.description) { $journey.description } else { "Learning journey for $title" }
+            $difficulty = if ($journey.difficulty) { $journey.difficulty } else { "Intermediate" }
+            $estimatedTime = if ($journey.estimated_time) { $journey.estimated_time } else { "2-4 hours" }
+            
+            $journeyDefinitions += "  '$journeyKey': { title: '$icon $title', description: '$description', difficulty: '$difficulty', estimatedTime: '$estimatedTime' }"
         }
     }
-} else {
-    Write-Host "⚠️  No journey definitions found in config, using defaults..." -ForegroundColor Yellow
-    # Fallback to minimal defaults if journeys section is missing
-    $journeyMeta = @{
-        "quick-start" = @{ title = "Quick Start"; description = "Essential labs"; icon = "🚀"; difficulty = "Beginner"; estimated_time = "3-4 hours" }
-        "business-user" = @{ title = "Business User"; description = "Business solutions"; icon = "�"; difficulty = "Intermediate"; estimated_time = "8-12 hours" }
-        "developer" = @{ title = "Developer"; description = "Technical depth"; icon = "🔧"; difficulty = "Advanced"; estimated_time = "10-15 hours" }
-        "autonomous-ai" = @{ title = "Autonomous AI"; description = "Advanced agents"; icon = "🤖"; difficulty = "Expert"; estimated_time = "6-8 hours" }
+    
+    # Generate the complete index.md content
+    $indexContent = Build-IndexPageContent -JourneyButtons $journeyButtons -JourneyDefinitions $journeyDefinitions -SectionButtons $sectionButtons
+    
+    # Write to index.md file
+    $indexPath = Join-Path $Paths.basePath "labs/index.md"
+    try {
+        $indexContent | Set-Content $indexPath -Encoding UTF8 -ErrorAction Stop
+        Write-Host "✅  Generated dynamic index.md with $($Config.journeys.Keys.Count) journeys" -ForegroundColor Green
+    } catch {
+        Write-Host "❌  Failed to generate index.md: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
 
-# Display journey statistics (no separate files created)
-Write-Host "�  Journey Statistics:" -ForegroundColor Cyan
-foreach ($journeyName in $journeyMeta.Keys) {
-    $journey = $journeyMeta[$journeyName]
-    $journeyStats = Get-JourneyStats -JourneyName $journeyName -AllLabs $allLabs
-    $journeyLabCount = $journeyStats.LabCount
-    $totalDuration = $journeyStats.TotalDuration
+function Build-IndexPageContent {
+    <#
+    .SYNOPSIS
+        Build the complete index.md page content
+    #>
+    param($JourneyButtons, $JourneyDefinitions, $SectionButtons)
     
-    Write-Host "  $($journey.icon) $($journey.title): $journeyLabCount labs ($totalDuration minutes)" -ForegroundColor Green
-}
-
-# Generate All Labs Index Page Dynamically (Enhanced Version)
-Write-Host "📋  Generating enhanced All Labs index page..." -ForegroundColor Magenta
-
-# Ensure labs directory exists
-New-Item -ItemType Directory -Path "labs" -Force | Out-Null
-
-# Build dynamic journey buttons
-$journeyButtons = ""
-foreach ($journeyKey in $config.journeys.Keys) {
-    $journey = $config.journeys[$journeyKey]
-    $journeyButtons += "    <button onclick=`"filterByJourney('$journeyKey')`" class=`"filter-btn`" id=`"$journeyKey-btn`">$($journey.icon) $($journey.title.Replace(' Journey', ''))</button>`n"
-}
-
-# Build dynamic section buttons
-$sectionButtons = ""
-foreach ($sectionKey in $config.sections.Keys) {
-    $section = $config.sections[$sectionKey]
-    $sectionButtons += "    <button onclick=`"filterBySection('$($section.slug)')`" class=`"filter-btn section-btn`" id=`"$($section.slug)-btn`">$($section.icon) $($section.title)</button>`n"
-}
-
-# Build dynamic journey metadata for JavaScript
-$journeyMetadata = ""
-foreach ($journeyKey in $config.journeys.Keys) {
-    $journey = $config.journeys[$journeyKey]
-    $journeyMetadata += "  '$journeyKey': { title: '$($journey.icon) $($journey.title)', description: '$($journey.description)', difficulty: '$($journey.difficulty)', estimatedTime: '$($journey.estimated_time)' },`n"
-}
-$journeyMetadata = $journeyMetadata.TrimEnd(",`n")
-
-# Build dynamic enhanced All Labs content
-$allLabsContent = @"
+    $journeyButtonsHtml = $JourneyButtons -join "`n"
+    $journeyDefinitionsJs = $JourneyDefinitions -join ",`n"
+    $sectionButtonsHtml = $SectionButtons -join "`n"
+    
+    return @"
 ---
 layout: default
 title: Labs
 description: Microsoft Copilot Studio labs - browse all or filter by learning journey
 ---
+
+<div class="current-filter-display">
+  <div class="filter-status">
+    <span class="filter-label">Current View:</span>
+    <span id="current-filter-name" class="current-filter">All Labs</span>
+    <button id="clear-filter-btn" class="clear-filter-btn" onclick="showAllLabs()" style="display: none;">✕ Clear Filter</button>
+  </div>
+</div>
 
 <div id="journey-header" style="display: none;" class="journey-header">
   <h1 id="journey-title"></h1>
@@ -761,18 +996,23 @@ description: Microsoft Copilot Studio labs - browse all or filter by learning jo
   <h3>Filter by Journey</h3>
   <p class="filter-hint">Click a filter to apply it, click again to show all labs</p>
   <div class="lab-filters">
-$journeyButtons  </div>
+$journeyButtonsHtml
+  </div>
 </div>
 
 <div class="filter-section">
   <h3>Filter by Section</h3>
   <div class="lab-filters">
-$sectionButtons  </div>
+$sectionButtonsHtml
+  </div>
 </div>
 
 <div class="labs-grid" id="labs-container">
 {% for lab in site.labs %}
   <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}" data-section="{{ lab.section }}">
+    <div class="lab-sequence">
+      <span class="sequence-number"></span>
+    </div>
     <div class="lab-header">
       <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
       <div class="lab-meta">
@@ -782,31 +1022,83 @@ $sectionButtons  </div>
       </div>
     </div>
     <div class="lab-description">
-      {{ lab.description }}
-    </div>
-    <div class="lab-journeys">
-      <small>Journeys: 
-      {% for journey in lab.journeys %}
-        <span class="journey-tag" onclick="filterByJourney('{{ journey }}')">{{ journey }}</span>
-      {% endfor %}
-      </small>
+      <p>{{ lab.description }}</p>
     </div>
     <div class="lab-actions">
-      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
-      {% assign pdf_url = '/assets/pdfs/' | append: lab.slug | append: '.pdf' | relative_url %}
-      <a href="{{ pdf_url }}" class="btn btn-secondary pdf-btn" target="_blank" rel="noopener noreferrer" title="Download PDF version">
-        📄 PDF
+      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary start-lab">
+        🚀 Start Lab
       </a>
+      {% if lab.lab_type != 'external' %}
+        <a href="{{ '/assets/pdfs/' | relative_url }}{{ lab.slug }}.pdf" class="btn btn-secondary download-pdf" target="_blank">
+          📄 Download PDF
+        </a>
+      {% endif %}
+    </div>
+    <div class="lab-journeys">
+      {% for journey in lab.journeys %}
+        <span class="journey-tag">{{ journey }}</span>
+      {% endfor %}
     </div>
   </div>
 {% endfor %}
 </div>
 
 <script>
-// Journey metadata
+// Journey metadata (dynamically generated from config)
 const journeys = {
-$journeyMetadata
+$journeyDefinitionsJs
 };
+
+function updateSequenceNumbers() {
+  const cards = document.querySelectorAll('.lab-card');
+  let sequenceNumber = 1;
+  
+  cards.forEach(card => {
+    const sequenceElement = card.querySelector('.sequence-number');
+    if (card.style.display !== 'none') {
+      sequenceElement.textContent = sequenceNumber;
+      sequenceElement.style.display = 'block';
+      sequenceNumber++;
+    } else {
+      sequenceElement.style.display = 'none';
+    }
+  });
+}
+
+function updateLabLinks(filterType, filterValue) {
+  // Update all lab card links to include filter context
+  const labCards = document.querySelectorAll('.lab-card');
+  
+  labCards.forEach(card => {
+    // Update title link
+    const titleLink = card.querySelector('h3 a');
+    if (titleLink) {
+      const baseUrl = titleLink.href.split('?')[0]; // Remove existing query params
+      
+      if (filterType && filterValue) {
+        // Add filter context as query parameter
+        titleLink.href = baseUrl + '?' + filterType + '=' + encodeURIComponent(filterValue);
+      } else {
+        // Remove filter context
+        titleLink.href = baseUrl;
+      }
+    }
+    
+    // Update "Start Lab" button
+    const startLabBtn = card.querySelector('.start-lab');
+    if (startLabBtn) {
+      const baseUrl = startLabBtn.href.split('?')[0]; // Remove existing query params
+      
+      if (filterType && filterValue) {
+        // Add filter context as query parameter
+        startLabBtn.href = baseUrl + '?' + filterType + '=' + encodeURIComponent(filterValue);
+      } else {
+        // Remove filter context
+        startLabBtn.href = baseUrl;
+      }
+    }
+  });
+}
 
 function showAllLabs() {
   document.getElementById('all-labs-header').style.display = 'block';
@@ -816,8 +1108,18 @@ function showAllLabs() {
   const cards = document.querySelectorAll('.lab-card');
   cards.forEach(card => card.style.display = 'block');
   
+  // Update sequence numbers
+  updateSequenceNumbers();
+  
+  // Update lab links to remove filter context
+  updateLabLinks();
+  
   // Clear active buttons
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  
+  // Update current filter display
+  document.getElementById('current-filter-name').textContent = 'All Labs';
+  document.getElementById('clear-filter-btn').style.display = 'none';
   
   // Update URL
   history.pushState({}, '', '{{ "/labs/" | relative_url }}');
@@ -867,9 +1169,19 @@ function filterByJourney(journeyName) {
     '<strong>Estimated Time:</strong> ' + journey.estimatedTime + '<br>' +
     '<strong>Total Labs:</strong> ' + labCount + ' labs (' + totalDuration + ' minutes)';
   
+  // Update sequence numbers
+  updateSequenceNumbers();
+  
+  // Update lab links with journey context
+  updateLabLinks('journey', journeyName);
+  
   // Update active button
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById(journeyName + '-btn').classList.add('active');
+  
+  // Update current filter display
+  document.getElementById('current-filter-name').textContent = journey.title;
+  document.getElementById('clear-filter-btn').style.display = 'block';
   
   // Update URL
   history.pushState({}, '', '{{ "/labs/" | relative_url }}#' + journeyName);
@@ -904,9 +1216,21 @@ function filterBySection(sectionName) {
     }
   });
   
+  // Update sequence numbers
+  updateSequenceNumbers();
+  
+  // Update lab links with section context
+  updateLabLinks('section', sectionName);
+  
   // Update active button
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById(sectionName + '-btn').classList.add('active');
+  
+  // Update current filter display
+  const sectionButton = document.getElementById(sectionName + '-btn');
+  const sectionDisplayName = sectionButton.textContent.trim();
+  document.getElementById('current-filter-name').textContent = sectionDisplayName;
+  document.getElementById('clear-filter-btn').style.display = 'block';
   
   // Update URL
   history.pushState({}, '', '{{ "/labs/" | relative_url }}#section-' + sectionName);
@@ -927,15 +1251,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle journey filtering
   if (hash && journeys[hash]) {
     filterByJourney(hash);
-    return;
-  }
-  
-  // Fall back to URL parameters if no hash
-  const urlParams = new URLSearchParams(window.location.search);
-  const journey = urlParams.get('journey');
-  
-  if (journey && journeys[journey]) {
-    filterByJourney(journey);
   } else {
     showAllLabs();
   }
@@ -945,15 +1260,10 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('hashchange', function() {
   const hash = window.location.hash.substring(1);
   
-  // Handle section filtering
   if (hash.startsWith('section-')) {
     const sectionName = hash.substring(8);
     filterBySection(sectionName);
-    return;
-  }
-  
-  // Handle journey filtering
-  if (hash && journeys[hash]) {
+  } else if (hash && journeys[hash]) {
     filterByJourney(hash);
   } else {
     showAllLabs();
@@ -962,23 +1272,49 @@ window.addEventListener('hashchange', function() {
 </script>
 
 <style>
-.filter-section {
-  margin: 1.5rem 0;
+.current-filter-display {
+  background: #f8f9fa;
+  border: 1px solid #e1e5e9;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.filter-section h3 {
-  margin-bottom: 0.5rem;
-  color: #323130;
-  font-size: 1.1rem;
-  text-align: center;
+.filter-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.filter-hint {
-  margin: 0 0 1rem 0;
-  color: #605e5c;
-  font-size: 0.9rem;
-  text-align: center;
-  font-style: italic;
+.filter-label {
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.current-filter {
+  background: #0078d4;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+}
+
+.clear-filter-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.3s ease;
+}
+
+.clear-filter-btn:hover {
+  background: #c82333;
 }
 
 .lab-filters {
@@ -994,318 +1330,202 @@ window.addEventListener('hashchange', function() {
   border: 2px solid #0078d4;
   background: white;
   color: #0078d4;
-  border-radius: 25px;
+  border-radius: 0.5rem;
   cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .filter-btn:hover {
-  background: #e6f3ff;
+  background: #0078d4;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 120, 212, 0.3);
 }
 
 .filter-btn.active {
   background: #0078d4;
   color: white;
-  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
-  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
 }
 
-.filter-btn.active:hover {
-  background: #106ebe;
-  box-shadow: 0 3px 12px rgba(0, 120, 212, 0.4);
+.section-btn {
+  border-color: #6b46c1;
+  color: #6b46c1;
+}
+
+.section-btn:hover, .section-btn.active {
+  background: #6b46c1;
+  color: white;
 }
 
 .journey-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
   padding: 2rem;
-  background: linear-gradient(135deg, #0078d4, #106ebe);
-  color: white;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 1rem;
 }
 
 .journey-stats {
   margin-top: 1rem;
   font-size: 1.1rem;
+  line-height: 1.6;
 }
 
-.journey-tag {
-  cursor: pointer;
-  transition: all 0.2s ease;
+.labs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
 }
 
-.journey-tag:hover {
-  background: #0078d4 !important;
-  color: white !important;
+.lab-card {
+  border: 1px solid #e1e5e9;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.lab-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  border-color: #0078d4;
+}
+
+.lab-header h3 {
+  margin: 0 0 1rem 0;
+  color: #323130;
+  line-height: 1.3;
+}
+
+.lab-header h3 a {
+  color: #0078d4;
+  text-decoration: none;
+}
+
+.lab-header h3 a:hover {
+  text-decoration: underline;
+}
+
+.lab-meta {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.lab-meta span {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .lab-meta .section {
-  background: #f3f2f1;
-  color: #323130;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  margin-right: 0.5rem;
-}
-
-.lab-meta .section.core {
   background: #e1f5fe;
   color: #0277bd;
 }
 
-.lab-meta .section.intermediate {
+.lab-meta .section.core_learning_path {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.lab-sequence {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #0078d4;
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.875rem;
+  box-shadow: 0 2px 6px rgba(0, 120, 212, 0.3);
+}
+
+.lab-card {
+  position: relative;
+}
+
+.lab-meta .section.intermediate_labs {
   background: #fff3e0;
   color: #f57c00;
 }
 
-.lab-meta .section.advanced {
+.lab-meta .section.advanced_labs {
   background: #fce4ec;
   color: #c2185b;
 }
 
-.lab-meta .section.specialized {
+.lab-meta .section.specialized_labs {
   background: #f3e5f5;
   color: #7b1fa2;
 }
 
-.lab-meta .section.optional {
-  background: #e8f5e8;
-  color: #2e7d32;
+.lab-meta .section.optional_labs {
+  background: #e0f2f1;
+  color: #00695c;
 }
 
 .lab-meta .section.external {
   background: #e3f2fd;
   color: #1565c0;
 }
-</style>
 
-"@
-
-# Collect unique sections that actually have labs (use our discovered labs)
-$activeSections = @{}
-foreach ($sectionKey in $labsBySection.Keys) {
-    $sectionLabs = $labsBySection[$sectionKey]
-    $meta = $sectionMeta[$sectionKey]
-    if ($meta -and $sectionLabs.Count -gt 0) {
-        $activeSections[$sectionKey] = @{
-            meta = $meta
-            labCount = $sectionLabs.Count
-        }
-    }
-}
-
-# Generate sections dynamically based on what exists
-if ($false) { # Disabled - using unified approach instead
-    Write-Host "  📊 Generating $($activeSections.Count) dynamic sections for All Labs page" -ForegroundColor Cyan
-    
-    foreach ($sectionKey in $activeSections.Keys) {
-        $sectionInfo = $activeSections[$sectionKey]
-        $meta = $sectionInfo.meta
-        
-        # Determine section description based on section type
-        $sectionDescription = switch ($meta.sectionName) {
-            "core" { "Essential foundation labs - start here first!" }
-            "intermediate" { "Build on core concepts with practical applications" }
-            "advanced" { "Complex scenarios and autonomous agents" }
-            "specialized" { "DevOps, tools, and advanced utilities" }
-            "optional" { "Alternative versions and specialized topics" }
-            default { "Additional labs in this category" }
-        }
-        
-        $allLabsContent += @"
-
-## $($meta.icon) $($meta.displayName)
-$sectionDescription
-
-<div class="labs-grid">
-{% for lab in site.labs %}
-  {% if lab.section == '$($meta.sectionName)' %}
-  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}" data-section="{{ lab.section }}">
-    <div class="lab-header">
-      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
-      <div class="lab-meta">
-        <span class="section {{ lab.section }}">{{ lab.section | capitalize }}</span>
-        <span class="difficulty">Level {{ lab.difficulty }}</span>
-        <span class="duration">{{ lab.duration }}min</span>
-      </div>
-    </div>
-    <div class="lab-description">
-      {{ lab.description }}
-    </div>
-    <div class="lab-journeys">
-      <small>Journeys: 
-      {% for journey in lab.journeys %}
-        <span class="journey-tag" onclick="filterByJourney('{{ journey }}')">{{ journey }}</span>
-      {% endfor %}
-      </small>
-    </div>
-    <div class="lab-actions">
-      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
-      {% assign pdf_url = '/assets/pdfs/' | append: lab.slug | append: '.pdf' | relative_url %}
-      <a href="{{ pdf_url }}" class="btn btn-secondary pdf-btn" target="_blank" rel="noopener noreferrer" title="Download PDF version">
-        📄 PDF
-      </a>
-    </div>
-  </div>
-  {% endif %}
-{% endfor %}
-</div>
-"@
-    }
-}
-
-# Fallback section removed - we already have the main lab cards section above
-
-# Add JavaScript for filtering functionality
-$allLabsContent += @"
-
-<script>
-// Journey metadata (dynamically generated from config)
-const journeys = {
-$journeyMetadata
-};
-
-function showAllLabs() {
-  document.getElementById('all-labs-header').style.display = 'block';
-  document.getElementById('journey-header').style.display = 'none';
-  
-  // Show all lab cards
-  const cards = document.querySelectorAll('.lab-card');
-  cards.forEach(card => card.style.display = 'block');
-  
-  // Clear active buttons
-  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  
-  // Update URL
-  history.pushState({}, '', '{{ "/labs/" | relative_url }}');
-}
-
-function filterByJourney(journeyName) {
-  const journey = journeys[journeyName];
-  if (!journey) return;
-  
-  // Show journey header
-  document.getElementById('all-labs-header').style.display = 'none';
-  document.getElementById('journey-header').style.display = 'block';
-  document.getElementById('journey-title').textContent = journey.title;
-  document.getElementById('journey-description').textContent = journey.description;
-  
-  // Calculate and show stats
-  const cards = document.querySelectorAll('.lab-card');
-  let labCount = 0;
-  let totalDuration = 0;
-  
-  cards.forEach(card => {
-    const journeyData = card.dataset.journeys;
-    if (journeyData) {
-      const journeys = journeyData.split(',').map(j => j.trim());
-      if (journeys.includes(journeyName)) {
-        card.style.display = 'block';
-        labCount++;
-        totalDuration += parseInt(card.dataset.duration);
-      } else {
-        card.style.display = 'none';
-      }
-    } else {
-      card.style.display = 'none';
-    }
-  });
-  
-  document.getElementById('journey-stats').innerHTML = 
-    '<strong>Difficulty Level:</strong> ' + journey.difficulty + '<br>' +
-    '<strong>Estimated Time:</strong> ' + journey.estimatedTime + '<br>' +
-    '<strong>Total Labs:</strong> ' + labCount + ' labs (' + totalDuration + ' minutes)';
-  
-  // Update active button
-  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  document.getElementById(journeyName + '-btn').classList.add('active');
-  
-  // Update URL
-  history.pushState({}, '', '{{ "/labs/" | relative_url }}#' + journeyName);
-}
-
-// Initialize based on URL hash or parameters
-document.addEventListener('DOMContentLoaded', function() {
-  // Check for hash first (e.g., #quick-start)
-  let journey = window.location.hash.substring(1);
-  
-  // Fall back to URL parameters if no hash
-  if (!journey) {
-    const urlParams = new URLSearchParams(window.location.search);
-    journey = urlParams.get('journey');
-  }
-  
-  if (journey && journeys[journey]) {
-    filterByJourney(journey);
-  } else {
-    showAllLabs();
-  }
-});
-
-// Listen for hash changes
-window.addEventListener('hashchange', function() {
-  const journey = window.location.hash.substring(1);
-  if (journey && journeys[journey]) {
-    filterByJourney(journey);
-  } else {
-    showAllLabs();
-  }
-});
-</script>
-
-<style>
-.lab-filters {
-  margin: 2rem 0;
+.lab-actions {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
-.filter-btn {
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #0078d4;
-  background: white;
-  color: #0078d4;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 500;
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
 }
 
-.filter-btn:hover {
-  background: #e6f3ff;
-}
-
-.filter-btn.active {
+.btn-primary {
   background: #0078d4;
   color: white;
 }
 
-.journey-header {
-  text-align: center;
-  margin-bottom: 2rem;
-  padding: 2rem;
-  background: linear-gradient(135deg, #0078d4, #106ebe);
+.btn-primary:hover {
+  background: #106ebe;
   color: white;
-  border-radius: 12px;
+  text-decoration: none;
 }
 
-.journey-stats {
-  margin-top: 1rem;
-  font-size: 1.1rem;
+.btn-secondary {
+  background: #6c757d;
+  color: white;
 }
 
-.journey-tag {
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.journey-tag:hover {
-  background: #0078d4 !important;
-  color: white !important;
+.btn-secondary:hover {
+  background: #5a6268;
+  color: white;
+  text-decoration: none;
 }
 </style>
 
@@ -1313,120 +1533,160 @@ window.addEventListener('hashchange', function() {
   <a href="{{ '/' | relative_url }}" class="btn btn-secondary">← Back to Home</a>
 </div>
 "@
-
-Set-Content -Path $indexPath -Value $allLabsContent -Encoding UTF8
-Write-Host "  ✅  Created enhanced labs/index.md (with dynamic journeys and sections)" -ForegroundColor Green
-
-# Generate Main Index Page with Journey Cards
-Write-Host "🏠  Generating main index page with journey cards..." -ForegroundColor Magenta
-
-$mainIndexPath = "$basePath/index.md"
-
-# Build journey cards dynamically
-$journeyCards = ""
-foreach ($journeyKey in $config.journeys.Keys) {
-    $journey = $config.journeys[$journeyKey]
-    $journeyStats = Get-JourneyStats -JourneyName $journeyKey -AllLabs $allLabs
-    $labCount = $journeyStats.LabCount
-    $totalDuration = $journeyStats.TotalDuration
-    $durationHours = [math]::Round($totalDuration / 60, 1)
-    
-    # Determine level display
-    $levelDisplay = $journey.difficulty
-    if ($journey.difficulty -match "(\d+)-(\d+)") {
-        $levelDisplay = "Level $($matches[1])-$($matches[2])"
-    } elseif ($journey.difficulty -match "(\d+)") {
-        $levelDisplay = "Level $($matches[1])"
-    }
-    
-    # Determine time display
-    $timeDisplay = "$durationHours hours"
-    if ($durationHours -lt 1) {
-        $timeDisplay = "$totalDuration mins"
-    } elseif ($durationHours -ge 2) {
-        $timeDisplay = "$([math]::Floor($durationHours))-$([math]::Ceiling($durationHours)) hours"
-    }
-    
-    $journeyCards += @"
-    <div class="journey-card $journeyKey">
-        <h3>$($journey.icon) $($journey.title.Replace(' Journey', ''))</h3>
-        <p>$($journey.description)</p>
-        <div class="journey-meta">
-            <span>⏱️ $timeDisplay</span>
-            <span>📊 $levelDisplay</span>
-            <span>📚 $labCount labs</span>
-        </div>
-        <a href="{{ '/labs/#$journeyKey' | relative_url }}" class="journey-btn">Start Journey →</a>
-    </div>
-    
-
-"@
 }
-$journeyCards = $journeyCards.TrimEnd()
 
-$mainIndexContent = @"
----
-layout: default
-title: Home
----
+#endregion
 
-# Microsoft Copilot Studio Labs
+#region Main Execution Logic
+# ============================================================================
+# MAIN EXECUTION LOGIC
+# ============================================================================
 
-Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. Choose your learning journey based on your goals and experience level.
-
-## 🎯 **Choose Your Learning Journey**
-
-<div class="journey-cards">
-$journeyCards
-</div>
-
----
-
-## 🎯 **Getting Started**
-
-1. **Choose your journey** above based on your goals and experience
-2. **Follow the guided path** with labs specifically selected for your needs
-3. **Build hands-on skills** with real Microsoft Copilot Studio projects
-4. **Progress at your own pace** - each journey is self-contained
-
-**Ready to build amazing AI agents?** Pick your journey and start learning! 🎉
-
-- Join the community discussions for questions and insights
-- Practice with your own use cases after completing each lab
-
-Happy learning! 🎉
-"@
-
-Set-Content -Path $mainIndexPath -Value $mainIndexContent -Encoding UTF8
-Write-Host "  ✅  Created main index.md with dynamic journey cards" -ForegroundColor Green
-
-Write-Host ""
-
-# Display final statistics
-Write-Host "╔═══════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Green
-Write-Host "║                                 GENERATION COMPLETE                                   ║" -ForegroundColor Green
-Write-Host "╚═══════════════════════════════════════════════════════════════════════════════════════╝" -ForegroundColor Green
-Write-Host ""
-Write-Host "📊  Processing Summary:" -ForegroundColor Cyan
-Write-Host "    Total labs: $totalLabs" -ForegroundColor White
-Write-Host "    Successfully processed: $processedLabs" -ForegroundColor Green
-if ($failedLabs -gt 0) {
-    Write-Host "    Failed: $failedLabs" -ForegroundColor Red
-}
-Write-Host ""
-
-Write-Host "✨  Generated files use semantic names matching lab folders (e.g., 'agent-builder-web.md')" -ForegroundColor Cyan
-
-Write-Host "🎯  Journey metadata included for navigation system" -ForegroundColor Cyan
-Write-Host "📁  Output directory: _labs/" -ForegroundColor Cyan
-Write-Host ""
-
-if ($processedLabs -eq $totalLabs -and $failedLabs -eq 0) {
-    Write-Host "🎉  All labs processed successfully!" -ForegroundColor Green
-    Write-Host "🚀  You can now run: jekyll serve" -ForegroundColor Yellow
-} else {
-    Write-Host "⚠️   Some labs had issues. Please review the output above." -ForegroundColor Yellow
-    if ($processedLabs -gt 0) {
-        Write-Host "🚀  You can still run: jekyll serve (with available labs)" -ForegroundColor Yellow
+function Invoke-LabGeneration {
+    <#
+    .SYNOPSIS
+        Main orchestration function for lab generation process
+    .DESCRIPTION
+        Coordinates the entire lab generation workflow including PDF generation,
+        Jekyll processing, and index creation
+    #>
+    
+    $startTime = Get-Date
+    
+    try {
+        # Initialize environment
+        Initialize-Environment
+        
+        # Load configuration and set up paths
+        $config = Get-Configuration
+        $paths = Get-Paths
+        $labJourneys = Get-LabJourneyAssignments -Config $config
+        
+        # Display startup information
+        Show-StartupInfo -SelectedJourneys $SelectedJourneys -SkipPDFs $SkipPDFs
+        
+        # Discover all labs
+        $allLabs = Get-AllLabsFromFolders -Config $config -Paths $paths -LabJourneys $labJourneys
+        
+        # Filter labs by selected journeys if specified
+        if ($SelectedJourneys.Count -gt 0 -and $SelectedJourneys -notcontains "all") {
+            $filteredLabs = $allLabs | Where-Object { 
+                $labJourneys = $_.journeys
+                ($SelectedJourneys | ForEach-Object { $labJourneys -contains $_ }) -contains $true
+            }
+            
+            Write-Host "🎯  Filtered to $($filteredLabs.Count) labs for selected journeys" -ForegroundColor Yellow
+            $allLabs = $filteredLabs
+        }
+        
+        # Generate PDFs if not skipped
+        $pdfResults = @()
+        if (-not $SkipPDFs) {
+            $pdfResults = Invoke-PDFGeneration -AllLabs $allLabs -Paths $paths
+        } else {
+            Write-Host "⏭️   Skipping PDF generation (SkipPDFs flag set)" -ForegroundColor Yellow
+        }
+        
+        # Generate Jekyll files
+        Invoke-JekyllGeneration -AllLabs $allLabs -Config $config -Paths $paths
+        
+        # Generate index.md file with dynamic journey definitions
+        New-IndexPage -Config $config -Paths $paths -AllLabs $allLabs
+        
+        # Show final statistics
+        $processingTime = (Get-Date) - $startTime
+        Show-FinalStatistics -Results $pdfResults -AllLabs $allLabs -ProcessingTime $processingTime
+        
+    } catch {
+        Write-Host "❌  Critical error in lab generation:" -ForegroundColor Red
+        Write-Host "    $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "    $($_.ScriptStackTrace)" -ForegroundColor DarkRed
+        exit 1
     }
 }
+
+function Invoke-JekyllGeneration {
+    <#
+    .SYNOPSIS
+        Process all labs for Jekyll site generation
+    #>
+    param($AllLabs, $Config, $Paths)
+    
+    Write-Host "`n🏗️   Generating Jekyll files..." -ForegroundColor Yellow
+    
+    # Group labs by section for organized processing
+    $sections = $AllLabs | Group-Object -Property section | Sort-Object Name
+    $processedCount = 0
+    
+    foreach ($section in $sections) {
+        $sectionName = $section.Name
+        $sectionLabs = $section.Group | Sort-Object title
+        
+        Write-Host "📁  Processing section: $sectionName ($($sectionLabs.Count) labs)" -ForegroundColor Cyan
+        
+        $order = 1
+        foreach ($lab in $sectionLabs) {
+            $labType = if ($lab.url) { "external" } else { "local" }
+            $success = ConvertTo-JekyllLab -Lab $lab -Order $order -SectionName $section.Name -LabType $labType -Paths $Paths
+            
+            if ($success) {
+                $processedCount++
+            }
+            $order++
+        }
+    }
+    
+    Write-Host "✅  Jekyll generation complete: $processedCount/$($AllLabs.Count) files created" -ForegroundColor Green
+}
+
+function Show-FinalStatistics {
+    <#
+    .SYNOPSIS
+        Display final processing statistics
+    #>
+    param($Results, $AllLabs, $ProcessingTime)
+    
+    Write-Host "`n" + "="*80 -ForegroundColor Cyan
+    Write-Host "📊  PROCESSING COMPLETE - FINAL STATISTICS" -ForegroundColor Cyan
+    Write-Host "="*80 -ForegroundColor Cyan
+    
+    # PDF Generation Results
+    if ($Results.Count -gt 0) {
+        # Use manual counting instead of Where-Object to avoid PowerShell hashtable filtering issues
+        $successful = 0
+        $failed = 0
+        
+        foreach ($result in $Results) {
+            if ($result -and $result.Success) {
+                $successful++
+            } else {
+                $failed++
+            }
+        }
+        
+        Write-Host "📄  PDF Generation Results:" -ForegroundColor Yellow
+        Write-Host "    ✅  Successful: $successful/$($Results.Count) PDFs" -ForegroundColor Green
+        
+        if ($failed -gt 0) {
+            Write-Host "    ❌  Failed: $failed PDFs" -ForegroundColor Red
+        }
+    }
+    
+    # Lab Processing Results  
+    Write-Host "`n🧪  Lab Processing Results:" -ForegroundColor Yellow
+    Write-Host "    📚  Total Labs Processed: $($AllLabs.Count)" -ForegroundColor Cyan
+    
+    # Performance Metrics
+    Write-Host "`n⚡  Performance Metrics:" -ForegroundColor Yellow
+    Write-Host "    ⏱️   Total Processing Time: $([math]::Round($ProcessingTime.TotalSeconds, 2)) seconds" -ForegroundColor Cyan
+    Write-Host "    🏭  Labs per Second: $([math]::Round($AllLabs.Count / $ProcessingTime.TotalSeconds, 2))" -ForegroundColor Cyan
+    
+    Write-Host "="*80 -ForegroundColor Cyan
+    Write-Host "✅  All processing completed successfully!" -ForegroundColor Green
+    Write-Host "="*80 -ForegroundColor Cyan
+}
+
+#endregion
+
+# Execute main function
+Invoke-LabGeneration

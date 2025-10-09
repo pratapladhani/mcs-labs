@@ -663,6 +663,29 @@ body {
     color: #888;
 }
 
+/* Lab header with PDF download button */
+.lab-meta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: -2rem -2rem 1.5rem -2rem;
+    padding: 1rem 2rem 1rem 2rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e1e5e9;
+    border-radius: 8px 8px 0 0;
+}
+
+.lab-header-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-left: auto;
+}
+
+.lab-header-actions .btn {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+}
+
 /* Lab action buttons */
 .lab-actions {
     display: flex;

@@ -170,6 +170,7 @@ external_labs:
     url: "https://github.com/microsoft/mcsmcp"
     repository: "microsoft/mcsmcp"
     journeys: ["developer"]
+    section: "optional_labs"
 
 # =====================================================
 # AUTO-DISCOVERY RULES (Optional - for documentation)
