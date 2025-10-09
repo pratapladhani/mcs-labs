@@ -45,6 +45,9 @@ jobs:
     name: 🔨 Generate Lab Documents
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: write  # Required to trigger Jekyll deployment workflow
     
     steps:
       # =================================================================
@@ -474,6 +477,24 @@ jobs:
           retention-days: 30
           if-no-files-found: error
 
+      - name: 🚀 Trigger Jekyll Deployment with Fresh PDFs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger the Jekyll deployment workflow now that PDFs are ready
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'deploy-jekyll-labs.yml',
+                ref: 'jekyll-lab-browser'
+              });
+              console.log('🚀 Triggered Jekyll deployment with fresh PDFs');
+            } catch (error) {
+              console.log('⚠️ Failed to trigger Jekyll deployment:', error.message);
+              throw error; // Fail the workflow if we can't trigger deployment
+            }
+
 # =============================================================================
 # END OF WORKFLOW: Generate Lab Documentation (HTML & PDF)
 # =============================================================================
@@ -482,5 +503,5 @@ jobs:
 # ✅ Generates PDF versions with TOC, bookmarks, and clean content
 # ✅ Handles internal links appropriately for each format
 # ✅ Uploads generated files as artifacts for deployment workflow
-# ✅ Triggers the deployment workflow for GitHub Pages
+# ✅ Triggers the Jekyll deployment workflow for GitHub Pages
 # =============================================================================

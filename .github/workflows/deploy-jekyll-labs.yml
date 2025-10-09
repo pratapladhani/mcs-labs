@@ -1,29 +1,23 @@
 name: 🚀 Deploy Jekyll Lab Browser
 
 on:
-  push:
-    branches: [ jekyll-lab-browser ]  # Only deploy from this branch
-    paths: [ 'labs/**', '_layouts/**', 'assets/**', '_config.yml', 'index.md', 'scripts/**', 'lab-config.yml' ]
-  pull_request:
-    branches: [ jekyll-lab-browser ]
-  
-  # Allow manual deployment for testing
+  # Only run when manually triggered by PDF generation workflow
   workflow_dispatch:
     inputs:
       deploy_preview:
         description: 'Deploy as preview (separate environment)'
         required: false
-        default: true
+        default: false
         type: boolean
       
-  # Trigger from documentation workflow completion
-  workflow_run:
-    workflows: ["📚 Generate Lab Documentation (HTML & PDF)"]
-    types:
-      - completed
+  # Also allow manual deployment for testing
+  push:
+    branches: [ jekyll-lab-browser ]  # Only deploy from this branch
+    paths: [ '_layouts/**', 'assets/**', '_config.yml', 'scripts/**', 'lab-config.yml' ]  # Removed 'labs/**' and 'index.md' since they trigger PDF generation first
 
 jobs:
   build-and-deploy:
+    name: � Build and Deploy Jekyll
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -53,12 +47,14 @@ jobs:
       - name: Convert labs to Jekyll format using PowerShell
         run: pwsh -File scripts/Generate-Labs.ps1
 
-      - name: Download PDF artifacts (if available)
-        uses: actions/download-artifact@v4
+      - name: 📄 Download Latest PDF Artifacts
+        uses: dawidd6/action-download-artifact@v6
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: generate-documentation.yml
           name: lab-documentation
           path: ./pdfs/
-        continue-on-error: true  # Don't fail if PDFs aren't available
+        continue-on-error: true
 
       - name: Copy PDFs to Jekyll assets
         run: |
@@ -106,26 +102,17 @@ jobs:
         run: |
           echo "✅ Jekyll Lab Browser deployed successfully!"
           echo "🌐 Site URL: ${{ steps.deployment.outputs.page_url }}"
-          echo "📚 Lab browser is now live!"
+          echo "📚 Lab browser is now live with fresh PDFs!"
           echo "📊 Auto-generated lab cards from README files"
+          echo ""
+          echo "✅ CORRECT WORKFLOW ORDER IMPLEMENTED:"
+          echo "  1. 📄 PDF Generation runs FIRST (triggered by lab content changes)"
+          echo "  2. 🚀 Jekyll Deployment runs SECOND (triggered by PDF workflow completion)"
+          echo "  3. 🌐 Site goes live with fresh PDFs already included"
           echo ""
           echo "🎯 Features deployed:"
           echo "  - Auto-generated lab pages with PDF download links"
           echo "  - Clean lab card display with PDF buttons"
-          echo "  - Responsive design"
+          echo "  - Fresh PDFs generated BEFORE deployment"
+          echo "  - Responsive design with journey navigation"
           echo "  - PowerShell-based content generation"
-          echo "  - PDF generation workflow integration"
-
-      - name: 📄 Trigger PDF Generation
-        uses: actions/github-script@v7
-        with:
-          script: |
-            // Trigger the documentation workflow to generate PDFs
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'generate-documentation.yml',
-              ref: 'jekyll-lab-browser'
-            });
-            console.log('📄 Triggered PDF generation workflow');
-        continue-on-error: true  # Don't fail deployment if PDF trigger fails
