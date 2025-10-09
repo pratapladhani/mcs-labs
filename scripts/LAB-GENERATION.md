@@ -53,10 +53,39 @@ jekyll serve
 3. Run conversion script
 4. Commit only the source and config changes
 
+### Labs Index Page
+The `labs/index.md` file is **automatically generated** with enhanced functionality that dynamically adapts to your configuration:
+
+- **Dynamic Journey Buttons**: Automatically generated from `journeys` section in `lab-config.yml`
+- **Dynamic Section Buttons**: Automatically generated from `sections` section in `lab-config.yml`  
+- **Dynamic Journey Metadata**: JavaScript journey data generated from configuration
+- **Toggle Filtering**: Click to filter, click again to show all labs
+- **Section Names in Lab Cards**: Color-coded section badges
+- **URL Hash Support**: Bookmarkable filtered views
+
+✅ **Fully Automatic**: New journeys, sections, and labs automatically appear in the interface without manual updates!
+
 ### Modifying Journey Classifications
-1. Edit `journeys` array in `lab-config.yml`
+
+#### Option 1: Explicit Journey Assignment (Recommended)
+
+1. Edit the `lab_journeys` section in `lab-config.yml`:
+
+   ```yaml
+   lab_journeys:
+     agent-builder-web: ["quick-start", "business-user"]
+     autonomous-cua: ["autonomous-ai", "developer"]
+     # ... other labs
+   ```
+
 2. Run conversion script
-3. Journey badges update automatically
+3. Labs will use explicit assignments (shows 🎯 in output)
+
+#### Option 2: Automatic Assignment (Fallback)
+
+- If a lab is not in `lab_journeys`, the script will auto-assign based on difficulty and keywords
+- Shows 🤖 in script output for automatically assigned journeys
+- Less predictable but useful for new labs without explicit configuration
 
 ## 📁 What's Committed to Git
 

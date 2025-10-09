@@ -86,6 +86,22 @@ try {
 Write-Host "📁  Creating _labs directory..." -ForegroundColor Green
 New-Item -ItemType Directory -Path "../_labs" -Force | Out-Null
 
+# Extract lab orders from config
+$labOrders = @{}
+if ($config.lab_orders) {
+    Write-Host "📋  Loading lab order configuration..." -ForegroundColor Green
+    $labOrders = $config.lab_orders
+    Write-Host "  ✅ Loaded order values for $($labOrders.Keys.Count) labs" -ForegroundColor Green
+}
+
+# Extract lab journeys from config
+$script:labJourneys = @{}
+if ($config.lab_journeys) {
+    Write-Host "🎯  Loading lab journey configuration..." -ForegroundColor Green
+    $script:labJourneys = $config.lab_journeys
+    Write-Host "  ✅ Loaded journey assignments for $($script:labJourneys.Keys.Count) labs" -ForegroundColor Green
+}
+
 # Function to process a lab with enhanced error handling
 function ConvertTo-JekyllLab {
     param(
@@ -148,10 +164,8 @@ layout: lab
 title: "$title"
 "@
             
-            # Add order for main labs
-            if ($LabType -ne "optional") {
-                $front_matter += "`norder: $Order"
-            }
+            # Add order (now that we have configured values for all labs)
+            $front_matter += "`norder: $Order"
             
             $front_matter += @"
 `nduration: $duration
@@ -201,10 +215,8 @@ layout: lab
 title: "$title"
 "@
                 
-                # Add order for main labs
-                if ($LabType -ne "optional") {
-                    $front_matter += "`norder: $Order"
-                }
+                # Add order (now that we have configured values for all labs)
+                $front_matter += "`norder: $Order"
                 
                 $front_matter += @"
 `nduration: $duration
@@ -418,9 +430,13 @@ function Get-LabFromReadme {
             $lab.section = Get-AutoSection -LabId $LabId -Difficulty $lab.difficulty
         }
         
-        # Auto-assign journeys based on difficulty and keywords
-        if ($lab.journeys.Count -eq 0) {
+        # Assign journeys from config or auto-assign based on difficulty and keywords
+        if ($script:labJourneys.ContainsKey($LabId)) {
+            $lab.journeys = $script:labJourneys[$LabId]
+            Write-Host "    🎯 Using explicit journey assignment: $($lab.journeys -join ', ')" -ForegroundColor Magenta
+        } elseif ($lab.journeys.Count -eq 0) {
             $lab.journeys = Get-AutoJourneys -Lab $lab
+            Write-Host "    🤖 Using automatic journey assignment: $($lab.journeys -join ', ')" -ForegroundColor Yellow
         }
         
         return $lab
@@ -599,7 +615,15 @@ foreach ($sectionKey in $labsBySection.Keys) {
     
     foreach ($lab in $sectionLabs) {
         $totalLabs++
-        $labOrder = if ($meta.labType -eq "optional") { 0 } else { $order }
+        
+        # Use configured order or fallback to sequential/default
+        if ($labOrders.ContainsKey($lab.id)) {
+            $labOrder = $labOrders[$lab.id]
+        } elseif ($meta.labType -eq "optional") {
+            $labOrder = 0  # Optional labs get 0 if not configured
+        } else {
+            $labOrder = $order  # Sequential fallback
+        }
         
         if (ConvertTo-JekyllLab -Lab $lab -Order $labOrder -SectionName $meta.sectionName -LabType $meta.labType) {
             $processedLabs++
@@ -663,13 +687,35 @@ foreach ($journeyName in $journeyMeta.Keys) {
     Write-Host "  $($journey.icon) $($journey.title): $journeyLabCount labs ($totalDuration minutes)" -ForegroundColor Green
 }
 
-# Generate All Labs Index Page Dynamically
-Write-Host "📋  Generating All Labs index page..." -ForegroundColor Magenta
+# Generate All Labs Index Page Dynamically (Enhanced Version)
+Write-Host "📋  Generating enhanced All Labs index page..." -ForegroundColor Magenta
 
 # Ensure labs directory exists
 New-Item -ItemType Directory -Path "labs" -Force | Out-Null
 
-# Build dynamic All Labs content
+# Build dynamic journey buttons
+$journeyButtons = ""
+foreach ($journeyKey in $config.journeys.Keys) {
+    $journey = $config.journeys[$journeyKey]
+    $journeyButtons += "    <button onclick=`"filterByJourney('$journeyKey')`" class=`"filter-btn`" id=`"$journeyKey-btn`">$($journey.icon) $($journey.title.Replace(' Journey', ''))</button>`n"
+}
+
+# Build dynamic section buttons
+$sectionButtons = ""
+foreach ($sectionKey in $config.sections.Keys) {
+    $section = $config.sections[$sectionKey]
+    $sectionButtons += "    <button onclick=`"filterBySection('$($section.slug)')`" class=`"filter-btn section-btn`" id=`"$($section.slug)-btn`">$($section.icon) $($section.title)</button>`n"
+}
+
+# Build dynamic journey metadata for JavaScript
+$journeyMetadata = ""
+foreach ($journeyKey in $config.journeys.Keys) {
+    $journey = $config.journeys[$journeyKey]
+    $journeyMetadata += "  '$journeyKey': { title: '$($journey.icon) $($journey.title)', description: '$($journey.description)', difficulty: '$($journey.difficulty)', estimatedTime: '$($journey.estimated_time)' },`n"
+}
+$journeyMetadata = $journeyMetadata.TrimEnd(",`n")
+
+# Build dynamic enhanced All Labs content
 $allLabsContent = @"
 ---
 layout: default
@@ -688,12 +734,325 @@ description: Microsoft Copilot Studio labs - browse all or filter by learning jo
   <p>Browse all available Microsoft Copilot Studio labs. Choose individual labs or follow our learning journeys for a guided experience.</p>
 </div>
 
-<div class="lab-filters">
-  <button onclick="filterByJourney('quick-start')" class="filter-btn" id="quick-start-btn">🚀 Quick Start</button>
-  <button onclick="filterByJourney('business-user')" class="filter-btn" id="business-user-btn">💼 Business User</button>
-  <button onclick="filterByJourney('developer')" class="filter-btn" id="developer-btn">🔧 Developer</button>
-  <button onclick="filterByJourney('autonomous-ai')" class="filter-btn" id="autonomous-ai-btn">🤖 Autonomous AI</button>
+<div class="filter-section">
+  <h3>Filter by Journey</h3>
+  <p class="filter-hint">Click a filter to apply it, click again to show all labs</p>
+  <div class="lab-filters">
+$journeyButtons  </div>
 </div>
+
+<div class="filter-section">
+  <h3>Filter by Section</h3>
+  <div class="lab-filters">
+$sectionButtons  </div>
+</div>
+
+<div class="labs-grid" id="labs-container">
+{% for lab in site.labs %}
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}" data-section="{{ lab.section }}">
+    <div class="lab-header">
+      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
+      <div class="lab-meta">
+        <span class="section {{ lab.section }}">{{ lab.section | capitalize }}</span>
+        <span class="difficulty">Level {{ lab.difficulty }}</span>
+        <span class="duration">{{ lab.duration }}min</span>
+      </div>
+    </div>
+    <div class="lab-description">
+      {{ lab.description }}
+    </div>
+    <div class="lab-journeys">
+      <small>Journeys: 
+      {% for journey in lab.journeys %}
+        <span class="journey-tag" onclick="filterByJourney('{{ journey }}')">{{ journey }}</span>
+      {% endfor %}
+      </small>
+    </div>
+    <div class="lab-actions">
+      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
+    </div>
+  </div>
+{% endfor %}
+</div>
+
+<script>
+// Journey metadata
+const journeys = {
+$journeyMetadata
+};
+
+function showAllLabs() {
+  document.getElementById('all-labs-header').style.display = 'block';
+  document.getElementById('journey-header').style.display = 'none';
+  
+  // Show all lab cards
+  const cards = document.querySelectorAll('.lab-card');
+  cards.forEach(card => card.style.display = 'block');
+  
+  // Clear active buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  
+  // Update URL
+  history.pushState({}, '', '{{ "/labs/" | relative_url }}');
+}
+
+function filterByJourney(journeyName) {
+  const journey = journeys[journeyName];
+  if (!journey) return;
+  
+  // Check if this filter is already active (toggle behavior)
+  const button = document.getElementById(journeyName + '-btn');
+  if (button.classList.contains('active')) {
+    // Unselect - show all labs
+    showAllLabs();
+    return;
+  }
+  
+  // Show journey header
+  document.getElementById('all-labs-header').style.display = 'none';
+  document.getElementById('journey-header').style.display = 'block';
+  document.getElementById('journey-title').textContent = journey.title;
+  document.getElementById('journey-description').textContent = journey.description;
+  
+  // Calculate and show stats
+  const cards = document.querySelectorAll('.lab-card');
+  let labCount = 0;
+  let totalDuration = 0;
+  
+  cards.forEach(card => {
+    const journeyData = card.dataset.journeys;
+    if (journeyData) {
+      const journeys = journeyData.split(',').map(j => j.trim());
+      if (journeys.includes(journeyName)) {
+        card.style.display = 'block';
+        labCount++;
+        totalDuration += parseInt(card.dataset.duration);
+      } else {
+        card.style.display = 'none';
+      }
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  
+  document.getElementById('journey-stats').innerHTML = 
+    '<strong>Difficulty Level:</strong> ' + journey.difficulty + '<br>' +
+    '<strong>Estimated Time:</strong> ' + journey.estimatedTime + '<br>' +
+    '<strong>Total Labs:</strong> ' + labCount + ' labs (' + totalDuration + ' minutes)';
+  
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(journeyName + '-btn').classList.add('active');
+  
+  // Update URL
+  history.pushState({}, '', '{{ "/labs/" | relative_url }}#' + journeyName);
+}
+
+function filterBySection(sectionName) {
+  // Check if this filter is already active (toggle behavior)
+  const button = document.getElementById(sectionName + '-btn');
+  if (button.classList.contains('active')) {
+    // Unselect - show all labs
+    showAllLabs();
+    return;
+  }
+  
+  // Show all labs header (section filtering doesn't have dedicated header)
+  document.getElementById('all-labs-header').style.display = 'block';
+  document.getElementById('journey-header').style.display = 'none';
+  
+  // Filter cards by section
+  const cards = document.querySelectorAll('.lab-card');
+  let labCount = 0;
+  let totalDuration = 0;
+  
+  cards.forEach(card => {
+    const cardSection = card.dataset.section;
+    if (cardSection === sectionName) {
+      card.style.display = 'block';
+      labCount++;
+      totalDuration += parseInt(card.dataset.duration);
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(sectionName + '-btn').classList.add('active');
+  
+  // Update URL
+  history.pushState({}, '', '{{ "/labs/" | relative_url }}#section-' + sectionName);
+}
+
+// Initialize based on URL hash or parameters
+document.addEventListener('DOMContentLoaded', function() {
+  // Check for hash first (e.g., #quick-start or #section-core)
+  let hash = window.location.hash.substring(1);
+  
+  // Handle section filtering
+  if (hash.startsWith('section-')) {
+    const sectionName = hash.substring(8); // Remove 'section-' prefix
+    filterBySection(sectionName);
+    return;
+  }
+  
+  // Handle journey filtering
+  if (hash && journeys[hash]) {
+    filterByJourney(hash);
+    return;
+  }
+  
+  // Fall back to URL parameters if no hash
+  const urlParams = new URLSearchParams(window.location.search);
+  const journey = urlParams.get('journey');
+  
+  if (journey && journeys[journey]) {
+    filterByJourney(journey);
+  } else {
+    showAllLabs();
+  }
+});
+
+// Listen for hash changes
+window.addEventListener('hashchange', function() {
+  const hash = window.location.hash.substring(1);
+  
+  // Handle section filtering
+  if (hash.startsWith('section-')) {
+    const sectionName = hash.substring(8);
+    filterBySection(sectionName);
+    return;
+  }
+  
+  // Handle journey filtering
+  if (hash && journeys[hash]) {
+    filterByJourney(hash);
+  } else {
+    showAllLabs();
+  }
+});
+</script>
+
+<style>
+.filter-section {
+  margin: 1.5rem 0;
+}
+
+.filter-section h3 {
+  margin-bottom: 0.5rem;
+  color: #323130;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.filter-hint {
+  margin: 0 0 1rem 0;
+  color: #605e5c;
+  font-size: 0.9rem;
+  text-align: center;
+  font-style: italic;
+}
+
+.lab-filters {
+  margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #0078d4;
+  background: white;
+  color: #0078d4;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background: #e6f3ff;
+}
+
+.filter-btn.active {
+  background: #0078d4;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
+  transform: translateY(-1px);
+}
+
+.filter-btn.active:hover {
+  background: #106ebe;
+  box-shadow: 0 3px 12px rgba(0, 120, 212, 0.4);
+}
+
+.journey-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0078d4, #106ebe);
+  color: white;
+  border-radius: 12px;
+}
+
+.journey-stats {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.journey-tag {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.journey-tag:hover {
+  background: #0078d4 !important;
+  color: white !important;
+}
+
+.lab-meta .section {
+  background: #f3f2f1;
+  color: #323130;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+.lab-meta .section.core {
+  background: #e1f5fe;
+  color: #0277bd;
+}
+
+.lab-meta .section.intermediate {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.lab-meta .section.advanced {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+.lab-meta .section.specialized {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.lab-meta .section.optional {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.lab-meta .section.external {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+</style>
 
 "@
 
@@ -1001,7 +1360,7 @@ window.addEventListener('hashchange', function() {
 "@
 
 Set-Content -Path "../labs/index.md" -Value $allLabsContent -Encoding UTF8
-Write-Host "  ✅  Created labs/index.md (All Labs page)" -ForegroundColor Green
+Write-Host "  ✅  Created enhanced labs/index.md (with dynamic journeys and sections)" -ForegroundColor Green
 
 Write-Host ""
 

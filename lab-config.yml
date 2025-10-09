@@ -81,6 +81,77 @@ sections:
     description: "Labs hosted in external repositories"
 
 # =====================================================
+# LAB ORDERING - Explicit order values for navigation
+# =====================================================
+lab_orders:
+  # Core Learning Path (1-10)
+  agent-builder-web: 1
+  mbr-prep-sharepoint-agent: 2
+  public-website-agent: 3
+  standard-orchestrator: 4
+  
+  # Intermediate Labs (11-20)
+  setup-for-success: 11
+  agent-builder-sharepoint: 12
+  ask-me-anything: 13
+  
+  # Advanced Labs (21-30)
+  autonomous-cua: 21
+  autonomous-account-news: 22
+  autonomous-support-agent: 23
+  
+  # Specialized Labs (31-40)
+  measure-success: 31
+  pipelines-and-source-control: 32
+  copilot-studio-kit: 33
+  mcp-qualify-lead: 34
+  
+  # Optional Labs (41-50)
+  ask-me-anything-30-mins: 41
+  
+  # External Labs (51-60)
+  mcs-mcp-external: 51
+
+# =====================================================
+# LAB JOURNEY ASSIGNMENTS - Explicit journey mapping
+# =====================================================
+# This section provides explicit control over which journeys each lab belongs to.
+# If a lab is listed here, it will use these exact journey assignments.
+# If a lab is NOT listed here, the script will auto-assign journeys based on
+# difficulty levels and content analysis (fallback behavior).
+#
+# Format: lab-folder-name: ["journey1", "journey2", ...]
+# Available journeys: quick-start, business-user, developer, autonomous-ai
+lab_journeys:
+  # Core Learning Path - Foundation labs for everyone
+  agent-builder-web: ["quick-start", "business-user"]
+  mbr-prep-sharepoint-agent: ["quick-start", "business-user", "developer"]
+  public-website-agent: ["quick-start", "business-user"]
+  standard-orchestrator: ["quick-start", "developer"]
+  
+  # Intermediate Labs - Building on basics
+  setup-for-success: ["business-user", "developer"]
+  agent-builder-sharepoint: ["business-user", "developer"]
+  ask-me-anything: ["business-user", "developer"]
+  
+  # Advanced Labs - Complex scenarios
+  autonomous-cua: ["autonomous-ai", "developer"]
+  autonomous-account-news: ["autonomous-ai", "developer"]
+  autonomous-support-agent: ["autonomous-ai", "developer"]
+  
+  # Specialized Labs - Technical depth
+  measure-success: ["developer"]
+  pipelines-and-source-control: ["developer"]
+  copilot-studio-kit: ["developer"]
+  mcp-qualify-lead: ["developer"]
+  
+  # Optional Labs - Alternative approaches
+  ask-me-anything-30-mins: ["business-user"]
+  
+  # External Labs - External repositories
+  mcs-mcp-external: ["developer"]
+
+# =====================================================
 # EXTERNAL LABS - Labs not hosted in this repository
 # =====================================================
 external_labs:
