@@ -1103,10 +1103,11 @@ $sectionDescription
 <div class="labs-grid">
 {% for lab in site.labs %}
   {% if lab.section == '$($meta.sectionName)' %}
-  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}">
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}" data-section="{{ lab.section }}">
     <div class="lab-header">
       <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
       <div class="lab-meta">
+        <span class="section {{ lab.section }}">{{ lab.section | capitalize }}</span>
         <span class="difficulty">Level {{ lab.difficulty }}</span>
         <span class="duration">{{ lab.duration }}min</span>
       </div>
@@ -1130,81 +1131,17 @@ $sectionDescription
 </div>
 "@
     }
-} else {
-    Write-Host "  � No sections found, creating simple lab list" -ForegroundColor Yellow
-    # Fallback: simple chronological list if no sections are defined
-    $allLabsContent += @"
-
-<div class="labs-grid" id="labs-container">
-{% for lab in site.labs %}
-  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}">
-    <div class="lab-header">
-      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
-      <div class="lab-meta">
-        <span class="difficulty">Level {{ lab.difficulty }}</span>
-        <span class="duration">{{ lab.duration }}min</span>
-      </div>
-    </div>
-    <div class="lab-description">
-      {{ lab.description }}
-    </div>
-    <div class="lab-journeys">
-      <small>Journeys: 
-      {% for journey in lab.journeys %}
-        <span class="journey-tag" onclick="filterByJourney('{{ journey }}')">{{ journey }}</span>
-      {% endfor %}
-      </small>
-    </div>
-    <div class="lab-actions">
-      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
-    </div>
-  </div>
-{% endfor %}
-</div>
-"@
 }
 
-# Add footer with journey navigation
+# Fallback section removed - we already have the main lab cards section above
+
+# Add JavaScript for filtering functionality
 $allLabsContent += @"
 
----
-
-## 📚 All Available Labs
-
-<div class="labs-grid" id="labs-container">
-{% for lab in site.labs %}
-  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}">
-    <div class="lab-header">
-      <h3><a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/">{{ lab.title }}</a></h3>
-      <div class="lab-meta">
-        <span class="difficulty">Level {{ lab.difficulty }}</span>
-        <span class="duration">{{ lab.duration }}min</span>
-      </div>
-    </div>
-    <div class="lab-description">
-      {{ lab.description }}
-    </div>
-    <div class="lab-journeys">
-      <small>Journeys: 
-      {% for journey in lab.journeys %}
-        <span class="journey-tag" onclick="filterByJourney('{{ journey }}')">{{ journey }}</span>
-      {% endfor %}
-      </small>
-    </div>
-    <div class="lab-actions">
-      <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
-    </div>
-  </div>
-{% endfor %}
-</div>
-
 <script>
-// Journey metadata
+// Journey metadata (dynamically generated from config)
 const journeys = {
-  'quick-start': { title: '🚀 Quick Start Journey', description: 'New to Copilot Studio? Start here with our essential labs to get up and running quickly.', difficulty: 'Beginner', estimatedTime: '3-4 hours' },
-  'business-user': { title: '💼 Business User Journey', description: 'Perfect for business users who want to create powerful AI solutions without deep technical knowledge.', difficulty: 'Intermediate', estimatedTime: '8-12 hours' },
-  'developer': { title: '🔧 Developer Journey', description: 'Advanced technical labs covering integration, automation, and complex scenarios.', difficulty: 'Advanced', estimatedTime: '10-15 hours' },
-  'autonomous-ai': { title: '🤖 Autonomous AI Journey', description: 'Cutting-edge autonomous agents and AI automation scenarios.', difficulty: 'Expert', estimatedTime: '6-8 hours' }
+$journeyMetadata
 };
 
 function showAllLabs() {
