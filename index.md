@@ -57,17 +57,6 @@ Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. C
 
 ---
 
-## ✨ **Why Choose Journey-Based Learning?**
-
-Each journey is carefully designed with specific outcomes in mind:
-
-- **🚀 Quick Start**: Perfect for demos, POCs, and immediate results
-- **💼 Business User**: Real-world business applications and solutions
-- **🔧 Developer**: Technical depth with production-ready practices
-- **🤖 Autonomous AI**: Cutting-edge autonomous agent capabilities
-
----
-
 ## 🎯 **Getting Started**
 
 1. **Choose your journey** above based on your goals and experience

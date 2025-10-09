@@ -39,3 +39,6 @@ exclude:
   - README.md
   - LICENSE
   - SECURITY.md
+  - labs/*/README.md
+  - labs/lab-template.md
+  - scripts/

@@ -65,18 +65,26 @@ if (-not (Get-Module -ListAvailable -Name powershell-yaml)) {
 
 Import-Module powershell-yaml -ErrorAction Stop
 
-# Validate lab-config.yml exists (in parent directory)
-if (-not (Test-Path "../lab-config.yml")) {
-    Write-Host "❌  lab-config.yml not found in parent directory" -ForegroundColor Red
+# Validate lab-config.yml exists (check both current directory and parent)
+$configPath = if (Test-Path "./lab-config.yml") { "./lab-config.yml" } elseif (Test-Path "../lab-config.yml") { "../lab-config.yml" } else { $null }
+
+if (-not $configPath) {
+    Write-Host "❌  lab-config.yml not found in current or parent directory" -ForegroundColor Red
     Write-Host "    Please ensure the lab-config.yml file exists in the repository root" -ForegroundColor Yellow
     exit 1
 }
 
-Write-Host "📖  Reading lab configuration from lab-config.yml..." -ForegroundColor Green
+Write-Host "📖  Reading lab configuration from $configPath..." -ForegroundColor Green
+
+# Define base paths (works whether run from root or scripts folder)
+$basePath = if (Test-Path "./labs") { "." } else { ".." }
+$labsPath = "$basePath/labs"
+$outputPath = "$basePath/_labs"
+$indexPath = "$basePath/labs/index.md"
 
 # Read and parse lab-config.yml
 try {
-    $configContent = Get-Content "../lab-config.yml" -Raw -ErrorAction Stop
+    $configContent = Get-Content $configPath -Raw -ErrorAction Stop
     $config = ConvertFrom-Yaml $configContent -ErrorAction Stop
 } catch {
     Write-Host "❌  Failed to read or parse lab-config.yml: $($_.Exception.Message)" -ForegroundColor Red
@@ -117,8 +125,8 @@ function ConvertTo-JekyllLab {
     $difficulty = $Lab.difficulty
     $journeys = $Lab.journeys
     
-    $source_file = "../labs/$lab_key/README.md"
-    $target_file = "../_labs/$lab_key.md"  # Always use semantic names
+    $source_file = "$basePath/labs/$lab_key/README.md"
+    $target_file = "$outputPath/$lab_key.md"  # Always use semantic names
     
     if (Test-Path $source_file) {
         Write-Host "  📝  Processing $SectionName`: $lab_key -> $(Split-Path $target_file -Leaf)" -ForegroundColor Cyan
@@ -503,7 +511,7 @@ function Get-AutoJourneys {
 
 function Get-AllLabsFromFolders {
     $discoveredLabs = @()
-    $labFolders = Get-ChildItem "../labs" -Directory | Where-Object { 
+    $labFolders = Get-ChildItem "$basePath/labs" -Directory | Where-Object { 
         $_.Name -ne "lab-template.md" -and (Test-Path (Join-Path $_.FullName "README.md"))
     }
     
@@ -1161,19 +1169,6 @@ $allLabsContent += @"
 
 ---
 
-## 🎯 Prefer Guided Learning?
-
-Try our [learning journeys]({{ '/' | relative_url }}) for a curated, step-by-step experience:
-"@
-
-# Generate journey list from loaded metadata
-foreach ($journeyName in $journeyMeta.Keys) {
-    $journey = $journeyMeta[$journeyName]
-    $allLabsContent += "`n- **$($journey.icon) $($journey.title.Replace(' Journey', ''))**: $($journey.description -replace '^[^.]*\.\s*', '')"
-}
-
-$allLabsContent += @"
-
 ## 📚 All Available Labs
 
 <div class="labs-grid" id="labs-container">
@@ -1359,7 +1354,7 @@ window.addEventListener('hashchange', function() {
 </div>
 "@
 
-Set-Content -Path "../labs/index.md" -Value $allLabsContent -Encoding UTF8
+Set-Content -Path $indexPath -Value $allLabsContent -Encoding UTF8
 Write-Host "  ✅  Created enhanced labs/index.md (with dynamic journeys and sections)" -ForegroundColor Green
 
 Write-Host ""
