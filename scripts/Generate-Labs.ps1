@@ -92,7 +92,7 @@ try {
 }
 
 Write-Host "📁  Creating _labs directory..." -ForegroundColor Green
-New-Item -ItemType Directory -Path "../_labs" -Force | Out-Null
+New-Item -ItemType Directory -Path $outputPath -Force | Out-Null
 
 # Extract lab orders from config
 $labOrders = @{}
