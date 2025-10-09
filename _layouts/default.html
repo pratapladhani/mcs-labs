@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
     
+    <!-- Immediate theme detection to prevent flash -->
+    <script>
+        (function() {
+            // Get theme immediately from localStorage or system preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            // Apply theme immediately to html element before any rendering
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
     <link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">
@@ -16,11 +29,18 @@
 <body class="{% if page.layout == 'lab' %}lab-page{% endif %}">
     <header class="site-header">
         <div class="container">
-            <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
-            <nav class="main-nav">
-                <a href="{{ '/' | relative_url }}">Home</a>
-                <a href="{{ '/labs/' | relative_url }}">All Labs</a>
-            </nav>
+            <div class="header-content">
+                <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+                <div class="header-actions">
+                    <nav class="main-nav">
+                        <a href="{{ '/' | relative_url }}">Home</a>
+                        <a href="{{ '/labs/' | relative_url }}">All Labs</a>
+                    </nav>
+                    <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <span class="theme-toggle-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -37,6 +57,53 @@
     </footer>
 
     <script>
+        // Dark mode functionality - optimized to work with preload script
+        (function() {
+            const theme = {
+                get: () => localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+                set: (value) => {
+                    // Only update if theme actually changed
+                    const current = document.documentElement.getAttribute('data-theme');
+                    if (current === value) return;
+                    
+                    localStorage.setItem('theme', value);
+                    document.documentElement.setAttribute('data-theme', value);
+                    updateToggleIcon(value);
+                },
+                toggle: () => {
+                    const current = theme.get();
+                    theme.set(current === 'dark' ? 'light' : 'dark');
+                }
+            };
+
+            function updateToggleIcon(currentTheme) {
+                const icon = document.querySelector('.theme-toggle-icon');
+                if (icon) {
+                    icon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+                }
+            }
+
+            // Initialize theme on page load - only update icon since theme is already applied
+            document.addEventListener('DOMContentLoaded', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme') || theme.get();
+                updateToggleIcon(currentTheme);
+
+                // Add click listener to theme toggle
+                const toggleButton = document.querySelector('.theme-toggle');
+                if (toggleButton) {
+                    toggleButton.addEventListener('click', theme.toggle);
+                }
+            });
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    theme.set(e.matches ? 'dark' : 'light');
+                }
+            });
+            });
+        })();
+
         // Make external links open in new tab
         document.addEventListener('DOMContentLoaded', function() {
             const links = document.querySelectorAll('a[href]');
@@ -74,3 +141,4 @@
     </script>
 </body>
 </html>
+

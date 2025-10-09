@@ -1,7 +1,7 @@
 # Multi-stage Dockerfile for MCS Labs development with PDF generation capabilities
 # Includes Jekyll, Pandoc, Node.js, and Puppeteer for complete local development
 
-FROM node:18-bullseye as node-base
+FROM node:18-bullseye AS node-base
 
 # Stage 1: Ruby and Jekyll setup
 FROM ruby:3.1-bullseye

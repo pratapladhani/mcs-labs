@@ -80,7 +80,8 @@ function Initialize-Environment {
         try {
             Install-Module -Name powershell-yaml -Force -Scope CurrentUser -ErrorAction Stop
             Write-Host "✅  PowerShell YAML module installed successfully" -ForegroundColor Green
-        } catch {
+        }
+        catch {
             Write-Host "❌  Failed to install PowerShell YAML module: $($_.Exception.Message)" -ForegroundColor Red
             exit 1
         }
@@ -101,9 +102,11 @@ function Get-Configuration {
     # Validate lab-config.yml exists (check both current directory and parent)
     $configPath = if (Test-Path "./lab-config.yml") { 
         "./lab-config.yml" 
-    } elseif (Test-Path "../lab-config.yml") { 
+    }
+    elseif (Test-Path "../lab-config.yml") { 
         "../lab-config.yml" 
-    } else { 
+    }
+    else { 
         $null 
     }
     
@@ -122,7 +125,8 @@ function Get-Configuration {
         
         Write-Host "✅  Configuration loaded successfully" -ForegroundColor Green
         return $config
-    } catch {
+    }
+    catch {
         Write-Host "❌  Failed to read or parse lab-config.yml: $($_.Exception.Message)" -ForegroundColor Red
         exit 1
     }
@@ -155,10 +159,10 @@ function Get-Paths {
     }
     
     return @{
-        basePath = $basePath
-        labsPath = $labsPath
+        basePath   = $basePath
+        labsPath   = $labsPath
         outputPath = $outputPath
-        indexPath = $indexPath
+        indexPath  = $indexPath
     }
 }
 
@@ -198,13 +202,15 @@ function Show-StartupInfo {
     
     if ($SelectedJourneys.Count -gt 0) {
         Write-Host "🎯  Selected journeys: $($SelectedJourneys -join ', ')" -ForegroundColor Cyan
-    } else {
+    }
+    else {
         Write-Host "🌐  Processing all journeys" -ForegroundColor Cyan
     }
     
     if ($SkipPDFs) {
         Write-Host "⏭️   PDF generation: SKIPPED" -ForegroundColor Yellow
-    } else {
+    }
+    else {
         Write-Host "📄  PDF generation: ENABLED" -ForegroundColor Green
     }
     Write-Host ""
@@ -234,12 +240,14 @@ function Test-DockerEnvironment {
         $dockerCheck = docker-compose ps jekyll-dev 2>&1
         if ($dockerCheck -match "jekyll-dev.*Up") {
             return $true
-        } else {
+        }
+        else {
             Write-Host "    ⚠️   Jekyll development container not running" -ForegroundColor Yellow
             Write-Host "    💡  Start with: docker-compose up -d" -ForegroundColor Yellow
             return $false
         }
-    } catch {
+    }
+    catch {
         return $false
     }
 }
@@ -266,9 +274,11 @@ function Test-CIEnvironment {
         # Check if generate-pdf.js script exists (check both current and parent directory)
         $scriptPath = if (Test-Path ".github/scripts/generate-pdf.js") { 
             ".github/scripts/generate-pdf.js" 
-        } elseif (Test-Path "../.github/scripts/generate-pdf.js") { 
+        }
+        elseif (Test-Path "../.github/scripts/generate-pdf.js") { 
             "../.github/scripts/generate-pdf.js" 
-        } else { 
+        }
+        else { 
             $null 
         }
         
@@ -277,7 +287,8 @@ function Test-CIEnvironment {
         }
         
         return $true
-    } catch {
+    }
+    catch {
         return $false
     }
 }
@@ -336,9 +347,11 @@ function Invoke-PDFGeneration {
     
     if ($useDocker) {
         Write-Host "✅  Docker environment detected - using containerized PDF generation" -ForegroundColor Green
-    } elseif ($useCITools) {
+    }
+    elseif ($useCITools) {
         Write-Host "✅  CI environment detected - using direct pandoc/node.js PDF generation" -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "❌  Neither Docker nor CI tools available. Skipping PDF generation." -ForegroundColor Red
         Write-Host "    Local: Start Docker with 'docker-compose up -d'" -ForegroundColor Yellow
         Write-Host "    CI: Ensure pandoc and node.js are installed" -ForegroundColor Yellow
@@ -359,7 +372,8 @@ function Invoke-PDFGeneration {
         
         if ($result.Success) {
             Write-Host "    ✅  PDF generated successfully" -ForegroundColor Green
-        } else {
+        }
+        else {
             Write-Host "    ❌  PDF generation failed: $($result.Error)" -ForegroundColor Red
         }
     }
@@ -396,9 +410,9 @@ function New-PDFForLab {
     # Skip if source doesn't exist (external labs)
     if (-not (Test-Path $readmePath)) {
         return @{
-            LabId = $Lab.id
-            Success = $false
-            Error = "Source README.md not found (external lab)"
+            LabId          = $Lab.id
+            Success        = $false
+            Error          = "Source README.md not found (external lab)"
             ProcessingTime = 0
         }
     }
@@ -430,7 +444,7 @@ function New-PDFForLab {
         
         # Remove leading empty lines
         while ($processedLines.Count -gt 0 -and [string]::IsNullOrWhiteSpace($processedLines[0])) {
-            $processedLines = $processedLines[1..($processedLines.Length-1)]
+            $processedLines = $processedLines[1..($processedLines.Length - 1)]
         }
         
         $processedContent = $processedLines -join "`n"
@@ -459,11 +473,13 @@ function New-PDFForLab {
                 docker-compose exec jekyll-dev rm -f $htmlFile dist/$($Lab.id)/README_processed.md 2>&1 | Out-Null
                 Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
                 $htmlCreated = $true
-            } else {
+            }
+            else {
                 $htmlCreated = $false
                 $htmlResult = "Docker HTML creation failed: $htmlResult"
             }
-        } else {
+        }
+        else {
             # Direct execution (CI environment)
             $htmlFile = Join-Path $distPath "$($Lab.id).html"
             $cssPath = ".github/styles/html.css"  # Relative path from working directory
@@ -485,11 +501,13 @@ function New-PDFForLab {
                 & pandoc @pandocArgs 2>&1 | Out-Null
                 if ($LASTEXITCODE -eq 0 -and (Test-Path $htmlFile)) {
                     $htmlCreated = $true
-                } else {
+                }
+                else {
                     $htmlCreated = $false
                     $htmlResult = "Direct pandoc execution failed with exit code: $LASTEXITCODE"
                 }
-            } catch {
+            }
+            catch {
                 $htmlCreated = $false
                 $htmlResult = "Direct pandoc execution error: $($_.Exception.Message)"
             }
@@ -508,7 +526,8 @@ function New-PDFForLab {
                     if ($LASTEXITCODE -ne 0) {
                         $pdfResult = "Direct node.js execution failed with exit code: $LASTEXITCODE"
                     }
-                } catch {
+                }
+                catch {
                     $pdfResult = "Direct node.js execution error: $($_.Exception.Message)"
                 }
                 
@@ -522,27 +541,29 @@ function New-PDFForLab {
         if ($htmlCreated -and (Test-Path $pdfPath)) {
             $processingTime = ((Get-Date) - $startTime).TotalSeconds
             return @{
-                LabId = $Lab.id
-                Success = $true
-                Error = $null
+                LabId          = $Lab.id
+                Success        = $true
+                Error          = $null
                 ProcessingTime = $processingTime
             }
-        } else {
+        }
+        else {
             # Clean up temp file even on failure
             Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
             $errorMsg = if (-not $htmlCreated) { "Failed to create HTML: $htmlResult" } else { "PDF file not created: $pdfResult" }
             return @{
-                LabId = $Lab.id
-                Success = $false
-                Error = $errorMsg
+                LabId          = $Lab.id
+                Success        = $false
+                Error          = $errorMsg
                 ProcessingTime = 0
             }
         }
-    } catch {
+    }
+    catch {
         return @{
-            LabId = $Lab.id
-            Success = $false
-            Error = $_.Exception.Message
+            LabId          = $Lab.id
+            Success        = $false
+            Error          = $_.Exception.Message
             ProcessingTime = 0
         }
     }
@@ -578,15 +599,15 @@ function Get-LabFromReadme {
         
         # Initialize lab object with defaults
         $lab = @{
-            id = $LabId
-            slug = $LabId  # Use the lab folder name as the slug
-            title = ""
-            duration = 30  # Default duration in minutes
-            difficulty = 100  # Default difficulty level
+            id          = $LabId
+            slug        = $LabId  # Use the lab folder name as the slug
+            title       = ""
+            duration    = 30  # Default duration in minutes
+            difficulty  = 100  # Default difficulty level
             description = ""
-            journeys = @()
-            section = ""  # Will be auto-assigned if not specified
-            tags = @()
+            journeys    = @()
+            section     = ""  # Will be auto-assigned if not specified
+            tags        = @()
         }
         
         # Parse lab content
@@ -694,7 +715,8 @@ function Get-AutoJourneys {
     if ($journeys.Count -eq 0) {
         if ($Lab.difficulty -le 150) {
             $journeys += "business-user"
-        } else {
+        }
+        else {
             $journeys += "developer"
         }
     }
@@ -728,14 +750,16 @@ function Get-AllLabsFromFolders {
             if ($LabJourneys.ContainsKey($folder.Name)) {
                 $lab.journeys = $LabJourneys[$folder.Name]
                 Write-Host "    🎯 Using explicit journey assignment: $($lab.journeys -join ', ')" -ForegroundColor Magenta
-            } else {
+            }
+            else {
                 $lab.journeys = Get-AutoJourneys -Lab $lab
                 Write-Host "    🤖 Using automatic journey assignment: $($lab.journeys -join ', ')" -ForegroundColor Yellow
             }
             
             $discoveredLabs += $lab
             Write-Host "  ✅  Discovered: $($folder.Name)" -ForegroundColor Green
-        } else {
+        }
+        else {
             Write-Host "  ⚠️   Failed to parse: $($folder.Name)" -ForegroundColor Yellow
         }
     }
@@ -745,16 +769,16 @@ function Get-AllLabsFromFolders {
         Write-Host "🌐  Adding external labs from config..." -ForegroundColor Cyan
         foreach ($externalLab in $Config.external_labs) {
             $lab = @{
-                id = $externalLab.id
-                slug = $externalLab.id  # Use the lab id as the slug
-                title = $externalLab.title
-                duration = $externalLab.duration
-                difficulty = if ($externalLab.difficulty -match '\d+') { [int]($externalLab.difficulty -replace '\D','') } else { 200 }
+                id          = $externalLab.id
+                slug        = $externalLab.id  # Use the lab id as the slug
+                title       = $externalLab.title
+                duration    = $externalLab.duration
+                difficulty  = if ($externalLab.difficulty -match '\d+') { [int]($externalLab.difficulty -replace '\D', '') } else { 200 }
                 description = $externalLab.description
-                journeys = if ($externalLab.journeys) { $externalLab.journeys } else { @("developer") }
-                section = if ($externalLab.section) { $externalLab.section } else { "external_labs" }
-                url = $externalLab.url
-                repository = $externalLab.repository
+                journeys    = if ($externalLab.journeys) { $externalLab.journeys } else { @("developer") }
+                section     = if ($externalLab.section) { $externalLab.section } else { "external_labs" }
+                url         = $externalLab.url
+                repository  = $externalLab.repository
             }
             $discoveredLabs += $lab
             Write-Host "  ✅  Added external lab: $($externalLab.id)" -ForegroundColor Green
@@ -798,9 +822,11 @@ function ConvertTo-JekyllLab {
     
     if (Test-Path $source_file) {
         return New-LocalLabFile -Lab $Lab -Order $Order -SectionName $SectionName -LabType $LabType -SourceFile $source_file -TargetFile $target_file
-    } elseif ($Lab.url -or $Lab.repository) {
+    }
+    elseif ($Lab.url -or $Lab.repository) {
         return New-ExternalLabFile -Lab $Lab -Order $Order -SectionName $SectionName -LabType $LabType -TargetFile $target_file
-    } else {
+    }
+    else {
         Write-Host "    ⚠️   Source file not found: $source_file" -ForegroundColor Yellow
         return $false
     }
@@ -835,7 +861,8 @@ function New-LocalLabFile {
         $finalContent | Set-Content $TargetFile -Encoding UTF8 -ErrorAction Stop
         Write-Host "    ✅  Created $(Split-Path $TargetFile -Leaf)" -ForegroundColor Green
         return $true
-    } catch {
+    }
+    catch {
         Write-Host "    ❌  Failed to process $($Lab.id)`: $($_.Exception.Message)" -ForegroundColor Red
         return $false
     }
@@ -866,7 +893,8 @@ function New-ExternalLabFile {
         $finalContent | Set-Content $TargetFile -Encoding UTF8 -ErrorAction Stop
         Write-Host "    ✅  Created external lab $(Split-Path $TargetFile -Leaf)" -ForegroundColor Green
         return $true
-    } catch {
+    }
+    catch {
         Write-Host "    ❌  Failed to process external lab $($Lab.id)`: $($_.Exception.Message)" -ForegroundColor Red
         return $false
     }
@@ -966,9 +994,9 @@ function Get-CleanLabContent {
         $contentTitle = $matches[1].Trim()
         if ($contentTitle -eq $Title) {
             # Remove the first line (duplicate title) and any following empty lines
-            $lines = $lines[1..($lines.Length-1)]
+            $lines = $lines[1..($lines.Length - 1)]
             while ($lines.Count -gt 0 -and [string]::IsNullOrWhiteSpace($lines[0])) {
-                $lines = $lines[1..($lines.Length-1)]
+                $lines = $lines[1..($lines.Length - 1)]
             }
             $cleanContent = $lines -join "`n"
         }
@@ -1050,7 +1078,8 @@ function New-IndexPage {
         # Get section metadata from config or use defaults
         $sectionMeta = if ($Config.sections -and $Config.sections[$sectionKey]) { 
             $Config.sections[$sectionKey] 
-        } else { 
+        }
+        else { 
             @{ title = $sectionKey; icon = "📁" } 
         }
         
@@ -1085,7 +1114,8 @@ function New-IndexPage {
     try {
         $indexContent | Set-Content $indexPath -Encoding UTF8 -ErrorAction Stop
         Write-Host "✅  Generated dynamic index.md with $($Config.journeys.Keys.Count) journeys" -ForegroundColor Green
-    } catch {
+    }
+    catch {
         Write-Host "❌  Failed to generate index.md: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
@@ -1114,9 +1144,9 @@ function New-RootHomepage {
             }
             
             $journeyStats[$journeyKey] = @{
-                LabCount = $labCount
+                LabCount      = $labCount
                 TotalDuration = $totalDuration
-                Hours = [math]::Round($totalDuration / 60, 1)
+                Hours         = [math]::Round($totalDuration / 60, 1)
             }
         }
     }
@@ -1136,9 +1166,11 @@ function New-RootHomepage {
             # Format time display
             $timeDisplay = if ($stats.Hours -lt 1) { 
                 "$($stats.TotalDuration) mins" 
-            } elseif ($stats.Hours -ge 2) { 
+            }
+            elseif ($stats.Hours -ge 2) { 
                 "$([math]::Floor($stats.Hours))-$([math]::Ceiling($stats.Hours)) hours" 
-            } else { 
+            }
+            else { 
                 "$($stats.Hours) hours" 
             }
             
@@ -1165,7 +1197,8 @@ function New-RootHomepage {
     try {
         $homepageContent | Set-Content $rootIndexPath -Encoding UTF8 -ErrorAction Stop
         Write-Host "✅  Generated root homepage with $($Config.journeys.Keys.Count) journey cards" -ForegroundColor Green
-    } catch {
+    }
+    catch {
         Write-Host "❌  Failed to generate root homepage: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
@@ -1211,84 +1244,7 @@ $journeyCardsHtml
 
 Happy learning! 🎉
 
-<style>
-.journey-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
-}
 
-.journey-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border-left: 4px solid;
-}
-
-.journey-card.quick-start {
-    border-left-color: #0277bd;
-}
-
-.journey-card.business-user {
-    border-left-color: #7b1fa2;
-}
-
-.journey-card.developer {
-    border-left-color: #2e7d32;
-}
-
-.journey-card.autonomous-ai {
-    border-left-color: #ef6c00;
-}
-
-.journey-card.bootcamp {
-    border-left-color: #d32f2f;
-}
-
-.journey-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-}
-
-.journey-card h3 {
-    margin: 0 0 0.5rem 0;
-    color: #333;
-    font-size: 1.25rem;
-}
-
-.journey-card p {
-    color: #666;
-    margin: 0 0 1rem 0;
-    font-size: 0.95rem;
-}
-
-.journey-meta {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    font-size: 0.85rem;
-    color: #888;
-}
-
-.journey-btn {
-    display: inline-block;
-    background: #0078d4;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background-color 0.2s;
-}
-
-.journey-btn:hover {
-    background: #106ebe;
-    text-decoration: none;
-}
-</style>
 "@
 }
 
@@ -1627,264 +1583,6 @@ window.addEventListener('hashchange', function() {
 });
 </script>
 
-<style>
-.current-filter-display {
-  background: #f8f9fa;
-  border: 1px solid #e1e5e9;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.filter-status {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.filter-label {
-  font-weight: 600;
-  color: #6c757d;
-}
-
-.current-filter {
-  background: #0078d4;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  font-weight: 600;
-}
-
-.clear-filter-btn {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.3s ease;
-}
-
-.clear-filter-btn:hover {
-  background: #c82333;
-}
-
-.lab-filters {
-  margin: 2rem 0;
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.filter-btn {
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #0078d4;
-  background: white;
-  color: #0078d4;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.filter-btn:hover {
-  background: #0078d4;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 120, 212, 0.3);
-}
-
-.filter-btn.active {
-  background: #0078d4;
-  color: white;
-  box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
-}
-
-.section-btn {
-  border-color: #6b46c1;
-  color: #6b46c1;
-}
-
-.section-btn:hover, .section-btn.active {
-  background: #6b46c1;
-  color: white;
-}
-
-.journey-header {
-  text-align: center;
-  margin: 2rem 0;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 1rem;
-}
-
-.journey-stats {
-  margin-top: 1rem;
-  font-size: 1.1rem;
-  line-height: 1.6;
-}
-
-.labs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 2rem;
-  margin: 2rem 0;
-}
-
-.lab-card {
-  border: 1px solid #e1e5e9;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.lab-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  border-color: #0078d4;
-}
-
-.lab-header h3 {
-  margin: 0 0 1rem 0;
-  color: #323130;
-  line-height: 1.3;
-}
-
-.lab-header h3 a {
-  color: #0078d4;
-  text-decoration: none;
-}
-
-.lab-header h3 a:hover {
-  text-decoration: underline;
-}
-
-.lab-meta {
-  display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.lab-meta span {
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.lab-meta .section {
-  background: #e1f5fe;
-  color: #0277bd;
-}
-
-.lab-meta .section.core_learning_path {
-  background: #e8f5e8;
-  color: #2e7d32;
-}
-
-.lab-sequence {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #0078d4;
-  color: white;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-  box-shadow: 0 3px 8px rgba(0, 120, 212, 0.4);
-  z-index: 10;
-}
-
-.lab-card {
-  position: relative;
-}
-
-.lab-meta .section.intermediate_labs {
-  background: #fff3e0;
-  color: #f57c00;
-}
-
-.lab-meta .section.advanced_labs {
-  background: #fce4ec;
-  color: #c2185b;
-}
-
-.lab-meta .section.specialized_labs {
-  background: #f3e5f5;
-  color: #7b1fa2;
-}
-
-.lab-meta .section.optional_labs {
-  background: #e0f2f1;
-  color: #00695c;
-}
-
-.lab-meta .section.external {
-  background: #e3f2fd;
-  color: #1565c0;
-}
-
-.lab-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-.btn {
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.875rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background: #0078d4;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #106ebe;
-  color: white;
-  text-decoration: none;
-}
-
-.btn-secondary {
-  background: #6c757d;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: #5a6268;
-  color: white;
-  text-decoration: none;
-}
-</style>
 
 <div class="navigation-actions">
   <a href="{{ '/' | relative_url }}" class="btn btn-secondary">← Back to Home</a>
@@ -1940,7 +1638,8 @@ function Invoke-LabGeneration {
         $pdfResults = @()
         if (-not $SkipPDFs) {
             $pdfResults = Invoke-PDFGeneration -AllLabs $allLabs -Paths $paths
-        } else {
+        }
+        else {
             Write-Host "⏭️   Skipping PDF generation (SkipPDFs flag set)" -ForegroundColor Yellow
         }
         
@@ -1957,7 +1656,8 @@ function Invoke-LabGeneration {
         $processingTime = (Get-Date) - $startTime
         Show-FinalStatistics -Results $pdfResults -AllLabs $allLabs -ProcessingTime $processingTime
         
-    } catch {
+    }
+    catch {
         Write-Host "❌  Critical error in lab generation:" -ForegroundColor Red
         Write-Host "    $($_.Exception.Message)" -ForegroundColor Red
         Write-Host "    $($_.ScriptStackTrace)" -ForegroundColor DarkRed
@@ -1991,7 +1691,8 @@ function Invoke-JekyllGeneration {
             $labSlug = $lab.slug
             $order = if ($labSlug -and $Config.lab_orders -and $Config.lab_orders.ContainsKey($labSlug)) {
                 $Config.lab_orders[$labSlug]
-            } else {
+            }
+            else {
                 # Fallback: use a high number (999) for unconfigured labs to sort them last
                 999
             }
@@ -2027,7 +1728,8 @@ function Show-FinalStatistics {
         foreach ($result in $Results) {
             if ($result -and $result.Success) {
                 $successful++
-            } else {
+            }
+            else {
                 $failed++
             }
         }

@@ -5,11 +5,193 @@
     box-sizing: border-box;
 }
 
+/* Prevent flash of unstyled content during theme detection */
+html:not([data-theme]) {
+    visibility: hidden;
+}
+
+html[data-theme] {
+    visibility: visible;
+}
+
+/* Smooth theme transitions */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* CSS Custom Properties for Theme Support */
+:root {
+    /* Light theme colors */
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f0f8ff;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: rgba(0,0,0,0.6);
+    --border-color: #e5e5e5;
+    --border-light: rgba(0,0,0,0.1);
+    --shadow: rgba(0,0,0,0.1);
+    --shadow-hover: rgba(0,0,0,0.15);
+    --accent-primary: #0078d4;
+    --accent-secondary: #106ebe;
+    --hover-bg: rgba(0,0,0,0.05);
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-thumb-hover: #a1a1a1;
+    --external-link-opacity: 0.7;
+    --fade-gradient: rgba(255,255,255,0.9);
+    /* Header specific colors */
+    --header-bg: #0078d4;
+    --header-text: white;
+    --header-text-secondary: rgba(255,255,255,0.9);
+    --header-hover: rgba(255,255,255,0.1);
+    /* Badge colors */
+    --badge-green-bg: #e8f5e8;
+    --badge-green-text: #2d7d32;
+    --badge-orange-bg: #fff3e0;
+    --badge-orange-text: #f57c00;
+    --badge-pink-bg: #fce4ec;
+    --badge-pink-text: #c2185b;
+    --badge-purple-bg: #f3e5f5;
+    --badge-purple-text: #7b1fa2;
+    /* Border colors for cards */
+    --border-green: #4caf50;
+    --border-orange: #ff9800;
+    --border-pink: #e91e63;
+    --border-purple: #9c27b0;
+    --border-gray: #607d8b;
+    --border-blue: #0277bd;
+    --border-dark-green: #2e7d32;
+    --border-dark-orange: #ef6c00;
+    --border-red: #d32f2f;
+    
+    /* Journey colors */
+    --journey-quickstart-color: #0277bd;
+    --journey-businessuser-color: #7b1fa2;
+    --journey-developer-color: #2e7d32;
+    --journey-autonomous-color: #ef6c00;
+    --journey-bootcamp-color: #d32f2f;
+    
+    /* Additional button colors */
+    --danger-color: #dc3545;
+    --danger-color-hover: #c82333;
+    --accent-secondary: #4dabf7;
+    --accent-tertiary: #9c27b0;
+    --accent-tertiary-dark: #ba68c8;
+    --dark-button-text: #1a1a1a;
+    
+    /* Code highlighting */
+    --code-bg: #f1f3f4;
+    --pre-bg: #f8f9fa;
+    
+    /* Overlay effects */
+    --overlay-hover: rgba(255,255,255,0.1);
+    --overlay-active: rgba(255,255,255,0.2);
+    --overlay-border: rgba(255,255,255,0.3);
+}
+
+/* Dark theme colors */
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-tertiary: #1e2a3a;
+    --text-primary: #e5e5e5;
+    --text-secondary: #b8b8b8;
+    --text-muted: rgba(255,255,255,0.6);
+    --border-color: #404040;
+    --border-light: rgba(255,255,255,0.1);
+    --shadow: rgba(0,0,0,0.3);
+    --shadow-hover: rgba(0,0,0,0.4);
+    --accent-primary: #4dabf7;
+    --accent-secondary: #339af0;
+    --hover-bg: rgba(255,255,255,0.1);
+    --scrollbar-track: #404040;
+    --scrollbar-thumb: #606060;
+    --scrollbar-thumb-hover: #808080;
+    --external-link-opacity: 0.8;
+    --fade-gradient: rgba(45,45,45,0.9);
+    /* Header specific colors for dark mode */
+    --header-bg: #1e1e1e;
+    --header-text: #e5e5e5;
+    --header-text-secondary: rgba(229,229,229,0.8);
+    --header-hover: rgba(255,255,255,0.1);
+    /* Badge colors for dark mode */
+    --badge-green-bg: #1b4332;
+    --badge-green-text: #52c41a;
+    --badge-orange-bg: #3b2f1f;
+    --badge-orange-text: #ffa940;
+    --badge-pink-bg: #3d1b2f;
+    --badge-pink-text: #ff85c0;
+    --badge-purple-bg: #2b1b3d;
+    --badge-purple-text: #b37feb;
+    --badge-blue-bg: #1b2f3d;
+    --badge-blue-text: #40a9ff;
+    /* Border colors for cards - keep similar in dark mode for recognition */
+    --border-green: #52c41a;
+    --border-orange: #ffa940;
+    --border-pink: #ff85c0;
+    --border-purple: #b37feb;
+    --border-gray: #8c9eff;
+    --border-blue: #40a9ff;
+    --border-dark-green: #73d13d;
+    --border-dark-orange: #ffab40;
+    --border-red: #ff7875;
+    
+    /* Journey colors - dark mode variants */
+    --journey-quickstart-color: #40a9ff;
+    --journey-businessuser-color: #b37feb;
+    --journey-developer-color: #73d13d;
+    --journey-autonomous-color: #ffab40;
+    --journey-bootcamp-color: #ff7875;
+    
+    /* Additional button colors - dark mode variants */
+    --danger-color: #ff4d6d;
+    --danger-color-hover: #ff6b85;
+    --accent-secondary: #4dabf7;
+    --accent-tertiary: #ba68c8;
+    --accent-tertiary-dark: #ba68c8;
+    --dark-button-text: #1a1a1a;
+    
+    /* Code highlighting - dark mode */
+    --code-bg: #2d2d30;
+    --pre-bg: #1e1e1e;
+    
+    /* Overlay effects - dark mode */
+    --overlay-hover: rgba(255,255,255,0.1);
+    --overlay-active: rgba(255,255,255,0.2);
+    --overlay-border: rgba(255,255,255,0.3);
+}
+
+/* System preference detection */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-tertiary: #1e2a3a;
+        --text-primary: #e5e5e5;
+        --text-secondary: #b8b8b8;
+        --text-muted: rgba(255,255,255,0.6);
+        --border-color: #404040;
+        --border-light: rgba(255,255,255,0.1);
+        --shadow: rgba(0,0,0,0.3);
+        --shadow-hover: rgba(0,0,0,0.4);
+        --accent-primary: #4dabf7;
+        --accent-secondary: #339af0;
+        --hover-bg: rgba(255,255,255,0.1);
+        --scrollbar-track: #404040;
+        --scrollbar-thumb: #606060;
+        --scrollbar-thumb-hover: #808080;
+        --external-link-opacity: 0.8;
+        --fade-gradient: rgba(45,45,45,0.9);
+    }
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f8f9fa;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -26,35 +208,104 @@ body.lab-page .site-content .container {
 
 /* Header */
 .site-header {
-    background: #0078d4;
-    color: white;
+    background: var(--header-bg) !important;
+    color: var(--header-text) !important;
     padding: 1rem 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px var(--shadow);
+    transition: all 0.3s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Ensure dark mode header overrides */
+[data-theme="dark"] .site-header {
+    background: var(--header-bg) !important;
+    color: var(--header-text) !important;
+}
+
+[data-theme="dark"] .site-header h1 a {
+    color: var(--header-text) !important;
+}
+
+[data-theme="dark"] .site-header nav a {
+    color: rgba(229,229,229,0.8) !important;
+}
+
+[data-theme="dark"] .site-header nav a:hover {
+    color: var(--header-text) !important;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .site-header h1 a {
-    color: white;
+    color: var(--header-text);
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 .site-header nav {
-    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .site-header nav a {
-    color: rgba(255,255,255,0.9);
+    color: var(--header-text-secondary);
     text-decoration: none;
-    margin-right: 1rem;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
 }
 
 .site-header nav a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
+    background-color: var(--header-hover);
+    color: var(--header-text);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: var(--header-hover);
+    border: 1px solid var(--border-light);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--header-text);
+    font-size: 1.2rem;
+}
+
+.theme-toggle:hover {
+    background: var(--hover-bg);
+    border-color: var(--border-color);
+    transform: scale(1.05);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.theme-toggle-icon {
+    transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover .theme-toggle-icon {
+    transform: rotate(15deg);
 }
 
 /* Prevent horizontal scroll */
@@ -64,7 +315,7 @@ body {
 
 /* Journey Navigation Bar */
 .journey-nav-bar {
-    background: #106ebe;
+    background: var(--accent-secondary);
     border-top: 1px solid rgba(255,255,255,0.1);
     padding: 0.75rem 0;
 }
@@ -95,14 +346,14 @@ body {
 }
 
 .journey-link:hover {
-    background-color: rgba(255,255,255,0.1);
+    background-color: var(--overlay-hover);
     color: white;
 }
 
 .journey-link.active {
-    background-color: rgba(255,255,255,0.2);
+    background-color: var(--overlay-active);
     color: white;
-    border-color: rgba(255,255,255,0.3);
+    border-color: var(--overlay-border);
 }
 
 /* Lab Layout with Sidebar */
@@ -119,15 +370,16 @@ body {
 .lab-sidebar {
     width: 260px;
     flex-shrink: 0;
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 8px;
     box-sizing: border-box;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px var(--shadow);
     max-height: calc(100vh - 4rem);
     position: sticky;
     top: 2rem;
     overflow-y: auto;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .sidebar-content {
@@ -142,17 +394,17 @@ body {
 }
 
 .lab-sidebar::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--scrollbar-track);
     border-radius: 3px;
 }
 
 .lab-sidebar::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
+    background: var(--scrollbar-thumb);
     border-radius: 3px;
 }
 
 .lab-sidebar::-webkit-scrollbar-thumb:hover {
-    background: #a1a1a1;
+    background: var(--scrollbar-thumb-hover);
 }
 
 /* Subtle fade effect at bottom to indicate scrollable content */
@@ -163,7 +415,7 @@ body {
     left: 0;
     right: 6px; /* Account for scrollbar */
     height: 15px;
-    background: linear-gradient(transparent, rgba(255,255,255,0.9));
+    background: linear-gradient(transparent, var(--fade-gradient));
     pointer-events: none;
     border-radius: 0 0 8px 8px;
     opacity: 0;
@@ -175,11 +427,12 @@ body {
 }
 
 .sidebar-content h3 {
-    color: #0078d4;
+    color: var(--accent-primary);
     margin-bottom: 1rem;
     font-size: 1.1rem;
-    border-bottom: 2px solid #e5e5e5;
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 0.5rem;
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 .journey-header {
@@ -187,19 +440,20 @@ body {
 }
 
 .journey-title {
-    color: #0078d4;
+    color: var(--accent-primary);
     text-decoration: none;
     font-weight: 600;
     font-size: 1rem;
     display: block;
     padding: 0.5rem;
-    background: #f0f8ff;
+    background: var(--bg-tertiary);
     border-radius: 6px;
-    border-left: 4px solid #0078d4;
+    border-left: 4px solid var(--accent-primary);
+    transition: all 0.3s ease;
 }
 
 .journey-title:hover {
-    background: #e6f3ff;
+    background: var(--hover-bg);
 }
 
 .journey-labs {
@@ -214,7 +468,7 @@ body {
     gap: 0.75rem;
     padding: 0.75rem 0.5rem;
     text-decoration: none;
-    color: #333;
+    color: var(--text-primary);
     border-radius: 6px;
     border-left: 3px solid transparent;
     transition: all 0.2s;
@@ -223,18 +477,18 @@ body {
 }
 
 .lab-nav-item:hover {
-    background: #f5f5f5;
-    border-left-color: #0078d4;
+    background: var(--hover-bg);
+    border-left-color: var(--accent-primary);
 }
 
 .lab-nav-item.current {
-    background: #e6f3ff;
-    border-left-color: #0078d4;
+    background: var(--bg-tertiary);
+    border-left-color: var(--accent-primary);
     font-weight: 600;
 }
 
 .lab-order {
-    background: #0078d4;
+    background: var(--accent-primary);
     color: white;
     border-radius: 50%;
     width: 24px;
@@ -248,7 +502,7 @@ body {
 }
 
 .lab-nav-item.current .lab-order {
-    background: #005a9e;
+    background: var(--accent-secondary);
 }
 
 .lab-title {
@@ -269,63 +523,70 @@ body {
 }
 
 .lab-duration {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.8rem;
-    background: #f0f0f0;
+    background: var(--hover-bg);
     padding: 0.2rem 0.5rem;
     border-radius: 12px;
     flex-shrink: 0;
+    transition: all 0.3s ease;
 }
 
 .other-journeys {
     margin-top: 1.5rem;
     padding-top: 1rem;
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid var(--border-color);
+    transition: border-color 0.3s ease;
 }
 
 .other-journeys h4 {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
 }
 
 .other-journey {
     display: inline-block;
-    color: #0078d4;
+    color: var(--accent-primary);
     text-decoration: none;
     font-size: 0.85rem;
     padding: 0.3rem 0.6rem;
-    background: #f0f8ff;
+    background: var(--bg-tertiary);
     border-radius: 4px;
     margin-right: 0.5rem;
     margin-bottom: 0.25rem;
+    transition: all 0.3s ease;
 }
 
 .other-journey:hover {
-    background: #e6f3ff;
+    background: var(--hover-bg);
 }
 
 .no-journey {
     text-align: center;
-    color: #666;
+    color: var(--text-secondary);
     padding: 2rem 1rem;
+    transition: color 0.3s ease;
 }
 
 .no-journey a {
-    color: #0078d4;
+    color: var(--accent-primary);
     text-decoration: none;
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 /* Lab Content Adjustments */
 .lab-content {
     flex: 1;
     min-width: 0; /* Prevent flex item from overflowing */
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px var(--shadow);
     padding: 2rem;
     overflow-wrap: break-word;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Journey Navigation Buttons */
@@ -335,12 +596,13 @@ body {
     justify-content: center;
     margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid var(--border-color);
+    transition: border-color 0.3s ease;
 }
 
 .nav-button {
     padding: 0.75rem 1.5rem;
-    background: #0078d4;
+    background: var(--accent-primary);
     color: white;
     text-decoration: none;
     border-radius: 6px;
@@ -349,16 +611,17 @@ body {
 }
 
 .nav-button:hover {
-    background: #005a9e;
+    background: var(--accent-secondary);
     color: white;
 }
 
 .nav-button.journey {
-    background: #6c757d;
+    background: var(--text-secondary);
+    transition: all 0.3s ease;
 }
 
 .nav-button.journey:hover {
-    background: #545b62;
+    background: var(--text-primary);
 }
 
 /* Responsive Design for Navigation */
@@ -454,19 +717,19 @@ body {
 }
 
 .lab-card {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border-left: 4px solid #0078d4;
+    box-shadow: 0 2px 12px var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s ease;
+    border-left: 4px solid var(--accent-primary);
     position: relative;
     overflow: hidden;
 }
 
 .lab-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 20px var(--shadow-hover);
 }
 
 /* Make entire card clickable */
@@ -484,7 +747,7 @@ body {
 }
 
 .lab-card-link:focus {
-    outline: 2px solid #0078d4;
+    outline: 2px solid var(--accent-primary);
     outline-offset: 2px;
 }
 
@@ -493,7 +756,7 @@ body {
     position: absolute;
     top: -10px;
     right: -10px;
-    background: #0078d4;
+    background: var(--accent-primary);
     color: white;
     width: 40px;
     height: 40px;
@@ -504,6 +767,7 @@ body {
     font-weight: bold;
     font-size: 1.1rem;
     box-shadow: 0 2px 8px rgba(0,120,212,0.3);
+    transition: background-color 0.3s ease;
 }
 
 .difficulty-badge {
@@ -517,79 +781,89 @@ body {
 }
 
 .difficulty-badge.level-100 {
-    background: #e8f5e8;
-    color: #2d7d32;
+    background: var(--badge-green-bg);
+    color: var(--badge-green-text);
+    transition: all 0.3s ease;
 }
 
 .difficulty-badge.level-200 {
-    background: #fff3e0;
-    color: #f57c00;
+    background: var(--badge-orange-bg);
+    color: var(--badge-orange-text);
+    transition: all 0.3s ease;
 }
 
 .difficulty-badge.level-300 {
-    background: #fce4ec;
-    color: #c2185b;
+    background: var(--badge-pink-bg);
+    color: var(--badge-pink-text);
+    transition: all 0.3s ease;
 }
 
 /* Legacy support for old naming */
 .difficulty-badge.beginner {
-    background: #e8f5e8;
-    color: #2d7d32;
+    background: var(--badge-green-bg);
+    color: var(--badge-green-text);
+    transition: all 0.3s ease;
 }
 
 .difficulty-badge.intermediate {
-    background: #fff3e0;
-    color: #f57c00;
+    background: var(--badge-orange-bg);
+    color: var(--badge-orange-text);
+    transition: all 0.3s ease;
 }
 
 .difficulty-badge.advanced {
-    background: #fce4ec;
-    color: #c2185b;
+    background: var(--badge-pink-bg);
+    color: var(--badge-pink-text);
+    transition: all 0.3s ease;
 }
 
 .optional-badge {
-    background: #f3e5f5;
-    color: #7b1fa2;
+    background: var(--badge-purple-bg);
+    color: var(--badge-purple-text);
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 600;
     display: inline-block;
     margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
 }
 
 /* Color coding for different lab types */
 .lab-card.beginner {
-    border-left-color: #4caf50;
+    border-left-color: var(--border-green);
 }
 
 .lab-card.intermediate {
-    border-left-color: #ff9800;
+    border-left-color: var(--border-orange);
 }
 
 .lab-card.advanced {
-    border-left-color: #e91e63;
+    border-left-color: var(--border-pink);
 }
 
 .lab-card.optional {
-    border-left-color: #9c27b0;
+    border-left-color: var(--border-purple);
     opacity: 0.9;
 }
 
 .lab-card.external {
-    border-left-color: #607d8b;
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-left-color: var(--border-gray);
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    transition: all 0.3s ease;
 }
 
 .external-badge {
-    background: #e3f2fd;
-    color: #1565c0;
+    background: var(--bg-tertiary);
+    color: var(--accent-primary);
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 600;
     display: inline-block;
     margin-bottom: 0.5rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
 }
 
 /* Quick start cards */
@@ -619,26 +893,27 @@ body {
 }
 
 .start-btn {
-    background: rgba(255,255,255,0.2);
+    background: var(--overlay-active);
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 25px;
     text-decoration: none;
     font-weight: 600;
     transition: background-color 0.2s;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid var(--overlay-border);
 }
 
 .start-btn:hover {
-    background: rgba(255,255,255,0.3);
+    background: var(--overlay-border);
     color: white;
 }
 
 .lab-card h3 {
-    color: #0078d4;
+    color: var(--accent-primary);
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
     margin-top: 0;
+    transition: color 0.3s ease;
 }
 
 .lab-card h3 a {
@@ -651,16 +926,18 @@ body {
 }
 
 .lab-card p {
-    color: #666;
+    color: var(--text-secondary);
     margin-bottom: 1rem;
     font-size: 0.9rem;
+    transition: color 0.3s ease;
 }
 
 .lab-meta {
     display: flex;
     gap: 1rem;
     font-size: 0.85rem;
-    color: #888;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
 }
 
 /* Lab header with PDF download button */
@@ -670,9 +947,10 @@ body {
     align-items: center;
     margin: -2rem -2rem 1.5rem -2rem;
     padding: 1rem 2rem 1rem 2rem;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e1e5e9;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
     border-radius: 8px 8px 0 0;
+    transition: all 0.3s ease;
 }
 
 .lab-header-actions {
@@ -709,26 +987,27 @@ body {
 }
 
 .btn-primary {
-    background: #0078d4;
+    background: var(--accent-primary);
     color: white;
 }
 
 .btn-primary:hover {
-    background: #106ebe;
+    background: var(--accent-primary-hover);
     color: white;
     text-decoration: none;
     transform: translateY(-1px);
 }
 
 .btn-secondary {
-    background: #f3f2f1;
-    color: #323130;
-    border: 1px solid #d2d0ce;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background: #edebe9;
-    color: #323130;
+    background: var(--hover-bg);
+    color: var(--text-primary);
     text-decoration: none;
     transform: translateY(-1px);
 }
@@ -737,15 +1016,24 @@ body {
 .lab-downloads {
     margin: 2rem 0;
     padding: 1.5rem;
-    background: #f8f9fa;
+    background: var(--bg-tertiary);
     border-radius: 8px;
-    border-left: 4px solid #0078d4;
+    border-left: 4px solid var(--accent-primary);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+/* Dark mode adjustments for lab downloads section */
+[data-theme="dark"] .lab-downloads {
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--accent-secondary);
 }
 
 .lab-downloads h3 {
     margin: 0 0 1rem 0;
-    color: #323130;
+    color: var(--text-primary);
     font-size: 1.1rem;
+    transition: color 0.3s ease;
 }
 
 .download-links {
@@ -759,19 +1047,31 @@ body {
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1rem;
-    background: #0078d4;
+    background: var(--accent-primary);
     color: white;
     text-decoration: none;
     border-radius: 6px;
     font-weight: 500;
     transition: background-color 0.2s ease;
     width: fit-content;
+    border: 1px solid var(--border-color);
 }
 
 .pdf-download:hover {
-    background: #106ebe;
+    background: var(--accent-primary-hover);
     color: white;
     text-decoration: none;
+}
+
+/* Dark mode adjustments for download buttons */
+[data-theme="dark"] .pdf-download {
+    background: var(--accent-secondary);
+    color: var(--dark-button-text);
+}
+
+[data-theme="dark"] .pdf-download:hover {
+    background: var(--accent-primary);
+    color: white;
 }
 
 /* Compact PDF button for lab cards */
@@ -788,9 +1088,10 @@ body {
 }
 
 .download-links small {
-    color: #605e5c;
+    color: var(--text-secondary);
     font-style: italic;
     margin-top: 0.5rem;
+    transition: color 0.3s ease;
 }
 
 /* Journey navigation cards */
@@ -802,47 +1103,48 @@ body {
 }
 
 .journey-card {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 12px var(--shadow);
     transition: transform 0.2s, box-shadow 0.2s;
     border-left: 4px solid;
+    border: 1px solid var(--border-color);
 }
 
 .journey-card.quick-start {
-    border-left-color: #0277bd;
+    border-left-color: var(--border-blue);
 }
 
 .journey-card.business-user {
-    border-left-color: #7b1fa2;
+    border-left-color: var(--border-purple);
 }
 
 .journey-card.developer {
-    border-left-color: #2e7d32;
+    border-left-color: var(--border-dark-green);
 }
 
 .journey-card.autonomous-ai {
-    border-left-color: #ef6c00;
+    border-left-color: var(--border-dark-orange);
 }
 
 .journey-card.bootcamp {
-    border-left-color: #d32f2f;
+    border-left-color: var(--border-red);
 }
 
 .journey-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 20px var(--shadow-hover);
 }
 
 .journey-card h3 {
     margin: 0 0 0.5rem 0;
-    color: #333;
+    color: var(--text-primary);
     font-size: 1.25rem;
 }
 
 .journey-card p {
-    color: #666;
+    color: var(--text-secondary);
     margin: 0 0 1rem 0;
     font-size: 0.95rem;
 }
@@ -852,12 +1154,12 @@ body {
     gap: 1rem;
     margin-bottom: 1rem;
     font-size: 0.85rem;
-    color: #888;
+    color: var(--text-muted);
 }
 
 .journey-btn {
     display: inline-block;
-    background: #0078d4;
+    background: var(--accent-primary);
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 6px;
@@ -867,8 +1169,165 @@ body {
 }
 
 .journey-btn:hover {
-    background: #106ebe;
+    background: var(--accent-primary-hover);
     text-decoration: none;
+}
+
+/* Journey sections */
+.journey-section {
+    margin-bottom: 3rem;
+}
+
+/* Filter and lab management styles */
+.current-filter-display {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.filter-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.filter-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+.current-filter {
+    background: var(--accent-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.clear-filter-btn {
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.3s ease;
+}
+
+.clear-filter-btn:hover {
+    background: var(--danger-color-hover);
+}
+
+.filter-section {
+    background: var(--bg-secondary);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.filter-section h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.filter-hint {
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    transition: color 0.3s ease;
+}
+
+.lab-filters {
+    margin: 2rem 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--accent-primary);
+    background: var(--bg-secondary);
+    color: var(--accent-primary);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.filter-btn:hover {
+    background: var(--accent-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 120, 212, 0.3);
+}
+
+.filter-btn.active {
+    background: var(--accent-primary);
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
+}
+
+/* Dark mode specific filter button improvements */
+[data-theme="dark"] .filter-btn {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .filter-btn:hover {
+    background: var(--accent-secondary);
+    color: var(--dark-button-text);
+    box-shadow: 0 4px 8px rgba(77, 171, 247, 0.4);
+}
+
+[data-theme="dark"] .filter-btn.active {
+    background: var(--accent-secondary);
+    color: var(--dark-button-text);
+    box-shadow: 0 2px 4px rgba(77, 171, 247, 0.4);
+}
+
+.section-btn {
+    border-color: var(--accent-tertiary);
+    color: var(--accent-tertiary);
+    background: var(--bg-secondary);
+}
+
+.section-btn:hover, .section-btn.active {
+    background: var(--accent-tertiary);
+    color: white;
+    border-color: var(--accent-tertiary);
+}
+
+/* Dark mode specific section button improvements */
+[data-theme="dark"] .section-btn {
+    border-color: var(--accent-tertiary-dark);
+    color: var(--accent-tertiary-dark);
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .section-btn:hover, 
+[data-theme="dark"] .section-btn.active {
+    background: var(--accent-tertiary-dark);
+    color: var(--dark-button-text);
+    border-color: var(--accent-tertiary-dark);
 }
 
 /* Journey sections */
@@ -896,42 +1355,43 @@ body {
 
 /* Core 4 Journey Badges */
 .journey-badge.journey-quick-start {
-    background: #e1f5fe;
-    color: #0277bd;
+    background: var(--badge-blue-bg);
+    color: var(--journey-quickstart-color);
 }
 
 .journey-badge.journey-business-user {
-    background: #f3e5f5;
-    color: #7b1fa2;
+    background: var(--badge-purple-bg);
+    color: var(--journey-businessuser-color);
 }
 
 .journey-badge.journey-developer {
-    background: #e8f5e8;
-    color: #2e7d32;
+    background: var(--badge-green-bg);
+    color: var(--journey-developer-color);
 }
 
 .journey-badge.journey-autonomous-ai {
-    background: #fff3e0;
-    color: #ef6c00;
+    background: var(--badge-orange-bg);
+    color: var(--journey-autonomous-color);
 }
 
 /* Lab content */
 .lab-content {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 8px;
     padding: 2rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px var(--shadow);
     margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
 }
 
 .lab-header {
-    border-bottom: 2px solid #0078d4;
+    border-bottom: 2px solid var(--accent-primary);
     padding-bottom: 1rem;
     margin-bottom: 2rem;
 }
 
 .lab-header h1 {
-    color: #0078d4;
+    color: var(--accent-primary);
     font-size: 2rem;
     margin-bottom: 0.5rem;
 }
@@ -940,7 +1400,7 @@ body {
     display: flex;
     gap: 1rem;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .lab-body {
@@ -955,12 +1415,14 @@ body {
 .lab-body h6 {
     margin-top: 2rem;
     margin-bottom: 1rem;
-    color: #333;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
 }
 
 .lab-body h2 {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.5rem;
+    transition: border-color 0.3s ease;
 }
 
 .lab-body p {
@@ -978,7 +1440,7 @@ body {
 }
 
 .lab-body code {
-    background: #f1f3f4;
+    background: var(--code-bg);
     padding: 0.2rem 0.4rem;
     border-radius: 3px;
     font-family: 'Consolas', 'Monaco', monospace;
@@ -986,8 +1448,8 @@ body {
 }
 
 .lab-body pre {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background: var(--pre-bg);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 1rem;
     overflow-x: auto;
@@ -1028,7 +1490,7 @@ body {
 .nav-button {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    background: #0078d4;
+    background: var(--accent-primary);
     color: white;
     text-decoration: none;
     border-radius: 6px;
@@ -1037,7 +1499,7 @@ body {
 }
 
 .nav-button:hover {
-    background: #106ebe;
+    background: var(--accent-primary-hover);
     color: white;
 }
 
@@ -1051,11 +1513,13 @@ body {
 
 /* Footer */
 .site-footer {
-    background: #333;
-    color: white;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     text-align: center;
     padding: 1rem 0;
     margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    transition: all 0.3s ease;
 }
 
 /* Responsive design */
@@ -1093,28 +1557,31 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin: 1.5rem 0;
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: all 0.3s ease;
 }
 
 table th,
 table td {
     padding: 12px 16px;
     text-align: left;
-    border: 1px solid #e1e5e9;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
 }
 
 table th {
-    background-color: #f8f9fa;
+    background-color: var(--hover-bg);
     font-weight: 600;
-    color: #495057;
-    border-bottom: 2px solid #dee2e6;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-color);
 }
 
 table tr:hover {
-    background-color: #f8f9fa;
+    background-color: var(--hover-bg);
 }
 
 table tr:last-child td {
@@ -1123,40 +1590,67 @@ table tr:last-child td {
 
 /* Zebra striping for better readability */
 table tbody tr:nth-child(even) {
-    background-color: #fdfdfe;
+    background-color: var(--hover-bg);
 }
 
 table tbody tr:nth-child(even):hover {
-    background-color: #f1f3f4;
+    background-color: var(--border-color);
 }
 
 /* Special styling for lab details tables */
 .lab-content table {
     font-size: 0.95rem;
+    margin: 1rem 0 2rem 0;
+    box-shadow: 0 4px 12px var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 .lab-content table th {
-    background-color: #0078d4;
+    background-color: var(--accent-primary);
     color: white;
-    border: 1px solid #106ebe;
+    border: 1px solid var(--accent-secondary);
+    font-weight: 600;
+    text-align: center;
+    padding: 1rem;
 }
 
-.lab-content table tbody tr:nth-child(even) {
-    background-color: #f8f9ff;
+.lab-content table td {
+    padding: 1rem;
+    vertical-align: top;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
 }
 
-.lab-content table tbody tr:nth-child(even):hover {
-    background-color: #e6f2ff;
+.lab-content table tbody tr:nth-child(even) td {
+    background-color: var(--bg-tertiary);
+}
+
+.lab-content table tbody tr:nth-child(even):hover td {
+    background-color: var(--hover-bg);
+}
+
+.lab-content table tbody tr:hover td {
+    background-color: var(--hover-bg);
+}
+
+/* Ensure proper text contrast in table cells */
+.lab-content table td,
+.lab-content table th {
+    color: var(--text-primary);
+}
+
+.lab-content table th {
+    color: white; /* Keep white text on blue background */
 }
 
 /* External link styling */
 .external-link-icon {
     display: inline-block;
     font-size: 0.8em;
-    opacity: 0.7;
+    opacity: var(--external-link-opacity);
     margin-left: 2px;
     transition: opacity 0.2s ease;
-    color: #0078d4;
+    color: var(--accent-primary);
 }
 
 a:hover .external-link-icon {
@@ -1166,6 +1660,8 @@ a:hover .external-link-icon {
 /* External links in lab content */
 .lab-content a[target="_blank"] {
     position: relative;
+    color: var(--accent-primary);
+    transition: color 0.3s ease;
 }
 
 .lab-content a[target="_blank"]:hover {
@@ -1175,5 +1671,196 @@ a:hover .external-link-icon {
 /* Ensure external link icon doesn't interfere with layout */
 .external-link-icon {
     vertical-align: super;
-    line-height: 1;
+}
+
+/* Additional lab content styling for dark mode */
+.lab-content {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.lab-content h1,
+.lab-content h2,
+.lab-content h3,
+.lab-content h4,
+.lab-content h5,
+.lab-content h6 {
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+    margin: 1.5em 0 1em 0;
+    padding: 0.5em 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Special styling for emoji section headings */
+.lab-content h2[id^="lab-details"],
+.lab-content h2[id*="lab-details"],
+.lab-content h2:has(+ table),
+.lab-content h2 + h2,
+.lab-content h2 {
+    background: var(--bg-tertiary);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    margin: 2rem 0 1rem 0;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.lab-content p {
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+    line-height: 1.6;
+    margin: 1em 0;
+}
+
+.lab-content li {
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+    margin: 0.5em 0;
+    line-height: 1.6;
+}
+
+.lab-content ul,
+.lab-content ol {
+    padding-left: 2em;
+    margin: 1em 0;
+}
+
+.lab-content blockquote {
+    border-left: 4px solid var(--accent-primary);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+}
+
+.lab-content code {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.lab-content pre {
+    background: var(--hover-bg);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.lab-content pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+/* Improve horizontal rule visibility */
+.lab-content hr {
+    border: none;
+    border-top: 2px solid var(--border-color);
+    margin: 2rem 0;
+    opacity: 0.6;
+}
+
+/* Table of contents link styling */
+.lab-content a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.lab-content a:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+}
+
+/* Strong/bold text visibility */
+.lab-content strong,
+.lab-content b {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Emphasis/italic text */
+.lab-content em,
+.lab-content i {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Concept overview table specific styling */
+.lab-content table:has(th:contains("Concept")),
+.lab-content table:has(th:contains("Why it matters")) {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid var(--accent-primary);
+}
+
+.lab-content table:has(th:contains("Concept")) th,
+.lab-content table:has(th:contains("Why it matters")) th {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1.2rem;
+}
+
+.lab-content table:has(th:contains("Concept")) td,
+.lab-content table:has(th:contains("Why it matters")) td {
+    padding: 1.2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.lab-content table:has(th:contains("Concept")) td:first-child,
+.lab-content table:has(th:contains("Why it matters")) td:first-child {
+    font-weight: 600;
+    color: var(--accent-primary);
+    background: var(--bg-tertiary);
+}
+
+/* Improve markdown list styling within tables */
+.lab-content table td ul,
+.lab-content table td ol {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.lab-content table td li {
+    margin: 0.3rem 0;
+    line-height: 1.5;
+}
+
+/* Section dividers and spacing */
+.lab-content hr {
+    border: none;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), transparent);
+    margin: 3rem 0 2rem 0;
+    border-radius: 2px;
+}
+
+/* Improve navigation link visibility */
+.lab-content a[href^="#"] {
+    color: var(--accent-primary);
+    font-weight: 500;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.lab-content a[href^="#"]:hover {
+    background: var(--hover-bg);
+    color: var(--accent-secondary);
+    text-decoration: none;
 }
