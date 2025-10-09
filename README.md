@@ -41,3 +41,4 @@ dist/           # ← Generated HTML/PDF (auto-created)
 .github/        # ← Workflows and technical documentation
 package.json    # ← Dependencies for document generation
 ```
+# Trigger deployment
