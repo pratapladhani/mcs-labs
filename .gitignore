@@ -18,6 +18,7 @@ labs/index.md
 
 # Ignore generated content and build artifacts:
 dist/
+local-dist/
 node_modules/
 package-lock.json
 
