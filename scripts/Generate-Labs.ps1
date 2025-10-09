@@ -778,6 +778,10 @@ $sectionButtons  </div>
     </div>
     <div class="lab-actions">
       <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
+      {% assign pdf_url = '/assets/pdfs/' | append: lab.slug | append: '.pdf' | relative_url %}
+      <a href="{{ pdf_url }}" class="btn btn-secondary pdf-btn" target="_blank" rel="noopener noreferrer" title="Download PDF version">
+        📄 PDF
+      </a>
     </div>
   </div>
 {% endfor %}
@@ -1124,6 +1128,10 @@ $sectionDescription
     </div>
     <div class="lab-actions">
       <a href="{{ '/labs/' | relative_url }}{{ lab.slug }}/" class="btn btn-primary">Start Lab</a>
+      {% assign pdf_url = '/assets/pdfs/' | append: lab.slug | append: '.pdf' | relative_url %}
+      <a href="{{ pdf_url }}" class="btn btn-secondary pdf-btn" target="_blank" rel="noopener noreferrer" title="Download PDF version">
+        📄 PDF
+      </a>
     </div>
   </div>
   {% endif %}
@@ -1293,6 +1301,89 @@ window.addEventListener('hashchange', function() {
 
 Set-Content -Path $indexPath -Value $allLabsContent -Encoding UTF8
 Write-Host "  ✅  Created enhanced labs/index.md (with dynamic journeys and sections)" -ForegroundColor Green
+
+# Generate Main Index Page with Journey Cards
+Write-Host "🏠  Generating main index page with journey cards..." -ForegroundColor Magenta
+
+$mainIndexPath = "$basePath/index.md"
+
+# Build journey cards dynamically
+$journeyCards = ""
+foreach ($journeyKey in $config.journeys.Keys) {
+    $journey = $config.journeys[$journeyKey]
+    $journeyStats = Get-JourneyStats -JourneyName $journeyKey -AllLabs $allLabs
+    $labCount = $journeyStats.LabCount
+    $totalDuration = $journeyStats.TotalDuration
+    $durationHours = [math]::Round($totalDuration / 60, 1)
+    
+    # Determine level display
+    $levelDisplay = $journey.difficulty
+    if ($journey.difficulty -match "(\d+)-(\d+)") {
+        $levelDisplay = "Level $($matches[1])-$($matches[2])"
+    } elseif ($journey.difficulty -match "(\d+)") {
+        $levelDisplay = "Level $($matches[1])"
+    }
+    
+    # Determine time display
+    $timeDisplay = "$durationHours hours"
+    if ($durationHours -lt 1) {
+        $timeDisplay = "$totalDuration mins"
+    } elseif ($durationHours -ge 2) {
+        $timeDisplay = "$([math]::Floor($durationHours))-$([math]::Ceiling($durationHours)) hours"
+    }
+    
+    $journeyCards += @"
+    <div class="journey-card $journeyKey">
+        <h3>$($journey.icon) $($journey.title.Replace(' Journey', ''))</h3>
+        <p>$($journey.description)</p>
+        <div class="journey-meta">
+            <span>⏱️ $timeDisplay</span>
+            <span>📊 $levelDisplay</span>
+            <span>📚 $labCount labs</span>
+        </div>
+        <a href="{{ '/labs/#$journeyKey' | relative_url }}" class="journey-btn">Start Journey →</a>
+    </div>
+    
+
+"@
+}
+$journeyCards = $journeyCards.TrimEnd()
+
+$mainIndexContent = @"
+---
+layout: default
+title: Home
+---
+
+# Microsoft Copilot Studio Labs
+
+Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. Choose your learning journey based on your goals and experience level.
+
+## 🎯 **Choose Your Learning Journey**
+
+<div class="journey-cards">
+$journeyCards
+</div>
+
+---
+
+## 🎯 **Getting Started**
+
+1. **Choose your journey** above based on your goals and experience
+2. **Follow the guided path** with labs specifically selected for your needs
+3. **Build hands-on skills** with real Microsoft Copilot Studio projects
+4. **Progress at your own pace** - each journey is self-contained
+
+**Ready to build amazing AI agents?** Pick your journey and start learning! 🎉
+
+- Join the community discussions for questions and insights
+- Practice with your own use cases after completing each lab
+
+Happy learning! 🎉
+"@
+
+Set-Content -Path $mainIndexPath -Value $mainIndexContent -Encoding UTF8
+Write-Host "  ✅  Created main index.md with dynamic journey cards" -ForegroundColor Green
 
 Write-Host ""
 

@@ -13,6 +13,13 @@ journeys:
     difficulty: "Beginner"
     estimated_time: "3-4 hours"
     
+  bootcamp:
+    title: "Bootcamp Journey"
+    description: "Intensive hands-on bootcamp covering agent building, SharePoint integration, autonomous AI, and DevOps practices."
+    icon: "⚔️"
+    difficulty: "Beginner to Advanced"
+    estimated_time: "7 hours"
+    
   business-user:
     title: "Business User Journey"
     description: "Perfect for business professionals who want to create powerful AI assistants without deep technical knowledge."
@@ -33,13 +40,6 @@ journeys:
     icon: "🤖"
     difficulty: "Advanced"
     estimated_time: "6-8 hours"
-    
-  bootcamp:
-    title: "Bootcamp Journey"
-    description: "Intensive hands-on bootcamp covering agent building, SharePoint integration, autonomous AI, and DevOps practices."
-    icon: "⚔️"
-    difficulty: "Beginner to Advanced"
-    estimated_time: "7 hours"
 
 # =====================================================
 # SECTION DEFINITIONS - Optional display customization

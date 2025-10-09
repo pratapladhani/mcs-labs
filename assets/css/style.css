@@ -803,6 +803,10 @@ body {
     border-left-color: #ef6c00;
 }
 
+.journey-card.bootcamp {
+    border-left-color: #d32f2f;
+}
+
 .journey-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.12);
