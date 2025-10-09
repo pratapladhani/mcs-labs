@@ -11,44 +11,43 @@ layout: default
             {% comment %} Find which journeys this lab belongs to {% endcomment %}
             {% assign current_journeys = page.journeys %}
             
-            {% comment %} If lab has journeys, show navigation for the first/primary journey {% endcomment %}
+            {% comment %} Default to first/primary journey, will be overridden by JavaScript if URL param exists {% endcomment %}
             {% if current_journeys and current_journeys.size > 0 %}
                 {% assign primary_journey = current_journeys[0] %}
                 
-                {% case primary_journey %}
-                    {% when 'quick-start' %}
-                        {% assign journey_title = '🚀 Quick Start Journey' %}
-                        {% assign journey_url = '/labs/#quick-start' %}
-                    {% when 'business-user' %}
-                        {% assign journey_title = '💼 Business User Journey' %}
-                        {% assign journey_url = '/labs/#business-user' %}
-                    {% when 'developer' %}
-                        {% assign journey_title = '🔧 Developer Journey' %}
-                        {% assign journey_url = '/labs/#developer' %}
-                    {% when 'autonomous-ai' %}
-                        {% assign journey_title = '🤖 Autonomous AI Journey' %}
-                        {% assign journey_url = '/labs/#autonomous-ai' %}
-                    {% when 'bootcamp' %}
-                        {% assign journey_title = '⚔️ Bootcamp Journey' %}
-                        {% assign journey_url = '/labs/#bootcamp' %}
-                {% endcase %}
-                
                 <div class="journey-header">
-                    <a href="{{ journey_url | relative_url }}" class="journey-title">{{ journey_title }}</a>
+                    <a href="#" class="journey-title" id="journey-title-link">
+                        <span id="journey-title-text">📚 Journey Navigation</span>
+                    </a>
                 </div>
                 
                 <nav class="journey-labs" id="journey-labs-nav">
-                    {% assign journey_labs = site.labs | where_exp: "lab", "lab.journeys contains primary_journey" | sort: "title" %}
-                    {% for lab in journey_labs %}
-                        <a href="{{ lab.url | relative_url }}" 
-                           class="lab-nav-item {% if lab.url == page.url %}current{% endif %}"
-                           title="{{ lab.title }}"
-                           data-journeys="{{ lab.journeys | join: ',' }}"
-                           data-section="{{ lab.section }}">
-                            <span class="lab-order" data-lab-order></span>
-                            <span class="lab-title">{{ lab.title }}</span>
-                            <span class="lab-duration">{{ lab.duration }}min</span>
-                        </a>
+                    {% comment %} Show all labs this lab belongs to, JavaScript will filter based on URL params {% endcomment %}
+                    {% assign all_journey_labs = site.labs | where_exp: "lab", "lab.journeys" | sort: "order" %}
+                    {% for lab in all_journey_labs %}
+                        {% assign shared_journeys = "" %}
+                        {% for lab_journey in lab.journeys %}
+                            {% for current_journey in current_journeys %}
+                                {% if lab_journey == current_journey %}
+                                    {% unless shared_journeys contains lab_journey %}
+                                        {% assign shared_journeys = shared_journeys | append: lab_journey | append: "," %}
+                                    {% endunless %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        
+                        {% if shared_journeys != "" %}
+                            <a href="{{ lab.url | relative_url }}" 
+                               class="lab-nav-item {% if lab.url == page.url %}current{% endif %}"
+                               title="{{ lab.title }}"
+                               data-journeys="{{ lab.journeys | join: ',' }}"
+                               data-section="{{ lab.section }}"
+                               data-order="{{ lab.order }}">
+                                <span class="lab-order" data-lab-order></span>
+                                <span class="lab-title">{{ lab.title }}</span>
+                                <span class="lab-duration">{{ lab.duration }}min</span>
+                            </a>
+                        {% endif %}
                     {% endfor %}
                 </nav>
                 
@@ -206,10 +205,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!activeFilter) return;
     
     // Get all lab navigation items
-    const navItems = document.querySelectorAll('.lab-nav-item');
-    let sequenceNumber = 1;
+    const navItems = Array.from(document.querySelectorAll('.lab-nav-item'));
     
-    // Filter and number labs based on active filter
+    // First pass: filter items based on active filter
+    const filteredItems = [];
     navItems.forEach(function(item) {
         let shouldShow = false;
         
@@ -221,15 +220,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (shouldShow) {
-            const orderSpan = item.querySelector('[data-lab-order]');
-            if (orderSpan) {
-                orderSpan.textContent = sequenceNumber;
-                sequenceNumber++;
-            }
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
+            filteredItems.push(item);
         }
+    });
+    
+    // Sort filtered items numerically by order (same as main page)
+    filteredItems.sort((a, b) => {
+        const orderA = parseInt(a.dataset.order) || 999;
+        const orderB = parseInt(b.dataset.order) || 999;
+        return orderA - orderB;
+    });
+    
+    // Hide all items first
+    navItems.forEach(function(item) {
+        item.style.display = 'none';
+    });
+    
+    // Get navigation container and clear it
+    const navContainer = document.getElementById('journey-labs-nav');
+    while (navContainer.firstChild) {
+        navContainer.removeChild(navContainer.firstChild);
+    }
+    
+    // Add filtered items in sorted order with sequence numbers
+    let sequenceNumber = 1;
+    filteredItems.forEach(function(item) {
+        const orderSpan = item.querySelector('[data-lab-order]');
+        if (orderSpan) {
+            orderSpan.textContent = sequenceNumber;
+            sequenceNumber++;
+        }
+        item.style.display = 'block';
+        navContainer.appendChild(item);
     });
     
     // Update all navigation links to preserve query string
@@ -261,17 +283,77 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Update the journey title if we have filter context
-    if (activeFilterType === 'journey' && filterJourney) {
-        const journeyTitle = document.querySelector('.journey-title');
-        if (journeyTitle) {
-            // Add filter context indicator
-            const filterIndicator = document.createElement('span');
-            filterIndicator.className = 'filter-context';
-            filterIndicator.textContent = ' (filtered)';
-            filterIndicator.style.fontSize = '0.8em';
-            filterIndicator.style.color = '#666';
-            journeyTitle.appendChild(filterIndicator);
+    // Update the journey title and link based on active filter
+    const journeyTitleText = document.getElementById('journey-title-text');
+    const journeyTitleLink = document.getElementById('journey-title-link');
+    
+    if (activeFilterType === 'journey' && activeFilter) {
+        let journeyTitle = '';
+        let journeyUrl = '';
+        
+        switch(activeFilter) {
+            case 'quick-start':
+                journeyTitle = '🚀 Quick Start Journey';
+                journeyUrl = '/labs/#quick-start';
+                break;
+            case 'business-user':
+                journeyTitle = '💼 Business User Journey';
+                journeyUrl = '/labs/#business-user';
+                break;
+            case 'developer':
+                journeyTitle = '🔧 Developer Journey';
+                journeyUrl = '/labs/#developer';
+                break;
+            case 'autonomous-ai':
+                journeyTitle = '🤖 Autonomous AI Journey';
+                journeyUrl = '/labs/#autonomous-ai';
+                break;
+            case 'bootcamp':
+                journeyTitle = '⚔️ Bootcamp Journey';
+                journeyUrl = '/labs/#bootcamp';
+                break;
+        }
+        
+        if (journeyTitleText && journeyTitle) {
+            journeyTitleText.textContent = journeyTitle;
+        }
+        if (journeyTitleLink && journeyUrl) {
+            journeyTitleLink.href = journeyUrl;
+        }
+    } else if (currentJourneys && currentJourneys.length > 0) {
+        // Default to primary journey
+        const primaryJourney = currentJourneys[0];
+        let journeyTitle = '';
+        let journeyUrl = '';
+        
+        switch(primaryJourney) {
+            case 'quick-start':
+                journeyTitle = '🚀 Quick Start Journey';
+                journeyUrl = '/labs/#quick-start';
+                break;
+            case 'business-user':
+                journeyTitle = '💼 Business User Journey';
+                journeyUrl = '/labs/#business-user';
+                break;
+            case 'developer':
+                journeyTitle = '🔧 Developer Journey';
+                journeyUrl = '/labs/#developer';
+                break;
+            case 'autonomous-ai':
+                journeyTitle = '🤖 Autonomous AI Journey';
+                journeyUrl = '/labs/#autonomous-ai';
+                break;
+            case 'bootcamp':
+                journeyTitle = '⚔️ Bootcamp Journey';
+                journeyUrl = '/labs/#bootcamp';
+                break;
+        }
+        
+        if (journeyTitleText && journeyTitle) {
+            journeyTitleText.textContent = journeyTitle;
+        }
+        if (journeyTitleLink && journeyUrl) {
+            journeyTitleLink.href = journeyUrl;
         }
     }
 });
