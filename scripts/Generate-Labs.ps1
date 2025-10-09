@@ -65,10 +65,10 @@ if (-not (Get-Module -ListAvailable -Name powershell-yaml)) {
 
 Import-Module powershell-yaml -ErrorAction Stop
 
-# Validate lab-config.yml exists
-if (-not (Test-Path "lab-config.yml")) {
-    Write-Host "❌  lab-config.yml not found in current directory" -ForegroundColor Red
-    Write-Host "    Please ensure you're running this script from the repository root" -ForegroundColor Yellow
+# Validate lab-config.yml exists (in parent directory)
+if (-not (Test-Path "../lab-config.yml")) {
+    Write-Host "❌  lab-config.yml not found in parent directory" -ForegroundColor Red
+    Write-Host "    Please ensure the lab-config.yml file exists in the repository root" -ForegroundColor Yellow
     exit 1
 }
 
@@ -76,7 +76,7 @@ Write-Host "📖  Reading lab configuration from lab-config.yml..." -ForegroundC
 
 # Read and parse lab-config.yml
 try {
-    $configContent = Get-Content "lab-config.yml" -Raw -ErrorAction Stop
+    $configContent = Get-Content "../lab-config.yml" -Raw -ErrorAction Stop
     $config = ConvertFrom-Yaml $configContent -ErrorAction Stop
 } catch {
     Write-Host "❌  Failed to read or parse lab-config.yml: $($_.Exception.Message)" -ForegroundColor Red
@@ -84,7 +84,7 @@ try {
 }
 
 Write-Host "📁  Creating _labs directory..." -ForegroundColor Green
-New-Item -ItemType Directory -Path "_labs" -Force | Out-Null
+New-Item -ItemType Directory -Path "../_labs" -Force | Out-Null
 
 # Function to process a lab with enhanced error handling
 function ConvertTo-JekyllLab {
@@ -101,8 +101,8 @@ function ConvertTo-JekyllLab {
     $difficulty = $Lab.difficulty
     $journeys = $Lab.journeys
     
-    $source_file = "labs/$lab_key/README.md"
-    $target_file = "_labs/$lab_key.md"  # Always use semantic names
+    $source_file = "../labs/$lab_key/README.md"
+    $target_file = "../_labs/$lab_key.md"  # Always use semantic names
     
     if (Test-Path $source_file) {
         Write-Host "  📝  Processing $SectionName`: $lab_key -> $(Split-Path $target_file -Leaf)" -ForegroundColor Cyan
@@ -487,7 +487,7 @@ function Get-AutoJourneys {
 
 function Get-AllLabsFromFolders {
     $discoveredLabs = @()
-    $labFolders = Get-ChildItem "labs" -Directory | Where-Object { 
+    $labFolders = Get-ChildItem "../labs" -Directory | Where-Object { 
         $_.Name -ne "lab-template.md" -and (Test-Path (Join-Path $_.FullName "README.md"))
     }
     
@@ -1000,7 +1000,7 @@ window.addEventListener('hashchange', function() {
 </div>
 "@
 
-Set-Content -Path "labs/index.md" -Value $allLabsContent -Encoding UTF8
+Set-Content -Path "../labs/index.md" -Value $allLabsContent -Encoding UTF8
 Write-Host "  ✅  Created labs/index.md (All Labs page)" -ForegroundColor Green
 
 Write-Host ""

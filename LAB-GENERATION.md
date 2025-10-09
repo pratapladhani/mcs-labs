@@ -22,8 +22,8 @@ _labs/                         # Generated Jekyll files (NOT committed to git)
 
 ## 🔄 Generation Scripts
 
-- **`Generate-Labs.ps1`** - Main conversion script (reads lab-config.yml)
-- **`Build.ps1`** - Simple build script for development
+- **`scripts/Generate-Labs.ps1`** - Main conversion script (reads lab-config.yml)
+- **`scripts/Build.ps1`** - Simple build script for development
 
 ## 🚀 Usage
 
@@ -31,7 +31,7 @@ _labs/                         # Generated Jekyll files (NOT committed to git)
 
 ```powershell
 # Generate lab files and get ready to serve
-./Build.ps1
+./scripts/Build.ps1
 
 # Then run Jekyll
 jekyll serve
@@ -41,10 +41,10 @@ jekyll serve
 
 ```powershell  
 # Generate lab files directly
-./Generate-Labs.ps1
+./scripts/Generate-Labs.ps1
 
 # Get help
-./Generate-Labs.ps1 -Help
+./scripts/Generate-Labs.ps1 -Help
 ```
 
 ### Adding New Labs
@@ -63,8 +63,8 @@ jekyll serve
 ### ✅ Committed
 - `labs/*/README.md` - Source content
 - `lab-config.yml` - Lab configuration and journey metadata
-- `convert-labs-*.ps1` - Generation scripts
-- `index.md`, `labs.md` - Site structure
+- `scripts/*.ps1` - Generation scripts
+- `index.md` - Site structure
 - `assets/`, `_layouts/` - Styling and templates
 
 ### ❌ Not Committed (Auto-generated)

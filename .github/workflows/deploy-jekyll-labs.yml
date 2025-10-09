@@ -3,7 +3,7 @@ name: 🚀 Deploy Jekyll Lab Browser
 on:
   push:
     branches: [ jekyll-lab-browser ]  # Only deploy from this branch
-    paths: [ 'labs/**', '_layouts/**', 'assets/**', '_config.yml', 'index.md', 'Generate-Labs.ps1', 'lab-config.yml' ]
+    paths: [ 'labs/**', '_layouts/**', 'assets/**', '_config.yml', 'index.md', 'scripts/**', 'lab-config.yml' ]
   pull_request:
     branches: [ jekyll-lab-browser ]
   
@@ -44,7 +44,7 @@ jobs:
         run: pwsh -Command "Install-Module -Name powershell-yaml -Force -Scope CurrentUser -Repository PSGallery"
 
       - name: Convert labs to Jekyll format using PowerShell
-        run: pwsh -File Generate-Labs.ps1
+        run: pwsh -File scripts/Generate-Labs.ps1
 
       - name: Install Jekyll dependencies
         run: |
