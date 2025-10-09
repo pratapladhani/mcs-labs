@@ -1,9 +1,9 @@
-name: 🚀 Deploy Jekyll Journey System
+name: 🚀 Deploy Jekyll Lab Browser
 
 on:
   push:
     branches: [ jekyll-lab-browser ]  # Only deploy from this branch
-    paths: [ 'labs/**', '_layouts/**', 'assets/**', '_config.yml', 'index.md', 'Generate-Labs.ps1', 'lab-config.yml', 'journeys/**' ]
+    paths: [ 'labs/**', '_layouts/**', 'assets/**', '_config.yml', 'index.md', 'Generate-Labs.ps1', 'lab-config.yml' ]
   pull_request:
     branches: [ jekyll-lab-browser ]
   
@@ -17,10 +17,12 @@ on:
         type: boolean
 
 jobs:
-  build-jekyll:
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pages: write
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -56,21 +58,27 @@ jobs:
         env:
           JEKYLL_ENV: production
 
-      - name: Archive Jekyll site
-        uses: actions/upload-artifact@v4
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: jekyll-site
           path: ./_site
 
-      - name: 📋 Build Summary
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: 🎉 Deployment Summary
         run: |
-          echo "✅ Jekyll Journey System built successfully!"
-          echo "📦 Artifact ready for deployment"
-          echo "🎯 Branch: ${{ github.ref_name }}"
+          echo "✅ Jekyll Lab Browser deployed successfully!"
+          echo "🌐 Site URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "📚 Lab browser is now live!"
+          echo "📊 Auto-generated lab cards from README files"
           echo ""
-          echo "� Next Steps:"
-          echo "1. Go to Settings → Pages"
-          echo "2. Change Source to 'jekyll-lab-browser' branch"
-          echo "3. Your Jekyll system will be live!"
-          echo ""
-          echo "🛡️  Your main portal stays safe until you manually switch!"
+          echo "🎯 Features deployed:"
+          echo "  - Auto-generated lab pages"
+          echo "  - Clean lab card display"
+          echo "  - Responsive design"
+          echo "  - PowerShell-based content generation"
