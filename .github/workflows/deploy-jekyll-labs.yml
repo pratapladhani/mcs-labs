@@ -29,6 +29,7 @@ jobs:
       contents: read
       pages: write
       id-token: write
+      actions: write  # Required to trigger other workflows
 
     steps:
       - name: Checkout repository
