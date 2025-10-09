@@ -751,6 +751,19 @@ body {
     text-decoration: none;
 }
 
+/* Compact PDF button for lab cards */
+.btn.pdf-btn {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    min-width: auto;
+    flex-shrink: 0;
+}
+
+.btn.pdf-btn:hover {
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
 .download-links small {
     color: #605e5c;
     font-style: italic;

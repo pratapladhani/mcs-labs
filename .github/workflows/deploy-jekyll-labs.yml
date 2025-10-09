@@ -15,6 +15,12 @@ on:
         required: false
         default: true
         type: boolean
+      
+  # Trigger from documentation workflow completion
+  workflow_run:
+    workflows: ["📚 Generate Lab Documentation (HTML & PDF)"]
+    types:
+      - completed
 
 jobs:
   build-and-deploy:
@@ -45,6 +51,31 @@ jobs:
 
       - name: Convert labs to Jekyll format using PowerShell
         run: pwsh -File scripts/Generate-Labs.ps1
+
+      - name: Download PDF artifacts (if available)
+        uses: actions/download-artifact@v4
+        with:
+          name: lab-documentation
+          path: ./pdfs/
+        continue-on-error: true  # Don't fail if PDFs aren't available
+
+      - name: Copy PDFs to Jekyll assets
+        run: |
+          # Create assets directory for PDFs if it doesn't exist
+          mkdir -p assets/pdfs
+          
+          # Copy PDFs if they exist
+          if [ -d "./pdfs" ]; then
+            echo "📄 Found PDF artifacts, copying to Jekyll assets..."
+            find ./pdfs -name "*.pdf" -type f | while read pdf_file; do
+              lab_name=$(basename "$(dirname "$pdf_file")")
+              cp "$pdf_file" "assets/pdfs/${lab_name}.pdf"
+              echo "  ✅ Copied PDF for lab: $lab_name"
+            done
+            echo "📊 Total PDFs copied: $(find assets/pdfs -name "*.pdf" | wc -l)"
+          else
+            echo "⚠️  No PDF artifacts found - PDFs will be generated on next documentation workflow run"
+          fi
 
       - name: Install Jekyll dependencies
         run: |
@@ -78,7 +109,22 @@ jobs:
           echo "📊 Auto-generated lab cards from README files"
           echo ""
           echo "🎯 Features deployed:"
-          echo "  - Auto-generated lab pages"
-          echo "  - Clean lab card display"
+          echo "  - Auto-generated lab pages with PDF download links"
+          echo "  - Clean lab card display with PDF buttons"
           echo "  - Responsive design"
           echo "  - PowerShell-based content generation"
+          echo "  - PDF generation workflow integration"
+
+      - name: 📄 Trigger PDF Generation
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger the documentation workflow to generate PDFs
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'generate-documentation.yml',
+              ref: 'jekyll-lab-browser'
+            });
+            console.log('📄 Triggered PDF generation workflow');
+        continue-on-error: true  # Don't fail deployment if PDF trigger fails
