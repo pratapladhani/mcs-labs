@@ -33,6 +33,13 @@ journeys:
     icon: "🤖"
     difficulty: "Advanced"
     estimated_time: "6-8 hours"
+    
+  bootcamp:
+    title: "Bootcamp Journey"
+    description: "Intensive hands-on bootcamp covering agent building, SharePoint integration, autonomous AI, and DevOps practices."
+    icon: "⚔️"
+    difficulty: "Beginner to Advanced"
+    estimated_time: "7 hours"
 
 # =====================================================
 # SECTION DEFINITIONS - Optional display customization
@@ -124,25 +131,25 @@ lab_orders:
 # Available journeys: quick-start, business-user, developer, autonomous-ai
 lab_journeys:
   # Core Learning Path - Foundation labs for everyone
-  agent-builder-web: ["quick-start", "business-user"]
-  mbr-prep-sharepoint-agent: ["quick-start", "business-user", "developer"]
-  public-website-agent: ["quick-start", "business-user"]
+  agent-builder-web: ["quick-start", "business-user", "bootcamp"]
+  mbr-prep-sharepoint-agent: ["quick-start", "business-user", "developer", "bootcamp"]
+  public-website-agent: ["quick-start", "business-user", "bootcamp"]
   standard-orchestrator: ["quick-start", "developer"]
   
   # Intermediate Labs - Building on basics
-  setup-for-success: ["business-user", "developer"]
-  agent-builder-sharepoint: ["business-user", "developer"]
-  ask-me-anything: ["business-user", "developer"]
+  setup-for-success: ["business-user", "developer", "bootcamp"]
+  agent-builder-sharepoint: ["business-user", "developer", "bootcamp"]
+  ask-me-anything: ["business-user", "developer", "bootcamp"]
   
   # Advanced Labs - Complex scenarios
-  autonomous-cua: ["autonomous-ai", "developer"]
-  autonomous-account-news: ["autonomous-ai", "developer"]
-  autonomous-support-agent: ["autonomous-ai", "developer"]
+  autonomous-cua: ["autonomous-ai", "developer", "bootcamp"]
+  autonomous-account-news: ["autonomous-ai", "developer", "bootcamp"]
+  autonomous-support-agent: ["autonomous-ai", "developer", "bootcamp"]
   
   # Specialized Labs - Technical depth
   measure-success: ["developer"]
-  pipelines-and-source-control: ["developer"]
-  copilot-studio-kit: ["developer"]
+  pipelines-and-source-control: ["developer", "bootcamp"]
+  copilot-studio-kit: ["developer", "bootcamp"]
   mcp-qualify-lead: ["developer"]
   
   # Optional Labs - Alternative approaches
