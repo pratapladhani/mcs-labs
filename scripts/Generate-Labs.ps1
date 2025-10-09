@@ -192,11 +192,28 @@ section: $SectionName
             # Add extracted description
             $front_matter += "`ndescription: `"$description`""
             
+            # Clean up content - remove leading/trailing whitespace and normalize newlines
+            $cleanContent = $content.Trim()
+            
+            # Remove duplicate title from content if it matches (avoid double headers in PDF)
+            $lines = $cleanContent -split "`n"
+            if ($lines.Count -gt 0 -and $lines[0] -match "^#\s+(.+)") {
+                $contentTitle = $matches[1].Trim()
+                if ($contentTitle -eq $title) {
+                    # Remove the first line (duplicate title) and any following empty lines
+                    $lines = $lines[1..($lines.Length-1)]
+                    while ($lines.Count -gt 0 -and [string]::IsNullOrWhiteSpace($lines[0])) {
+                        $lines = $lines[1..($lines.Length-1)]
+                    }
+                    $cleanContent = $lines -join "`n"
+                }
+            }
+            
             $front_matter += @"
 
 ---
 
-$content
+$cleanContent
 "@
             
             # Write to target file
@@ -252,12 +269,10 @@ external: true
                 # Add description
                 $front_matter += "`ndescription: `"$description`""
                 
-                # Create content for external lab
+                # Create content for external lab (title already in front matter)
                 $external_content = @"
 
 ---
-
-# $title
 
 $description
 
