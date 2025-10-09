@@ -1148,3 +1148,32 @@ table tbody tr:nth-child(even):hover {
 .lab-content table tbody tr:nth-child(even):hover {
     background-color: #e6f2ff;
 }
+
+/* External link styling */
+.external-link-icon {
+    display: inline-block;
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-left: 2px;
+    transition: opacity 0.2s ease;
+    color: #0078d4;
+}
+
+a:hover .external-link-icon {
+    opacity: 1;
+}
+
+/* External links in lab content */
+.lab-content a[target="_blank"] {
+    position: relative;
+}
+
+.lab-content a[target="_blank"]:hover {
+    text-decoration: underline;
+}
+
+/* Ensure external link icon doesn't interfere with layout */
+.external-link-icon {
+    vertical-align: super;
+    line-height: 1;
+}

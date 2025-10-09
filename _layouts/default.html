@@ -35,5 +35,42 @@
             <p>&copy; {{ 'now' | date: "%Y" }} Microsoft Copilot Studio Labs</p>
         </div>
     </footer>
+
+    <script>
+        // Make external links open in new tab
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href]');
+            const currentDomain = window.location.hostname;
+            
+            links.forEach(function(link) {
+                const href = link.getAttribute('href');
+                
+                // Check if it's an external link (starts with http/https and not current domain)
+                if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+                    try {
+                        const linkDomain = new URL(href).hostname;
+                        
+                        // If it's external (different domain), add target="_blank" and security attributes
+                        if (linkDomain !== currentDomain && linkDomain !== 'pratapladhani.github.io') {
+                            link.setAttribute('target', '_blank');
+                            link.setAttribute('rel', 'noopener noreferrer');
+                            
+                            // Add visual indicator for external links if not already present
+                            if (!link.querySelector('.external-link-icon')) {
+                                const icon = document.createElement('span');
+                                icon.className = 'external-link-icon';
+                                icon.innerHTML = ' ↗';
+                                icon.style.cssText = 'font-size: 0.8em; opacity: 0.7; margin-left: 2px;';
+                                link.appendChild(icon);
+                            }
+                        }
+                    } catch (e) {
+                        // Invalid URL, skip
+                        console.debug('Invalid URL:', href);
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
