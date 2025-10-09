@@ -93,8 +93,8 @@ sections:
 lab_orders:
   # Core Learning Path (1-10)
   agent-builder-web: 1
-  mbr-prep-sharepoint-agent: 2
-  public-website-agent: 3
+  public-website-agent: 2
+  mbr-prep-sharepoint-agent: 3 
   standard-orchestrator: 4
   
   # Intermediate Labs (11-20)
