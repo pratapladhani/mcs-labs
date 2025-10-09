@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<div class="lab-layout">
+<div class="lab-layout{% if page.lab_type == 'external' %} external-lab{% endif %}">
     <!-- Left Sidebar Navigation -->
     <aside class="lab-sidebar">
         <div class="sidebar-content">
@@ -109,6 +109,7 @@ layout: default
             {{ content }}
         </div>
 
+        {% if page.lab_type != 'external' %}
         <div class="lab-downloads">
             <h3>📄 Download Options</h3>
             <div class="download-links">
@@ -119,6 +120,7 @@ layout: default
                 <small>Professional PDF with table of contents and internal navigation. Generated automatically from lab content.</small>
             </div>
         </div>
+        {% endif %}
 
     <footer class="lab-footer">
         <div class="lab-navigation">

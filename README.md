@@ -33,6 +33,26 @@ This repository uses GitHub Actions to automatically convert lab markdown files 
 - **🔧 Architecture**: Automated workflows, dependency management, and troubleshooting  
 - **🚀 Getting started**: Just edit markdown files in `labs/` - documentation generates automatically!
 
+### For Developers
+
+- **🚀 Quick Start**: See [Quick Start Guide](./docs/QUICK_START.md) for immediate development setup
+- **🏗️ Development Guide**: See [Development Guide](./docs/DEVELOPMENT.md) for comprehensive setup and workflow
+- **📋 Architecture Decisions**: See [ADR](./docs/ADR.md) for architectural decisions and context
+
+### 🌐 Local Testing
+
+For local development and testing:
+
+```bash
+# Start the development server
+docker-compose up -d jekyll-dev
+
+# Access the site at:
+# http://localhost:4000/mcs-labs/
+```
+
+**Note**: The `/mcs-labs/` path is required for local testing due to Jekyll's baseurl configuration.
+
 ### Project Structure
 
 ```text
@@ -41,4 +61,3 @@ dist/           # ← Generated HTML/PDF (auto-created)
 .github/        # ← Workflows and technical documentation
 package.json    # ← Dependencies for document generation
 ```
-# Trigger deployment

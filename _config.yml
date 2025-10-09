@@ -12,6 +12,12 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
 
+# Development settings for better file watching
+livereload: true
+livereload_port: 35729
+incremental: true
+force_polling: true
+
 # Collections
 collections:
   labs:
