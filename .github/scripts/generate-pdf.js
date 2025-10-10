@@ -72,7 +72,7 @@ async function generatePDF(htmlFilePath, outputPath, title = '') {
       footerTemplate: `
         <div style="font-size: 10px; color: #666; text-align: center; width: 100%; margin: 0 auto; position: relative;">
           ${title ? `<span style="position: absolute; left: 0.75in; top: 0;">${title.replace(/"/g, '&quot;')}</span>` : ''}
-          <span class="pageNumber"></span> of <span class="totalPages"></span>
+          <span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>
         </div>
       `,
       preferCSSPageSize: false

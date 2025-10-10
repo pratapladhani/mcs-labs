@@ -1,14 +1,9 @@
 /* PDF Styling for Lab Documentation */
 
-/* Page setup with footer */
+/* Page setup */
 @page {
   margin: 1in;
   size: letter;
-  @bottom-center {
-    content: "Page " counter(page) " of " counter(pages);
-    font-size: 9pt;
-    color: #666;
-  }
 }
 
 /* Body and typography */
