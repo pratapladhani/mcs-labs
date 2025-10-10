@@ -37,6 +37,10 @@ defaults:
     values:
       layout: "default"
 
+# Include favicon files
+include:
+  - favicon.svg
+
 # Exclude from build
 exclude:
   - node_modules/

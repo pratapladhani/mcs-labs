@@ -25,6 +25,18 @@ This document contains essential information for developing the Microsoft Copilo
 - Git
 - PowerShell (for content generation)
 
+### PowerShell Environment Notes
+
+**⚠️ IMPORTANT**: This project is developed on Windows and uses PowerShell syntax throughout. When working with the terminal commands:
+
+- Use PowerShell cmdlets instead of Unix commands:
+  - `Remove-Item -Recurse -Force` instead of `rm -rf`
+  - `Get-ChildItem` instead of `ls`
+  - `Select-Object -Last 5` instead of `tail -5`
+  - `Copy-Item` instead of `cp`
+- PowerShell scripts use `.ps1` extension and require execution policy configuration
+- Docker commands work the same across platforms, but file operations should use PowerShell syntax
+
 ### Starting Development Server
 
 ```bash
@@ -195,6 +207,32 @@ docker-compose down
 docker-compose build --no-cache
 docker-compose up -d jekyll-dev
 ```
+
+### PowerShell-Specific Commands
+
+Since this project runs on Windows, use these PowerShell equivalents for common operations:
+
+```powershell
+# Clean Jekyll cache and generated files
+Remove-Item -Recurse -Force _site, .jekyll-cache -ErrorAction SilentlyContinue
+
+# List directory contents
+Get-ChildItem _site/
+
+# View last few lines of Docker logs
+docker logs mcs-labs-dev | Select-Object -Last 10
+
+# Copy files
+Copy-Item source.txt destination.txt
+
+# Find files
+Get-ChildItem -Recurse -Filter "*.html" | Where-Object Name -like "*favicon*"
+
+# Check if file exists
+Test-Path "favicon.ico"
+```
+
+**Common Mistake**: Don't use `rm -rf`, `ls`, `tail`, `cp` commands - these are Unix/bash commands that won't work in PowerShell.
 
 ### File Locations in Container
 
