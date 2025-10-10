@@ -1280,11 +1280,18 @@ description: Microsoft Copilot Studio labs - browse all or filter by learning jo
   <div id="journey-stats" class="journey-stats"></div>
 </div>
 
+<div id="section-header" style="display: none;" class="section-header">
+  <h1 id="section-title"></h1>
+  <p id="section-description"></p>
+  <div id="section-stats" class="section-stats"></div>
+</div>
+
 <div id="all-labs-header">
   <h1>All Labs</h1>
   <p>Browse all available Microsoft Copilot Studio labs. Choose individual labs or follow our learning journeys for a guided experience.</p>
 </div>
 
+<div class="filter-sections-container">
 <div class="filter-section">
   <h3>Filter by Journey</h3>
   <p class="filter-hint">Click a filter to apply it, click again to show all labs</p>
@@ -1298,6 +1305,7 @@ $journeyButtonsHtml
   <div class="lab-filters">
 $sectionButtonsHtml
   </div>
+</div>
 </div>
 
 <div class="labs-grid" id="labs-container">
@@ -1340,6 +1348,15 @@ $sectionButtonsHtml
 // Journey metadata (dynamically generated from config)
 const journeys = {
 $journeyDefinitionsJs
+};
+
+// Section metadata
+const sections = {
+  'advanced_labs': { title: '🚀 Advanced Labs', description: 'Cutting-edge features and advanced implementations for experienced developers and power users.', difficulty: 'Advanced', icon: '🚀' },
+  'core_learning_path': { title: '📚 Core Learning Path', description: 'Essential foundational labs that provide the fundamental knowledge and skills needed for effective use.', difficulty: 'Beginner to Intermediate', icon: '📚' },
+  'intermediate_labs': { title: '🎯 Intermediate Labs', description: 'Mid-level labs that build upon basic concepts and introduce more complex scenarios and integrations.', difficulty: 'Intermediate', icon: '🎯' },
+  'optional_labs': { title: '🔧 Optional Labs', description: 'Supplementary labs that provide additional knowledge and alternative approaches for specific use cases.', difficulty: 'Varies', icon: '🔧' },
+  'specialized_labs': { title: '⚡ Specialized Labs', description: 'Focused labs covering specific tools, integrations, and specialized workflows for particular scenarios.', difficulty: 'Intermediate to Advanced', icon: '⚡' }
 };
 
 function updateSequenceNumbers() {
@@ -1396,6 +1413,7 @@ function updateLabLinks(filterType, filterValue) {
 function showAllLabs() {
   document.getElementById('all-labs-header').style.display = 'block';
   document.getElementById('journey-header').style.display = 'none';
+  document.getElementById('section-header').style.display = 'none';
   
   // Show all lab cards
   const cards = document.querySelectorAll('.lab-card');
@@ -1433,6 +1451,7 @@ function filterByJourney(journeyName) {
   // Show journey header
   document.getElementById('all-labs-header').style.display = 'none';
   document.getElementById('journey-header').style.display = 'block';
+  document.getElementById('section-header').style.display = 'none';
   document.getElementById('journey-title').textContent = journey.title;
   document.getElementById('journey-description').textContent = journey.description;
   
@@ -1481,6 +1500,9 @@ function filterByJourney(journeyName) {
 }
 
 function filterBySection(sectionName) {
+  const section = sections[sectionName];
+  if (!section) return;
+  
   // Check if this filter is already active (toggle behavior)
   const button = document.getElementById(sectionName + '-btn');
   if (button.classList.contains('active')) {
@@ -1489,9 +1511,12 @@ function filterBySection(sectionName) {
     return;
   }
   
-  // Show all labs header (section filtering doesn't have dedicated header)
-  document.getElementById('all-labs-header').style.display = 'block';
+  // Show section header
+  document.getElementById('all-labs-header').style.display = 'none';
   document.getElementById('journey-header').style.display = 'none';
+  document.getElementById('section-header').style.display = 'block';
+  document.getElementById('section-title').textContent = section.title;
+  document.getElementById('section-description').textContent = section.description;
   
   // Filter cards by section
   const cards = document.querySelectorAll('.lab-card');
@@ -1509,6 +1534,10 @@ function filterBySection(sectionName) {
     }
   });
   
+  document.getElementById('section-stats').innerHTML = 
+    '<strong>Difficulty Level:</strong> ' + section.difficulty + '<br>' +
+    '<strong>Total Labs:</strong> ' + labCount + ' labs (' + totalDuration + ' minutes)';
+  
   // Update sequence numbers
   updateSequenceNumbers();
   
@@ -1520,9 +1549,7 @@ function filterBySection(sectionName) {
   document.getElementById(sectionName + '-btn').classList.add('active');
   
   // Update current filter display
-  const sectionButton = document.getElementById(sectionName + '-btn');
-  const sectionDisplayName = sectionButton.textContent.trim();
-  document.getElementById('current-filter-name').textContent = sectionDisplayName;
+  document.getElementById('current-filter-name').textContent = section.title;
   document.getElementById('clear-filter-btn').style.display = 'block';
   
   // Update URL
