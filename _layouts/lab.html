@@ -15,7 +15,7 @@ layout: default
             {% if current_journeys and current_journeys.size > 0 %}
                 {% assign primary_journey = current_journeys[0] %}
                 
-                <div class="journey-header">
+                <div class="sidebar-journey-header">
                     <div class="journey-title">
                         <span id="journey-title-text">📚 Journey Navigation</span>
                     </div>
@@ -133,7 +133,7 @@ layout: default
                 </div>
                 
                 <!-- Hidden data for JavaScript to calculate prev/next -->
-                <div id="lab-data" style="display: none;"
+                <div id="lab-data" class="hidden"
                      data-current-url="{{ page.url }}"
                      data-current-journeys="{{ page.journeys | join: ',' }}"
                      data-current-order="{{ page.order }}">
@@ -304,7 +304,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 journeyTitle = '🚀 Quick Start Journey';
                 break;
             case 'business-user':
-                journeyTitle = '💼 Business User Journey';
                 journeyTitle = '💼 Business User Journey';
                 break;
             case 'developer':

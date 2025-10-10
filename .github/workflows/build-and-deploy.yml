@@ -3,7 +3,7 @@
 # =============================================================================
 # This unified workflow:
 # 1. Generates PDFs from lab markdown files
-# 2. Builds Jekyll site with auto-generated lab pages  
+# 2. Builds Jekyll site with auto-generated lab pages
 # 3. Deploys to GitHub Pages with fresh PDFs included
 # =============================================================================
 
@@ -15,25 +15,25 @@ name: 🚀 Build and Deploy Labs
 on:
   # Trigger on changes to lab content, configurations, or styling
   push:
-    branches: [ main ]
-    paths: 
-      - "labs/**/*.md"           # Lab markdown content
-      - "labs/**/images/**"      # Lab images and assets
-      - "_layouts/**"            # Jekyll layouts
-      - "assets/**"              # Jekyll assets and styling
-      - "_config.yml"            # Jekyll configuration
-      - "scripts/**"             # PowerShell generation scripts
-      - "lab-config.yml"         # Lab configuration
-      - ".github/styles/**"      # PDF styling files
-      - ".github/scripts/**"     # PDF generation scripts
-      - ".github/workflows/build-and-deploy.yml"  # This workflow file
-      - "package.json"           # Dependencies
+    branches: [main]
+    paths:
+      - "labs/**/*.md" # Lab markdown content
+      - "labs/**/images/**" # Lab images and assets
+      - "_layouts/**" # Jekyll layouts
+      - "assets/**" # Jekyll assets and styling
+      - "_config.yml" # Jekyll configuration
+      - "scripts/**" # PowerShell generation scripts
+      - "lab-config.yml" # Lab configuration
+      - ".github/styles/**" # PDF styling files
+      - ".github/scripts/**" # PDF generation scripts
+      - ".github/workflows/build-and-deploy.yml" # This workflow file
+      - "package.json" # Dependencies
 
   # Allow manual execution for testing
   workflow_dispatch:
     inputs:
       debug:
-        description: 'Enable debug output'
+        description: "Enable debug output"
         required: false
         default: false
         type: boolean
@@ -54,7 +54,7 @@ jobs:
     name: 🔨 Build PDFs and Deploy Jekyll Site
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    
+
     steps:
       # =================================================================
       # STEP 1: REPOSITORY SETUP
@@ -75,14 +75,14 @@ jobs:
       - name: 🔧 Setup Node.js and PDF Generation Tools
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          
+          node-version: "18"
+
       - name: 📄 Install PDF Generation Dependencies
         run: |
           echo "🔧 Installing PDF generation dependencies..."
           npm install
           echo "✅ Dependencies installed successfully"
-          
+
           # Install fonts for better PDF rendering
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends fonts-noto-color-emoji fonts-noto-sans fonts-noto-serif || echo "⚠️ Warning: Could not install some fonts"
@@ -101,10 +101,10 @@ jobs:
       - name: 📄 Generate Lab PDFs
         run: |
           echo "📄 Starting PDF generation for all labs..."
-          
+
           # Create dist directory structure
           mkdir -p dist
-          
+
           # Process each lab directory containing a README.md file
           for lab_dir in labs/*/; do
             if [ -d "$lab_dir" ] && [ -f "${lab_dir}README.md" ]; then
@@ -200,8 +200,13 @@ jobs:
                 
                 if node "../../.github/scripts/generate-pdf.js" "$html_output_file" "$pdf_output_file" "$lab_title"; then
                   echo "    ✅ PDF generated successfully"
-                  # Clean up intermediate HTML file (only needed for PDF generation)
-                  rm -f "$html_output_file"
+                  # Conditionally clean up intermediate HTML file based on debug mode
+                  if [ "${{ inputs.debug }}" != "true" ]; then
+                    rm -f "$html_output_file"
+                    echo "    🧹 Cleaned up intermediate HTML file"
+                  else
+                    echo "    🔍 Debug mode: Keeping HTML file for inspection at $html_output_file"
+                  fi
                 else
                   echo "    ⚠️  PDF generation failed for $lab_name"
                 fi
@@ -223,7 +228,7 @@ jobs:
       - name: 💎 Setup Ruby and Jekyll
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version: "3.1"
           bundler-cache: false
 
       - name: 🔧 Install PowerShell and dependencies
@@ -231,7 +236,7 @@ jobs:
           # Install PowerShell 7.x
           wget -q https://github.com/PowerShell/PowerShell/releases/download/v7.4.0/powershell_7.4.0-1.deb_amd64.deb
           sudo dpkg -i powershell_7.4.0-1.deb_amd64.deb || sudo apt-get install -f -y
-          
+
       - name: 📦 Install PowerShell YAML module
         run: pwsh -Command "Install-Module -Name powershell-yaml -Force -Scope CurrentUser -Repository PSGallery"
 
@@ -245,7 +250,7 @@ jobs:
         run: |
           # Create assets directory for PDFs
           mkdir -p assets/pdfs
-          
+
           # Copy PDFs from dist to Jekyll assets
           if [ -d "dist" ]; then
             echo "📄 Copying generated PDFs to Jekyll assets..."

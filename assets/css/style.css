@@ -6,9 +6,10 @@
 }
 
 /* Prevent flash of unstyled content during theme detection */
-html:not([data-theme]) {
-    /* visibility: hidden; */ /* Temporarily disabled for debugging */
-}
+/* Temporarily disabled for debugging */
+/* html:not([data-theme]) {
+    visibility: hidden;
+} */
 
 html[data-theme] {
     visibility: visible;
@@ -188,6 +189,11 @@ html[data-theme] {
         --external-link-opacity: 0.8;
         --fade-gradient: rgba(45,45,45,0.9);
     }
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
 }
 
 body {
@@ -439,7 +445,8 @@ body {
     transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-.journey-header {
+/* Sidebar context */
+.sidebar-journey-header {
     margin-bottom: 1rem;
 }
 
@@ -463,7 +470,7 @@ body {
 }
 
 /* Journey and Section headers for main content area */
-.journey-header, .section-header {
+.content-journey-header, .section-header {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-left: 4px solid var(--accent-primary);
@@ -474,13 +481,13 @@ body {
     transition: all 0.3s ease;
 }
 
-.journey-header h1, .section-header h1 {
+.content-journey-header h1, .section-header h1 {
     color: var(--accent-primary);
     margin-bottom: 0.5rem;
     font-size: 1.75rem;
 }
 
-.journey-header p, .section-header p {
+.content-journey-header p, .section-header p {
     color: var(--text-secondary);
     margin-bottom: 1rem;
     font-size: 1rem;
@@ -501,12 +508,12 @@ body {
 }
 
 /* Dark mode adjustments */
-[data-theme="dark"] .journey-header, 
+[data-theme="dark"] .content-journey-header, 
 [data-theme="dark"] .section-header {
     border-left-color: var(--accent-secondary);
 }
 
-[data-theme="dark"] .journey-header h1, 
+[data-theme="dark"] .content-journey-header h1, 
 [data-theme="dark"] .section-header h1 {
     color: var(--accent-secondary);
 }
@@ -1762,13 +1769,6 @@ body[data-lab-type="external"] .lab-downloads,
     transition: border-color 0.3s ease;
 }
 
-.prev-next-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
 .journey-nav-buttons {
     display: flex;
     justify-content: center;
@@ -2126,15 +2126,15 @@ a:hover .external-link-icon {
 }
 
 /* Concept overview table specific styling */
-.lab-content table:has(th:contains("Concept")),
-.lab-content table:has(th:contains("Why it matters")) {
+.lab-content table.concept-table,
+.lab-content table.why-it-matters-table {
     border-collapse: separate;
     border-spacing: 0;
     border: 2px solid var(--accent-primary);
 }
 
-.lab-content table:has(th:contains("Concept")) th,
-.lab-content table:has(th:contains("Why it matters")) th {
+.lab-content table.concept-table th,
+.lab-content table.why-it-matters-table th {
     background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
     color: white;
     font-weight: 700;
@@ -2143,14 +2143,14 @@ a:hover .external-link-icon {
     padding: 1.2rem;
 }
 
-.lab-content table:has(th:contains("Concept")) td,
-.lab-content table:has(th:contains("Why it matters")) td {
+.lab-content table.concept-table td,
+.lab-content table.why-it-matters-table td {
     padding: 1.2rem;
     border-bottom: 1px solid var(--border-color);
 }
 
-.lab-content table:has(th:contains("Concept")) td:first-child,
-.lab-content table:has(th:contains("Why it matters")) td:first-child {
+.lab-content table.concept-table td:first-child,
+.lab-content table.why-it-matters-table td:first-child {
     font-weight: 600;
     color: var(--accent-primary);
     background: var(--bg-tertiary);

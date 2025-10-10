@@ -938,10 +938,13 @@ function Build-JekyllFrontMatter {
     #>
     param($Lab, $Order, $SectionName, $LabType, $Description, [bool]$IsExternal = $false)
     
+    # Escape title to prevent YAML breaking with quotes or special characters
+    $escapedTitle = $Lab.title -replace '"', '\"'
+    
     $frontMatter = @"
 ---
 layout: lab
-title: "$($Lab.title)"
+title: "$escapedTitle"
 order: $Order
 duration: $($Lab.duration)
 difficulty: $($Lab.difficulty)
@@ -1097,7 +1100,13 @@ function New-IndexPage {
             $difficulty = if ($journey.difficulty) { $journey.difficulty } else { "Intermediate" }
             $estimatedTime = if ($journey.estimated_time) { $journey.estimated_time } else { "2-4 hours" }
             
-            $journeyDefinitions += "  '$journeyKey': { title: '$icon $title', description: '$description', difficulty: '$difficulty', estimatedTime: '$estimatedTime' }"
+            # Escape JavaScript strings to prevent injection
+            $escapedTitle = ($icon + " " + $title) -replace "'", "\'" -replace "\\", "\\\\"
+            $escapedDescription = $description -replace "'", "\'" -replace "\\", "\\\\"
+            $escapedDifficulty = $difficulty -replace "'", "\'" -replace "\\", "\\\\"
+            $escapedEstimatedTime = $estimatedTime -replace "'", "\'" -replace "\\", "\\\\"
+            
+            $journeyDefinitions += "  '$journeyKey': { title: '$escapedTitle', description: '$escapedDescription', difficulty: '$escapedDifficulty', estimatedTime: '$escapedEstimatedTime' }"
         }
     }
     
@@ -1281,7 +1290,7 @@ description: Microsoft Copilot Studio labs - browse all or filter by learning jo
   </div>
 </div>
 
-<div id="journey-header" style="display: none;" class="journey-header">
+<div id="journey-header" style="display: none;" class="content-journey-header">
   <h1 id="journey-title"></h1>
   <p id="journey-description"></p>
   <div id="journey-stats" class="journey-stats"></div>
