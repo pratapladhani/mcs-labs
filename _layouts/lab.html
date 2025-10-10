@@ -122,44 +122,48 @@ layout: default
         </div>
         {% endif %}
 
-    <footer class="lab-footer">
-        <div class="lab-navigation">
-            {% assign labs = site.labs | where: "lab_type", "main" | sort: 'order' %}
-            {% assign prev_lab = null %}
-            {% assign next_lab = null %}
-            {% assign found_current = false %}
-            
-            {% for lab in labs %}
-                {% if found_current == true %}
-                    {% assign next_lab = lab %}
-                    {% break %}
-                {% endif %}
-                
-                {% if lab.url == page.url %}
-                    {% assign found_current = true %}
-                {% else %}
-                    {% unless found_current %}
-                        {% assign prev_lab = lab %}
-                    {% endunless %}
-                {% endif %}
-            {% endfor %}
-            
-            {% if prev_lab %}
-                <a href="{{ prev_lab.url | relative_url }}" class="nav-button prev">
-                    ← {{ prev_lab.title }}
-                </a>
-            {% endif %}
-            
-            {% if next_lab %}
-                <a href="{{ next_lab.url | relative_url }}" class="nav-button next">
-                    {{ next_lab.title }} →
-                </a>
-            {% endif %}
-        </div>
-        
         <footer class="lab-footer">
             <div class="lab-navigation">
-                <!-- Navigation will be enhanced later -->
+                <!-- Previous/Next Navigation -->
+                {% assign labs = site.labs | where: "lab_type", "main" | sort: 'order' %}
+                {% assign prev_lab = null %}
+                {% assign next_lab = null %}
+                {% assign found_current = false %}
+                
+                {% for lab in labs %}
+                    {% if found_current == true %}
+                        {% assign next_lab = lab %}
+                        {% break %}
+                    {% endif %}
+                    
+                    {% if lab.url == page.url %}
+                        {% assign found_current = true %}
+                    {% else %}
+                        {% unless found_current %}
+                            {% assign prev_lab = lab %}
+                        {% endunless %}
+                    {% endif %}
+                {% endfor %}
+                
+                <div class="prev-next-nav">
+                    {% if prev_lab %}
+                        <a href="{{ prev_lab.url | relative_url }}" class="nav-button prev">
+                            ← {{ prev_lab.title }}
+                        </a>
+                    {% else %}
+                        <span class="nav-placeholder">← No previous lab</span>
+                    {% endif %}
+                    
+                    {% if next_lab %}
+                        <a href="{{ next_lab.url | relative_url }}" class="nav-button next">
+                            {{ next_lab.title }} →
+                        </a>
+                    {% else %}
+                        <span class="nav-placeholder">No next lab →</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Journey and All Labs Navigation -->
                 <div class="journey-nav-buttons">
                     {% if page.journeys and page.journeys.size > 0 %}
                         <a href="{{ '/labs/#' | append: page.journeys[0] | relative_url }}" 
