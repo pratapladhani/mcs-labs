@@ -55,6 +55,8 @@ html[data-theme] {
     --badge-pink-text: #c2185b;
     --badge-purple-bg: #f3e5f5;
     --badge-purple-text: #7b1fa2;
+    --badge-blue-bg: #e3f2fd;
+    --badge-blue-text: #0277bd;
     /* Border colors for cards */
     --border-green: #4caf50;
     --border-orange: #ff9800;
@@ -1034,12 +1036,40 @@ body[data-lab-type="external"] .lab-downloads,
     white-space: nowrap;
 }
 
-/* Lab action buttons */
+/* Lab actions */
 .lab-actions {
     display: flex;
     gap: 0.75rem;
     margin-top: 1rem;
     align-items: center;
+}
+
+/* Lab journeys section */
+.lab-journeys {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.journey-tag {
+    display: inline-block;
+    padding: 3px 6px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: lowercase;
+    background: var(--badge-blue-bg);
+    color: var(--badge-blue-text);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.journey-tag:hover {
+    opacity: 1;
+    transform: scale(1.05);
 }
 
 .btn-primary, .btn-secondary {
@@ -1466,6 +1496,57 @@ body[data-lab-type="external"] .lab-downloads,
     gap: 1rem;
     font-size: 0.9rem;
     color: var(--text-secondary);
+}
+
+/* Lab meta badge styles for lab cards */
+.lab-meta span {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.lab-meta span.section {
+    background: var(--badge-blue-bg);
+    color: var(--badge-blue-text);
+}
+
+.lab-meta span.section.core_learning_path {
+    background: var(--badge-purple-bg);
+    color: var(--badge-purple-text);
+}
+
+.lab-meta span.section.intermediate_labs {
+    background: var(--badge-orange-bg);
+    color: var(--badge-orange-text);
+}
+
+.lab-meta span.section.advanced_labs {
+    background: var(--badge-pink-bg);
+    color: var(--badge-pink-text);
+}
+
+.lab-meta span.section.specialized_labs {
+    background: var(--badge-purple-bg);
+    color: var(--badge-purple-text);
+}
+
+.lab-meta span.section.optional_labs {
+    background: var(--badge-green-bg);
+    color: var(--badge-green-text);
+}
+
+.lab-meta span.difficulty {
+    background: var(--badge-green-bg);
+    color: var(--badge-green-text);
+}
+
+.lab-meta span.duration {
+    background: var(--badge-orange-bg);
+    color: var(--badge-orange-text);
 }
 
 .lab-body {
