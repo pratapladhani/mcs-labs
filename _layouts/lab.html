@@ -361,14 +361,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const prevLab = filteredLabs[currentIndex - 1];
             const prevUrl = prevLab.getAttribute('data-url');
             const prevTitle = prevLab.getAttribute('data-title');
-            prevHtml = `<a href="${prevUrl}${currentQueryString}" class="nav-button prev">← ${prevTitle}</a>`;
+            const fullPrevUrl = '{{ "" | relative_url }}' + prevUrl;
+            prevHtml = `<a href="${fullPrevUrl}${currentQueryString}" class="nav-button prev">← ${prevTitle}</a>`;
         }
         
         if (currentIndex < filteredLabs.length - 1) {
             const nextLab = filteredLabs[currentIndex + 1];
             const nextUrl = nextLab.getAttribute('data-url');
             const nextTitle = nextLab.getAttribute('data-title');
-            nextHtml = `<a href="${nextUrl}${currentQueryString}" class="nav-button next">${nextTitle} →</a>`;
+            const fullNextUrl = '{{ "" | relative_url }}' + nextUrl;
+            nextHtml = `<a href="${fullNextUrl}${currentQueryString}" class="nav-button next">${nextTitle} →</a>`;
         }
         
         prevNextNav.innerHTML = prevHtml + nextHtml;
