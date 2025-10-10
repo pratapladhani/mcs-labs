@@ -125,7 +125,7 @@ layout: default
         <footer class="lab-footer">
             <div class="lab-navigation">
                 <!-- Previous/Next Navigation -->
-                {% assign labs = site.labs | where: "lab_type", "main" | sort: 'order' %}
+                {% assign labs = site.labs | where_exp: "lab", "lab.lab_type != 'external'" | sort: 'order' %}
                 {% assign prev_lab = null %}
                 {% assign next_lab = null %}
                 {% assign found_current = false %}
