@@ -16,9 +16,9 @@ layout: default
                 {% assign primary_journey = current_journeys[0] %}
                 
                 <div class="journey-header">
-                    <a href="#" class="journey-title" id="journey-title-link">
+                    <div class="journey-title">
                         <span id="journey-title-text">📚 Journey Navigation</span>
-                    </a>
+                    </div>
                 </div>
                 
                 <nav class="journey-labs" id="journey-labs-nav">
@@ -83,7 +83,9 @@ layout: default
     </aside>
 
     <!-- Main Lab Content -->
-    <article class="lab-content">
+    <article class="lab-content" 
+             data-journeys="{{ page.journeys | jsonify | escape }}"
+             data-section="{{ page.section | escape }}">
         {% if page.duration %}
         <div class="lab-meta-header">
             <div class="lab-meta">
@@ -124,43 +126,26 @@ layout: default
 
         <footer class="lab-footer">
             <div class="lab-navigation">
-                <!-- Previous/Next Navigation -->
-                {% assign labs = site.labs | where_exp: "lab", "lab.lab_type != 'external'" | sort: 'order' %}
-                {% assign prev_lab = null %}
-                {% assign next_lab = null %}
-                {% assign found_current = false %}
+                <!-- Previous/Next Navigation (will be updated by JavaScript based on journey filter) -->
+                <div class="prev-next-nav" id="prev-next-nav">
+                    <span class="nav-placeholder">← Loading...</span>
+                    <span class="nav-placeholder">Loading... →</span>
+                </div>
                 
-                {% for lab in labs %}
-                    {% if found_current == true %}
-                        {% assign next_lab = lab %}
-                        {% break %}
-                    {% endif %}
-                    
-                    {% if lab.url == page.url %}
-                        {% assign found_current = true %}
-                    {% else %}
-                        {% unless found_current %}
-                            {% assign prev_lab = lab %}
-                        {% endunless %}
-                    {% endif %}
-                {% endfor %}
-                
-                <div class="prev-next-nav">
-                    {% if prev_lab %}
-                        <a href="{{ prev_lab.url | relative_url }}" class="nav-button prev">
-                            ← {{ prev_lab.title }}
-                        </a>
-                    {% else %}
-                        <span class="nav-placeholder">← No previous lab</span>
-                    {% endif %}
-                    
-                    {% if next_lab %}
-                        <a href="{{ next_lab.url | relative_url }}" class="nav-button next">
-                            {{ next_lab.title }} →
-                        </a>
-                    {% else %}
-                        <span class="nav-placeholder">No next lab →</span>
-                    {% endif %}
+                <!-- Hidden data for JavaScript to calculate prev/next -->
+                <div id="lab-data" style="display: none;"
+                     data-current-url="{{ page.url }}"
+                     data-current-journeys="{{ page.journeys | join: ',' }}"
+                     data-current-order="{{ page.order }}">
+                    {% assign labs = site.labs | where_exp: "lab", "lab.lab_type != 'external'" | sort: 'order' %}
+                    {% for lab in labs %}
+                        <div class="lab-item" 
+                             data-url="{{ lab.url }}"
+                             data-title="{{ lab.title }}"
+                             data-journeys="{{ lab.journeys | join: ',' }}"
+                             data-order="{{ lab.order }}">
+                        </div>
+                    {% endfor %}
                 </div>
                 
                 <!-- Journey and All Labs Navigation -->
@@ -188,9 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterJourney = urlParams.get('journey');
     const filterSection = urlParams.get('section');
     
-    // Get the current lab's journeys and section
-    const currentJourneys = {{ page.journeys | jsonify }};
-    const currentSection = {{ page.section | jsonify }};
+    // Get the current lab's journeys and section from data attributes
+    const labContent = document.querySelector('.lab-content');
+    const currentJourneys = JSON.parse(labContent.getAttribute('data-journeys') || '[]');
+    const currentSection = labContent.getAttribute('data-section');
     
     // Determine which filter context to use
     let activeFilter = null;
@@ -270,14 +256,6 @@ document.addEventListener('DOMContentLoaded', function() {
             link.href = baseUrl + currentQueryString;
         });
         
-        // Update journey title link
-        const journeyTitleLink = document.querySelector('.journey-title');
-        if (journeyTitleLink && journeyTitleLink.href) {
-            const baseUrl = journeyTitleLink.href.split('?')[0].split('#')[0];
-            const hash = journeyTitleLink.href.includes('#') ? '#' + journeyTitleLink.href.split('#')[1] : '';
-            journeyTitleLink.href = baseUrl + currentQueryString + hash;
-        }
-        
         // Update footer navigation links
         const navButtons = document.querySelectorAll('.nav-button');
         navButtons.forEach(function(link) {
@@ -289,78 +267,114 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Update the journey title and link based on active filter
+    // Update the journey title based on active filter
     const journeyTitleText = document.getElementById('journey-title-text');
-    const journeyTitleLink = document.getElementById('journey-title-link');
     
     if (activeFilterType === 'journey' && activeFilter) {
         let journeyTitle = '';
-        let journeyUrl = '';
         
         switch(activeFilter) {
             case 'quick-start':
                 journeyTitle = '🚀 Quick Start Journey';
-                journeyUrl = '/labs/#quick-start';
                 break;
             case 'business-user':
                 journeyTitle = '💼 Business User Journey';
-                journeyUrl = '/labs/#business-user';
                 break;
             case 'developer':
                 journeyTitle = '🔧 Developer Journey';
-                journeyUrl = '/labs/#developer';
                 break;
             case 'autonomous-ai':
                 journeyTitle = '🤖 Autonomous AI Journey';
-                journeyUrl = '/labs/#autonomous-ai';
                 break;
             case 'bootcamp':
                 journeyTitle = '⚔️ Bootcamp Journey';
-                journeyUrl = '/labs/#bootcamp';
                 break;
         }
         
         if (journeyTitleText && journeyTitle) {
             journeyTitleText.textContent = journeyTitle;
-        }
-        if (journeyTitleLink && journeyUrl) {
-            journeyTitleLink.href = journeyUrl;
         }
     } else if (currentJourneys && currentJourneys.length > 0) {
         // Default to primary journey
         const primaryJourney = currentJourneys[0];
         let journeyTitle = '';
-        let journeyUrl = '';
         
         switch(primaryJourney) {
             case 'quick-start':
                 journeyTitle = '🚀 Quick Start Journey';
-                journeyUrl = '/labs/#quick-start';
                 break;
             case 'business-user':
                 journeyTitle = '💼 Business User Journey';
-                journeyUrl = '/labs/#business-user';
+                journeyTitle = '💼 Business User Journey';
                 break;
             case 'developer':
                 journeyTitle = '🔧 Developer Journey';
-                journeyUrl = '/labs/#developer';
                 break;
             case 'autonomous-ai':
                 journeyTitle = '🤖 Autonomous AI Journey';
-                journeyUrl = '/labs/#autonomous-ai';
                 break;
             case 'bootcamp':
                 journeyTitle = '⚔️ Bootcamp Journey';
-                journeyUrl = '/labs/#bootcamp';
                 break;
         }
         
         if (journeyTitleText && journeyTitle) {
             journeyTitleText.textContent = journeyTitle;
         }
-        if (journeyTitleLink && journeyUrl) {
-            journeyTitleLink.href = journeyUrl;
-        }
     }
+    
+    // Update prev/next navigation based on journey filter
+    function updatePrevNextNavigation() {
+        const labData = document.getElementById('lab-data');
+        const prevNextNav = document.getElementById('prev-next-nav');
+        
+        if (!labData || !prevNextNav) return;
+        
+        const currentUrl = labData.getAttribute('data-current-url');
+        const currentJourneys = labData.getAttribute('data-current-journeys').split(',');
+        const currentOrder = parseInt(labData.getAttribute('data-current-order'));
+        
+        // Get all lab items
+        const labItems = Array.from(labData.querySelectorAll('.lab-item'));
+        
+        // Filter labs based on active journey filter (if any)
+        let filteredLabs = labItems;
+        if (activeFilterType === 'journey' && activeFilter) {
+            filteredLabs = labItems.filter(item => {
+                const labJourneys = item.getAttribute('data-journeys').split(',');
+                return labJourneys.includes(activeFilter);
+            });
+        }
+        
+        // Sort by order
+        filteredLabs.sort((a, b) => {
+            return parseInt(a.getAttribute('data-order')) - parseInt(b.getAttribute('data-order'));
+        });
+        
+        // Find current lab position in filtered list
+        const currentIndex = filteredLabs.findIndex(item => item.getAttribute('data-url') === currentUrl);
+        
+        let prevHtml = '<span class="nav-placeholder">← No previous lab</span>';
+        let nextHtml = '<span class="nav-placeholder">No next lab →</span>';
+        
+        if (currentIndex > 0) {
+            const prevLab = filteredLabs[currentIndex - 1];
+            const prevUrl = prevLab.getAttribute('data-url');
+            const prevTitle = prevLab.getAttribute('data-title');
+            prevHtml = `<a href="${prevUrl}${currentQueryString}" class="nav-button prev">← ${prevTitle}</a>`;
+        }
+        
+        if (currentIndex < filteredLabs.length - 1) {
+            const nextLab = filteredLabs[currentIndex + 1];
+            const nextUrl = nextLab.getAttribute('data-url');
+            const nextTitle = nextLab.getAttribute('data-title');
+            nextHtml = `<a href="${nextUrl}${currentQueryString}" class="nav-button next">${nextTitle} →</a>`;
+        }
+        
+        prevNextNav.innerHTML = prevHtml + nextHtml;
+    }
+    
+    // Update navigation on page load
+    updatePrevNextNavigation();
 });
 </script>

@@ -10,13 +10,21 @@ This is a quick reference for developers working on the Microsoft Copilot Studio
    cd mcs-labs
    ```
 
-2. **Start development environment**
+2. **⚠️ REQUIRED: Generate content files**
+   ```powershell
+   # This generates index.md files and lab content from sources
+   pwsh -ExecutionPolicy Bypass -File scripts/Generate-Labs.ps1 -SkipPDFs
+   ```
+
+3. **Start development environment**
    ```bash
    docker-compose up -d jekyll-dev
    ```
 
-3. **Open in browser**
+4. **Open in browser**
    - Local site: http://localhost:4000/mcs-labs/
+
+> **Important**: Steps 2 is required because `index.md` files are auto-generated and not stored in git!
 
 ## ⚡ Daily Development Commands
 

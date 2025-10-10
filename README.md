@@ -47,9 +47,22 @@ For local development and testing:
 # Start the development server
 docker-compose up -d jekyll-dev
 
+### 🚀 Quick Start (For Developers)
+
+**⚠️ IMPORTANT**: After cloning, you must generate content files first:
+
+```powershell
+# REQUIRED: Generate Jekyll content from lab sources
+pwsh -ExecutionPolicy Bypass -File scripts/Generate-Labs.ps1 -SkipPDFs
+
+# Then start development server
+docker-compose up -d
+
 # Access the site at:
 # http://localhost:4000/mcs-labs/
 ```
+
+**Note**: The `index.md` files are auto-generated and not stored in git. Always run the generation script after cloning!
 
 **Note**: The `/mcs-labs/` path is required for local testing due to Jekyll's baseurl configuration.
 

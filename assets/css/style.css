@@ -7,7 +7,7 @@
 
 /* Prevent flash of unstyled content during theme detection */
 html:not([data-theme]) {
-    visibility: hidden;
+    /* visibility: hidden; */ /* Temporarily disabled for debugging */
 }
 
 html[data-theme] {
@@ -445,7 +445,6 @@ body {
 
 .journey-title {
     color: var(--accent-primary);
-    text-decoration: none;
     font-weight: 600;
     font-size: 1rem;
     display: block;
@@ -454,16 +453,7 @@ body {
     border-radius: 8px;
     border-left: 4px solid var(--accent-primary);
     border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
     box-shadow: 0 2px 4px var(--shadow);
-}
-
-.journey-title:hover {
-    background: var(--accent-primary);
-    color: white;
-    text-decoration: none;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px var(--shadow-hover);
 }
 
 .journey-labs {
@@ -1265,6 +1255,20 @@ body[data-lab-type="external"] .lab-downloads,
     color: var(--dark-button-text);
 }
 
+/* Dark mode adjustments for prev/next navigation buttons */
+[data-theme="dark"] .nav-button.prev,
+[data-theme="dark"] .nav-button.next {
+    background: var(--bg-secondary);
+    color: var(--accent-secondary);
+    border: 2px solid var(--accent-secondary);
+}
+
+[data-theme="dark"] .nav-button.prev:hover,
+[data-theme="dark"] .nav-button.next:hover {
+    background: var(--accent-secondary);
+    color: var(--dark-button-text);
+}
+
 /* Compact PDF button for lab cards */
 .btn.pdf-btn {
     font-size: 0.8rem;
@@ -1291,6 +1295,7 @@ body[data-lab-type="external"] .lab-downloads,
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
     margin: 2rem 0;
+    /* Force refresh for bootcamp card visibility */
 }
 
 .journey-card {
@@ -1739,9 +1744,9 @@ body[data-lab-type="external"] .lab-downloads,
 /* Lab footer */
 .lab-footer {
     margin-top: 3rem;
-    border-top: 3px solid var(--accent-primary);
+    border-top: 1px solid var(--border-color);
     padding-top: 2rem;
-    background: var(--bg-secondary);
+    background: transparent;
     border-radius: 8px;
     padding: 2rem;
 }
@@ -1791,24 +1796,42 @@ body[data-lab-type="external"] .lab-downloads,
     align-items: center;
     width: 100%;
     min-height: 3rem;
-    background: var(--bg-primary);
+    background: transparent;
     padding: 1rem;
     border-radius: 6px;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
 }
 
 .nav-placeholder {
     color: var(--text-secondary);
     font-style: italic;
-    opacity: 0.6;
+    opacity: 0.7;
+    padding: 0.5rem;
+    background: transparent;
 }
 
 .nav-button.prev {
     margin-right: auto;
+    background: var(--bg-secondary);
+    color: var(--accent-primary);
+    border: 2px solid var(--accent-primary);
+}
+
+.nav-button.prev:hover {
+    background: var(--accent-primary);
+    color: white;
 }
 
 .nav-button.next {
     margin-left: auto;
+    background: var(--bg-secondary);
+    color: var(--accent-primary);
+    border: 2px solid var(--accent-primary);
+}
+
+.nav-button.next:hover {
+    background: var(--accent-primary);
+    color: white;
 }
 
 /* Footer */
