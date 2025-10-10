@@ -70,8 +70,8 @@ async function generatePDF(htmlFilePath, outputPath, title = '') {
       displayHeaderFooter: true,
       headerTemplate: '<div></div>', // Empty header
       footerTemplate: `
-        <div style="font-size: 10px; color: #666; text-align: center; width: 100%; margin: 0 auto;">
-          ${title ? `<span style="float: left;">${title.replace(/"/g, '&quot;')}</span>` : ''}
+        <div style="font-size: 10px; color: #666; text-align: center; width: 100%; margin: 0 auto; position: relative;">
+          ${title ? `<span style="position: absolute; left: 0.75in; top: 0;">${title.replace(/"/g, '&quot;')}</span>` : ''}
           <span class="pageNumber"></span> of <span class="totalPages"></span>
         </div>
       `,

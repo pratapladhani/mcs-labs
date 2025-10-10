@@ -1,9 +1,14 @@
 /* PDF Styling for Lab Documentation */
 
-/* Page setup */
+/* Page setup with footer */
 @page {
   margin: 1in;
   size: letter;
+  @bottom-center {
+    content: "Page " counter(page) " of " counter(pages);
+    font-size: 9pt;
+    color: #666;
+  }
 }
 
 /* Body and typography */
@@ -249,13 +254,4 @@ blockquote:has(.warning) {
   background-color: #f0f9ff;
   border-left: 4pt solid #0ea5e9;
   color: #0c4a6e;
-}
-
-/* Footer with page numbers */
-@page {
-  @bottom-center {
-    content: "Page " counter(page) " of " counter(pages);
-    font-size: 9pt;
-    color: #666;
-  }
 }
