@@ -231,7 +231,7 @@ function Test-DockerEnvironment {
     
     try {
         # Check if docker-compose is available
-        $dockerComposeVersion = docker-compose --version 2>&1
+        $null = docker-compose --version 2>&1
         if ($LASTEXITCODE -ne 0) {
             return $false
         }
@@ -260,13 +260,13 @@ function Test-CIEnvironment {
     
     try {
         # Check if pandoc is available
-        $pandocVersion = pandoc --version 2>&1
+        $null = pandoc --version 2>&1
         if ($LASTEXITCODE -ne 0) {
             return $false
         }
         
         # Check if node.js is available
-        $nodeVersion = node --version 2>&1
+        $null = node --version 2>&1
         if ($LASTEXITCODE -ne 0) {
             return $false
         }
@@ -812,11 +812,6 @@ function ConvertTo-JekyllLab {
     )
     
     $lab_key = $Lab.id
-    $title = $Lab.title
-    $duration = $Lab.duration
-    $difficulty = $Lab.difficulty
-    $journeys = $Lab.journeys
-    
     $source_file = "$($Paths.basePath)/labs/$lab_key/README.md"
     $target_file = "$($Paths.outputPath)/$lab_key.md"  # Always use semantic names
     
