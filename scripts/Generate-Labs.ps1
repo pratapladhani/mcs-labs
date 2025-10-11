@@ -1370,6 +1370,7 @@ $journeyDefinitionsJs
 const sections = {
   'advanced_labs': { title: '🚀 Advanced Labs', description: 'Cutting-edge features and advanced implementations for experienced developers and power users.', difficulty: 'Advanced', icon: '🚀' },
   'core_learning_path': { title: '📚 Core Learning Path', description: 'Essential foundational labs that provide the fundamental knowledge and skills needed for effective use.', difficulty: 'Beginner to Intermediate', icon: '📚' },
+  'external_labs': { title: '🌐 External Labs', description: 'Labs hosted in external repositories with specialized content and advanced integrations.', difficulty: 'Varies', icon: '🌐' },
   'intermediate_labs': { title: '🎯 Intermediate Labs', description: 'Mid-level labs that build upon basic concepts and introduce more complex scenarios and integrations.', difficulty: 'Intermediate', icon: '🎯' },
   'optional_labs': { title: '🔧 Optional Labs', description: 'Supplementary labs that provide additional knowledge and alternative approaches for specific use cases.', difficulty: 'Varies', icon: '🔧' },
   'specialized_labs': { title: '⚡ Specialized Labs', description: 'Focused labs covering specific tools, integrations, and specialized workflows for particular scenarios.', difficulty: 'Intermediate to Advanced', icon: '⚡' }
