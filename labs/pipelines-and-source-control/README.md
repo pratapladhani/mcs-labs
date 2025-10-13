@@ -184,13 +184,12 @@ the agent. Tell the agent to "Provision a PROD environment".  You are limited to
 13. In the PROD card, select **Deploy here**.
 
 > [!TIP]
-> - The wizard then makes sure that each environment variable has a value set in the target environment, and that all connection references are valid. If any of these checks fail, you will be prompted to fix them before proceeding.
+> - The wizard then makes sure that each environment variable has a value set in the target environment, and that all connection references are valid. If any of these checks fail, you will be prompted to fix them before proceeding. 
+> - If the deployment fails because of missing dependencies make sure to go back to your solution explorer, click on the 3-dots next to each agents > Advanced > Add required objects and try re-deploying the solution.
 
-14. **Repeat** the operation for the PROD stage.
+14. In Copilot Studio, **switch** to the PROD environment.
 
-15. In Copilot Studio, **switch** to the PROD environment.
-
-16. **See** what the agents look like in the PROD environment. When entering a topic, see how customizations are locked because the solution is managed.
+15. **See** what the agents look like in the PROD environment. When entering a topic, see how customizations are locked because the solution is managed.
 
 ---
 
