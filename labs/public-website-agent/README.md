@@ -250,14 +250,14 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 2. **Test** your agent with this question to see general knowledge in action:
 
    ```
-   Write a poem
+   Write a draft email to request refund from a toaster that is not working properly (bread keeps burning).
    ```
 
-3. **Observe** how the assistant generates an answer from general knowledge.
+3. **Observe** how the assistant generates an answer from its general knowledge.
 
 4. Go to **Settings** > **Generative AI**, and disable **Use general knowledge**, then **Save**.
 
-5. **Close** settings, wait a minute, refresh the test pane, and test the same question again.
+5. **Close** settings, wait a minute, refresh the test pane, and test the same question again and see how the agent declines responding.
 
 > [!IMPORTANT]
 > It may take a few minutes for the setting to be fully disabled. You may need to refresh and retry several times.
