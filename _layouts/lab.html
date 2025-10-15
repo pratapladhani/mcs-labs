@@ -379,3 +379,223 @@ document.addEventListener('DOMContentLoaded', function() {
     updatePrevNextNavigation();
 });
 </script>
+
+<script>
+// ============================================================================
+// Enhanced Lab Features - Callouts, Copy Buttons, and Image Lightbox
+// ============================================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Feature 1: Initialize GitHub-style callouts
+    initializeCallouts();
+    
+    // Feature 2: Add copy buttons to code blocks
+    initializeCopyButtons();
+    
+    // Feature 3: Initialize image lightbox functionality
+    initializeImageLightbox();
+    
+    // ========================================================================
+    // GitHub-Style Callouts Implementation
+    // ========================================================================
+    function initializeCallouts() {
+        // Find all blockquotes that contain GitHub-style callouts
+        const blockquotes = document.querySelectorAll('.lab-content blockquote');
+        
+        blockquotes.forEach(blockquote => {
+            const firstParagraph = blockquote.querySelector('p:first-child');
+            if (!firstParagraph) return;
+            
+            const text = firstParagraph.textContent.trim();
+            
+            // Check for callout pattern: [!TYPE]
+            const calloutMatch = text.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\](.*)$/i);
+            if (!calloutMatch) return;
+            
+            const calloutType = calloutMatch[1].toLowerCase();
+            const calloutContent = calloutMatch[2].trim();
+            
+            // Create callout container
+            const calloutDiv = document.createElement('div');
+            calloutDiv.className = `callout callout-${calloutType}`;
+            
+            // Create title element
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'callout-title';
+            titleDiv.textContent = calloutType.toUpperCase();
+            
+            // Create content container
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'callout-content';
+            
+            // Add remaining content
+            if (calloutContent) {
+                const contentP = document.createElement('p');
+                contentP.textContent = calloutContent;
+                contentDiv.appendChild(contentP);
+            }
+            
+            // Move any additional paragraphs
+            const additionalParagraphs = blockquote.querySelectorAll('p:not(:first-child)');
+            additionalParagraphs.forEach(p => {
+                contentDiv.appendChild(p.cloneNode(true));
+            });
+            
+            // Build final callout
+            calloutDiv.appendChild(titleDiv);
+            calloutDiv.appendChild(contentDiv);
+            
+            // Replace the blockquote
+            blockquote.parentNode.replaceChild(calloutDiv, blockquote);
+        });
+    }
+    
+    // ========================================================================
+    // Copy Button Implementation
+    // ========================================================================
+    function initializeCopyButtons() {
+        // Find all pre elements with code
+        const preElements = document.querySelectorAll('.lab-content pre');
+        
+        preElements.forEach(pre => {
+            // Skip if already has a copy button
+            if (pre.parentNode.classList.contains('code-container')) return;
+            
+            // Create container wrapper
+            const container = document.createElement('div');
+            container.className = 'code-container';
+            
+            // Create copy button
+            const copyButton = document.createElement('button');
+            copyButton.className = 'copy-button';
+            copyButton.textContent = 'Copy';
+            copyButton.title = 'Copy code to clipboard';
+            
+            // Add click handler
+            copyButton.addEventListener('click', async function() {
+                const code = pre.textContent || pre.innerText;
+                
+                try {
+                    await navigator.clipboard.writeText(code);
+                    
+                    // Show success state
+                    copyButton.classList.add('copied');
+                    copyButton.textContent = 'Copied';
+                    
+                    // Reset after 2 seconds
+                    setTimeout(() => {
+                        copyButton.classList.remove('copied');
+                        copyButton.textContent = 'Copy';
+                    }, 2000);
+                    
+                } catch (err) {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = code;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    
+                    try {
+                        document.execCommand('copy');
+                        copyButton.textContent = 'Copied';
+                        setTimeout(() => {
+                            copyButton.textContent = 'Copy';
+                        }, 2000);
+                    } catch (fallbackErr) {
+                        copyButton.textContent = 'Failed';
+                        setTimeout(() => {
+                            copyButton.textContent = 'Copy';
+                        }, 2000);
+                    }
+                    
+                    document.body.removeChild(textArea);
+                }
+            });
+            
+            // Wrap pre element and add button
+            pre.parentNode.insertBefore(container, pre);
+            container.appendChild(pre);
+            container.appendChild(copyButton);
+        });
+    }
+    
+    // ========================================================================
+    // Image Lightbox Implementation
+    // ========================================================================
+    function initializeImageLightbox() {
+        // Create lightbox overlay
+        const lightboxOverlay = document.createElement('div');
+        lightboxOverlay.className = 'lightbox-overlay';
+        lightboxOverlay.innerHTML = `
+            <button class="lightbox-close" title="Close (ESC)">×</button>
+            <div class="lightbox-loading">Loading...</div>
+            <img class="lightbox-image" alt="" style="display: none;">
+        `;
+        document.body.appendChild(lightboxOverlay);
+        
+        const lightboxImage = lightboxOverlay.querySelector('.lightbox-image');
+        const lightboxLoading = lightboxOverlay.querySelector('.lightbox-loading');
+        const closeButton = lightboxOverlay.querySelector('.lightbox-close');
+        
+        // Add click handlers to all images in lab content
+        const images = document.querySelectorAll('.lab-content img');
+        
+        images.forEach(img => {
+            img.addEventListener('click', function() {
+                openLightbox(img.src, img.alt);
+            });
+        });
+        
+        // Open lightbox function
+        function openLightbox(src, alt) {
+            lightboxOverlay.classList.add('active');
+            lightboxImage.style.display = 'none';
+            lightboxLoading.style.display = 'block';
+            
+            // Load image
+            const tempImage = new Image();
+            tempImage.onload = function() {
+                lightboxImage.src = src;
+                lightboxImage.alt = alt;
+                lightboxImage.style.display = 'block';
+                lightboxLoading.style.display = 'none';
+            };
+            tempImage.onerror = function() {
+                lightboxLoading.textContent = 'Failed to load image';
+            };
+            tempImage.src = src;
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close lightbox function
+        function closeLightbox() {
+            lightboxOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Event listeners for closing
+        closeButton.addEventListener('click', closeLightbox);
+        
+        lightboxOverlay.addEventListener('click', function(e) {
+            if (e.target === lightboxOverlay) {
+                closeLightbox();
+            }
+        });
+        
+        // ESC key to close
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+        
+        // Prevent image click from closing lightbox
+        lightboxImage.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+});
+</script>

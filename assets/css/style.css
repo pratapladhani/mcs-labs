@@ -88,6 +88,48 @@ html[data-theme] {
     --code-bg: #f1f3f4;
     --pre-bg: #f8f9fa;
     
+    /* Callout colors - Light theme */
+    --callout-note-bg: #f0f8ff;
+    --callout-note-border: #0277bd;
+    --callout-note-text: #0d47a1;
+    --callout-note-title: #1565c0;
+    
+    --callout-tip-bg: #f0fff4;
+    --callout-tip-border: #4caf50;
+    --callout-tip-text: #1b5e20;
+    --callout-tip-title: #2e7d32;
+    
+    --callout-important-bg: #fff3e0;
+    --callout-important-border: #ff9800;
+    --callout-important-text: #e65100;
+    --callout-important-title: #f57c00;
+    
+    --callout-warning-bg: #fff8e1;
+    --callout-warning-border: #ffc107;
+    --callout-warning-text: #f57f17;
+    --callout-warning-title: #ff8f00;
+    
+    --callout-caution-bg: #ffebee;
+    --callout-caution-border: #f44336;
+    --callout-caution-text: #c62828;
+    --callout-caution-title: #d32f2f;
+    
+    /* Copy button colors - Light theme */
+    --copy-button-bg: #ffffff;
+    --copy-button-border: #e0e0e0;
+    --copy-button-text: #666666;
+    --copy-button-hover-bg: #f5f5f5;
+    --copy-button-hover-border: #cccccc;
+    --copy-success-bg: #e8f5e8;
+    --copy-success-border: #4caf50;
+    --copy-success-text: #2e7d32;
+    
+    /* Lightbox colors - Light theme */
+    --lightbox-bg: rgba(255, 255, 255, 0.95);
+    --lightbox-close-bg: #ffffff;
+    --lightbox-close-text: #333333;
+    --lightbox-close-hover-bg: #f5f5f5;
+    
     /* Overlay effects */
     --overlay-hover: rgba(255,255,255,0.1);
     --overlay-active: rgba(255,255,255,0.2);
@@ -160,6 +202,48 @@ html[data-theme] {
     /* Code highlighting - dark mode */
     --code-bg: #2d2d30;
     --pre-bg: #1e1e1e;
+    
+    /* Callout colors - Dark theme */
+    --callout-note-bg: #1a2332;
+    --callout-note-border: #4dabf7;
+    --callout-note-text: #74c0fc;
+    --callout-note-title: #4dabf7;
+    
+    --callout-tip-bg: #1a2e1f;
+    --callout-tip-border: #73d13d;
+    --callout-tip-text: #95d5a0;
+    --callout-tip-title: #73d13d;
+    
+    --callout-important-bg: #332618;
+    --callout-important-border: #ffab40;
+    --callout-important-text: #ffc467;
+    --callout-important-title: #ffab40;
+    
+    --callout-warning-bg: #332a18;
+    --callout-warning-border: #ffd43b;
+    --callout-warning-text: #ffd84b;
+    --callout-warning-title: #ffd43b;
+    
+    --callout-caution-bg: #331a1a;
+    --callout-caution-border: #ff7875;
+    --callout-caution-text: #ffa8a5;
+    --callout-caution-title: #ff7875;
+    
+    /* Copy button colors - Dark theme */
+    --copy-button-bg: #2d2d2d;
+    --copy-button-border: #404040;
+    --copy-button-text: #b8b8b8;
+    --copy-button-hover-bg: #404040;
+    --copy-button-hover-border: #606060;
+    --copy-success-bg: #1a2e1f;
+    --copy-success-border: #73d13d;
+    --copy-success-text: #95d5a0;
+    
+    /* Lightbox colors - Dark theme */
+    --lightbox-bg: rgba(26, 26, 26, 0.95);
+    --lightbox-close-bg: #2d2d2d;
+    --lightbox-close-text: #e5e5e5;
+    --lightbox-close-hover-bg: #404040;
     
     /* Overlay effects - dark mode */
     --overlay-hover: rgba(255,255,255,0.1);
@@ -2183,4 +2267,252 @@ a:hover .external-link-icon {
     background: var(--hover-bg);
     color: var(--accent-secondary);
     text-decoration: none;
+}
+
+/* ============================================================================
+   GitHub-Style Callouts Support
+   ============================================================================ */
+
+/* Callout base styles */
+.callout {
+    margin: 1.5rem 0;
+    padding: 1rem 1rem 1rem 3rem;
+    border-left: 4px solid;
+    border-radius: 6px;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Callout icons */
+.callout::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* Callout title styling */
+.callout .callout-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+/* Note callout */
+.callout.callout-note {
+    background: var(--callout-note-bg);
+    border-color: var(--callout-note-border);
+    color: var(--callout-note-text);
+}
+
+.callout.callout-note::before {
+    content: '🔵';
+}
+
+.callout.callout-note .callout-title {
+    color: var(--callout-note-title);
+}
+
+/* Tip callout */
+.callout.callout-tip {
+    background: var(--callout-tip-bg);
+    border-color: var(--callout-tip-border);
+    color: var(--callout-tip-text);
+}
+
+.callout.callout-tip::before {
+    content: '💡';
+}
+
+.callout.callout-tip .callout-title {
+    color: var(--callout-tip-title);
+}
+
+/* Important callout */
+.callout.callout-important {
+    background: var(--callout-important-bg);
+    border-color: var(--callout-important-border);
+    color: var(--callout-important-text);
+}
+
+.callout.callout-important::before {
+    content: '❗';
+}
+
+.callout.callout-important .callout-title {
+    color: var(--callout-important-title);
+}
+
+/* Warning callout */
+.callout.callout-warning {
+    background: var(--callout-warning-bg);
+    border-color: var(--callout-warning-border);
+    color: var(--callout-warning-text);
+}
+
+.callout.callout-warning::before {
+    content: '⚠️';
+}
+
+.callout.callout-warning .callout-title {
+    color: var(--callout-warning-title);
+}
+
+/* Caution callout */
+.callout.callout-caution {
+    background: var(--callout-caution-bg);
+    border-color: var(--callout-caution-border);
+    color: var(--callout-caution-text);
+}
+
+.callout.callout-caution::before {
+    content: '🔥';
+}
+
+.callout.callout-caution .callout-title {
+    color: var(--callout-caution-title);
+}
+
+/* ============================================================================
+   Code Block Copy Button Support
+   ============================================================================ */
+
+/* Code block container with copy button */
+.code-container {
+    position: relative;
+    margin: 1.5rem 0;
+}
+
+.code-container pre {
+    margin: 0;
+    padding-right: 3rem; /* Make room for copy button */
+}
+
+/* Copy button */
+.copy-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--copy-button-bg);
+    border: 1px solid var(--copy-button-border);
+    border-radius: 6px;
+    color: var(--copy-button-text);
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+    transition: all 0.2s ease;
+    z-index: 10;
+    opacity: 0.7;
+}
+
+.copy-button:hover {
+    opacity: 1;
+    background: var(--copy-button-hover-bg);
+    border-color: var(--copy-button-hover-border);
+    transform: translateY(-1px);
+}
+
+.copy-button:active {
+    transform: translateY(0);
+}
+
+.copy-button.copied {
+    background: var(--copy-success-bg);
+    border-color: var(--copy-success-border);
+    color: var(--copy-success-text);
+}
+
+.copy-button.copied::after {
+    content: ' ✓';
+}
+
+/* ============================================================================
+   Image Zoom/Lightbox Support
+   ============================================================================ */
+
+/* Zoomable images */
+.lab-content img {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.lab-content img:hover {
+    box-shadow: 0 4px 16px var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+/* Lightbox overlay */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--lightbox-bg);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.lightbox-overlay.active {
+    display: flex;
+}
+
+/* Lightbox image */
+.lightbox-image {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    cursor: default;
+    transition: all 0.3s ease;
+}
+
+/* Lightbox close button */
+.lightbox-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: var(--lightbox-close-bg);
+    border: none;
+    border-radius: 50%;
+    color: var(--lightbox-close-text);
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.lightbox-close:hover {
+    background: var(--lightbox-close-hover-bg);
+    transform: scale(1.1);
+}
+
+/* Lightbox loading indicator */
+.lightbox-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-primary);
+    font-size: 1.1rem;
 }
