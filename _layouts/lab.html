@@ -163,6 +163,13 @@ layout: default
             </div>
         </footer>
     </article>
+    
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top" title="Scroll to top">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 4.414L3.707 8.707a1 1 0 01-1.414-1.414L7.586 2a1 1 0 011.414 0l5.293 5.293a1 1 0 01-1.414 1.414L8 4.414z"/>
+        </svg>
+    </button>
 </div>
 <!-- End lab-layout -->
 
@@ -773,6 +780,55 @@ document.addEventListener('DOMContentLoaded', function() {
         lightboxContainer.addEventListener('click', function(e) {
             e.stopPropagation();
         });
+    }
+    
+    // =========================================================================
+    // SCROLL TO TOP BUTTON FUNCTIONALITY
+    // =========================================================================
+    
+    // Get the scroll-to-top button
+    const scrollToTopButton = document.getElementById('scroll-to-top');
+    
+    if (scrollToTopButton) {
+        // Show/hide button based on scroll position
+        function toggleScrollButton() {
+            const scrollThreshold = 300; // Show button after scrolling 300px
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollPosition > scrollThreshold) {
+                scrollToTopButton.classList.add('visible');
+            } else {
+                scrollToTopButton.classList.remove('visible');
+            }
+        }
+        
+        // Smooth scroll to top function
+        function scrollToTop() {
+            // Check if browser supports smooth scrolling
+            if ('scrollBehavior' in document.documentElement.style) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                // Fallback for older browsers with animated scroll
+                const scrollStep = -window.scrollY / (300 / 15);
+                const scrollInterval = setInterval(function() {
+                    if (window.scrollY !== 0) {
+                        window.scrollBy(0, scrollStep);
+                    } else {
+                        clearInterval(scrollInterval);
+                    }
+                }, 15);
+            }
+        }
+        
+        // Event listeners
+        window.addEventListener('scroll', toggleScrollButton, { passive: true });
+        scrollToTopButton.addEventListener('click', scrollToTop);
+        
+        // Initialize button state
+        toggleScrollButton();
     }
 });
 </script>
