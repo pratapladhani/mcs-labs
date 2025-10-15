@@ -50,5 +50,6 @@ exclude:
   - LICENSE
   - SECURITY.md
   - labs/*/README.md
+  - labs/*/local-dist/
   - labs/lab-template.md
   - scripts/
