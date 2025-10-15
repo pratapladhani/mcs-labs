@@ -2472,6 +2472,15 @@ a:hover .external-link-icon {
     display: flex;
 }
 
+/* Lightbox container for the image */
+.lightbox-container {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+    cursor: default;
+}
+
 /* Lightbox image */
 .lightbox-image {
     max-width: 90vw;
@@ -2480,6 +2489,11 @@ a:hover .external-link-icon {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     cursor: default;
     transition: all 0.3s ease;
+    transform-origin: center center;
+}
+
+.lightbox-image:hover {
+    cursor: grab;
 }
 
 /* Lightbox close button */
@@ -2500,11 +2514,56 @@ a:hover .external-link-icon {
     justify-content: center;
     transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10001;
 }
 
 .lightbox-close:hover {
     background: var(--lightbox-close-hover-bg);
     transform: scale(1.1);
+}
+
+/* Lightbox zoom controls */
+.lightbox-controls {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--lightbox-close-bg);
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10001;
+}
+
+.lightbox-controls button {
+    background: transparent;
+    border: none;
+    color: var(--lightbox-close-text);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.lightbox-controls button:hover {
+    background: var(--lightbox-close-hover-bg);
+    transform: scale(1.1);
+}
+
+.zoom-level {
+    color: var(--lightbox-close-text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    min-width: 3rem;
+    text-align: center;
 }
 
 /* Lightbox loading indicator */
@@ -2515,4 +2574,5 @@ a:hover .external-link-icon {
     transform: translate(-50%, -50%);
     color: var(--text-primary);
     font-size: 1.1rem;
+    z-index: 10000;
 }
