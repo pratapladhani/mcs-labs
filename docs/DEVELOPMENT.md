@@ -16,7 +16,7 @@ This document contains essential information for developing the Microsoft Copilo
 1. **Docker-First Development**: We use Docker containers for consistent development environment across different machines
 2. **Separation of Concerns**: All styling is handled in main CSS file, NOT in generated HTML
 3. **Dynamic Content Generation**: Labs are generated from PowerShell scripts, not manually created
-4. **Theme System**: CSS Custom Properties enable comprehensive light/dark mode support
+4. **Multi-Theme System**: CSS Custom Properties with theme families (Rich/Minimal) and mode variants (Light/Dark) support
 
 ## 🚀 Development Environment Setup
 
@@ -168,37 +168,100 @@ When editing `scripts/Generate-Labs.ps1`:
 
 ## 🎨 Theme System
 
-### CSS Custom Properties Architecture
+### Modern Multi-Theme Architecture
+
+The site now supports multiple theme families with light/dark variants:
 
 ```css
+/* Theme family variables in theme-minimal.css */
 :root {
-    /* Light theme */
-    --bg-primary: #f8f9fa;
-    --text-primary: #333333;
+    --bg-primary: white;
+    --text-primary: #34343c;
+    --heading-color: #2a2a2a;
     /* ... */
 }
 
 [data-theme="dark"] {
-    /* Dark theme overrides */
+    /* Dark mode overrides */
     --bg-primary: #1a1a1a;
     --text-primary: #ffffff;
     /* ... */
 }
+
+/* Theme-specific component overrides */
+html[data-theme-family="minimal"] .lab-card {
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px var(--shadow);
+}
 ```
 
-### Theme Toggle Implementation
+### Theme System Implementation
 
-- **Preload Script**: Immediate theme detection in `<head>` prevents flash
-- **Toggle Button**: Located in site header
-- **Persistence**: Theme choice saved in localStorage
-- **System Detection**: Respects user's OS preference
+- **Theme Families**: Rich vs Minimal design approaches
+- **Mode Variants**: Light and Dark modes within each family
+- **Dynamic Loading**: Theme CSS files loaded asynchronously via theme-manager.js
+- **FOUC Prevention**: Immediate theme detection prevents flash of unstyled content
+- **Data Attributes**: `data-theme-family` and `data-theme` applied to HTML element
+- **Local Storage**: Separate storage for theme family and mode preferences
+
+### Theme File Structure
+
+```
+assets/css/themes/
+├── theme-rich.css     # Rich theme family (colorful, gradients)
+└── theme-minimal.css  # Minimal theme family (clean, blog-style)
+```
 
 ### Adding New Themed Components
 
-1. Define CSS Custom Properties for colors
-2. Use properties in component styles
-3. Add dark mode overrides in `[data-theme="dark"]` section
-4. Test both light and dark modes
+1. Define CSS Custom Properties for colors in theme files
+2. Use properties in base component styles in `style.css`
+3. Add theme-specific overrides using `html[data-theme-family="theme-name"]` selectors
+4. Test across all theme families and modes
+5. Update `THEME_SYSTEM.md` documentation
+
+### Theme Development Best Practices
+
+- **Use CSS Variables**: Always use custom properties for theme-able values
+- **Specific Selectors**: Use data attribute selectors for theme-specific overrides
+- **Component Isolation**: Override specific components without affecting others
+- **Consistent Naming**: Follow established variable naming conventions
+- **Test All Variants**: Verify styling in all theme family/mode combinations
+
+### GitHub Copilot Integration
+
+#### **AI-Assisted Theme Development**
+When working with GitHub Copilot on theme-related tasks, provide this context:
+
+**Current Setup:**
+- Multi-theme system with Rich/Minimal families and Light/Dark modes
+- CSS variables in `/assets/css/themes/` directory
+- Theme overrides use `html[data-theme-family="name"]` selectors
+- JavaScript theme manager with family/mode separation
+
+**Effective Prompts:**
+```
+"Help me create minimal theme styling for [component] using neutral colors and existing CSS variables like --bg-primary, --text-primary, --border-color"
+
+"I need to add theme-specific override for .lab-card component in the minimal theme. Use the pattern html[data-theme-family='minimal'] and ensure it works with both light and dark modes"
+
+"Debug this theme switching issue: [describe problem]. The theme manager uses applyTheme(family, mode) and sets data-theme-family attribute"
+```
+
+#### **Code Pattern Recognition**
+GitHub Copilot should recognize these established patterns:
+- CSS variables for all theme-able properties
+- `html[data-theme-family="name"]` for theme-specific overrides
+- ThemeManager API methods for JavaScript interactions
+- Minimal theme uses neutral colors, Rich theme uses vibrant colors
+
+### Theme Testing Pages
+
+#### **Visual Testing - `theme-test.md`**
+Navigate to `/theme-test.html` to test UI component rendering:
+- Displays sample lab cards, buttons, typography
+- Use header theme controls to switch between themes
+- Verify visual consistency across all theme combinations
 
 ## 🐛 Common Development Issues
 
@@ -211,11 +274,27 @@ When editing `scripts/Generate-Labs.ps1`:
 docker-compose restart jekyll-dev
 ```
 
-### Theme Toggle Not Working
+### Theme System Not Working
 
-**Problem**: JavaScript errors in browser console
+**Problem**: Themes not switching or JavaScript errors in browser console
 
-**Solution**: Check for syntax errors in `_layouts/default.html` script tags
+**Solutions**:
+- Check `theme-manager.js` for syntax errors
+- Verify theme CSS files are accessible
+- Check browser console for network errors
+- Ensure `data-theme-family` and `data-theme` attributes are set on HTML element
+- Use GitHub Copilot to help debug theme manager API calls and JavaScript issues
+
+### Theme-Specific Styles Not Applied
+
+**Problem**: Theme overrides not taking effect
+
+**Solutions**:
+- Check CSS selector specificity - use `html[data-theme-family="name"]` for sufficient specificity
+- Verify theme CSS file is loaded (check Network tab in DevTools)
+- Ensure CSS custom properties are defined in theme files
+- Test with `!important` temporarily to diagnose specificity issues
+- Ask GitHub Copilot to help analyze CSS specificity conflicts
 
 ### Styling Not Applied
 

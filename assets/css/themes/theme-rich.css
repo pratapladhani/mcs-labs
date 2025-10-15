@@ -1,140 +1,219 @@
 /* ============================================================================
-   Rich Theme CSS
+   RICH THEME - Colorful & Engaging Design
    
-   This theme preserves the original rich, colorful design with gradients,
-   shadows, and vibrant colors for an engaging learning experience.
+   This theme preserves the original vibrant, engaging design with gradients,
+   rich colors, and visual depth for an immersive learning experience.
+   
+   DESIGN CHARACTERISTICS:
+   - Rich color palette with blues, greens, oranges, and purples
+   - Gradient header backgrounds for visual impact
+   - High contrast for accessibility and readability
+   - Vibrant callout colors that stand out
+   - Professional shadows and depth effects
+   
+   SUPPORTED MODES:
+   - Light Mode: Clean whites with colorful accents
+   - Dark Mode: Deep backgrounds with bright highlights
+   
+   COLOR STRATEGY:
+   - Primary: Microsoft Blue (#0078d4) for headers and accents
+   - Secondary: Complementary colors for variety and hierarchy
+   - Callouts: Distinct colors for each type (blue, green, orange, yellow, red)
+   - Interactions: Hover states with enhanced contrast
+   
+   USAGE:
+   This file is loaded dynamically by the theme manager when "Rich" theme 
+   is selected. All variables defined here override the base styles in 
+   the main style.css file.
    ============================================================================ */
 
-/* Rich Theme Light Mode Variables */
+/* ============================================================================
+   RICH THEME - LIGHT MODE VARIABLES
+   ============================================================================ */
+
 :root {
-    /* Light theme colors */
-    --bg-primary: #f8f9fa;
-    --bg-secondary: #ffffff;
-    --bg-tertiary: #f0f8ff;
-    --text-primary: #333333;
-    --text-secondary: #666666;
-    --text-muted: rgba(0,0,0,0.6);
-    --border-color: #e5e5e5;
-    --border-light: rgba(0,0,0,0.1);
-    --shadow: rgba(0,0,0,0.1);
-    --shadow-hover: rgba(0,0,0,0.15);
-    --accent-primary: #0066cc;
-    --accent-primary-hover: #0052a3;
-    --accent-secondary: #0052a3;
-    --hover-bg: rgba(0,0,0,0.05);
-    --scrollbar-track: #f1f1f1;
-    --scrollbar-thumb: #c1c1c1;
-    --scrollbar-thumb-hover: #a1a1a1;
-    --external-link-opacity: 0.7;
-    --fade-gradient: rgba(255,255,255,0.9);
+    /* ========================================
+       BASE COLOR PALETTE - LIGHT MODE
+       ======================================== */
+    --bg-primary: #f8f9fa;          /* Main page background - light gray */
+    --bg-secondary: #ffffff;         /* Content areas - pure white */
+    --bg-tertiary: #f0f8ff;          /* Accent areas - alice blue */
+    --text-primary: #333333;         /* Main text - dark gray */
+    --text-secondary: #666666;       /* Secondary text - medium gray */
+    --text-muted: rgba(0,0,0,0.6);   /* Muted text - semi-transparent */
+    --border-color: #e5e5e5;         /* Standard borders - light gray */
+    --border-light: rgba(0,0,0,0.1); /* Subtle borders - semi-transparent */
+    --shadow: rgba(0,0,0,0.1);       /* Standard shadows */
+    --shadow-hover: rgba(0,0,0,0.15); /* Enhanced hover shadows */
     
-    /* Header specific colors */
-    --header-bg: #0078d4;
-    --header-text: white;
-    --header-text-secondary: rgba(255,255,255,0.9);
-    --header-hover: rgba(255,255,255,0.1);
+    /* ========================================
+       INTERACTIVE COLORS
+       ======================================== */
+    --accent-primary: #0066cc;         /* Primary links and buttons */
+    --accent-primary-hover: #0052a3;   /* Hover state for primary elements */
+    --accent-secondary: #0052a3;       /* Secondary accent color */
+    --hover-bg: rgba(0,0,0,0.05);      /* Background hover effects */
     
-    /* Badge colors */
-    --badge-green-bg: #f0f9ff;
-    --badge-green-text: #047857;
-    --badge-orange-bg: #fff7ed;
-    --badge-orange-text: #c2410c;
-    --badge-pink-bg: #fdf2f8;
-    --badge-pink-text: #be185d;
-    --badge-purple-bg: #f3e8ff;
-    --badge-purple-text: #7c3aed;
-    --badge-blue-bg: #eff6ff;
-    --badge-blue-text: #1d4ed8;
+    /* ========================================
+       SCROLLBAR STYLING
+       ======================================== */
+    --scrollbar-track: #f1f1f1;       /* Scrollbar track background */
+    --scrollbar-thumb: #c1c1c1;       /* Scrollbar thumb */
+    --scrollbar-thumb-hover: #a1a1a1; /* Scrollbar thumb hover */
     
-    /* Border colors for cards */
-    --border-green: #10b981;
-    --border-orange: #f59e0b;
-    --border-pink: #ec4899;
-    --border-purple: #8b5cf6;
-    --border-gray: #6b7280;
-    --border-blue: #3b82f6;
-    --border-dark-green: #059669;
-    --border-dark-orange: #d97706;
-    --border-red: #ef4444;
+    /* ========================================
+       UTILITY VARIABLES
+       ======================================== */
+    --external-link-opacity: 0.7;      /* External link icon opacity */
+    --fade-gradient: rgba(255,255,255,0.9); /* Fade overlay effects */
     
-    /* Journey colors */
-    --journey-quickstart-color: #3b82f6;
-    --journey-businessuser-color: #8b5cf6;
-    --journey-developer-color: #10b981;
-    --journey-autonomous-color: #f59e0b;
-    --journey-bootcamp-color: #ef4444;
+    /* ========================================
+       HEADER STYLING - RICH BLUE THEME
+       ======================================== */
+    --header-bg: #0078d4;                    /* Microsoft blue header */
+    --header-text: white;                    /* White text on blue background */
+    --header-text-secondary: rgba(255,255,255,0.9); /* Semi-transparent white */
+    --header-hover: rgba(255,255,255,0.1);   /* Hover effects on header elements */
     
-    /* Additional button colors */
-    --danger-color: #ef4444;
-    --danger-color-hover: #dc2626;
-    --accent-tertiary: #8b5cf6;
-    --accent-tertiary-dark: #7c3aed;
-    --dark-button-text: white;
+    /* ========================================
+       BADGE/LABEL COLORS - COLORFUL SYSTEM
+       ======================================== */
+    --badge-green-bg: #f0f9ff;    /* Light background for green badges */
+    --badge-green-text: #047857;  /* Dark green text */
+    --badge-orange-bg: #fff7ed;   /* Light orange background */
+    --badge-orange-text: #c2410c; /* Dark orange text */
+    --badge-pink-bg: #fdf2f8;     /* Light pink background */
+    --badge-pink-text: #be185d;   /* Dark pink text */
+    --badge-purple-bg: #f3e8ff;   /* Light purple background */
+    --badge-purple-text: #7c3aed; /* Dark purple text */
+    --badge-blue-bg: #eff6ff;     /* Light blue background */
+    --badge-blue-text: #1d4ed8;   /* Dark blue text */
     
-    /* Code highlighting */
-    --code-bg: #f8f9fa;
-    --pre-bg: #f8f9fa;
+    /* ========================================
+       CARD BORDER COLORS - VIBRANT ACCENTS
+       ======================================== */
+    --border-green: #10b981;      /* Emerald green */
+    --border-orange: #f59e0b;     /* Amber orange */
+    --border-pink: #ec4899;       /* Pink */
+    --border-purple: #8b5cf6;     /* Violet purple */
+    --border-gray: #6b7280;       /* Neutral gray */
+    --border-blue: #3b82f6;       /* Sky blue */
+    --border-dark-green: #059669; /* Dark emerald */
+    --border-dark-orange: #d97706; /* Dark amber */
+    --border-red: #ef4444;        /* Red for warnings */
     
-    /* Callout colors - Rich theme */
-    --callout-note-bg: #eff6ff;
-    --callout-note-border: #3b82f6;
-    --callout-note-text: #1e40af;
-    --callout-note-title: #1d4ed8;
+    /* ========================================
+       LEARNING JOURNEY COLORS
+       ======================================== */
+    --journey-quickstart-color: #3b82f6;  /* Blue for quick start */
+    --journey-businessuser-color: #8b5cf6; /* Purple for business users */
+    --journey-developer-color: #10b981;    /* Green for developers */
+    --journey-autonomous-color: #f59e0b;   /* Orange for autonomous */
+    --journey-bootcamp-color: #ef4444;     /* Red for bootcamp */
     
-    --callout-tip-bg: #f0fdf4;
-    --callout-tip-border: #22c55e;
-    --callout-tip-text: #15803d;
-    --callout-tip-title: #16a34a;
+    /* ========================================
+       BUTTON COLORS - ADDITIONAL VARIANTS
+       ======================================== */
+    --danger-color: #ef4444;         /* Red for dangerous actions */
+    --danger-color-hover: #dc2626;   /* Darker red on hover */
+    --accent-tertiary: #8b5cf6;      /* Purple tertiary accent */
+    --accent-tertiary-dark: #7c3aed; /* Darker purple variant */
+    --dark-button-text: white;       /* Text color for dark buttons */
     
-    --callout-important-bg: #fef3c7;
-    --callout-important-border: #f59e0b;
-    --callout-important-text: #d97706;
-    --callout-important-title: #f59e0b;
+    /* ========================================
+       CODE HIGHLIGHTING
+       ======================================== */
+    --code-bg: #f8f9fa;  /* Light gray background for code */
+    --pre-bg: #f8f9fa;   /* Same as code for consistency */
     
-    --callout-warning-bg: #fef3c7;
-    --callout-warning-border: #eab308;
-    --callout-warning-text: #ca8a04;
-    --callout-warning-title: #eab308;
+    /* ========================================
+       CALLOUT COLORS - RICH & VIBRANT
+       ======================================== */
+    /* NOTE callouts - Blue theme for information */
+    --callout-note-bg: #eff6ff;      /* Light blue background */
+    --callout-note-border: #3b82f6;  /* Blue border */
+    --callout-note-text: #1e40af;    /* Dark blue text */
+    --callout-note-title: #1d4ed8;   /* Slightly different blue for titles */
     
-    --callout-caution-bg: #fef2f2;
-    --callout-caution-border: #ef4444;
-    --callout-caution-text: #dc2626;
-    --callout-caution-title: #ef4444;
+    /* TIP callouts - Green theme for helpful suggestions */
+    --callout-tip-bg: #f0fdf4;       /* Light green background */
+    --callout-tip-border: #22c55e;   /* Green border */
+    --callout-tip-text: #15803d;     /* Dark green text */
+    --callout-tip-title: #16a34a;    /* Medium green for titles */
     
-    /* Copy button colors - Rich theme */
-    --copy-button-bg: rgba(255,255,255,0.9);
-    --copy-button-border: #e5e7eb;
-    --copy-button-text: #374151;
-    --copy-button-hover-bg: #f9fafb;
-    --copy-button-hover-border: #d1d5db;
-    --copy-success-bg: #d1fae5;
-    --copy-success-border: #10b981;
-    --copy-success-text: #065f46;
+    /* IMPORTANT callouts - Orange theme for key information */
+    --callout-important-bg: #fef3c7;  /* Light orange background */
+    --callout-important-border: #f59e0b; /* Orange border */
+    --callout-important-text: #d97706;   /* Dark orange text */
+    --callout-important-title: #f59e0b;  /* Orange for titles */
     
-    /* Lightbox colors - Rich theme */
-    --lightbox-bg: rgba(0, 0, 0, 0.8);
-    --lightbox-close-bg: #ffffff;
-    --lightbox-close-text: #374151;
-    --lightbox-close-hover-bg: #f3f4f6;
+    /* WARNING callouts - Yellow theme for caution */
+    --callout-warning-bg: #fef3c7;    /* Light yellow background */
+    --callout-warning-border: #eab308; /* Yellow border */
+    --callout-warning-text: #ca8a04;   /* Dark yellow text */
+    --callout-warning-title: #eab308;  /* Yellow for titles */
     
-    /* Overlay effects */
-    --overlay-hover: rgba(0,0,0,0.05);
-    --overlay-active: rgba(0,0,0,0.1);
-    --overlay-border: rgba(0,0,0,0.15);
+    /* CAUTION callouts - Red theme for danger/critical warnings */
+    --callout-caution-bg: #fef2f2;    /* Light red background */
+    --callout-caution-border: #ef4444; /* Red border */
+    --callout-caution-text: #dc2626;    /* Dark red text */
+    --callout-caution-title: #ef4444;   /* Red for titles */
+    
+    /* ========================================
+       COPY BUTTON COLORS - RICH THEME
+       ======================================== */
+    --copy-button-bg: rgba(255,255,255,0.9);  /* Semi-transparent white background */
+    --copy-button-border: #e5e7eb;             /* Light gray border */
+    --copy-button-text: #374151;               /* Dark gray text */
+    --copy-button-hover-bg: #f9fafb;           /* Slightly darker on hover */
+    --copy-button-hover-border: #d1d5db;       /* Darker border on hover */
+    --copy-success-bg: #d1fae5;                /* Green background for success state */
+    --copy-success-border: #10b981;            /* Green border for success */
+    --copy-success-text: #065f46;              /* Dark green text for success */
+    
+    /* ========================================
+       LIGHTBOX COLORS - RICH THEME
+       ======================================== */
+    --lightbox-bg: rgba(0, 0, 0, 0.8);         /* Dark overlay background */
+    --lightbox-close-bg: #ffffff;              /* White close button background */
+    --lightbox-close-text: #374151;            /* Dark text for close button */
+    --lightbox-close-hover-bg: #f3f4f6;        /* Light gray hover state */
+    
+    /* ========================================
+       OVERLAY EFFECTS - LIGHT MODE
+       ======================================== */
+    --overlay-hover: rgba(0,0,0,0.05);         /* Subtle hover overlays */
+    --overlay-active: rgba(0,0,0,0.1);         /* Active state overlays */
+    --overlay-border: rgba(0,0,0,0.15);        /* Border overlays */
 }
 
-/* Rich Theme Dark Mode Variables */
+/* ============================================================================
+   RICH THEME - DARK MODE VARIABLES
+   
+   Dark mode variant of the Rich theme with inverted colors and enhanced
+   contrast for low-light viewing conditions.
+   
+   DESIGN PRINCIPLES:
+   - High contrast for accessibility in dark environments
+   - Warm grays instead of pure blacks for reduced eye strain
+   - Bright accent colors that pop against dark backgrounds
+   - Consistent visual hierarchy with light mode
+   ============================================================================ */
+
 [data-theme="dark"] {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-tertiary: #1e2a3a;
-    --text-primary: #e5e5e5;
-    --text-secondary: #b8b8b8;
-    --text-muted: rgba(255,255,255,0.6);
-    --border-color: #404040;
-    --border-light: rgba(255,255,255,0.1);
-    --shadow: rgba(0,0,0,0.3);
-    --shadow-hover: rgba(0,0,0,0.4);
+    /* ========================================
+       BASE COLOR PALETTE - DARK MODE
+       ======================================== */
+    --bg-primary: #1a1a1a;          /* Dark primary background */
+    --bg-secondary: #2d2d2d;         /* Slightly lighter content areas */
+    --bg-tertiary: #1e2a3a;          /* Dark blue accent areas */
+    --text-primary: #e5e5e5;         /* Light gray primary text */
+    --text-secondary: #b8b8b8;       /* Medium gray secondary text */
+    --text-muted: rgba(255,255,255,0.6); /* Semi-transparent white */
+    --border-color: #404040;         /* Dark gray borders */
+    --border-light: rgba(255,255,255,0.1); /* Subtle light borders */
+    --shadow: rgba(0,0,0,0.3);       /* Deeper shadows for dark mode */
+    --shadow-hover: rgba(0,0,0,0.4); /* Enhanced hover shadows */
     --accent-primary: #4dabf7;
     --accent-primary-hover: #339af0;
     --accent-secondary: #339af0;

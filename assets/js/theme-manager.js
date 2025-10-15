@@ -5,42 +5,45 @@
    ============================================================================ */
 
 window.ThemeManager = (function() {
-    const THEMES = {
-        'rich-light': {
-            name: 'Rich Light',
-            file: '/assets/css/themes/theme-rich.css',
-            dataTheme: 'light',
-            icon: '🎨',
+    // Use hardcoded base URL for reliable path resolution
+    const baseUrl = '/mcs-labs';
+    console.log('Using base URL:', baseUrl);
+
+    const THEME_FAMILIES = {
+        'rich': {
+            name: 'Rich',
+            file: baseUrl + '/assets/css/themes/theme-rich.css',
             description: 'Colorful, engaging design with gradients and rich colors'
-        },
-        'rich-dark': {
-            name: 'Rich Dark',
-            file: '/assets/css/themes/theme-rich.css',
-            dataTheme: 'dark',
-            icon: '🌙',
-            description: 'Dark mode with vibrant colors and rich design elements'
         },
         'minimal': {
             name: 'Minimal',
-            file: '/assets/css/themes/theme-minimal.css',
-            dataTheme: 'minimal',
-            icon: '📄',
+            file: baseUrl + '/assets/css/themes/theme-minimal.css',
             description: 'Clean, minimal blog-style design focused on content'
         }
     };
 
-    const DEFAULT_THEME = 'rich-light';
-    let currentTheme = DEFAULT_THEME;
+    const DEFAULT_THEME_FAMILY = 'rich';
+    const DEFAULT_MODE = 'light';
+    
+    let currentThemeFamily = DEFAULT_THEME_FAMILY;
+    let currentMode = DEFAULT_MODE;
     let loadedThemeLink = null;
 
     // Get theme preference from localStorage
     function getStoredTheme() {
-        return localStorage.getItem('theme') || DEFAULT_THEME;
+        const stored = localStorage.getItem('theme-family');
+        return stored || DEFAULT_THEME_FAMILY;
+    }
+
+    function getStoredMode() {
+        const stored = localStorage.getItem('theme-mode');
+        return stored || DEFAULT_MODE;
     }
 
     // Store theme preference in localStorage
-    function storeTheme(themeId) {
-        localStorage.setItem('theme', themeId);
+    function storeTheme(themeFamily, mode) {
+        localStorage.setItem('theme-family', themeFamily);
+        localStorage.setItem('theme-mode', mode);
     }
 
     // Load theme CSS file
@@ -73,64 +76,94 @@ window.ThemeManager = (function() {
     }
 
     // Apply theme
-    async function applyTheme(themeId) {
-        const theme = THEMES[themeId];
-        if (!theme) {
-            console.warn(`Theme "${themeId}" not found, falling back to default`);
-            themeId = DEFAULT_THEME;
+    async function applyTheme(themeFamily, mode) {
+        const themeConfig = THEME_FAMILIES[themeFamily];
+        if (!themeConfig) {
+            console.warn(`Theme family "${themeFamily}" not found, falling back to default`);
+            themeFamily = DEFAULT_THEME_FAMILY;
         }
 
         try {
             // Load theme CSS
-            await loadThemeCSS(theme.file);
+            await loadThemeCSS(themeConfig.file);
             
-            // Set data-theme attribute
-            document.documentElement.setAttribute('data-theme', theme.dataTheme);
+            // Set data-theme attribute for light/dark mode
+            document.documentElement.setAttribute('data-theme', mode);
             
-            // Update current theme
-            currentTheme = themeId;
+            // Set data-theme-family attribute for theme-specific styling
+            document.documentElement.setAttribute('data-theme-family', themeFamily);
+            
+            // Update current state
+            currentThemeFamily = themeFamily;
+            currentMode = mode;
             
             // Store preference
-            storeTheme(themeId);
+            storeTheme(themeFamily, mode);
             
             // Dispatch theme change event
             window.dispatchEvent(new CustomEvent('themeChanged', {
-                detail: { themeId, theme }
+                detail: { themeFamily, mode, theme: themeConfig }
             }));
             
             return true;
         } catch (error) {
-            console.error(`Failed to load theme "${themeId}":`, error);
+            console.error(`Failed to load theme "${themeFamily}":`, error);
             return false;
         }
     }
 
-    // Get next theme in cycle
-    function getNextTheme() {
-        const themeIds = Object.keys(THEMES);
-        const currentIndex = themeIds.indexOf(currentTheme);
-        const nextIndex = (currentIndex + 1) % themeIds.length;
-        return themeIds[nextIndex];
+    // Toggle between light and dark mode
+    function toggleMode() {
+        const newMode = currentMode === 'light' ? 'dark' : 'light';
+        return applyTheme(currentThemeFamily, newMode);
     }
 
-    // Initialize theme system
+    // Change theme family
+    function changeThemeFamily(themeFamily) {
+        return applyTheme(themeFamily, currentMode);
+    }
+
+    // Initialize theme system with FOUC protection
     function init() {
-        const savedTheme = getStoredTheme();
-        applyTheme(savedTheme);
+        // Safety timeout to ensure page is always visible, even if theme loading fails
+        setTimeout(() => {
+            if (!document.documentElement.hasAttribute('data-theme')) {
+                console.warn('Theme loading timeout - showing page with default styling');
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }, 1000); // 1 second timeout
+
+        const savedThemeFamily = getStoredTheme();
+        const savedMode = getStoredMode();
+        applyTheme(savedThemeFamily, savedMode);
     }
 
     // Public API
     return {
-        themes: THEMES,
-        getCurrentTheme: () => currentTheme,
-        getCurrentThemeInfo: () => THEMES[currentTheme],
+        themeFamilies: THEME_FAMILIES,
+        getCurrentThemeFamily: () => currentThemeFamily,
+        getCurrentMode: () => currentMode,
+        getCurrentThemeInfo: () => ({
+            family: currentThemeFamily,
+            mode: currentMode,
+            config: THEME_FAMILIES[currentThemeFamily]
+        }),
         applyTheme,
-        cycleTheme: () => applyTheme(getNextTheme()),
+        changeThemeFamily,
+        toggleMode,
         init,
         
         // Backward compatibility
-        get: getStoredTheme,
-        set: applyTheme,
-        toggle: () => applyTheme(getNextTheme())
+        get: () => `${currentThemeFamily}-${currentMode}`,
+        set: (value) => {
+            // Handle old theme format
+            if (value.includes('-')) {
+                const [family, mode] = value.split('-');
+                return applyTheme(family, mode);
+            }
+            return changeThemeFamily(value);
+        },
+        toggle: toggleMode,
+        cycleTheme: toggleMode // For backward compatibility
     };
 })();

@@ -1,43 +1,98 @@
-/* Reset and base styles */
+/* ============================================================================
+   MCS Labs - Main Stylesheet
+   
+   This is the main CSS file that provides theme-agnostic base styles and 
+   component styling. All colors and theme-specific values are loaded from
+   separate theme CSS files that define CSS custom properties (variables).
+   
+   ARCHITECTURE OVERVIEW:
+   1. This file contains structural styles and layout
+   2. Theme files contain color schemes and visual styling
+   3. All components use CSS custom properties for theme flexibility
+   4. JavaScript theme manager dynamically loads theme CSS files
+   
+   THEME SYSTEM:
+   - Rich Theme: Colorful, engaging design with gradients (theme-rich.css)
+   - Minimal Theme: Clean, blog-style design (theme-minimal.css)  
+   - Each theme supports light and dark modes
+   - Easy to add new themes by creating new CSS files with same variables
+   
+   KEY FEATURES IMPLEMENTED:
+   - GitHub-style callouts (NOTE, TIP, IMPORTANT, WARNING, CAUTION)
+   - Copy-to-clipboard buttons for code blocks
+   - Image lightbox/zoom functionality
+   - Universal theme controls that work on any header background
+   - Responsive design and accessibility support
+   ============================================================================ */
+
+/* ============================================================================
+   RESET AND BASE STYLES
+   ============================================================================ */
+
+/* CSS Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Prevent flash of unstyled content during theme detection */
-/* Temporarily disabled for debugging */
-/* html:not([data-theme]) {
+/* ============================================================================
+   FOUC (Flash of Unstyled Content) Prevention
+   
+   Prevents the brief moment where users see unstyled content before themes load.
+   The page remains hidden until JavaScript sets the data-theme attribute.
+   
+   SAFETY MEASURES:
+   - Timeout fallback in JavaScript ensures page shows even if theme fails
+   - Only hides content briefly during initial load
+   - Accessibility: Users with JS disabled will see unstyled but functional content
+   ============================================================================ */
+
+html:not([data-theme]) {
     visibility: hidden;
-} */
+}
 
 html[data-theme] {
     visibility: visible;
 }
 
-/* Smooth theme transitions */
+/* Global Smooth Transitions - Applied to all theme changes */
 * {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
 
 /* ============================================================================
-   Base CSS Properties (Theme-agnostic)
+   CSS CUSTOM PROPERTIES USAGE
    
-   Note: Theme-specific variables are loaded from separate theme files:
-   - assets/css/themes/theme-rich.css (rich light & dark themes)
-   - assets/css/themes/theme-minimal.css (minimal theme)
+   All colors and theme-specific values are loaded from external theme files:
+   - assets/css/themes/theme-rich.css (Rich light & dark themes)
+   - assets/css/themes/theme-minimal.css (Minimal light & dark themes)
+   
+   Variables are organized by category:
+   - Base colors: --bg-primary, --text-primary, --border-color
+   - Component colors: --callout-*, --copy-button-*, --lightbox-*
+   - Interactive states: --hover-bg, --accent-primary-hover
+   - Mode overrides: [data-theme="dark"] selector for dark mode variants
    ============================================================================ */
 
-/* Utility Classes */
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
 .hidden {
     display: none !important;
 }
 
+/* ============================================================================
+   GLOBAL TYPOGRAPHY AND LAYOUT
+   ============================================================================ */
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    line-height: 1.6;
-    color: var(--text-primary);
-    background-color: var(--bg-primary);
+    font-family: var(--font-family-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif);
+    font-size: var(--font-size-base, 16px);
+    line-height: var(--line-height-base, 1.6);
+    color: var(--text-primary); /* Theme-specific text color */
+    background-color: var(--bg-primary); /* Theme-specific background */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -63,22 +118,23 @@ body.lab-page .site-content .container {
     border-bottom: 1px solid var(--border-color);
 }
 
-/* Ensure dark mode header overrides */
-[data-theme="dark"] .site-header {
-    background: var(--header-bg) !important;
-    color: var(--header-text) !important;
+.site-header h1 a {
+    color: var(--header-text); /* Uses theme-specific header text color */
+    text-decoration: none;
+    font-weight: 600;
 }
 
-[data-theme="dark"] .site-header h1 a {
-    color: var(--header-text) !important;
+.site-header nav a {
+    color: var(--header-text-secondary); /* Uses theme-specific secondary text */
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
-[data-theme="dark"] .site-header nav a {
-    color: rgba(229,229,229,0.8) !important;
-}
-
-[data-theme="dark"] .site-header nav a:hover {
-    color: var(--header-text) !important;
+.site-header nav a:hover {
+    color: var(--header-text); /* Uses theme-specific primary text on hover */
+    background: var(--header-hover); /* Uses theme-specific hover background */
 }
 
 .header-content {
@@ -96,7 +152,7 @@ body.lab-page .site-content .container {
 }
 
 .site-header h1 a {
-    color: var(--header-text);
+    color: var(--header-text); /* Uses theme-specific header text color */
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: 600;
@@ -121,37 +177,133 @@ body.lab-page .site-content .container {
     color: var(--header-text);
 }
 
-/* Theme Toggle Button */
-.theme-toggle {
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.3);
+/* ============================================================================
+   THEME CONTROLS - Universal Styling System
+   
+   These controls allow users to switch between themes and light/dark modes.
+   
+   DESIGN PRINCIPLES:
+   - Theme-independent: Works on any header background color
+   - Semi-transparent dark containers for universal visibility
+   - Backdrop blur for modern glass morphism effect
+   - No conditional CSS - one style works everywhere
+   
+   COMPONENTS:
+   - .theme-style-toggle: Container for Rich/Minimal theme buttons
+   - .theme-style-btn: Individual theme selection buttons  
+   - .light-dark-toggle: Circular button for light/dark mode switching
+   - .mode-divider: Visual separator between theme and mode controls
+   
+   SCALABILITY:
+   - Adding new themes requires no changes to these styles
+   - Controls automatically work with any header color scheme
+   - JavaScript theme manager handles the actual theme switching logic
+   ============================================================================ */
+
+.theme-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Container for theme selection buttons (Rich/Minimal) */
+.theme-style-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark background */
+    border-radius: 16px;
+    padding: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(8px); /* Safari compatibility */
+    backdrop-filter: blur(8px); /* Modern glass effect */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Individual theme selection buttons */
+.theme-style-btn {
+    background: transparent;
+    border: none;
+    padding: 6px 12px;
+    color: rgba(255, 255, 255, 0.9); /* Always white text for visibility */
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 12px;
+    position: relative;
+    white-space: nowrap;
+}
+
+.theme-style-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Active theme button styling */
+.theme-style-btn.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.theme-style-btn .theme-icon {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.theme-style-btn .theme-label {
+    font-size: 0.75rem;
+    font-weight: inherit;
+}
+
+/* Visual separator between theme selection and mode toggle */
+.mode-divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 0 8px;
+}
+
+/* Circular light/dark mode toggle button */
+.light-dark-toggle {
+    background: rgba(0, 0, 0, 0.6); /* Matches theme toggle container */
+    border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: var(--header-text);
-    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    -webkit-backdrop-filter: blur(8px); /* Safari compatibility */
+    backdrop-filter: blur(8px); /* Glass effect */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.theme-toggle:hover {
-    background: rgba(255,255,255,0.3);
-    border-color: rgba(255,255,255,0.5);
+.light-dark-toggle:hover {
+    background: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
     transform: scale(1.05);
+    border-color: rgba(0, 0, 0, 0.4);
 }
 
-.theme-toggle:active {
+.light-dark-toggle:active {
     transform: scale(0.95);
 }
 
-.theme-toggle-icon {
+/* Icon rotation animation on hover */
+.light-dark-icon {
     transition: transform 0.2s ease;
 }
 
-.theme-toggle:hover .theme-toggle-icon {
+.light-dark-toggle:hover .light-dark-icon {
     transform: rotate(15deg);
 }
 
@@ -1551,8 +1703,8 @@ body[data-lab-type="external"] .lab-downloads,
     background: var(--code-bg);
     padding: 0.2rem 0.4rem;
     border-radius: 3px;
-    font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 0.9em;
+    font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
+    font-size: var(--font-size-sm, 0.9em);
 }
 
 .lab-body pre {
@@ -1562,6 +1714,8 @@ body[data-lab-type="external"] .lab-downloads,
     padding: 1rem;
     overflow-x: auto;
     margin-bottom: 1rem;
+    font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
+    font-size: var(--font-size-sm, 0.9em);
 }
 
 .lab-body pre code {
@@ -1918,6 +2072,8 @@ a:hover .external-link-icon {
     padding: 1rem;
     border-radius: 8px;
     overflow-x: auto;
+    font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
+    font-size: var(--font-size-sm, 0.9em);
 }
 
 .lab-content pre code {
@@ -2023,21 +2179,46 @@ a:hover .external-link-icon {
 }
 
 /* ============================================================================
-   GitHub-Style Callouts Support
+   GITHUB-STYLE CALLOUTS SYSTEM
+   
+   Provides informational boxes with icons and color coding for different
+   types of content. Supports 5 callout types inspired by GitHub's alerts.
+   
+   SUPPORTED CALLOUT TYPES:
+   1. NOTE (📘)     - Blue   - General information, tips, references
+   2. TIP (💡)      - Green  - Helpful suggestions, best practices  
+   3. IMPORTANT (❗) - Orange - Important information, key points
+   4. WARNING (⚠️)   - Yellow - Caution, potential issues to avoid
+   5. CAUTION (🚨)   - Red    - Critical warnings, dangerous actions
+   
+   USAGE IN MARKDOWN:
+   ```markdown
+   > [!NOTE]
+   > This is a note callout with helpful information.
+   
+   > [!TIP]
+   > Pro tip: This makes your workflow more efficient.
+   ```
+   
+   STYLING APPROACH:
+   - Uses CSS custom properties for theme flexibility
+   - Each callout type has 4 variables: bg, border, text, title colors
+   - Icons are added via CSS ::before pseudo-elements
+   - Responsive design with proper spacing and typography
    ============================================================================ */
 
-/* Callout base styles */
+/* Base callout container styles */
 .callout {
     margin: 1.5rem 0;
-    padding: 1rem 1rem 1rem 3rem;
-    border-left: 4px solid;
+    padding: 1rem 1rem 1rem 3rem; /* Left padding for icon space */
+    border-left: 4px solid; /* Themed border color */
     border-radius: 6px;
     position: relative;
     font-size: 0.95rem;
     line-height: 1.6;
 }
 
-/* Callout icons */
+/* Callout icons positioned absolutely in left margin */
 .callout::before {
     content: '';
     position: absolute;
@@ -2135,10 +2316,30 @@ a:hover .external-link-icon {
 }
 
 /* ============================================================================
-   Code Block Copy Button Support
+   CODE BLOCK COPY FUNCTIONALITY
+   
+   Adds copy-to-clipboard buttons to code blocks for enhanced user experience.
+   
+   FEATURES:
+   - Positioned absolutely in top-right corner of code blocks
+   - Uses theme-specific styling via CSS custom properties
+   - Visual feedback on click (color change and "Copied!" text)
+   - Automatic reset after 2 seconds
+   - Accessible with proper ARIA labels and focus states
+   
+   JAVASCRIPT INTEGRATION:
+   - Button click triggers copy to clipboard functionality
+   - CSS classes handle visual state changes (.copied state)
+   - Works with both <pre> and <code> elements
+   
+   THEME VARIABLES USED:
+   - --copy-button-bg: Background color
+   - --copy-button-border: Border color  
+   - --copy-button-text: Text color
+   - --copy-button-hover-*: Hover state colors
    ============================================================================ */
 
-/* Code block container with copy button */
+/* Container wrapper for code blocks with copy functionality */
 .code-container {
     position: relative;
     margin: 1.5rem 0;
@@ -2146,10 +2347,12 @@ a:hover .external-link-icon {
 
 .code-container pre {
     margin: 0;
-    padding-right: 3rem; /* Make room for copy button */
+    padding-right: 3rem; /* Reserve space for copy button */
+    font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
+    font-size: var(--font-size-sm, 0.9em);
 }
 
-/* Copy button */
+/* Copy button positioned in top-right corner */
 .copy-button {
     position: absolute;
     top: 0.5rem;
@@ -2188,23 +2391,50 @@ a:hover .external-link-icon {
 }
 
 /* ============================================================================
-   Image Zoom/Lightbox Support
+   IMAGE LIGHTBOX/ZOOM FUNCTIONALITY
+   
+   Provides click-to-zoom functionality for all images in lab content.
+   
+   FEATURES:
+   - Click any image to open in full-screen lightbox overlay
+   - Smooth animations and transitions
+   - Keyboard navigation (ESC to close)
+   - Click outside image to close
+   - Responsive design that scales to screen size
+   - Theme-aware styling using CSS custom properties
+   
+   JAVASCRIPT INTEGRATION:
+   - Auto-detects images and adds click listeners
+   - Creates overlay dynamically when image is clicked
+   - Handles keyboard and mouse events for closing
+   - Preserves original image aspect ratio
+   
+   ACCESSIBILITY:
+   - Focus management for keyboard users
+   - Proper ARIA labels and roles
+   - Escape key support for closing
+   
+   THEME VARIABLES USED:
+   - --lightbox-bg: Overlay background color
+   - --lightbox-close-*: Close button styling
+   - --shadow: Image drop shadows
    ============================================================================ */
 
-/* Zoomable images */
+/* Base styling for clickable images */
 .lab-content img {
-    cursor: pointer;
+    cursor: pointer; /* Indicates images are clickable */
     transition: all 0.3s ease;
     border-radius: 6px;
-    box-shadow: 0 2px 8px var(--shadow);
+    box-shadow: 0 2px 8px var(--shadow); /* Themed shadow */
 }
 
+/* Hover effect to indicate interactivity */
 .lab-content img:hover {
-    box-shadow: 0 4px 16px var(--shadow-hover);
-    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--shadow-hover); /* Enhanced shadow */
+    transform: translateY(-2px); /* Subtle lift effect */
 }
 
-/* Lightbox overlay */
+/* Full-screen overlay container */
 .lightbox-overlay {
     position: fixed;
     top: 0;
@@ -2344,3 +2574,47 @@ a:hover .external-link-icon {
     font-size: 1.1rem;
     z-index: 10000;
 }
+
+/* ============================================================================
+   END OF MAIN STYLESHEET
+   
+   📝 QUICK REFERENCE FOR NEW COLLABORATORS:
+   
+   🎨 ADDING NEW THEMES:
+   1. Create new CSS file in assets/css/themes/ (e.g., theme-corporate.css)
+   2. Define all required CSS custom properties (see existing themes as reference)
+   3. Add theme to THEME_FAMILIES object in assets/js/theme-manager.js
+   4. Test all components: callouts, copy buttons, lightbox, theme controls
+   
+   🎯 ADDING NEW CALLOUT TYPES:
+   1. Add CSS variables in both theme files: --callout-newtype-bg, -border, -text, -title
+   2. Add CSS rules in this file: .callout.callout-newtype styles
+   3. Add icon and detection logic in JavaScript callout initialization
+   
+   📋 ADDING NEW COMPONENTS:
+   1. Add structural CSS in this file using CSS custom properties
+   2. Define color variables in both theme files (rich and minimal)
+   3. Ensure component works in all 4 theme combinations
+   4. Test responsiveness and accessibility
+   
+   🔧 MODIFYING EXISTING STYLES:
+   1. Colors: Edit theme files (theme-rich.css, theme-minimal.css)
+   2. Layout/Structure: Edit this file (style.css)
+   3. Theme Controls: Universal styling in this file works across all themes
+   4. Always test changes in both light and dark modes
+   
+   📁 FILE STRUCTURE:
+   - style.css: Main stylesheet with structural styles and components
+   - themes/theme-rich.css: Rich colorful theme (light + dark modes)
+   - themes/theme-minimal.css: Clean minimal theme (light + dark modes)
+   - theme-manager.js: JavaScript for dynamic theme loading and switching
+   
+   🎪 THEME SYSTEM OVERVIEW:
+   - CSS Custom Properties enable theme flexibility
+   - JavaScript dynamically loads theme CSS files
+   - Universal theme controls work on any header background
+   - Modular architecture allows easy theme expansion
+   - All components use themed variables for automatic color adaptation
+   
+   Remember: Test thoroughly across all theme combinations! 🚀
+   ============================================================================ */
