@@ -1,0 +1,381 @@
+---
+layout: default
+---
+
+<div class="lab-layout{% if page.lab_type == 'external' %} external-lab{% endif %}">
+    <!-- Left Sidebar Navigation -->
+    <aside class="lab-sidebar">
+        <div class="sidebar-content">
+            <h3>📚 Journey Labs</h3>
+            
+            {% comment %} Find which journeys this lab belongs to {% endcomment %}
+            {% assign current_journeys = page.journeys %}
+            
+            {% comment %} Default to first/primary journey, will be overridden by JavaScript if URL param exists {% endcomment %}
+            {% if current_journeys and current_journeys.size > 0 %}
+                {% assign primary_journey = current_journeys[0] %}
+                
+                <div class="sidebar-journey-header">
+                    <div class="journey-title">
+                        <span id="journey-title-text">📚 Journey Navigation</span>
+                    </div>
+                </div>
+                
+                <nav class="journey-labs" id="journey-labs-nav">
+                    {% comment %} Show all labs this lab belongs to, JavaScript will filter based on URL params {% endcomment %}
+                    {% assign all_journey_labs = site.labs | where_exp: "lab", "lab.journeys" | sort: "order" %}
+                    {% for lab in all_journey_labs %}
+                        {% assign shared_journeys = "" %}
+                        {% for lab_journey in lab.journeys %}
+                            {% for current_journey in current_journeys %}
+                                {% if lab_journey == current_journey %}
+                                    {% unless shared_journeys contains lab_journey %}
+                                        {% assign shared_journeys = shared_journeys | append: lab_journey | append: "," %}
+                                    {% endunless %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        
+                        {% if shared_journeys != "" %}
+                            <a href="{{ lab.url | relative_url }}" 
+                               class="lab-nav-item {% if lab.url == page.url %}current{% endif %}"
+                               title="{{ lab.title }}"
+                               data-journeys="{{ lab.journeys | join: ',' }}"
+                               data-section="{{ lab.section }}"
+                               data-order="{{ lab.order }}">
+                                <span class="lab-order" data-lab-order></span>
+                                <span class="lab-title">{{ lab.title }}</span>
+                                <span class="lab-duration">{{ lab.duration }}min</span>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </nav>
+                
+                {% comment %} Show other journeys this lab belongs to {% endcomment %}
+                {% if current_journeys.size > 1 %}
+                    <div class="other-journeys">
+                        <h4>Also in:</h4>
+                        {% for journey in current_journeys %}
+                            {% unless journey == primary_journey %}
+                                {% case journey %}
+                                    {% when 'quick-start' %}
+                                        <a href="{{ '/labs/#quick-start' | relative_url }}" class="other-journey">🚀 Quick Start</a>
+                                    {% when 'business-user' %}
+                                        <a href="{{ '/labs/#business-user' | relative_url }}" class="other-journey">💼 Business User</a>
+                                    {% when 'developer' %}
+                                        <a href="{{ '/labs/#developer' | relative_url }}" class="other-journey">🔧 Developer</a>
+                                    {% when 'autonomous-ai' %}
+                                        <a href="{{ '/labs/#autonomous-ai' | relative_url }}" class="other-journey">🤖 Autonomous AI</a>
+                                    {% when 'bootcamp' %}
+                                        <a href="{{ '/labs/#bootcamp' | relative_url }}" class="other-journey">⚔️ Bootcamp</a>
+                                {% endcase %}
+                            {% endunless %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="no-journey">
+                    <p>This lab is not part of a guided journey.</p>
+                    <a href="{{ '/labs/' | relative_url }}">Browse All Labs</a>
+                </div>
+            {% endif %}
+        </div>
+    </aside>
+
+    <!-- Main Lab Content -->
+    <article class="lab-content" 
+             data-journeys="{{ page.journeys | jsonify | escape }}"
+             data-section="{{ page.section | escape }}">
+        {% if page.duration %}
+        <div class="lab-meta-header">
+            <div class="lab-meta">
+                <span class="duration">⏱️ {{ page.duration }} minutes</span>
+                {% if page.difficulty %}
+                <span class="difficulty">📊 Level {{ page.difficulty }}</span>
+                {% endif %}
+                {% if page.lab_type %}
+                <span class="lab-type">🏷️ {{ page.lab_type | capitalize }}</span>
+                {% endif %}
+            </div>
+            {% if page.lab_type != 'external' %}
+            <div class="lab-header-actions">
+                <a href="{{ '/assets/pdfs/' | relative_url }}{{ page.slug }}.pdf" class="btn btn-secondary download-pdf-header" target="_blank">
+                    📄 Download PDF
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="lab-body">
+            {{ content }}
+        </div>
+
+        {% if page.lab_type != 'external' %}
+        <div class="lab-downloads">
+            <h3>📄 Download Options</h3>
+            <div class="download-links">
+                {% assign pdf_url = '/assets/pdfs/' | append: page.slug | append: '.pdf' | relative_url %}
+                <a href="{{ pdf_url }}" class="pdf-download btn btn-secondary" target="_blank" rel="noopener noreferrer">
+                    📄 Download PDF Version
+                </a>
+                <small>Professional PDF with table of contents and internal navigation. Generated automatically from lab content.</small>
+            </div>
+        </div>
+        {% endif %}
+
+        <footer class="lab-footer">
+            <div class="lab-navigation">
+                <!-- Previous/Next Navigation (will be updated by JavaScript based on journey filter) -->
+                <div class="prev-next-nav" id="prev-next-nav">
+                    <span class="nav-placeholder">← Loading...</span>
+                    <span class="nav-placeholder">Loading... →</span>
+                </div>
+                
+                <!-- Hidden data for JavaScript to calculate prev/next -->
+                <div id="lab-data" class="hidden"
+                     data-current-url="{{ page.url }}"
+                     data-current-journeys="{{ page.journeys | join: ',' }}"
+                     data-current-order="{{ page.order }}">
+                    {% assign labs = site.labs | where_exp: "lab", "lab.lab_type != 'external'" | sort: 'order' %}
+                    {% for lab in labs %}
+                        <div class="lab-item" 
+                             data-url="{{ lab.url }}"
+                             data-title="{{ lab.title }}"
+                             data-journeys="{{ lab.journeys | join: ',' }}"
+                             data-order="{{ lab.order }}">
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Journey and All Labs Navigation -->
+                <div class="journey-nav-buttons">
+                    {% if page.journeys and page.journeys.size > 0 %}
+                        <a href="{{ '/labs/#' | append: page.journeys[0] | relative_url }}" 
+                           class="nav-button journey">
+                            📚 Back to {{ page.journeys[0] | replace: '-', ' ' | capitalize }} Journey
+                        </a>
+                    {% endif %}
+                    <a href="{{ '/labs/' | relative_url }}" class="nav-button all-labs">
+                        📋 View All Labs
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </article>
+</div>
+<!-- End lab-layout -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check for filter context in URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterJourney = urlParams.get('journey');
+    const filterSection = urlParams.get('section');
+    
+    // Get the current lab's journeys and section from data attributes
+    const labContent = document.querySelector('.lab-content');
+    const currentJourneys = JSON.parse(labContent.getAttribute('data-journeys') || '[]');
+    const currentSection = labContent.getAttribute('data-section');
+    
+    // Determine which filter context to use
+    let activeFilter = null;
+    let activeFilterType = null;
+    
+    if (filterJourney && currentJourneys && currentJourneys.includes(filterJourney)) {
+        activeFilter = filterJourney;
+        activeFilterType = 'journey';
+    } else if (filterSection && currentSection === filterSection) {
+        activeFilter = filterSection;
+        activeFilterType = 'section';
+    } else if (currentJourneys && currentJourneys.length > 0) {
+        // Default to primary journey if no filter context
+        activeFilter = currentJourneys[0];
+        activeFilterType = 'journey';
+    }
+    
+    if (!activeFilter) return;
+    
+    // Get all lab navigation items
+    const navItems = Array.from(document.querySelectorAll('.lab-nav-item'));
+    
+    // First pass: filter items based on active filter
+    const filteredItems = [];
+    navItems.forEach(function(item) {
+        let shouldShow = false;
+        
+        if (activeFilterType === 'journey') {
+            const itemJourneys = item.dataset.journeys ? item.dataset.journeys.split(',').map(j => j.trim()) : [];
+            shouldShow = itemJourneys.includes(activeFilter);
+        } else if (activeFilterType === 'section') {
+            shouldShow = item.dataset.section === activeFilter;
+        }
+        
+        if (shouldShow) {
+            filteredItems.push(item);
+        }
+    });
+    
+    // Sort filtered items numerically by order (same as main page)
+    filteredItems.sort((a, b) => {
+        const orderA = parseInt(a.dataset.order) || 999;
+        const orderB = parseInt(b.dataset.order) || 999;
+        return orderA - orderB;
+    });
+    
+    // Hide all items first
+    navItems.forEach(function(item) {
+        item.style.display = 'none';
+    });
+    
+    // Get navigation container and clear it
+    const navContainer = document.getElementById('journey-labs-nav');
+    while (navContainer.firstChild) {
+        navContainer.removeChild(navContainer.firstChild);
+    }
+    
+    // Add filtered items in sorted order with sequence numbers
+    let sequenceNumber = 1;
+    filteredItems.forEach(function(item) {
+        const orderSpan = item.querySelector('[data-lab-order]');
+        if (orderSpan) {
+            orderSpan.textContent = sequenceNumber;
+            sequenceNumber++;
+        }
+        item.style.display = 'block';
+        navContainer.appendChild(item);
+    });
+    
+    // Update all navigation links to preserve query string
+    const currentQueryString = window.location.search;
+    if (currentQueryString) {
+        // Update lab navigation links
+        const labNavItems = document.querySelectorAll('.lab-nav-item');
+        labNavItems.forEach(function(link) {
+            const baseUrl = link.href.split('?')[0];
+            link.href = baseUrl + currentQueryString;
+        });
+        
+        // Update footer navigation links
+        const navButtons = document.querySelectorAll('.nav-button');
+        navButtons.forEach(function(link) {
+            if (link.href && !link.href.includes('?')) {
+                const baseUrl = link.href.split('#')[0];
+                const hash = link.href.includes('#') ? '#' + link.href.split('#')[1] : '';
+                link.href = baseUrl + currentQueryString + hash;
+            }
+        });
+    }
+    
+    // Update the journey title based on active filter
+    const journeyTitleText = document.getElementById('journey-title-text');
+    
+    if (activeFilterType === 'journey' && activeFilter) {
+        let journeyTitle = '';
+        
+        switch(activeFilter) {
+            case 'quick-start':
+                journeyTitle = '🚀 Quick Start Journey';
+                break;
+            case 'business-user':
+                journeyTitle = '💼 Business User Journey';
+                break;
+            case 'developer':
+                journeyTitle = '🔧 Developer Journey';
+                break;
+            case 'autonomous-ai':
+                journeyTitle = '🤖 Autonomous AI Journey';
+                break;
+            case 'bootcamp':
+                journeyTitle = '⚔️ Bootcamp Journey';
+                break;
+        }
+        
+        if (journeyTitleText && journeyTitle) {
+            journeyTitleText.textContent = journeyTitle;
+        }
+    } else if (currentJourneys && currentJourneys.length > 0) {
+        // Default to primary journey
+        const primaryJourney = currentJourneys[0];
+        let journeyTitle = '';
+        
+        switch(primaryJourney) {
+            case 'quick-start':
+                journeyTitle = '🚀 Quick Start Journey';
+                break;
+            case 'business-user':
+                journeyTitle = '💼 Business User Journey';
+                break;
+            case 'developer':
+                journeyTitle = '🔧 Developer Journey';
+                break;
+            case 'autonomous-ai':
+                journeyTitle = '🤖 Autonomous AI Journey';
+                break;
+            case 'bootcamp':
+                journeyTitle = '⚔️ Bootcamp Journey';
+                break;
+        }
+        
+        if (journeyTitleText && journeyTitle) {
+            journeyTitleText.textContent = journeyTitle;
+        }
+    }
+    
+    // Update prev/next navigation based on journey filter
+    function updatePrevNextNavigation() {
+        const labData = document.getElementById('lab-data');
+        const prevNextNav = document.getElementById('prev-next-nav');
+        
+        if (!labData || !prevNextNav) return;
+        
+        const currentUrl = labData.getAttribute('data-current-url');
+        const currentJourneys = labData.getAttribute('data-current-journeys').split(',');
+        const currentOrder = parseInt(labData.getAttribute('data-current-order'));
+        
+        // Get all lab items
+        const labItems = Array.from(labData.querySelectorAll('.lab-item'));
+        
+        // Filter labs based on active journey filter (if any)
+        let filteredLabs = labItems;
+        if (activeFilterType === 'journey' && activeFilter) {
+            filteredLabs = labItems.filter(item => {
+                const labJourneys = item.getAttribute('data-journeys').split(',');
+                return labJourneys.includes(activeFilter);
+            });
+        }
+        
+        // Sort by order
+        filteredLabs.sort((a, b) => {
+            return parseInt(a.getAttribute('data-order')) - parseInt(b.getAttribute('data-order'));
+        });
+        
+        // Find current lab position in filtered list
+        const currentIndex = filteredLabs.findIndex(item => item.getAttribute('data-url') === currentUrl);
+        
+        let prevHtml = '<span class="nav-placeholder">← No previous lab</span>';
+        let nextHtml = '<span class="nav-placeholder">No next lab →</span>';
+        
+        if (currentIndex > 0) {
+            const prevLab = filteredLabs[currentIndex - 1];
+            const prevUrl = prevLab.getAttribute('data-url');
+            const prevTitle = prevLab.getAttribute('data-title');
+            const fullPrevUrl = '{{ "" | relative_url }}' + prevUrl;
+            prevHtml = `<a href="${fullPrevUrl}${currentQueryString}" class="nav-button prev">← ${prevTitle}</a>`;
+        }
+        
+        if (currentIndex < filteredLabs.length - 1) {
+            const nextLab = filteredLabs[currentIndex + 1];
+            const nextUrl = nextLab.getAttribute('data-url');
+            const nextTitle = nextLab.getAttribute('data-title');
+            const fullNextUrl = '{{ "" | relative_url }}' + nextUrl;
+            nextHtml = `<a href="${fullNextUrl}${currentQueryString}" class="nav-button next">${nextTitle} →</a>`;
+        }
+        
+        prevNextNav.innerHTML = prevHtml + nextHtml;
+    }
+    
+    // Update navigation on page load
+    updatePrevNextNavigation();
+});
+</script>

@@ -250,12 +250,3 @@ blockquote:has(.warning) {
   border-left: 4pt solid #0ea5e9;
   color: #0c4a6e;
 }
-
-/* Footer with page numbers */
-@page {
-  @bottom-center {
-    content: "Page " counter(page) " of " counter(pages);
-    font-size: 9pt;
-    color: #666;
-  }
-}

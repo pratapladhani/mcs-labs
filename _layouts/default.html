@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    
+    <!-- Immediate theme detection to prevent flash -->
+    <script>
+        (function() {
+            // Get theme immediately from localStorage or system preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            // Apply theme immediately to html element before any rendering
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
+    <link rel="apple-touch-icon" href="{{ '/favicon.svg' | relative_url }}">
+    
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    {% seo %}
+</head>
+<body class="{% if page.layout == 'lab' %}lab-page{% endif %}">
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+                <div class="header-actions">
+                    <nav class="main-nav">
+                        <a href="{{ '/' | relative_url }}">Home</a>
+                        <a href="{{ '/labs/' | relative_url }}">All Labs</a>
+                    </nav>
+                    <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <span class="theme-toggle-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="site-content">
+        <div class="container">
+            {{ content }}
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; {{ 'now' | date: "%Y" }} Microsoft Copilot Studio Labs</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode functionality - optimized to work with preload script
+        (function() {
+            const theme = {
+                get: () => localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+                set: (value) => {
+                    // Only update if theme actually changed
+                    const current = document.documentElement.getAttribute('data-theme');
+                    if (current === value) return;
+                    
+                    localStorage.setItem('theme', value);
+                    document.documentElement.setAttribute('data-theme', value);
+                    updateToggleIcon(value);
+                },
+                toggle: () => {
+                    const current = theme.get();
+                    theme.set(current === 'dark' ? 'light' : 'dark');
+                }
+            };
+
+            function updateToggleIcon(currentTheme) {
+                const icon = document.querySelector('.theme-toggle-icon');
+                if (icon) {
+                    icon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+                }
+            }
+
+            // Initialize theme on page load - only update icon since theme is already applied
+            document.addEventListener('DOMContentLoaded', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme') || theme.get();
+                updateToggleIcon(currentTheme);
+
+                // Add click listener to theme toggle
+                const toggleButton = document.querySelector('.theme-toggle');
+                if (toggleButton) {
+                    toggleButton.addEventListener('click', theme.toggle);
+                }
+            });
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    theme.set(e.matches ? 'dark' : 'light');
+                }
+            });
+        })();
+
+        // Make external links open in new tab
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href]');
+            const currentDomain = window.location.hostname;
+            
+            links.forEach(function(link) {
+                const href = link.getAttribute('href');
+                
+                // Check if it's an external link (starts with http/https and not current domain)
+                if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+                    try {
+                        const linkDomain = new URL(href).hostname;
+                        
+                        // If it's external (different domain), add target="_blank" and security attributes
+                        if (linkDomain !== currentDomain && linkDomain !== 'pratapladhani.github.io') {
+                            link.setAttribute('target', '_blank');
+                            link.setAttribute('rel', 'noopener noreferrer');
+                            
+                            // Add visual indicator for external links if not already present
+                            if (!link.querySelector('.external-link-icon')) {
+                                const icon = document.createElement('span');
+                                icon.className = 'external-link-icon';
+                                icon.innerHTML = ' ↗';
+                                icon.style.cssText = 'font-size: 0.8em; opacity: 0.7; margin-left: 2px;';
+                                link.appendChild(icon);
+                            }
+                        }
+                    } catch (e) {
+                        // Invalid URL, skip
+                        console.debug('Invalid URL:', href);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
