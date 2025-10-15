@@ -7,27 +7,31 @@
     
     <!-- Immediate theme detection to prevent flash -->
     <script>
-        // Load and initialize ThemeManager immediately
+        // Immediate theme detection to prevent flash
         (function() {
-            // Simple theme detection for initial load to prevent flash
-            const savedTheme = localStorage.getItem('theme') || 'rich-light';
+            // Get theme preferences from localStorage
+            const savedThemeFamily = localStorage.getItem('theme-family') || 'rich';
+            const savedMode = localStorage.getItem('theme-mode') || 'light';
             
-            // Extract data-theme value from theme configuration
-            const themeDataMap = {
-                'rich-light': 'light',
-                'rich-dark': 'dark', 
-                'minimal-light': 'light',
-                'minimal-dark': 'dark'
-            };
+            // Apply theme attributes immediately to prevent flash
+            document.documentElement.setAttribute('data-theme', savedMode);
+            document.documentElement.setAttribute('data-theme-family', savedThemeFamily);
             
-            const dataTheme = themeDataMap[savedTheme] || 'light';
-            document.documentElement.setAttribute('data-theme', dataTheme);
+            // Load theme CSS immediately to prevent flash
+            const themeFile = `/mcs-labs/assets/css/themes/theme-${savedThemeFamily}.css`;
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = themeFile;
+            document.head.appendChild(link);
         })();
     </script>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
     <link rel="apple-touch-icon" href="{{ '/favicon.svg' | relative_url }}">
+    
+    <!-- Load theme manager early to prevent flash -->
+    <script src="{{ '/assets/js/theme-manager.js' | relative_url }}"></script>
     
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     {% seo %}
@@ -41,6 +45,7 @@
                     <nav class="main-nav">
                         <a href="{{ '/' | relative_url }}">Home</a>
                         <a href="{{ '/labs/' | relative_url }}">All Labs</a>
+                        <a href="{{ '/labs/bootcamp/' | relative_url }}">Bootcamp</a>
                     </nav>
                     <div class="theme-controls">
                         <div class="theme-style-toggle">
@@ -75,9 +80,6 @@
         </div>
     </footer>
 
-    <!-- Load theme manager -->
-    <script src="{{ '/assets/js/theme-manager.js' | relative_url }}"></script>
-    
     <script>
         // Enhanced theme functionality with multiple theme support
         (function() {

@@ -961,7 +961,23 @@ section: $SectionName
             $frontMatter += "`nrepository: `"$($Lab.repository)`""
         }
     }
-    
+
+    # Add bootcamp order if this lab is in the bootcamp journey
+    $Config = Get-Configuration
+    if ($Config.bootcamp_lab_orders) {
+        # Find the bootcamp order for this lab
+        $bootcampOrder = $null
+        foreach ($key in $Config.bootcamp_lab_orders.Keys) {
+            if ($Config.bootcamp_lab_orders[$key] -eq $Lab.id) {
+                $bootcampOrder = $key
+                break
+            }
+        }
+        if ($bootcampOrder) {
+            $frontMatter += "`nbootcamp_order: `"$bootcampOrder`""
+        }
+    }
+
     # Add journeys if they exist
     if ($Lab.journeys -and $Lab.journeys.Count -gt 0) {
         $journeyArray = $Lab.journeys | ForEach-Object { "`"$_`"" }
@@ -974,9 +990,7 @@ section: $SectionName
     $frontMatter += "`ndescription: `"$escapedDescription`""
     
     return $frontMatter
-}
-
-function Get-CleanLabContent {
+}function Get-CleanLabContent {
     <#
     .SYNOPSIS
         Clean and normalize lab content for Jekyll processing
@@ -1178,6 +1192,14 @@ function New-RootHomepage {
                 "$($stats.Hours) hours" 
             }
             
+            # Special case for bootcamp journey - link to dedicated page
+            $journeyLink = if ($journeyKey -eq "bootcamp") {
+                "{{ '/labs/bootcamp/' | relative_url }}"
+            }
+            else {
+                "{{ '/labs/#$journeyKey' | relative_url }}"
+            }
+            
             $journeyCards += @"
     <div class="journey-card $journeyKey">
         <h3>$icon $($title.Replace(' Journey', ''))</h3>
@@ -1187,7 +1209,7 @@ function New-RootHomepage {
             <span>📊 $difficulty</span>
             <span>📚 $($stats.LabCount) labs</span>
         </div>
-        <a href="{{ '/labs/#$journeyKey' | relative_url }}" class="journey-btn">Start Journey →</a>
+        <a href="$journeyLink" class="journey-btn">Start Journey →</a>
     </div>
 "@
         }
@@ -1326,7 +1348,7 @@ $sectionButtonsHtml
 
 <div class="labs-grid" id="labs-container">
 {% for lab in site.labs %}
-  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}" data-section="{{ lab.section }}" data-order="{{ lab.order }}">
+  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}" data-section="{{ lab.section }}" data-order="{{ lab.order }}"{% if lab.bootcamp_order %} data-bootcamp-order="{{ lab.bootcamp_order }}"{% endif %}>
     <div class="lab-sequence">
       <span class="sequence-number"></span>
     </div>
@@ -1380,10 +1402,21 @@ function updateSequenceNumbers() {
   const cards = document.querySelectorAll('.lab-card');
   let sequenceNumber = 1;
   
+  // Check if we're filtering by bootcamp journey
+  const activeButton = document.querySelector('.filter-btn.active');
+  const isBootcampActive = activeButton && activeButton.id === 'bootcamp-btn';
+  
   cards.forEach(card => {
     const sequenceElement = card.querySelector('.sequence-number');
     if (card.style.display !== 'none') {
-      sequenceElement.textContent = sequenceNumber;
+      // Use bootcamp numbering if in bootcamp journey and available
+      const bootcampOrder = card.dataset.bootcampOrder;
+      
+      if (isBootcampActive && bootcampOrder) {
+        sequenceElement.textContent = bootcampOrder;
+      } else {
+        sequenceElement.textContent = sequenceNumber;
+      }
       sequenceElement.style.display = 'block';
       sequenceNumber++;
     } else {
@@ -1455,11 +1488,15 @@ function showAllLabs() {
 
 function filterByJourney(journeyName) {
   const journey = journeys[journeyName];
-  if (!journey) return;
+  
+  if (!journey) {
+    return;
+  }
   
   // Check if this filter is already active (toggle behavior)
   const button = document.getElementById(journeyName + '-btn');
-  if (button.classList.contains('active')) {
+  
+  if (button && button.classList.contains('active')) {
     // Unselect - show all labs
     showAllLabs();
     return;
@@ -1493,6 +1530,30 @@ function filterByJourney(journeyName) {
     }
   });
   
+  // Special sorting for bootcamp journey to maintain proper order
+  if (journeyName === 'bootcamp') {
+    const container = document.getElementById('labs-container');
+    const visibleCards = Array.from(container.querySelectorAll('.lab-card[style*="block"], .lab-card:not([style*="none"])'));
+    
+    // Sort bootcamp cards by their bootcamp order
+    visibleCards.sort((a, b) => {
+      const bootcampOrderA = a.dataset.bootcampOrder;
+      const bootcampOrderB = b.dataset.bootcampOrder;
+      
+      if (!bootcampOrderA || !bootcampOrderB) return 0;
+      
+      // Define the correct bootcamp sequence
+      const bootcampSequence = ['1a', '1b', '2', '3a', '3b', '4', '5a', '5b', '6', '7'];
+      const indexA = bootcampSequence.indexOf(bootcampOrderA);
+      const indexB = bootcampSequence.indexOf(bootcampOrderB);
+      
+      return indexA - indexB;
+    });
+    
+    // Reorder the visible cards in the DOM
+    visibleCards.forEach(card => container.appendChild(card));
+  }
+  
   document.getElementById('journey-stats').innerHTML = 
     '<strong>Difficulty Level:</strong> ' + journey.difficulty + '<br>' +
     '<strong>Estimated Time:</strong> ' + journey.estimatedTime + '<br>' +
@@ -1505,8 +1566,15 @@ function filterByJourney(journeyName) {
   updateLabLinks('journey', journeyName);
   
   // Update active button
-  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  document.getElementById(journeyName + '-btn').classList.add('active');
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  const targetButton = document.getElementById(journeyName + '-btn');
+  
+  if (targetButton) {
+    targetButton.classList.add('active');
+  }
   
   // Update current filter display
   document.getElementById('current-filter-name').textContent = journey.title;
@@ -1636,6 +1704,348 @@ window.addEventListener('hashchange', function() {
 
 #endregion
 
+#region Bootcamp Page Generation
+# ============================================================================
+# BOOTCAMP PAGE GENERATION FUNCTIONS
+# ============================================================================
+
+function New-BootcampPage {
+    <#
+    .SYNOPSIS
+        Generate dedicated bootcamp page with only bootcamp labs and proper numbering
+    #>
+    param($Config, $Paths, $AllLabs)
+    
+    Write-Host "⚔️   Generating bootcamp page..." -ForegroundColor Yellow
+    
+    # Filter to only labs that are defined in bootcamp_lab_orders
+    $bootcampLabs = @()
+    if ($Config.bootcamp_lab_orders) {
+        $bootcampLabIds = $Config.bootcamp_lab_orders.Values
+        $bootcampLabs = $AllLabs | Where-Object { 
+            $_.id -in $bootcampLabIds
+        }
+    }
+    
+    if ($bootcampLabs.Count -eq 0) {
+        Write-Host "⚠️   No bootcamp labs found in bootcamp_lab_orders configuration" -ForegroundColor Yellow
+        return
+    }
+    
+    # Sort bootcamp labs by their bootcamp order
+    $sortedBootcampLabs = $bootcampLabs | Sort-Object { 
+        $bootcampOrder = $null
+        if ($Config.bootcamp_lab_orders) {
+            foreach ($key in $Config.bootcamp_lab_orders.Keys) {
+                if ($Config.bootcamp_lab_orders[$key] -eq $_.id) {
+                    $bootcampOrder = $key
+                    break
+                }
+            }
+        }
+        
+        if ($bootcampOrder) {
+            # Convert bootcamp order to sortable format
+            $bootcampSequence = @('1a', '1b', '2', '3a', '3b', '4', '5a', '5b', '6', '7')
+            $index = $bootcampSequence.IndexOf($bootcampOrder)
+            if ($index -ge 0) { return $index } else { return 999 }
+        }
+        else {
+            return 999  # Put labs without bootcamp order at the end
+        }
+    }
+    
+    # Generate lab cards with bootcamp numbering
+    $labCards = @()
+    foreach ($lab in $sortedBootcampLabs) {
+        # Get bootcamp order for this lab
+        $bootcampOrder = $null
+        if ($Config.bootcamp_lab_orders) {
+            foreach ($key in $Config.bootcamp_lab_orders.Keys) {
+                if ($Config.bootcamp_lab_orders[$key] -eq $lab.id) {
+                    $bootcampOrder = $key
+                    break
+                }
+            }
+        }
+        
+        # Use bootcamp order as display number, fallback to lab title
+        $displayNumber = if ($bootcampOrder) { $bootcampOrder } else { "?" }
+        
+        # Format section name nicely
+        $sectionDisplay = $lab.section -replace '_', ' '
+        $sectionDisplay = (Get-Culture).TextInfo.ToTitleCase($sectionDisplay)
+        
+        $labCards += @"
+  <div class="bootcamp-lab-card">
+    <div class="bootcamp-lab-number">
+      <span class="number">$displayNumber</span>
+    </div>
+    <div class="bootcamp-lab-content">
+      <h3><a href="{{ '/labs/' | relative_url }}$($lab.id)/?bootcamp=true">$($lab.title)</a></h3>
+      <p class="lab-description">$($lab.description)</p>
+      <div class="lab-meta">
+        <span class="difficulty">Level $($lab.difficulty)</span>
+        <span class="duration">⏱️ $($lab.duration) min</span>
+        <span class="section">📂 $sectionDisplay</span>
+      </div>
+      <div class="lab-actions">
+        <a href="{{ '/labs/' | relative_url }}$($lab.id)/?bootcamp=true" class="btn btn-primary">Start Lab →</a>
+        $(if ($lab.url -or (Test-Path "$($Paths.basePath)/assets/pdfs/$($lab.id).pdf")) {
+            if ($lab.url) {
+                "<a href=`"$($lab.url)`" class=`"btn btn-secondary`" target=`"_blank`">🌐 External Lab</a>"
+            } else {
+                "<a href=`"{{ '/assets/pdfs/' | relative_url }}$($lab.id).pdf`" class=`"btn btn-secondary`" target=`"_blank`">📄 Download PDF</a>"
+            }
+        })
+      </div>
+    </div>
+  </div>
+"@
+    }
+    
+    $labCardsHtml = $labCards -join "`n`n"
+    
+    # Calculate total duration
+    $totalDuration = ($sortedBootcampLabs | Measure-Object -Property duration -Sum).Sum
+    $totalHours = [math]::Round($totalDuration / 60, 1)
+    
+    # Generate the complete bootcamp page content
+    $bootcampPath = Join-Path $Paths.basePath "labs/bootcamp/index.md"
+    
+    # Create the complete bootcamp page content
+    $bootcampContent = @"
+---
+layout: default
+title: Bootcamp Journey
+description: Intensive hands-on bootcamp covering agent building, SharePoint integration, autonomous AI, and DevOps practices
+---
+
+<div class="bootcamp-nav">
+  <a href="{{ '/labs/' | relative_url }}" class="nav-link">← Back to All Labs</a>
+  <div class="bootcamp-info">
+    <h1>⚔️ Bootcamp Journey</h1>
+    <p>Intensive hands-on bootcamp covering agent building, SharePoint integration, autonomous AI, and DevOps practices.</p>
+    <div class="bootcamp-stats">
+      <span>📊 <strong>Difficulty:</strong> Beginner to Advanced</span>
+      <span>⏱️ <strong>Estimated Time:</strong> $totalHours hours</span>
+      <span>📚 <strong>Total Labs:</strong> $($sortedBootcampLabs.Count) labs ($totalDuration min)</span>
+    </div>
+  </div>
+</div>
+
+<div class="bootcamp-labs">
+<div class="bootcamp-labs-grid">
+$labCardsHtml
+</div>
+</div>
+"@
+    
+    # Complete the bootcamp content with embedded CSS
+    $bootcampContent += @"
+
+<style>
+.bootcamp-nav {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.bootcamp-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  margin-top: 0.5rem;
+}
+
+.bootcamp-nav .nav-link:hover {
+  background: var(--bg-button-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.bootcamp-info h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.bootcamp-info p {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.bootcamp-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.bootcamp-stats span {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.bootcamp-labs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.bootcamp-lab-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.bootcamp-lab-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,120,212,0.15);
+}
+
+.bootcamp-lab-number {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.bootcamp-lab-content {
+  flex-grow: 1;
+}
+
+.bootcamp-lab-content h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.bootcamp-lab-content h3 a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.bootcamp-lab-content h3 a:hover {
+  color: var(--accent-primary);
+}
+
+.lab-description {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.lab-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.lab-meta span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: var(--bg-tertiary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.lab-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--accent-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-secondary);
+  color: white;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .bootcamp-nav {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .bootcamp-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .bootcamp-labs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+"@
+    
+    # Write the complete bootcamp page
+    try {
+        # Ensure the bootcamp directory exists
+        $bootcampDir = Split-Path $bootcampPath -Parent
+        if (-not (Test-Path $bootcampDir)) {
+            New-Item -ItemType Directory -Path $bootcampDir -Force | Out-Null
+        }
+        
+        Set-Content -Path $bootcampPath -Value $bootcampContent -Encoding UTF8
+        Write-Host "✅ Updated bootcamp page with $($sortedBootcampLabs.Count) labs ($totalDuration min total)" -ForegroundColor Green
+    }
+    catch {
+        Write-Host "❌ Failed to generate bootcamp page: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
+#endregion
+
 #region Main Execution Logic
 # ============================================================================
 # MAIN EXECUTION LOGIC
@@ -1695,6 +2105,9 @@ function Invoke-LabGeneration {
         
         # Generate root homepage
         New-RootHomepage -Config $config -Paths $paths -AllLabs $allLabs
+        
+        # Generate bootcamp page
+        New-BootcampPage -Config $config -Paths $paths -AllLabs $allLabs
         
         # Show final statistics
         $processingTime = (Get-Date) - $startTime
