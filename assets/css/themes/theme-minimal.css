@@ -1,0 +1,268 @@
+/* ============================================================================
+   Minimal Blog Theme CSS
+   
+   Inspired by clean, minimal blog designs like the Microsoft CAT blog.
+   Features clean typography, subtle colors, and minimal visual distractions.
+   ============================================================================ */
+
+/* Minimal Theme Variables */
+:root {
+    /* Clean, minimal color palette */
+    --bg-primary: #ffffff;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #fafafa;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: #999999;
+    --border-color: #e0e0e0;
+    --border-light: #f0f0f0;
+    --shadow: rgba(0,0,0,0.03);
+    --shadow-hover: rgba(0,0,0,0.06);
+    --accent-primary: #0066cc;
+    --accent-primary-hover: #0052a3;
+    --accent-secondary: #0052a3;
+    --hover-bg: #f8f8f8;
+    --scrollbar-track: #f8f8f8;
+    --scrollbar-thumb: #d0d0d0;
+    --scrollbar-thumb-hover: #b0b0b0;
+    --external-link-opacity: 0.7;
+    --fade-gradient: rgba(255,255,255,0.95);
+    
+    /* Clean header - no heavy branding */
+    --header-bg: #ffffff;
+    --header-text: #333333;
+    --header-text-secondary: #666666;
+    --header-hover: #f0f0f0;
+    
+    /* Minimal badge colors */
+    --badge-green-bg: #f8f9fa;
+    --badge-green-text: #28a745;
+    --badge-orange-bg: #f8f9fa;
+    --badge-orange-text: #fd7e14;
+    --badge-pink-bg: #f8f9fa;
+    --badge-pink-text: #e83e8c;
+    --badge-purple-bg: #f8f9fa;
+    --badge-purple-text: #6f42c1;
+    --badge-blue-bg: #f8f9fa;
+    --badge-blue-text: #007bff;
+    
+    /* Subtle border colors */
+    --border-green: #28a745;
+    --border-orange: #fd7e14;
+    --border-pink: #e83e8c;
+    --border-purple: #6f42c1;
+    --border-gray: #6c757d;
+    --border-blue: #007bff;
+    --border-dark-green: #1e7e34;
+    --border-dark-orange: #dc6545;
+    --border-red: #dc3545;
+    
+    /* Journey colors - understated */
+    --journey-quickstart-color: #007bff;
+    --journey-businessuser-color: #6f42c1;
+    --journey-developer-color: #28a745;
+    --journey-autonomous-color: #fd7e14;
+    --journey-bootcamp-color: #dc3545;
+    
+    /* Clean button colors */
+    --danger-color: #dc3545;
+    --danger-color-hover: #c82333;
+    --accent-tertiary: #6f42c1;
+    --accent-tertiary-dark: #5a32a3;
+    --dark-button-text: white;
+    
+    /* Code highlighting - minimal */
+    --code-bg: #f8f9fa;
+    --pre-bg: #f8f9fa;
+    
+    /* Callout colors - minimal and clean */
+    --callout-note-bg: #f8f9ff;
+    --callout-note-border: #e0e0e0;
+    --callout-note-text: #333333;
+    --callout-note-title: #333333;
+    
+    --callout-tip-bg: #f8fff8;
+    --callout-tip-border: #e0e0e0;
+    --callout-tip-text: #333333;
+    --callout-tip-title: #333333;
+    
+    --callout-important-bg: #fff8f0;
+    --callout-important-border: #e0e0e0;
+    --callout-important-text: #333333;
+    --callout-important-title: #333333;
+    
+    --callout-warning-bg: #fffef0;
+    --callout-warning-border: #e0e0e0;
+    --callout-warning-text: #333333;
+    --callout-warning-title: #333333;
+    
+    --callout-caution-bg: #fff8f8;
+    --callout-caution-border: #e0e0e0;
+    --callout-caution-text: #333333;
+    --callout-caution-title: #333333;
+    
+    /* Copy button colors - minimal */
+    --copy-button-bg: rgba(0,0,0,0.03);
+    --copy-button-border: #e0e0e0;
+    --copy-button-text: #666666;
+    --copy-button-hover-bg: rgba(0,0,0,0.06);
+    --copy-button-hover-border: #d0d0d0;
+    --copy-success-bg: #f8fff8;
+    --copy-success-border: #28a745;
+    --copy-success-text: #28a745;
+    
+    /* Lightbox colors - clean */
+    --lightbox-bg: rgba(255, 255, 255, 0.95);
+    --lightbox-close-bg: rgba(0,0,0,0.05);
+    --lightbox-close-text: #333333;
+    --lightbox-close-hover-bg: rgba(0,0,0,0.1);
+    
+    /* Overlay effects - subtle */
+    --overlay-hover: rgba(0,0,0,0.02);
+    --overlay-active: rgba(0,0,0,0.04);
+    --overlay-border: rgba(0,0,0,0.06);
+}
+
+/* ============================================================================
+   Minimal Theme Specific Overrides
+   ============================================================================ */
+
+/* Simplify header styling */
+.site-header {
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+}
+
+/* Reduce visual noise in cards */
+.lab-card,
+.journey-card {
+    box-shadow: 0 1px 3px var(--shadow);
+    border: 1px solid var(--border-light);
+}
+
+.lab-card:hover,
+.journey-card:hover {
+    box-shadow: 0 2px 6px var(--shadow-hover);
+    transform: none;
+}
+
+/* Simplify buttons */
+.btn-primary,
+.btn-secondary,
+.nav-button {
+    border-radius: 4px;
+    font-weight: 400;
+    box-shadow: none;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover,
+.nav-button:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Clean typography focus */
+.lab-body h1,
+.lab-body h2,
+.lab-body h3,
+.lab-body h4,
+.lab-body h5,
+.lab-body h6 {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.lab-body h1 {
+    font-size: 2rem;
+    margin: 2rem 0 1rem 0;
+}
+
+.lab-body h2 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 0.75rem 0;
+}
+
+.lab-body h3 {
+    font-size: 1.25rem;
+    margin: 1.25rem 0 0.5rem 0;
+}
+
+/* Reduce visual complexity in navigation */
+.lab-nav-item {
+    border-left: 2px solid transparent;
+}
+
+.lab-nav-item.current {
+    border-left-color: var(--accent-primary);
+    background: var(--hover-bg);
+}
+
+/* Simplify callouts for minimal aesthetic */
+.callout {
+    border-left-width: 3px;
+    box-shadow: none;
+}
+
+.callout::before {
+    display: none; /* Remove icons for minimal look */
+}
+
+/* Clean code blocks */
+.lab-body pre {
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+/* Minimal lightbox controls */
+.lightbox-controls,
+.lightbox-close {
+    border-radius: 4px;
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+/* Typography optimization for readability */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+}
+
+.lab-body {
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 65ch;
+    margin: 0 auto;
+}
+
+.lab-body p {
+    margin: 1rem 0;
+}
+
+/* Minimal table styling */
+.lab-content table {
+    border: 1px solid var(--border-light);
+    box-shadow: none;
+}
+
+.lab-content table th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Clean badges */
+.difficulty-badge,
+.optional-badge,
+.external-badge {
+    border-radius: 4px;
+    font-weight: 500;
+    border: 1px solid var(--border-light);
+}
+
+/* Simplified journey navigation */
+.journey-nav {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: none;
+}

@@ -35,8 +35,8 @@
                         <a href="{{ '/' | relative_url }}">Home</a>
                         <a href="{{ '/labs/' | relative_url }}">All Labs</a>
                     </nav>
-                    <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-                        <span class="theme-toggle-icon">🌙</span>
+                    <button class="theme-toggle" aria-label="Switch theme" title="Switch theme">
+                        <span class="theme-toggle-icon">�</span>
                     </button>
                 </div>
             </div>
@@ -55,51 +55,68 @@
         </div>
     </footer>
 
+    <!-- Load theme manager -->
+    <script src="{{ '/assets/js/theme-manager.js' | relative_url }}"></script>
+    
     <script>
-        // Dark mode functionality - optimized to work with preload script
+        // Enhanced theme functionality with multiple theme support
         (function() {
+            // Legacy theme object for backward compatibility
             const theme = {
-                get: () => localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+                get: () => ThemeManager.getCurrentTheme(),
                 set: (value) => {
-                    // Only update if theme actually changed
-                    const current = document.documentElement.getAttribute('data-theme');
-                    if (current === value) return;
-                    
-                    localStorage.setItem('theme', value);
-                    document.documentElement.setAttribute('data-theme', value);
-                    updateToggleIcon(value);
+                    // Map old theme values to new theme IDs
+                    const themeMap = {
+                        'light': 'rich-light',
+                        'dark': 'rich-dark'
+                    };
+                    const themeId = themeMap[value] || value;
+                    ThemeManager.applyTheme(themeId);
                 },
-                toggle: () => {
-                    const current = theme.get();
-                    theme.set(current === 'dark' ? 'light' : 'dark');
-                }
+                toggle: () => ThemeManager.cycleTheme()
             };
 
-            function updateToggleIcon(currentTheme) {
+            function updateToggleIcon(themeInfo) {
                 const icon = document.querySelector('.theme-toggle-icon');
-                if (icon) {
-                    icon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+                const button = document.querySelector('.theme-toggle');
+                if (icon && themeInfo) {
+                    icon.textContent = themeInfo.icon;
+                    if (button) {
+                        button.setAttribute('aria-label', `Switch to next theme (current: ${themeInfo.name})`);
+                        button.setAttribute('title', `Switch to next theme (current: ${themeInfo.name})`);
+                    }
                 }
             }
 
-            // Initialize theme on page load - only update icon since theme is already applied
+            // Initialize theme system on page load
             document.addEventListener('DOMContentLoaded', function() {
-                const currentTheme = document.documentElement.getAttribute('data-theme') || theme.get();
-                updateToggleIcon(currentTheme);
+                // Initialize theme manager
+                ThemeManager.init();
+                
+                // Update icon with current theme
+                updateToggleIcon(ThemeManager.getCurrentThemeInfo());
 
                 // Add click listener to theme toggle
                 const toggleButton = document.querySelector('.theme-toggle');
                 if (toggleButton) {
-                    toggleButton.addEventListener('click', theme.toggle);
+                    toggleButton.addEventListener('click', ThemeManager.cycleTheme);
                 }
+
+                // Listen for theme changes
+                window.addEventListener('themeChanged', function(e) {
+                    updateToggleIcon(e.detail.theme);
+                });
             });
 
             // Listen for system theme changes
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
                 if (!localStorage.getItem('theme')) {
-                    theme.set(e.matches ? 'dark' : 'light');
+                    ThemeManager.applyTheme(e.matches ? 'rich-dark' : 'rich-light');
                 }
             });
+
+            // Make theme object globally available for backward compatibility
+            window.theme = theme;
         })();
 
         // Make external links open in new tab

@@ -1,0 +1,242 @@
+/* ============================================================================
+   Rich Theme CSS
+   
+   This theme preserves the original rich, colorful design with gradients,
+   shadows, and vibrant colors for an engaging learning experience.
+   ============================================================================ */
+
+/* Rich Theme Light Mode Variables */
+:root {
+    /* Light theme colors */
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f0f8ff;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: rgba(0,0,0,0.6);
+    --border-color: #e5e5e5;
+    --border-light: rgba(0,0,0,0.1);
+    --shadow: rgba(0,0,0,0.1);
+    --shadow-hover: rgba(0,0,0,0.15);
+    --accent-primary: #0066cc;
+    --accent-primary-hover: #0052a3;
+    --accent-secondary: #0052a3;
+    --hover-bg: rgba(0,0,0,0.05);
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-thumb-hover: #a1a1a1;
+    --external-link-opacity: 0.7;
+    --fade-gradient: rgba(255,255,255,0.9);
+    
+    /* Header specific colors */
+    --header-bg: #0078d4;
+    --header-text: white;
+    --header-text-secondary: rgba(255,255,255,0.9);
+    --header-hover: rgba(255,255,255,0.1);
+    
+    /* Badge colors */
+    --badge-green-bg: #f0f9ff;
+    --badge-green-text: #047857;
+    --badge-orange-bg: #fff7ed;
+    --badge-orange-text: #c2410c;
+    --badge-pink-bg: #fdf2f8;
+    --badge-pink-text: #be185d;
+    --badge-purple-bg: #f3e8ff;
+    --badge-purple-text: #7c3aed;
+    --badge-blue-bg: #eff6ff;
+    --badge-blue-text: #1d4ed8;
+    
+    /* Border colors for cards */
+    --border-green: #10b981;
+    --border-orange: #f59e0b;
+    --border-pink: #ec4899;
+    --border-purple: #8b5cf6;
+    --border-gray: #6b7280;
+    --border-blue: #3b82f6;
+    --border-dark-green: #059669;
+    --border-dark-orange: #d97706;
+    --border-red: #ef4444;
+    
+    /* Journey colors */
+    --journey-quickstart-color: #3b82f6;
+    --journey-businessuser-color: #8b5cf6;
+    --journey-developer-color: #10b981;
+    --journey-autonomous-color: #f59e0b;
+    --journey-bootcamp-color: #ef4444;
+    
+    /* Additional button colors */
+    --danger-color: #ef4444;
+    --danger-color-hover: #dc2626;
+    --accent-tertiary: #8b5cf6;
+    --accent-tertiary-dark: #7c3aed;
+    --dark-button-text: white;
+    
+    /* Code highlighting */
+    --code-bg: #f8f9fa;
+    --pre-bg: #f8f9fa;
+    
+    /* Callout colors - Rich theme */
+    --callout-note-bg: #eff6ff;
+    --callout-note-border: #3b82f6;
+    --callout-note-text: #1e40af;
+    --callout-note-title: #1d4ed8;
+    
+    --callout-tip-bg: #f0fdf4;
+    --callout-tip-border: #22c55e;
+    --callout-tip-text: #15803d;
+    --callout-tip-title: #16a34a;
+    
+    --callout-important-bg: #fef3c7;
+    --callout-important-border: #f59e0b;
+    --callout-important-text: #d97706;
+    --callout-important-title: #f59e0b;
+    
+    --callout-warning-bg: #fef3c7;
+    --callout-warning-border: #eab308;
+    --callout-warning-text: #ca8a04;
+    --callout-warning-title: #eab308;
+    
+    --callout-caution-bg: #fef2f2;
+    --callout-caution-border: #ef4444;
+    --callout-caution-text: #dc2626;
+    --callout-caution-title: #ef4444;
+    
+    /* Copy button colors - Rich theme */
+    --copy-button-bg: rgba(255,255,255,0.9);
+    --copy-button-border: #e5e7eb;
+    --copy-button-text: #374151;
+    --copy-button-hover-bg: #f9fafb;
+    --copy-button-hover-border: #d1d5db;
+    --copy-success-bg: #d1fae5;
+    --copy-success-border: #10b981;
+    --copy-success-text: #065f46;
+    
+    /* Lightbox colors - Rich theme */
+    --lightbox-bg: rgba(0, 0, 0, 0.8);
+    --lightbox-close-bg: #ffffff;
+    --lightbox-close-text: #374151;
+    --lightbox-close-hover-bg: #f3f4f6;
+    
+    /* Overlay effects */
+    --overlay-hover: rgba(0,0,0,0.05);
+    --overlay-active: rgba(0,0,0,0.1);
+    --overlay-border: rgba(0,0,0,0.15);
+}
+
+/* Rich Theme Dark Mode Variables */
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-tertiary: #1e2a3a;
+    --text-primary: #e5e5e5;
+    --text-secondary: #b8b8b8;
+    --text-muted: rgba(255,255,255,0.6);
+    --border-color: #404040;
+    --border-light: rgba(255,255,255,0.1);
+    --shadow: rgba(0,0,0,0.3);
+    --shadow-hover: rgba(0,0,0,0.4);
+    --accent-primary: #4dabf7;
+    --accent-primary-hover: #339af0;
+    --accent-secondary: #339af0;
+    --hover-bg: rgba(255,255,255,0.1);
+    --scrollbar-track: #404040;
+    --scrollbar-thumb: #606060;
+    --scrollbar-thumb-hover: #808080;
+    --external-link-opacity: 0.8;
+    --fade-gradient: rgba(45,45,45,0.9);
+    
+    /* Header specific colors for dark mode */
+    --header-bg: #1e1e1e;
+    --header-text: #e5e5e5;
+    --header-text-secondary: rgba(229,229,229,0.8);
+    --header-hover: rgba(255,255,255,0.1);
+    
+    /* Badge colors for dark mode */
+    --badge-green-bg: #1b4332;
+    --badge-green-text: #52c41a;
+    --badge-orange-bg: #3b2f1f;
+    --badge-orange-text: #ffa940;
+    --badge-pink-bg: #3d1b2f;
+    --badge-pink-text: #ff85c0;
+    --badge-purple-bg: #2b1b3d;
+    --badge-purple-text: #b37feb;
+    --badge-blue-bg: #1b2f3d;
+    --badge-blue-text: #40a9ff;
+    
+    /* Border colors for cards - keep similar in dark mode for recognition */
+    --border-green: #52c41a;
+    --border-orange: #ffa940;
+    --border-pink: #ff85c0;
+    --border-purple: #b37feb;
+    --border-gray: #8c9eff;
+    --border-blue: #40a9ff;
+    --border-dark-green: #73d13d;
+    --border-dark-orange: #ffab40;
+    --border-red: #ff7875;
+    
+    /* Journey colors - dark mode variants */
+    --journey-quickstart-color: #40a9ff;
+    --journey-businessuser-color: #b37feb;
+    --journey-developer-color: #73d13d;
+    --journey-autonomous-color: #ffab40;
+    --journey-bootcamp-color: #ff7875;
+    
+    /* Additional button colors - dark mode variants */
+    --danger-color: #ff4d6d;
+    --danger-color-hover: #ff6b85;
+    --accent-secondary: #4dabf7;
+    --accent-tertiary: #ba68c8;
+    --accent-tertiary-dark: #ba68c8;
+    --dark-button-text: #1a1a1a;
+    
+    /* Code highlighting - dark mode */
+    --code-bg: #2d2d30;
+    --pre-bg: #1e1e1e;
+    
+    /* Callout colors - Dark theme */
+    --callout-note-bg: #1a2332;
+    --callout-note-border: #4dabf7;
+    --callout-note-text: #74c0fc;
+    --callout-note-title: #4dabf7;
+    
+    --callout-tip-bg: #1a2e1f;
+    --callout-tip-border: #73d13d;
+    --callout-tip-text: #95d5a0;
+    --callout-tip-title: #73d13d;
+    
+    --callout-important-bg: #332618;
+    --callout-important-border: #ffab40;
+    --callout-important-text: #ffc467;
+    --callout-important-title: #ffab40;
+    
+    --callout-warning-bg: #332a18;
+    --callout-warning-border: #ffd43b;
+    --callout-warning-text: #ffd84b;
+    --callout-warning-title: #ffd43b;
+    
+    --callout-caution-bg: #331a1a;
+    --callout-caution-border: #ff7875;
+    --callout-caution-text: #ffa8a5;
+    --callout-caution-title: #ff7875;
+    
+    /* Copy button colors - Dark theme */
+    --copy-button-bg: #2d2d2d;
+    --copy-button-border: #404040;
+    --copy-button-text: #b8b8b8;
+    --copy-button-hover-bg: #404040;
+    --copy-button-hover-border: #606060;
+    --copy-success-bg: #1a2e1f;
+    --copy-success-border: #73d13d;
+    --copy-success-text: #95d5a0;
+    
+    /* Lightbox colors - Dark theme */
+    --lightbox-bg: rgba(26, 26, 26, 0.95);
+    --lightbox-close-bg: #2d2d2d;
+    --lightbox-close-text: #e5e5e5;
+    --lightbox-close-hover-bg: #404040;
+    
+    /* Overlay effects - dark mode */
+    --overlay-hover: rgba(255,255,255,0.1);
+    --overlay-active: rgba(255,255,255,0.2);
+    --overlay-border: rgba(255,255,255,0.3);
+}
