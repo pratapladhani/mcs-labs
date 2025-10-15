@@ -586,16 +586,32 @@ document.addEventListener('DOMContentLoaded', function() {
             currentZoom = 1;
             translateX = 0;
             translateY = 0;
-            updateImageTransform();
-            updateZoomLevel();
             
             // Load image
             const tempImage = new Image();
             tempImage.onload = function() {
                 lightboxImage.src = src;
                 lightboxImage.alt = alt;
+                
+                // Set initial size to fit container while maintaining aspect ratio
+                const container = lightboxOverlay.querySelector('.lightbox-container');
+                const containerWidth = container.clientWidth;
+                const containerHeight = container.clientHeight;
+                
+                // Calculate scale to fit image in container
+                const scaleX = containerWidth / tempImage.width;
+                const scaleY = containerHeight / tempImage.height;
+                const initialScale = Math.min(scaleX, scaleY, 1); // Don't scale up beyond original size
+                
+                // Set the image size directly
+                lightboxImage.style.width = (tempImage.width * initialScale) + 'px';
+                lightboxImage.style.height = (tempImage.height * initialScale) + 'px';
+                
                 lightboxImage.style.display = 'block';
                 lightboxLoading.style.display = 'none';
+                
+                updateImageTransform();
+                updateZoomLevel();
             };
             tempImage.onerror = function() {
                 lightboxLoading.textContent = 'Failed to load image';
@@ -617,12 +633,14 @@ document.addEventListener('DOMContentLoaded', function() {
             currentZoom = Math.min(currentZoom * 1.5, 5);
             updateImageTransform();
             updateZoomLevel();
+            updateCursor();
         }
         
         function zoomOut() {
             currentZoom = Math.max(currentZoom / 1.5, 0.5);
             updateImageTransform();
             updateZoomLevel();
+            updateCursor();
         }
         
         function resetZoom() {
@@ -631,14 +649,26 @@ document.addEventListener('DOMContentLoaded', function() {
             translateY = 0;
             updateImageTransform();
             updateZoomLevel();
+            updateCursor();
         }
         
         function updateImageTransform() {
-            lightboxImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentZoom})`;
+            const transform = `translate(${translateX}px, ${translateY}px) scale(${currentZoom})`;
+            lightboxImage.style.transform = transform;
+            lightboxImage.style.transformOrigin = 'center center';
         }
         
         function updateZoomLevel() {
-            zoomLevel.textContent = Math.round(currentZoom * 100) + '%';
+            const zoomPercent = Math.round(currentZoom * 100);
+            zoomLevel.textContent = zoomPercent + '%';
+        }
+        
+        function updateCursor() {
+            if (currentZoom > 1) {
+                lightboxImage.style.cursor = isDragging ? 'grabbing' : 'grab';
+            } else {
+                lightboxImage.style.cursor = 'default';
+            }
         }
         
         // Event listeners for zoom controls
@@ -659,13 +689,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Touch/mouse drag to pan when zoomed
         lightboxImage.addEventListener('mousedown', startDrag);
-        lightboxImage.addEventListener('touchstart', startDrag);
+        lightboxImage.addEventListener('touchstart', startDrag, { passive: false });
         
         function startDrag(e) {
             if (currentZoom <= 1) return;
             
             isDragging = true;
-            lightboxImage.style.cursor = 'grabbing';
+            updateCursor();
             
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -676,11 +706,11 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
         }
         
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('touchmove', drag);
+        document.addEventListener('mousemove', drag, { passive: false });
+        document.addEventListener('touchmove', drag, { passive: false });
         
         function drag(e) {
-            if (!isDragging) return;
+            if (!isDragging || currentZoom <= 1) return;
             
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -696,8 +726,10 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('touchend', stopDrag);
         
         function stopDrag() {
-            isDragging = false;
-            lightboxImage.style.cursor = currentZoom > 1 ? 'grab' : 'default';
+            if (isDragging) {
+                isDragging = false;
+                updateCursor();
+            }
         }
         
         // Keyboard shortcuts

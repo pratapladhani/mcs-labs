@@ -2475,21 +2475,36 @@ a:hover .external-link-icon {
 /* Lightbox container for the image */
 .lightbox-container {
     position: relative;
-    max-width: 90vw;
-    max-height: 90vh;
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     cursor: default;
 }
 
 /* Lightbox image */
 .lightbox-image {
-    max-width: 90vw;
-    max-height: 90vh;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
     border-radius: 8px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     cursor: default;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease;
     transform-origin: center center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    /* Ensure image can scale beyond container */
+    position: relative;
+    display: block;
 }
 
 .lightbox-image:hover {
