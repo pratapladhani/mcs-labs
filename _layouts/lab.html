@@ -379,3 +379,400 @@ document.addEventListener('DOMContentLoaded', function() {
     updatePrevNextNavigation();
 });
 </script>
+
+<script>
+// ============================================================================
+// Enhanced Lab Features - Callouts, Copy Buttons, and Image Lightbox
+// ============================================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Feature 1: Initialize GitHub-style callouts
+    initializeCallouts();
+    
+    // Feature 2: Add copy buttons to code blocks
+    initializeCopyButtons();
+    
+    // Feature 3: Initialize image lightbox functionality
+    initializeImageLightbox();
+    
+    // ========================================================================
+    // GitHub-Style Callouts Implementation
+    // ========================================================================
+    function initializeCallouts() {
+        // Find all blockquotes within lab content
+        const labContent = document.querySelector('.lab-body');
+        if (!labContent) return;
+        
+        const blockquotes = labContent.querySelectorAll('blockquote');
+        
+        blockquotes.forEach((blockquote, index) => {
+            // Get the text content to check for callout pattern
+            const textContent = blockquote.textContent.trim();
+            
+            // Check if this blockquote starts with a callout pattern
+            const match = textContent.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i);
+            if (!match) return;
+            
+            const calloutType = match[1].toLowerCase();
+            
+            // Get the content after the callout marker
+            const contentAfterMarker = textContent.replace(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i, '').trim();
+            
+            // Create callout container
+            const calloutDiv = document.createElement('div');
+            calloutDiv.className = `callout callout-${calloutType}`;
+            
+            // Create title element
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'callout-title';
+            titleDiv.textContent = calloutType.toUpperCase();
+            
+            // Create content container
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'callout-content';
+            
+            // Clone the original blockquote content but remove the callout marker
+            const clonedBlockquote = blockquote.cloneNode(true);
+            const firstP = clonedBlockquote.querySelector('p:first-child');
+            
+            if (firstP) {
+                // Remove the callout marker from the first paragraph
+                const firstPText = firstP.innerHTML;
+                const cleanedText = firstPText.replace(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i, '');
+                
+                if (cleanedText.trim()) {
+                    firstP.innerHTML = cleanedText;
+                } else {
+                    // If first paragraph only had the marker, remove it entirely
+                    firstP.remove();
+                }
+            }
+            
+            // Move all content from cloned blockquote to content div
+            Array.from(clonedBlockquote.children).forEach(child => {
+                contentDiv.appendChild(child);
+            });
+            
+            // Build final callout
+            calloutDiv.appendChild(titleDiv);
+            calloutDiv.appendChild(contentDiv);
+            
+            // Replace the blockquote
+            blockquote.parentNode.replaceChild(calloutDiv, blockquote);
+        });
+    }
+    
+    // ========================================================================
+    // Copy Button Implementation
+    // ========================================================================
+    function initializeCopyButtons() {
+        // Find all pre elements with code
+        const preElements = document.querySelectorAll('.lab-content pre');
+        
+        preElements.forEach(pre => {
+            // Skip if already has a copy button
+            if (pre.parentNode.classList.contains('code-container')) return;
+            
+            // Create container wrapper
+            const container = document.createElement('div');
+            container.className = 'code-container';
+            
+            // Create copy button
+            const copyButton = document.createElement('button');
+            copyButton.className = 'copy-button';
+            copyButton.textContent = 'Copy';
+            copyButton.title = 'Copy code to clipboard';
+            
+            // Add click handler
+            copyButton.addEventListener('click', async function() {
+                const code = pre.textContent || pre.innerText;
+                
+                try {
+                    await navigator.clipboard.writeText(code);
+                    
+                    // Show success state
+                    copyButton.classList.add('copied');
+                    copyButton.textContent = 'Copied';
+                    
+                    // Reset after 2 seconds
+                    setTimeout(() => {
+                        copyButton.classList.remove('copied');
+                        copyButton.textContent = 'Copy';
+                    }, 2000);
+                    
+                } catch (err) {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = code;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    
+                    try {
+                        document.execCommand('copy');
+                        copyButton.textContent = 'Copied';
+                        setTimeout(() => {
+                            copyButton.textContent = 'Copy';
+                        }, 2000);
+                    } catch (fallbackErr) {
+                        copyButton.textContent = 'Failed';
+                        setTimeout(() => {
+                            copyButton.textContent = 'Copy';
+                        }, 2000);
+                    }
+                    
+                    document.body.removeChild(textArea);
+                }
+            });
+            
+            // Wrap pre element and add button
+            pre.parentNode.insertBefore(container, pre);
+            container.appendChild(pre);
+            container.appendChild(copyButton);
+        });
+    }
+    
+    // ========================================================================
+    // Image Lightbox Implementation
+    // ========================================================================
+    function initializeImageLightbox() {
+        // Create lightbox overlay
+        const lightboxOverlay = document.createElement('div');
+        lightboxOverlay.className = 'lightbox-overlay';
+        lightboxOverlay.innerHTML = `
+            <button class="lightbox-close" title="Close (ESC)">×</button>
+            <div class="lightbox-controls">
+                <button class="zoom-out" title="Zoom Out (-)">−</button>
+                <span class="zoom-level">100%</span>
+                <button class="zoom-in" title="Zoom In (+)">+</button>
+                <button class="zoom-reset" title="Reset Zoom (0)">⌂</button>
+            </div>
+            <div class="lightbox-loading">Loading...</div>
+            <div class="lightbox-container">
+                <img class="lightbox-image" alt="" style="display: none;">
+            </div>
+        `;
+        document.body.appendChild(lightboxOverlay);
+        
+        const lightboxImage = lightboxOverlay.querySelector('.lightbox-image');
+        const lightboxLoading = lightboxOverlay.querySelector('.lightbox-loading');
+        const lightboxContainer = lightboxOverlay.querySelector('.lightbox-container');
+        const closeButton = lightboxOverlay.querySelector('.lightbox-close');
+        const zoomInBtn = lightboxOverlay.querySelector('.zoom-in');
+        const zoomOutBtn = lightboxOverlay.querySelector('.zoom-out');
+        const zoomResetBtn = lightboxOverlay.querySelector('.zoom-reset');
+        const zoomLevel = lightboxOverlay.querySelector('.zoom-level');
+        
+        let currentZoom = 1;
+        let isDragging = false;
+        let startX, startY, translateX = 0, translateY = 0;
+        
+        // Add click handlers to all images in lab content
+        const images = document.querySelectorAll('.lab-content img');
+        
+        images.forEach(img => {
+            img.addEventListener('click', function() {
+                openLightbox(img.src, img.alt);
+            });
+        });
+        
+        // Open lightbox function
+        function openLightbox(src, alt) {
+            lightboxOverlay.classList.add('active');
+            lightboxImage.style.display = 'none';
+            lightboxLoading.style.display = 'block';
+            
+            // Reset zoom and position
+            currentZoom = 1;
+            translateX = 0;
+            translateY = 0;
+            
+            // Load image
+            const tempImage = new Image();
+            tempImage.onload = function() {
+                lightboxImage.src = src;
+                lightboxImage.alt = alt;
+                
+                // Set initial size to fit container while maintaining aspect ratio
+                const container = lightboxOverlay.querySelector('.lightbox-container');
+                const containerWidth = container.clientWidth;
+                const containerHeight = container.clientHeight;
+                
+                // Calculate scale to fit image in container
+                const scaleX = containerWidth / tempImage.width;
+                const scaleY = containerHeight / tempImage.height;
+                const initialScale = Math.min(scaleX, scaleY, 1); // Don't scale up beyond original size
+                
+                // Set the image size directly
+                lightboxImage.style.width = (tempImage.width * initialScale) + 'px';
+                lightboxImage.style.height = (tempImage.height * initialScale) + 'px';
+                
+                lightboxImage.style.display = 'block';
+                lightboxLoading.style.display = 'none';
+                
+                updateImageTransform();
+                updateZoomLevel();
+            };
+            tempImage.onerror = function() {
+                lightboxLoading.textContent = 'Failed to load image';
+            };
+            tempImage.src = src;
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close lightbox function
+        function closeLightbox() {
+            lightboxOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Zoom functions
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom * 1.5, 5);
+            updateImageTransform();
+            updateZoomLevel();
+            updateCursor();
+        }
+        
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom / 1.5, 0.5);
+            updateImageTransform();
+            updateZoomLevel();
+            updateCursor();
+        }
+        
+        function resetZoom() {
+            currentZoom = 1;
+            translateX = 0;
+            translateY = 0;
+            updateImageTransform();
+            updateZoomLevel();
+            updateCursor();
+        }
+        
+        function updateImageTransform() {
+            const transform = `translate(${translateX}px, ${translateY}px) scale(${currentZoom})`;
+            lightboxImage.style.transform = transform;
+            lightboxImage.style.transformOrigin = 'center center';
+        }
+        
+        function updateZoomLevel() {
+            const zoomPercent = Math.round(currentZoom * 100);
+            zoomLevel.textContent = zoomPercent + '%';
+        }
+        
+        function updateCursor() {
+            if (currentZoom > 1) {
+                lightboxImage.style.cursor = isDragging ? 'grabbing' : 'grab';
+            } else {
+                lightboxImage.style.cursor = 'default';
+            }
+        }
+        
+        // Event listeners for zoom controls
+        zoomInBtn.addEventListener('click', zoomIn);
+        zoomOutBtn.addEventListener('click', zoomOut);
+        zoomResetBtn.addEventListener('click', resetZoom);
+        
+        // Mouse wheel zoom
+        lightboxContainer.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            
+            if (e.deltaY < 0) {
+                zoomIn();
+            } else {
+                zoomOut();
+            }
+        });
+        
+        // Touch/mouse drag to pan when zoomed
+        lightboxImage.addEventListener('mousedown', startDrag);
+        lightboxImage.addEventListener('touchstart', startDrag, { passive: false });
+        
+        function startDrag(e) {
+            if (currentZoom <= 1) return;
+            
+            isDragging = true;
+            updateCursor();
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            startX = clientX - translateX;
+            startY = clientY - translateY;
+            
+            e.preventDefault();
+        }
+        
+        document.addEventListener('mousemove', drag, { passive: false });
+        document.addEventListener('touchmove', drag, { passive: false });
+        
+        function drag(e) {
+            if (!isDragging || currentZoom <= 1) return;
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            translateX = clientX - startX;
+            translateY = clientY - startY;
+            
+            updateImageTransform();
+            e.preventDefault();
+        }
+        
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+        
+        function stopDrag() {
+            if (isDragging) {
+                isDragging = false;
+                updateCursor();
+            }
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (!lightboxOverlay.classList.contains('active')) return;
+            
+            switch(e.key) {
+                case 'Escape':
+                    closeLightbox();
+                    break;
+                case '+':
+                case '=':
+                    e.preventDefault();
+                    zoomIn();
+                    break;
+                case '-':
+                    e.preventDefault();
+                    zoomOut();
+                    break;
+                case '0':
+                    e.preventDefault();
+                    resetZoom();
+                    break;
+            }
+        });
+        
+        // Event listeners for closing
+        closeButton.addEventListener('click', closeLightbox);
+        
+        lightboxOverlay.addEventListener('click', function(e) {
+            if (e.target === lightboxOverlay) {
+                closeLightbox();
+            }
+        });
+        
+        // Prevent image and container clicks from closing lightbox
+        lightboxImage.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        lightboxContainer.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+});
+</script>

@@ -1,206 +1,98 @@
-/* Reset and base styles */
+/* ============================================================================
+   MCS Labs - Main Stylesheet
+   
+   This is the main CSS file that provides theme-agnostic base styles and 
+   component styling. All colors and theme-specific values are loaded from
+   separate theme CSS files that define CSS custom properties (variables).
+   
+   ARCHITECTURE OVERVIEW:
+   1. This file contains structural styles and layout
+   2. Theme files contain color schemes and visual styling
+   3. All components use CSS custom properties for theme flexibility
+   4. JavaScript theme manager dynamically loads theme CSS files
+   
+   THEME SYSTEM:
+   - Rich Theme: Colorful, engaging design with gradients (theme-rich.css)
+   - Minimal Theme: Clean, blog-style design (theme-minimal.css)  
+   - Each theme supports light and dark modes
+   - Easy to add new themes by creating new CSS files with same variables
+   
+   KEY FEATURES IMPLEMENTED:
+   - GitHub-style callouts (NOTE, TIP, IMPORTANT, WARNING, CAUTION)
+   - Copy-to-clipboard buttons for code blocks
+   - Image lightbox/zoom functionality
+   - Universal theme controls that work on any header background
+   - Responsive design and accessibility support
+   ============================================================================ */
+
+/* ============================================================================
+   RESET AND BASE STYLES
+   ============================================================================ */
+
+/* CSS Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Prevent flash of unstyled content during theme detection */
-/* Temporarily disabled for debugging */
-/* html:not([data-theme]) {
+/* ============================================================================
+   FOUC (Flash of Unstyled Content) Prevention
+   
+   Prevents the brief moment where users see unstyled content before themes load.
+   The page remains hidden until JavaScript sets the data-theme attribute.
+   
+   SAFETY MEASURES:
+   - Timeout fallback in JavaScript ensures page shows even if theme fails
+   - Only hides content briefly during initial load
+   - Accessibility: Users with JS disabled will see unstyled but functional content
+   ============================================================================ */
+
+html:not([data-theme]) {
     visibility: hidden;
-} */
+}
 
 html[data-theme] {
     visibility: visible;
 }
 
-/* Smooth theme transitions */
+/* Global Smooth Transitions - Applied to all theme changes */
 * {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
 
-/* CSS Custom Properties for Theme Support */
-:root {
-    /* Light theme colors */
-    --bg-primary: #f8f9fa;
-    --bg-secondary: #ffffff;
-    --bg-tertiary: #f0f8ff;
-    --text-primary: #333333;
-    --text-secondary: #666666;
-    --text-muted: rgba(0,0,0,0.6);
-    --border-color: #e5e5e5;
-    --border-light: rgba(0,0,0,0.1);
-    --shadow: rgba(0,0,0,0.1);
-    --shadow-hover: rgba(0,0,0,0.15);
-    --accent-primary: #0066cc;
-    --accent-primary-hover: #0052a3;
-    --accent-secondary: #0052a3;
-    --hover-bg: rgba(0,0,0,0.05);
-    --scrollbar-track: #f1f1f1;
-    --scrollbar-thumb: #c1c1c1;
-    --scrollbar-thumb-hover: #a1a1a1;
-    --external-link-opacity: 0.7;
-    --fade-gradient: rgba(255,255,255,0.9);
-    /* Header specific colors */
-    --header-bg: #0078d4;
-    --header-text: white;
-    --header-text-secondary: rgba(255,255,255,0.9);
-    --header-hover: rgba(255,255,255,0.1);
-    /* Badge colors */
-    --badge-green-bg: #e8f5e8;
-    --badge-green-text: #2d7d32;
-    --badge-orange-bg: #fff3e0;
-    --badge-orange-text: #f57c00;
-    --badge-pink-bg: #fce4ec;
-    --badge-pink-text: #c2185b;
-    --badge-purple-bg: #f3e5f5;
-    --badge-purple-text: #7b1fa2;
-    --badge-blue-bg: #e3f2fd;
-    --badge-blue-text: #0277bd;
-    /* Border colors for cards */
-    --border-green: #4caf50;
-    --border-orange: #ff9800;
-    --border-pink: #e91e63;
-    --border-purple: #9c27b0;
-    --border-gray: #607d8b;
-    --border-blue: #0277bd;
-    --border-dark-green: #2e7d32;
-    --border-dark-orange: #ef6c00;
-    --border-red: #d32f2f;
-    
-    /* Journey colors */
-    --journey-quickstart-color: #0277bd;
-    --journey-businessuser-color: #7b1fa2;
-    --journey-developer-color: #2e7d32;
-    --journey-autonomous-color: #ef6c00;
-    --journey-bootcamp-color: #d32f2f;
-    
-    /* Additional button colors */
-    --danger-color: #dc3545;
-    --danger-color-hover: #c82333;
-    --accent-secondary: #4dabf7;
-    --accent-tertiary: #9c27b0;
-    --accent-tertiary-dark: #ba68c8;
-    --dark-button-text: #1a1a1a;
-    
-    /* Code highlighting */
-    --code-bg: #f1f3f4;
-    --pre-bg: #f8f9fa;
-    
-    /* Overlay effects */
-    --overlay-hover: rgba(255,255,255,0.1);
-    --overlay-active: rgba(255,255,255,0.2);
-    --overlay-border: rgba(255,255,255,0.3);
-}
+/* ============================================================================
+   CSS CUSTOM PROPERTIES USAGE
+   
+   All colors and theme-specific values are loaded from external theme files:
+   - assets/css/themes/theme-rich.css (Rich light & dark themes)
+   - assets/css/themes/theme-minimal.css (Minimal light & dark themes)
+   
+   Variables are organized by category:
+   - Base colors: --bg-primary, --text-primary, --border-color
+   - Component colors: --callout-*, --copy-button-*, --lightbox-*
+   - Interactive states: --hover-bg, --accent-primary-hover
+   - Mode overrides: [data-theme="dark"] selector for dark mode variants
+   ============================================================================ */
 
-/* Dark theme colors */
-[data-theme="dark"] {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-tertiary: #1e2a3a;
-    --text-primary: #e5e5e5;
-    --text-secondary: #b8b8b8;
-    --text-muted: rgba(255,255,255,0.6);
-    --border-color: #404040;
-    --border-light: rgba(255,255,255,0.1);
-    --shadow: rgba(0,0,0,0.3);
-    --shadow-hover: rgba(0,0,0,0.4);
-    --accent-primary: #4dabf7;
-    --accent-primary-hover: #339af0;
-    --accent-secondary: #339af0;
-    --hover-bg: rgba(255,255,255,0.1);
-    --scrollbar-track: #404040;
-    --scrollbar-thumb: #606060;
-    --scrollbar-thumb-hover: #808080;
-    --external-link-opacity: 0.8;
-    --fade-gradient: rgba(45,45,45,0.9);
-    /* Header specific colors for dark mode */
-    --header-bg: #1e1e1e;
-    --header-text: #e5e5e5;
-    --header-text-secondary: rgba(229,229,229,0.8);
-    --header-hover: rgba(255,255,255,0.1);
-    /* Badge colors for dark mode */
-    --badge-green-bg: #1b4332;
-    --badge-green-text: #52c41a;
-    --badge-orange-bg: #3b2f1f;
-    --badge-orange-text: #ffa940;
-    --badge-pink-bg: #3d1b2f;
-    --badge-pink-text: #ff85c0;
-    --badge-purple-bg: #2b1b3d;
-    --badge-purple-text: #b37feb;
-    --badge-blue-bg: #1b2f3d;
-    --badge-blue-text: #40a9ff;
-    /* Border colors for cards - keep similar in dark mode for recognition */
-    --border-green: #52c41a;
-    --border-orange: #ffa940;
-    --border-pink: #ff85c0;
-    --border-purple: #b37feb;
-    --border-gray: #8c9eff;
-    --border-blue: #40a9ff;
-    --border-dark-green: #73d13d;
-    --border-dark-orange: #ffab40;
-    --border-red: #ff7875;
-    
-    /* Journey colors - dark mode variants */
-    --journey-quickstart-color: #40a9ff;
-    --journey-businessuser-color: #b37feb;
-    --journey-developer-color: #73d13d;
-    --journey-autonomous-color: #ffab40;
-    --journey-bootcamp-color: #ff7875;
-    
-    /* Additional button colors - dark mode variants */
-    --danger-color: #ff4d6d;
-    --danger-color-hover: #ff6b85;
-    --accent-secondary: #4dabf7;
-    --accent-tertiary: #ba68c8;
-    --accent-tertiary-dark: #ba68c8;
-    --dark-button-text: #1a1a1a;
-    
-    /* Code highlighting - dark mode */
-    --code-bg: #2d2d30;
-    --pre-bg: #1e1e1e;
-    
-    /* Overlay effects - dark mode */
-    --overlay-hover: rgba(255,255,255,0.1);
-    --overlay-active: rgba(255,255,255,0.2);
-    --overlay-border: rgba(255,255,255,0.3);
-}
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
 
-/* System preference detection */
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme]) {
-        --bg-primary: #1a1a1a;
-        --bg-secondary: #2d2d2d;
-        --bg-tertiary: #1e2a3a;
-        --text-primary: #e5e5e5;
-        --text-secondary: #b8b8b8;
-        --text-muted: rgba(255,255,255,0.6);
-        --border-color: #404040;
-        --border-light: rgba(255,255,255,0.1);
-        --shadow: rgba(0,0,0,0.3);
-        --shadow-hover: rgba(0,0,0,0.4);
-        --accent-primary: #4dabf7;
-        --accent-secondary: #339af0;
-        --hover-bg: rgba(255,255,255,0.1);
-        --scrollbar-track: #404040;
-        --scrollbar-thumb: #606060;
-        --scrollbar-thumb-hover: #808080;
-        --external-link-opacity: 0.8;
-        --fade-gradient: rgba(45,45,45,0.9);
-    }
-}
-
-/* Utility Classes */
 .hidden {
     display: none !important;
 }
 
+/* ============================================================================
+   GLOBAL TYPOGRAPHY AND LAYOUT
+   ============================================================================ */
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    line-height: 1.6;
-    color: var(--text-primary);
-    background-color: var(--bg-primary);
+    font-family: var(--font-family-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif);
+    font-size: var(--font-size-base, 16px);
+    line-height: var(--line-height-base, 1.6);
+    color: var(--text-primary); /* Theme-specific text color */
+    background-color: var(--bg-primary); /* Theme-specific background */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -226,22 +118,23 @@ body.lab-page .site-content .container {
     border-bottom: 1px solid var(--border-color);
 }
 
-/* Ensure dark mode header overrides */
-[data-theme="dark"] .site-header {
-    background: var(--header-bg) !important;
-    color: var(--header-text) !important;
+.site-header h1 a {
+    color: var(--header-text); /* Uses theme-specific header text color */
+    text-decoration: none;
+    font-weight: 600;
 }
 
-[data-theme="dark"] .site-header h1 a {
-    color: var(--header-text) !important;
+.site-header nav a {
+    color: var(--header-text-secondary); /* Uses theme-specific secondary text */
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
-[data-theme="dark"] .site-header nav a {
-    color: rgba(229,229,229,0.8) !important;
-}
-
-[data-theme="dark"] .site-header nav a:hover {
-    color: var(--header-text) !important;
+.site-header nav a:hover {
+    color: var(--header-text); /* Uses theme-specific primary text on hover */
+    background: var(--header-hover); /* Uses theme-specific hover background */
 }
 
 .header-content {
@@ -259,7 +152,7 @@ body.lab-page .site-content .container {
 }
 
 .site-header h1 a {
-    color: var(--header-text);
+    color: var(--header-text); /* Uses theme-specific header text color */
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: 600;
@@ -284,37 +177,133 @@ body.lab-page .site-content .container {
     color: var(--header-text);
 }
 
-/* Theme Toggle Button */
-.theme-toggle {
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.3);
+/* ============================================================================
+   THEME CONTROLS - Universal Styling System
+   
+   These controls allow users to switch between themes and light/dark modes.
+   
+   DESIGN PRINCIPLES:
+   - Theme-independent: Works on any header background color
+   - Semi-transparent dark containers for universal visibility
+   - Backdrop blur for modern glass morphism effect
+   - No conditional CSS - one style works everywhere
+   
+   COMPONENTS:
+   - .theme-style-toggle: Container for Rich/Minimal theme buttons
+   - .theme-style-btn: Individual theme selection buttons  
+   - .light-dark-toggle: Circular button for light/dark mode switching
+   - .mode-divider: Visual separator between theme and mode controls
+   
+   SCALABILITY:
+   - Adding new themes requires no changes to these styles
+   - Controls automatically work with any header color scheme
+   - JavaScript theme manager handles the actual theme switching logic
+   ============================================================================ */
+
+.theme-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Container for theme selection buttons (Rich/Minimal) */
+.theme-style-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark background */
+    border-radius: 16px;
+    padding: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(8px); /* Safari compatibility */
+    backdrop-filter: blur(8px); /* Modern glass effect */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Individual theme selection buttons */
+.theme-style-btn {
+    background: transparent;
+    border: none;
+    padding: 6px 12px;
+    color: rgba(255, 255, 255, 0.9); /* Always white text for visibility */
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 12px;
+    position: relative;
+    white-space: nowrap;
+}
+
+.theme-style-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Active theme button styling */
+.theme-style-btn.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.theme-style-btn .theme-icon {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.theme-style-btn .theme-label {
+    font-size: 0.75rem;
+    font-weight: inherit;
+}
+
+/* Visual separator between theme selection and mode toggle */
+.mode-divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 0 8px;
+}
+
+/* Circular light/dark mode toggle button */
+.light-dark-toggle {
+    background: rgba(0, 0, 0, 0.6); /* Matches theme toggle container */
+    border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: var(--header-text);
-    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    -webkit-backdrop-filter: blur(8px); /* Safari compatibility */
+    backdrop-filter: blur(8px); /* Glass effect */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.theme-toggle:hover {
-    background: rgba(255,255,255,0.3);
-    border-color: rgba(255,255,255,0.5);
+.light-dark-toggle:hover {
+    background: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
     transform: scale(1.05);
+    border-color: rgba(0, 0, 0, 0.4);
 }
 
-.theme-toggle:active {
+.light-dark-toggle:active {
     transform: scale(0.95);
 }
 
-.theme-toggle-icon {
+/* Icon rotation animation on hover */
+.light-dark-icon {
     transition: transform 0.2s ease;
 }
 
-.theme-toggle:hover .theme-toggle-icon {
+.light-dark-toggle:hover .light-dark-icon {
     transform: rotate(15deg);
 }
 
@@ -1714,8 +1703,8 @@ body[data-lab-type="external"] .lab-downloads,
     background: var(--code-bg);
     padding: 0.2rem 0.4rem;
     border-radius: 3px;
-    font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 0.9em;
+    font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
+    font-size: var(--font-size-sm, 0.9em);
 }
 
 .lab-body pre {
@@ -1725,6 +1714,8 @@ body[data-lab-type="external"] .lab-downloads,
     padding: 1rem;
     overflow-x: auto;
     margin-bottom: 1rem;
+    font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
+    font-size: var(--font-size-sm, 0.9em);
 }
 
 .lab-body pre code {
@@ -2081,6 +2072,8 @@ a:hover .external-link-icon {
     padding: 1rem;
     border-radius: 8px;
     overflow-x: auto;
+    font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
+    font-size: var(--font-size-sm, 0.9em);
 }
 
 .lab-content pre code {
@@ -2184,3 +2177,444 @@ a:hover .external-link-icon {
     color: var(--accent-secondary);
     text-decoration: none;
 }
+
+/* ============================================================================
+   GITHUB-STYLE CALLOUTS SYSTEM
+   
+   Provides informational boxes with icons and color coding for different
+   types of content. Supports 5 callout types inspired by GitHub's alerts.
+   
+   SUPPORTED CALLOUT TYPES:
+   1. NOTE (📘)     - Blue   - General information, tips, references
+   2. TIP (💡)      - Green  - Helpful suggestions, best practices  
+   3. IMPORTANT (❗) - Orange - Important information, key points
+   4. WARNING (⚠️)   - Yellow - Caution, potential issues to avoid
+   5. CAUTION (🚨)   - Red    - Critical warnings, dangerous actions
+   
+   USAGE IN MARKDOWN:
+   ```markdown
+   > [!NOTE]
+   > This is a note callout with helpful information.
+   
+   > [!TIP]
+   > Pro tip: This makes your workflow more efficient.
+   ```
+   
+   STYLING APPROACH:
+   - Uses CSS custom properties for theme flexibility
+   - Each callout type has 4 variables: bg, border, text, title colors
+   - Icons are added via CSS ::before pseudo-elements
+   - Responsive design with proper spacing and typography
+   ============================================================================ */
+
+/* Base callout container styles */
+.callout {
+    margin: 1.5rem 0;
+    padding: 1rem 1rem 1rem 3rem; /* Left padding for icon space */
+    border-left: 4px solid; /* Themed border color */
+    border-radius: 6px;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Callout icons positioned absolutely in left margin */
+.callout::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* Callout title styling */
+.callout .callout-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+/* Note callout */
+.callout.callout-note {
+    background: var(--callout-note-bg);
+    border-color: var(--callout-note-border);
+    color: var(--callout-note-text);
+}
+
+.callout.callout-note::before {
+    content: '🔵';
+}
+
+.callout.callout-note .callout-title {
+    color: var(--callout-note-title);
+}
+
+/* Tip callout */
+.callout.callout-tip {
+    background: var(--callout-tip-bg);
+    border-color: var(--callout-tip-border);
+    color: var(--callout-tip-text);
+}
+
+.callout.callout-tip::before {
+    content: '💡';
+}
+
+.callout.callout-tip .callout-title {
+    color: var(--callout-tip-title);
+}
+
+/* Important callout */
+.callout.callout-important {
+    background: var(--callout-important-bg);
+    border-color: var(--callout-important-border);
+    color: var(--callout-important-text);
+}
+
+.callout.callout-important::before {
+    content: '❗';
+}
+
+.callout.callout-important .callout-title {
+    color: var(--callout-important-title);
+}
+
+/* Warning callout */
+.callout.callout-warning {
+    background: var(--callout-warning-bg);
+    border-color: var(--callout-warning-border);
+    color: var(--callout-warning-text);
+}
+
+.callout.callout-warning::before {
+    content: '⚠️';
+}
+
+.callout.callout-warning .callout-title {
+    color: var(--callout-warning-title);
+}
+
+/* Caution callout */
+.callout.callout-caution {
+    background: var(--callout-caution-bg);
+    border-color: var(--callout-caution-border);
+    color: var(--callout-caution-text);
+}
+
+.callout.callout-caution::before {
+    content: '🔥';
+}
+
+.callout.callout-caution .callout-title {
+    color: var(--callout-caution-title);
+}
+
+/* ============================================================================
+   CODE BLOCK COPY FUNCTIONALITY
+   
+   Adds copy-to-clipboard buttons to code blocks for enhanced user experience.
+   
+   FEATURES:
+   - Positioned absolutely in top-right corner of code blocks
+   - Uses theme-specific styling via CSS custom properties
+   - Visual feedback on click (color change and "Copied!" text)
+   - Automatic reset after 2 seconds
+   - Accessible with proper ARIA labels and focus states
+   
+   JAVASCRIPT INTEGRATION:
+   - Button click triggers copy to clipboard functionality
+   - CSS classes handle visual state changes (.copied state)
+   - Works with both <pre> and <code> elements
+   
+   THEME VARIABLES USED:
+   - --copy-button-bg: Background color
+   - --copy-button-border: Border color  
+   - --copy-button-text: Text color
+   - --copy-button-hover-*: Hover state colors
+   ============================================================================ */
+
+/* Container wrapper for code blocks with copy functionality */
+.code-container {
+    position: relative;
+    margin: 1.5rem 0;
+}
+
+.code-container pre {
+    margin: 0;
+    padding-right: 3rem; /* Reserve space for copy button */
+    font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
+    font-size: var(--font-size-sm, 0.9em);
+}
+
+/* Copy button positioned in top-right corner */
+.copy-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--copy-button-bg);
+    border: 1px solid var(--copy-button-border);
+    border-radius: 6px;
+    color: var(--copy-button-text);
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+    transition: all 0.2s ease;
+    z-index: 10;
+    opacity: 0.7;
+}
+
+.copy-button:hover {
+    opacity: 1;
+    background: var(--copy-button-hover-bg);
+    border-color: var(--copy-button-hover-border);
+    transform: translateY(-1px);
+}
+
+.copy-button:active {
+    transform: translateY(0);
+}
+
+.copy-button.copied {
+    background: var(--copy-success-bg);
+    border-color: var(--copy-success-border);
+    color: var(--copy-success-text);
+}
+
+.copy-button.copied::after {
+    content: ' ✓';
+}
+
+/* ============================================================================
+   IMAGE LIGHTBOX/ZOOM FUNCTIONALITY
+   
+   Provides click-to-zoom functionality for all images in lab content.
+   
+   FEATURES:
+   - Click any image to open in full-screen lightbox overlay
+   - Smooth animations and transitions
+   - Keyboard navigation (ESC to close)
+   - Click outside image to close
+   - Responsive design that scales to screen size
+   - Theme-aware styling using CSS custom properties
+   
+   JAVASCRIPT INTEGRATION:
+   - Auto-detects images and adds click listeners
+   - Creates overlay dynamically when image is clicked
+   - Handles keyboard and mouse events for closing
+   - Preserves original image aspect ratio
+   
+   ACCESSIBILITY:
+   - Focus management for keyboard users
+   - Proper ARIA labels and roles
+   - Escape key support for closing
+   
+   THEME VARIABLES USED:
+   - --lightbox-bg: Overlay background color
+   - --lightbox-close-*: Close button styling
+   - --shadow: Image drop shadows
+   ============================================================================ */
+
+/* Base styling for clickable images */
+.lab-content img {
+    cursor: pointer; /* Indicates images are clickable */
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px var(--shadow); /* Themed shadow */
+}
+
+/* Hover effect to indicate interactivity */
+.lab-content img:hover {
+    box-shadow: 0 4px 16px var(--shadow-hover); /* Enhanced shadow */
+    transform: translateY(-2px); /* Subtle lift effect */
+}
+
+/* Full-screen overlay container */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--lightbox-bg);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.lightbox-overlay.active {
+    display: flex;
+}
+
+/* Lightbox container for the image */
+.lightbox-container {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: default;
+}
+
+/* Lightbox image */
+.lightbox-image {
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    cursor: default;
+    transition: transform 0.2s ease;
+    transform-origin: center center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    /* Ensure image can scale beyond container */
+    position: relative;
+    display: block;
+}
+
+.lightbox-image:hover {
+    cursor: grab;
+}
+
+/* Lightbox close button */
+.lightbox-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: var(--lightbox-close-bg);
+    border: none;
+    border-radius: 50%;
+    color: var(--lightbox-close-text);
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10001;
+}
+
+.lightbox-close:hover {
+    background: var(--lightbox-close-hover-bg);
+    transform: scale(1.1);
+}
+
+/* Lightbox zoom controls */
+.lightbox-controls {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--lightbox-close-bg);
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10001;
+}
+
+.lightbox-controls button {
+    background: transparent;
+    border: none;
+    color: var(--lightbox-close-text);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.lightbox-controls button:hover {
+    background: var(--lightbox-close-hover-bg);
+    transform: scale(1.1);
+}
+
+.zoom-level {
+    color: var(--lightbox-close-text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    min-width: 3rem;
+    text-align: center;
+}
+
+/* Lightbox loading indicator */
+.lightbox-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    z-index: 10000;
+}
+
+/* ============================================================================
+   END OF MAIN STYLESHEET
+   
+   📝 QUICK REFERENCE FOR NEW COLLABORATORS:
+   
+   🎨 ADDING NEW THEMES:
+   1. Create new CSS file in assets/css/themes/ (e.g., theme-corporate.css)
+   2. Define all required CSS custom properties (see existing themes as reference)
+   3. Add theme to THEME_FAMILIES object in assets/js/theme-manager.js
+   4. Test all components: callouts, copy buttons, lightbox, theme controls
+   
+   🎯 ADDING NEW CALLOUT TYPES:
+   1. Add CSS variables in both theme files: --callout-newtype-bg, -border, -text, -title
+   2. Add CSS rules in this file: .callout.callout-newtype styles
+   3. Add icon and detection logic in JavaScript callout initialization
+   
+   📋 ADDING NEW COMPONENTS:
+   1. Add structural CSS in this file using CSS custom properties
+   2. Define color variables in both theme files (rich and minimal)
+   3. Ensure component works in all 4 theme combinations
+   4. Test responsiveness and accessibility
+   
+   🔧 MODIFYING EXISTING STYLES:
+   1. Colors: Edit theme files (theme-rich.css, theme-minimal.css)
+   2. Layout/Structure: Edit this file (style.css)
+   3. Theme Controls: Universal styling in this file works across all themes
+   4. Always test changes in both light and dark modes
+   
+   📁 FILE STRUCTURE:
+   - style.css: Main stylesheet with structural styles and components
+   - themes/theme-rich.css: Rich colorful theme (light + dark modes)
+   - themes/theme-minimal.css: Clean minimal theme (light + dark modes)
+   - theme-manager.js: JavaScript for dynamic theme loading and switching
+   
+   🎪 THEME SYSTEM OVERVIEW:
+   - CSS Custom Properties enable theme flexibility
+   - JavaScript dynamically loads theme CSS files
+   - Universal theme controls work on any header background
+   - Modular architecture allows easy theme expansion
+   - All components use themed variables for automatic color adaptation
+   
+   Remember: Test thoroughly across all theme combinations! 🚀
+   ============================================================================ */
