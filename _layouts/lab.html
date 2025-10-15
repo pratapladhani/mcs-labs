@@ -400,21 +400,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // GitHub-Style Callouts Implementation
     // ========================================================================
     function initializeCallouts() {
-        // Find all blockquotes that contain GitHub-style callouts
-        const blockquotes = document.querySelectorAll('.lab-content blockquote');
+        // Find all blockquotes within lab content
+        const labContent = document.querySelector('.lab-body');
+        if (!labContent) return;
         
-        blockquotes.forEach(blockquote => {
-            const firstParagraph = blockquote.querySelector('p:first-child');
-            if (!firstParagraph) return;
+        const blockquotes = labContent.querySelectorAll('blockquote');
+        
+        blockquotes.forEach((blockquote, index) => {
+            // Get the text content to check for callout pattern
+            const textContent = blockquote.textContent.trim();
             
-            const text = firstParagraph.textContent.trim();
+            // Check if this blockquote starts with a callout pattern
+            const match = textContent.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i);
+            if (!match) return;
             
-            // Check for callout pattern: [!TYPE]
-            const calloutMatch = text.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\](.*)$/i);
-            if (!calloutMatch) return;
+            const calloutType = match[1].toLowerCase();
             
-            const calloutType = calloutMatch[1].toLowerCase();
-            const calloutContent = calloutMatch[2].trim();
+            // Get the content after the callout marker
+            const contentAfterMarker = textContent.replace(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i, '').trim();
             
             // Create callout container
             const calloutDiv = document.createElement('div');
@@ -429,17 +432,26 @@ document.addEventListener('DOMContentLoaded', function() {
             const contentDiv = document.createElement('div');
             contentDiv.className = 'callout-content';
             
-            // Add remaining content
-            if (calloutContent) {
-                const contentP = document.createElement('p');
-                contentP.textContent = calloutContent;
-                contentDiv.appendChild(contentP);
+            // Clone the original blockquote content but remove the callout marker
+            const clonedBlockquote = blockquote.cloneNode(true);
+            const firstP = clonedBlockquote.querySelector('p:first-child');
+            
+            if (firstP) {
+                // Remove the callout marker from the first paragraph
+                const firstPText = firstP.innerHTML;
+                const cleanedText = firstPText.replace(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i, '');
+                
+                if (cleanedText.trim()) {
+                    firstP.innerHTML = cleanedText;
+                } else {
+                    // If first paragraph only had the marker, remove it entirely
+                    firstP.remove();
+                }
             }
             
-            // Move any additional paragraphs
-            const additionalParagraphs = blockquote.querySelectorAll('p:not(:first-child)');
-            additionalParagraphs.forEach(p => {
-                contentDiv.appendChild(p.cloneNode(true));
+            // Move all content from cloned blockquote to content div
+            Array.from(clonedBlockquote.children).forEach(child => {
+                contentDiv.appendChild(child);
             });
             
             // Build final callout
