@@ -1,5 +1,9 @@
 # 🤖 Microsoft Copilot Studio Labs 🧪
 
+> 💡 **Looking for an easier way to browse these labs?** Check out our interactive web portal for a better reading experience: [Microsoft Copilot Studio Labs Portal](https://microsoft.github.io/mcs-labs/) 🌐
+
+---
+
 | Title | Download | Overview |
 |-------|----------|----------|
 | Create your own web-based AI assistant with agent builder | [agent-builder-web](./labs/agent-builder-web) | In this lab, you'll create a Copilot agent in Microsoft 365 Copilot Chat with Copilot Studio Lite. This agent will be designed to assist users with questions about Copilot agents. The agent will act as a learning companion or teacher, grounded in official Microsoft documentation. |
