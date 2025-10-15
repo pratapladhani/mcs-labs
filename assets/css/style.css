@@ -844,6 +844,12 @@ body {
     box-shadow: 0 6px 16px rgba(0,120,212,0.5);
 }
 
+/* HIDE LAB NUMBERS - Remove numbering from both lab cards and sidebar navigation */
+.lab-sequence,
+.lab-order {
+    display: none !important;
+}
+
 /* Legacy support for .lab-number if still used anywhere */
 .lab-number {
     position: absolute;
