@@ -395,7 +395,7 @@ Let's start by asking for the user country at the beginning of the conversation.
 Hello!
 ```
 
-15. Navigate to the **Topics** tab, open the **Office Location** topic, and to see what values are returned from the connector, enter the **Variables** pane in the topic command bar. Go the **Test** to see the variable values at runtime (i.e., as you are testing in the conversation test pane).
+15. Navigate to the **Topics** tab, open the **Conversation Starts** topic, and to see what values are returned from the connector, enter the **Variables** pane in the topic command bar. Go the **Test** to see the variable values at runtime (i.e., as you are testing in the conversation test pane).
   
   ![alt text](images/variables-pane.png)
 
