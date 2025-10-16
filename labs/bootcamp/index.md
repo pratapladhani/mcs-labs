@@ -59,12 +59,11 @@ Calculate bootcamp statistics dynamically
 </div>
 
 <div class="bootcamp-labs">
-<div class="bootcamp-labs-grid">
+<div class="labs-grid">
   {% comment %}
   Generate lab cards dynamically from bootcamp_lab_orders
   {% endcomment %}
-  {% assign sorted_orders = bootcamp_orders | sort %}
-  {% for order_pair in sorted_orders %}
+  {% for order_pair in bootcamp_orders %}
     {% assign bootcamp_order = order_pair[0] %}
     {% assign lab_id = order_pair[1] %}
     
@@ -81,24 +80,22 @@ Calculate bootcamp statistics dynamically
     {% endfor %}
     
     {% if lab_info %}
-  <div class="bootcamp-lab-card">
-    <div class="bootcamp-lab-number">
-      <span class="number">{{ bootcamp_order }}</span>
+  <div class="lab-card">
+    <div class="lab-sequence">
+      <span class="sequence-number">{{ bootcamp_order }}</span>
     </div>
-    <div class="bootcamp-lab-content">
-      <h3><a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?bootcamp=true">{{ lab_info.title }}</a></h3>
-      <p class="lab-description">{% if lab_id == 'agent-builder-web' %}Create an intelligent agent in Copilot that delivers contextual, multi-part answers using instructions and data from the Web.{% elsif lab_id == 'agent-builder-sharepoint' %}Build an intelligent sales admin assistant that analyzes SharePoint data using code interpreter and image generation features in Copilot Studio Lite.{% elsif lab_id == 'setup-for-success' %}Build agents with confidence. Deploy with control. Master the lifecycle of your Microsoft Copilot Studio agents with best practices.{% elsif lab_id == 'public-website-agent' %}Create an intelligent agent that delivers contextual, multi-part answers using your content and real-time data.{% elsif lab_id == 'mbr-prep-sharepoint-agent' %}This guide provides step-by-step instructions for creating an MBR (Monthly Business Review) Agent, which is designed to streamline the preparation process for MBRs.{% elsif lab_id == 'ask-me-anything' %}Empower employees with answers that matter – Build an intelligent agent that connects to your knowledge and data.{% elsif lab_id == 'autonomous-support-agent' %}Let AI do the work and automate processes more easily than ever with autonomous agents that handle user support inquiries automatically.{% elsif lab_id == 'autonomous-account-news' %}Empower sellers with timely insights – Build an autonomous Copilot Studio agent that periodically scans your Sales App for high-value opportunities, finds related news, and sends curated reports.{% elsif lab_id == 'pipelines-and-source-control' %}Master the deployment of your Microsoft Copilot Studio agents across environments using Power Platform pipelines. Learn the complete lifecycle from development to production.{% elsif lab_id == 'copilot-studio-kit' %}Automate quality assurance for your Copilot Studio agents with the Copilot Studio Kit. In this lab, you'll configure and run automated test scenarios, validate agent behavior using multiple test types, and gain actionable insights through analytics.{% else %}{{ lab_info.title }}{% endif %}</p>
+    <h3><a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?bootcamp=true">{{ lab_info.title }}</a></h3>
+      <p>{{ lab_info.description | default: lab_info.title }}</p>
       <div class="lab-meta">
         <span class="difficulty">{{ lab_info.difficulty | replace: ' (', ' ' | replace: ')', '' }}</span>
         <span class="duration">⏱️ {{ lab_info.duration }} min</span>
-        <span class="section">📂 {% case lab_info.section %}{% when 'core_learning_path' %}Core Learning Path{% when 'intermediate_labs' %}Intermediate Labs{% when 'advanced_labs' %}Advanced Labs{% when 'specialized_labs' %}Specialized Labs{% when 'optional_labs' %}Optional Labs{% when 'external_labs' %}External Labs{% else %}{{ lab_info.section | replace: '_', ' ' | capitalize }}{% endcase %}</span>
+        <span class="section {{ lab_info.section }}">📂 {% case lab_info.section %}{% when 'core_learning_path' %}Core Learning Path{% when 'intermediate_labs' %}Intermediate Labs{% when 'advanced_labs' %}Advanced Labs{% when 'specialized_labs' %}Specialized Labs{% when 'optional_labs' %}Optional Labs{% when 'external_labs' %}External Labs{% else %}{{ lab_info.section | replace: '_', ' ' | capitalize }}{% endcase %}</span>
       </div>
       <div class="lab-actions">
-        <a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?bootcamp=true" class="btn btn-primary">Start Lab →</a>
-        <a href="{{ '/assets/pdfs/' | relative_url }}{{ lab_id }}.pdf" class="btn btn-secondary" target="_blank">📄 Download PDF</a>
+        <a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?bootcamp=true" class="btn-primary">Start Lab →</a>
+        <a href="{{ '/assets/pdfs/' | relative_url }}{{ lab_id }}.pdf" class="btn-secondary" target="_blank">📄 Download PDF</a>
       </div>
     </div>
-  </div>
     {% endif %}
   {% endfor %}
 </div>
