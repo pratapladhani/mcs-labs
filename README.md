@@ -22,6 +22,17 @@
 
 ## 📚 Documentation & Contributing
 
+### 🎯 Navigation System
+
+This repository features a sophisticated lab navigation system:
+
+- **Journey-based Navigation**: Labs are organized into learning paths (Quick Start, Business User, Developer, Autonomous AI)
+- **Bootcamp System**: Special curated sequence with custom ordering (1a, 1b, 2, 3a, 3b, etc.) for intensive learning
+- **Smart Previous/Next**: Context-aware navigation that respects your current journey or bootcamp progress
+- **Responsive Design**: Optimized for both desktop and mobile learning experiences
+
+Access the bootcamp through the top navigation or visit [Labs Portal - Bootcamp](https://microsoft.github.io/mcs-labs/labs/bootcamp/).
+
 ### Automated HTML and PDF Generation
 
 This repository uses GitHub Actions to automatically convert lab markdown files into professional HTML and PDF formats:

@@ -14,8 +14,11 @@ _site/
 journeys/
 
 # Jekyll generated index pages (auto-generated from lab-config.yml)
-index.md
+/index.md
 labs/index.md
+
+# Static bootcamp page (manually maintained with Jekyll templating)
+# labs/bootcamp/index.md - NOT ignored, this is a curated static file
 
 # Ignore generated content and build artifacts:
 dist/

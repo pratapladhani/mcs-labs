@@ -119,6 +119,7 @@ lab_metadata:
   1:
     id: "agent-builder-web"
     title: "Create your own web-based AI assistant with lite experience of Copilot Studio in Microsoft 365 Copilot"
+    description: "Create an intelligent agent in Copilot that delivers contextual, multi-part answers using instructions and data from the Web."
     difficulty: "Beginner (Level 100)"
     duration: 15
     section: "core_learning_path"
@@ -126,6 +127,7 @@ lab_metadata:
   2:
     id: "public-website-agent"
     title: "Give your public website chatbot a brain and make it an agent"
+    description: "Create an intelligent agent that delivers contextual, multi-part answers using your content and real-time data."
     difficulty: "Beginner (Level 100)"
     duration: 25
     section: "core_learning_path"
@@ -133,6 +135,7 @@ lab_metadata:
   3:
     id: "mbr-prep-sharepoint-agent"
     title: "Create a Monthly Business Review (MBR) Agent"
+    description: "This guide provides step-by-step instructions for creating an MBR (Monthly Business Review) Agent, which is designed to streamline the preparation process for MBRs."
     difficulty: "Beginner (Level 100)"
     duration: 20
     section: "core_learning_path"
@@ -140,6 +143,7 @@ lab_metadata:
   4:
     id: "standard-orchestrator"
     title: "Create your own SharePoint-based AI assistant with the lite experience of Copilot Studio in Microsoft 365 Copilot"
+    description: "Build an intelligent SharePoint assistant that demonstrates advanced orchestration patterns and data integration techniques."
     difficulty: "Intermediate (Level 200)"
     duration: 20
     section: "core_learning_path"
@@ -148,6 +152,7 @@ lab_metadata:
   11:
     id: "setup-for-success"
     title: "Set yourself up for success & discover ALM best practices"
+    description: "Build agents with confidence. Deploy with control. Master the lifecycle of your Microsoft Copilot Studio agents with best practices."
     difficulty: "Intermediate (Level 200)"
     duration: 35
     section: "intermediate_labs"
@@ -155,6 +160,7 @@ lab_metadata:
   12:
     id: "agent-builder-sharepoint"
     title: "Create your own SharePoint-based AI assistant with the lite experience of Copilot Studio in Microsoft 365 Copilot"
+    description: "Build an intelligent sales admin assistant that analyzes SharePoint data using code interpreter and image generation features in Copilot Studio Lite."
     difficulty: "Intermediate (Level 200)"
     duration: 20
     section: "intermediate_labs"
@@ -162,6 +168,7 @@ lab_metadata:
   13:
     id: "ask-me-anything"
     title: "Create an 'Ask me anything' agent for your employees"
+    description: "Empower employees with answers that matter – Build an intelligent agent that connects to your knowledge and data."
     difficulty: "Intermediate (Level 200)"
     duration: 40
     section: "intermediate_labs"
@@ -170,6 +177,7 @@ lab_metadata:
   21:
     id: "autonomous-cua"
     title: "Build an autonomous agent that uses Computer Use to retrieve data from legacy systems that lack API connectivity"
+    description: "Harness cutting-edge Computer Use technology to create autonomous agents that can interact with legacy systems and applications that lack modern API connectivity."
     difficulty: "Advanced (Level 300)"
     duration: 60
     section: "advanced_labs"
@@ -177,6 +185,7 @@ lab_metadata:
   22:
     id: "autonomous-account-news"
     title: "Build an Autonomous Account News Assistant Agent"
+    description: "Empower sellers with timely insights – Build an autonomous Copilot Studio agent that periodically scans your Sales App for high-value opportunities, finds related news, and sends curated reports."
     difficulty: "Advanced (Level 300)"
     duration: 60
     section: "advanced_labs"
@@ -184,6 +193,7 @@ lab_metadata:
   23:
     id: "autonomous-support-agent"
     title: "Create an autonomous support agent and unlock new levels of productivity with AI automation"
+    description: "Let AI do the work and automate processes more easily than ever with autonomous agents that handle user support inquiries automatically."
     difficulty: "Advanced (Level 300)"
     duration: 20
     section: "advanced_labs"
@@ -192,6 +202,7 @@ lab_metadata:
   31:
     id: "measure-success"
     title: "Measure Success & Analytics"
+    description: "Learn to track, measure, and optimize your Copilot Studio agents using analytics, performance metrics, and success indicators to drive continuous improvement."
     difficulty: "Advanced (Level 300)"
     duration: 30
     section: "specialized_labs"
@@ -199,6 +210,7 @@ lab_metadata:
   32:
     id: "pipelines-and-source-control"
     title: "Source control and deploy your agents"
+    description: "Master the deployment of your Microsoft Copilot Studio agents across environments using Power Platform pipelines. Learn the complete lifecycle from development to production."
     difficulty: "Advanced (Level 300)"
     duration: 45
     section: "specialized_labs"
@@ -206,6 +218,7 @@ lab_metadata:
   33:
     id: "copilot-studio-kit"
     title: "Copilot Studio Kit"
+    description: "Automate quality assurance for your Copilot Studio agents with the Copilot Studio Kit. In this lab, you'll configure and run automated test scenarios, validate agent behavior using multiple test types, and gain actionable insights through analytics."
     difficulty: "Advanced (Level 300)"
     duration: 30
     section: "specialized_labs"
@@ -213,6 +226,7 @@ lab_metadata:
   34:
     id: "mcp-qualify-lead"
     title: "MCP Qualify Lead"
+    description: "Implement Model Context Protocol (MCP) integration to create intelligent lead qualification agents that enhance sales processes with advanced data connectivity."
     difficulty: "Advanced (Level 300)"
     duration: 45
     section: "specialized_labs"
@@ -221,6 +235,7 @@ lab_metadata:
   41:
     id: "ask-me-anything-30-mins"
     title: "Create an 'Ask me anything' agent for your employees (30 min version)"
+    description: "A streamlined version of the Ask Me Anything lab designed for quick implementation when time is limited but you still want to create a comprehensive employee knowledge agent."
     difficulty: "Intermediate (Level 200)"
     duration: 30
     section: "optional_labs"
@@ -229,6 +244,7 @@ lab_metadata:
   51:
     id: "mcs-mcp-external"
     title: "Model Context Protocol (MCP) & Copilot Studio"
+    description: "Learn to deploy an MCP Server and integrate it with Microsoft Copilot Studio to extend agent capabilities with custom data sources and external system connectivity."
     difficulty: "Advanced (Level 300)"
     duration: 90
     section: "external_labs"

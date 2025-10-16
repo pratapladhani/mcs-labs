@@ -1,5 +1,39 @@
 # PowerShell Lab Generation Script - Refactored Version
 # Unified script for PDF generation and Jekyll processing with comprehensive documentation
+#
+# BOOTCAMP NAVIGATION SYSTEM:
+# ===============================
+# This script implements a comprehensive bootcamp navigation system that separates bootcamp
+# from regular journey cards while maintaining full functionality. Architecture overview:
+#
+# 1. HOMEPAGE EXCLUSION STRATEGY:
+#    - Homepage journey cards are generated from the 'journeys' section only
+#    - Bootcamp is intentionally excluded from 'journeys' to prevent homepage display
+#    - Clean separation between homepage navigation and bootcamp functionality
+#
+# 2. BOOTCAMP PAGE IMPLEMENTATION:
+#    - bootcamp_lab_orders defines special sequencing (1a, 1b, 2, 3a, 3b, 4, 5a, 5b, 6, 7)
+#    - Dedicated /labs/bootcamp/ page renders bootcamp-specific lab organization
+#    - Labs retain their original journey assignments (quick-start, business-user, etc.)
+#    - bootcamp_order frontmatter added to labs for proper sequencing
+#
+# 3. NAVIGATION ARCHITECTURE:
+#    - Permanent "Bootcamp" link in top header navigation (_layouts/default.html)
+#    - Bootcamp page filters labs by bootcamp_order attribute presence
+#    - Previous/Next navigation respects bootcamp context and ordering
+#    - Query parameter preservation maintains bootcamp context across navigation
+#
+# 4. DATA FLOW AND FRONTMATTER:
+#    - Labs have journeys: ["quick-start", "business-user"] for regular navigation
+#    - Labs with bootcamp assignment get additional bootcamp_order: "1a" frontmatter
+#    - Jekyll templates use both data sets for different navigation contexts
+#    - Client-side JavaScript filters and sorts based on active context
+#
+# 5. TECHNICAL IMPLEMENTATION:
+#    - PowerShell generates frontmatter with both journey and bootcamp data
+#    - Jekyll templates include data-bootcamp-order attributes for JavaScript filtering
+#    - Alphanumeric sorting handles bootcamp sequence (1a < 1b < 2 < 3a)
+#    - Base URL preservation ensures GitHub Pages compatibility
 
 #region Script Parameters and Help
 param(
@@ -967,6 +1001,18 @@ section: $SectionName
         $journeyArray = $Lab.journeys | ForEach-Object { "`"$_`"" }
         $journeyString = "[" + ($journeyArray -join ", ") + "]"
         $frontMatter += "`njourneys: $journeyString"
+        
+        # Add bootcamp_order if lab is in bootcamp configuration
+        if ($Config.bootcamp_lab_orders) {
+            # Find the bootcamp order for this lab by checking all bootcamp entries
+            foreach ($bootcampOrder in $Config.bootcamp_lab_orders.Keys) {
+                $bootcampLabId = $Config.bootcamp_lab_orders[$bootcampOrder]
+                if ($bootcampLabId -eq $Lab.id) {
+                    $frontMatter += "`nbootcamp_order: `"$bootcampOrder`""
+                    break
+                }
+            }
+        }
     }
     
     # Add description (escape quotes)
@@ -1159,6 +1205,11 @@ function New-RootHomepage {
     $journeyCards = @()
     if ($Config.journeys) {
         foreach ($journeyKey in $Config.journeys.Keys) {
+            # Skip bootcamp journey - it should only appear as dynamic navigation, not as a homepage journey card
+            if ($journeyKey -eq "bootcamp") {
+                continue
+            }
+            
             $journey = $Config.journeys[$journeyKey]
             $stats = $journeyStats[$journeyKey]
             
