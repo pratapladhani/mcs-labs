@@ -7,7 +7,6 @@
 window.ThemeManager = (function() {
     // Use hardcoded base URL for reliable path resolution
     const baseUrl = '/mcs-labs';
-    console.log('Using base URL:', baseUrl);
 
     const THEME_FAMILIES = {
         'rich': {
@@ -123,6 +122,33 @@ window.ThemeManager = (function() {
         return applyTheme(themeFamily, currentMode);
     }
 
+    // Sync internal state with externally applied theme (for pre-loaded themes)
+    function syncState(themeFamily, mode) {
+        const themeConfig = THEME_FAMILIES[themeFamily];
+        if (!themeConfig) {
+            console.warn(`Theme family "${themeFamily}" not found during sync`);
+            return;
+        }
+        
+        // Update internal state to match what's already applied
+        currentThemeFamily = themeFamily;
+        currentMode = mode;
+        
+        // Find the existing theme link that was pre-loaded
+        const existingLink = document.getElementById('active-theme-css');
+        if (existingLink) {
+            loadedThemeLink = existingLink;
+        }
+        
+        // Store preference
+        storeTheme(themeFamily, mode);
+        
+        // Dispatch theme change event
+        window.dispatchEvent(new CustomEvent('themeChanged', {
+            detail: { themeFamily, mode, theme: themeConfig }
+        }));
+    }
+
     // Initialize theme system with FOUC protection
     function init() {
         // Safety timeout to ensure page is always visible, even if theme loading fails
@@ -152,6 +178,7 @@ window.ThemeManager = (function() {
         changeThemeFamily,
         toggleMode,
         init,
+        syncState,
         
         // Backward compatibility
         get: () => `${currentThemeFamily}-${currentMode}`,

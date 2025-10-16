@@ -39,22 +39,15 @@
 /* ============================================================================
    FOUC (Flash of Unstyled Content) Prevention
    
-   Prevents the brief moment where users see unstyled content before themes load.
-   The page remains hidden until JavaScript sets the data-theme attribute.
+   Simplified approach that relies on immediate theme attribute setting
+   in the HTML head. This ensures theme CSS variables are available
+   immediately when the page renders.
    
-   SAFETY MEASURES:
-   - Timeout fallback in JavaScript ensures page shows even if theme fails
-   - Only hides content briefly during initial load
-   - Accessibility: Users with JS disabled will see unstyled but functional content
+   APPROACH:
+   - Set data-theme and data-theme-family attributes immediately in head
+   - Let CSS custom properties handle theme styling without delays
+   - Avoid complex hiding/showing logic that interferes with navigation
    ============================================================================ */
-
-html:not([data-theme]) {
-    visibility: hidden;
-}
-
-html[data-theme] {
-    visibility: visible;
-}
 
 /* Global Smooth Transitions - Applied to all theme changes */
 * {
@@ -826,7 +819,21 @@ body {
     outline-offset: 2px;
 }
 
-/* Lab numbering and badges */
+/* Lab numbering and badges 
+   IMPORTANT: These styles control lab number visibility across the site
+   
+   Lab numbering displays in multiple contexts:
+   1. Lab Cards: Circular badges showing sequence numbers (1, 2, 3, etc.)
+   2. Sidebar Navigation: Sequential ordering indicators
+   3. Bootcamp Page: Special numbering (1a, 1b, 2, 3a, 3b, etc.)
+   
+   CRITICAL: Never add "display: none !important" to .lab-sequence or .lab-order
+   This would hide lab numbers globally and break the numbering system
+   
+   Lab numbers are essential for:
+   - User navigation and progress tracking
+   - Understanding lab sequence and dependencies
+   - Visual hierarchy and organization */
 .lab-sequence {
     position: absolute;
     top: -10px;

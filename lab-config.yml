@@ -1,6 +1,31 @@
 # Simplified Lab Configuration - Auto-Discovery Based
 # Only contains journey definitions and optional section customizations
 # Labs are automatically discovered from folders and README files
+#
+# IMPORTANT CONFIGURATION NOTES:
+# =================================
+# 
+# JOURNEY SYSTEM:
+# - The 'journeys' section defines journey cards displayed on the homepage
+# - Only journeys listed here will appear as cards on the main page
+# - Bootcamp is intentionally EXCLUDED from this section to prevent homepage display
+#
+# BOOTCAMP CONFIGURATION:
+# - Bootcamp has a dedicated page at /labs/bootcamp/ with special numbering (1a, 1b, 2, 3a, etc.)
+# - bootcamp_lab_orders section defines lab sequence for bootcamp page
+# - Bootcamp navigation link is hardcoded in _layouts/default.html header
+# - labs/?bootcamp=true parameter still works for dynamic filtering
+#
+# LAB ASSIGNMENT SYSTEM:
+# - lab_journeys section assigns individual labs to their respective journeys
+# - Labs can be assigned to multiple journeys for cross-journey visibility
+# - Bootcamp labs are NOT assigned here to prevent homepage appearance
+#
+# NAVIGATION ARCHITECTURE:
+# - Homepage: Shows journey cards (excludes bootcamp)
+# - Top Navigation: Home | All Labs | Bootcamp (hardcoded links)
+# - Bootcamp Page: Uses bootcamp_lab_orders for custom sequencing
+# - All Labs Page: Shows all labs regardless of journey assignment
 
 # =====================================================
 # JOURNEY DEFINITIONS - Learning paths with metadata

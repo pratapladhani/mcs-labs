@@ -172,6 +172,7 @@ layout: default
           data-current-url="{{ page.url }}"
           data-current-journeys="{{ page.journeys | join: ',' }}"
           data-current-order="{{ page.order }}"
+          data-base-url="{{ '' | relative_url }}"
         >
           {% assign labs = site.labs | where_exp: "lab", "lab.lab_type !=
           'external'" | sort: 'order' %} {% for lab in labs %}
@@ -181,6 +182,13 @@ layout: default
             data-title="{{ lab.title }}"
             data-journeys="{{ lab.journeys | join: ',' }}"
             data-order="{{ lab.order }}"
+            {%
+            if
+            lab.bootcamp_order
+            %}data-bootcamp-order="{{ lab.bootcamp_order }}"
+            {%
+            endif
+            %}
           ></div>
           {% endfor %}
         </div>
@@ -231,27 +239,6 @@ layout: default
     const isBootcamp = urlParams.get("bootcamp") === "true";
     if (isBootcamp) {
       filterJourney = "bootcamp";
-
-      // Add bootcamp button to top navigation
-      const mainNav = document.querySelector(".main-nav");
-      if (mainNav && !mainNav.querySelector(".bootcamp-nav-btn")) {
-        const bootcampBtn = document.createElement("a");
-        bootcampBtn.href = "/labs/#bootcamp";
-        bootcampBtn.textContent = "⚔️ Bootcamp";
-        bootcampBtn.className = "bootcamp-nav-btn active";
-        bootcampBtn.title = "Bootcamp Journey";
-
-        // Insert after "All Labs"
-        const allLabsLink = mainNav.querySelector('a[href*="/labs/"]');
-        if (allLabsLink) {
-          allLabsLink.parentNode.insertBefore(
-            bootcampBtn,
-            allLabsLink.nextSibling
-          );
-        } else {
-          mainNav.appendChild(bootcampBtn);
-        }
-      }
     }
 
     // Get the current lab's journeys and section from data attributes
@@ -465,7 +452,35 @@ layout: default
       }
     }
 
-    // Update prev/next navigation based on journey filter
+    // ========================================================================
+    // BOOTCAMP NAVIGATION SYSTEM - Previous/Next Lab Navigation
+    // ========================================================================
+    // This function implements context-aware lab navigation that handles both
+    // regular journey filtering and special bootcamp sequencing.
+    //
+    // ARCHITECTURE OVERVIEW:
+    // - Labs have dual identity: regular journeys + optional bootcamp_order
+    // - Navigation respects the current filter context (journey vs bootcamp)
+    // - Bootcamp uses alphanumeric ordering (1a, 1b, 2, 3a, 3b, etc.)
+    // - Regular journeys use numeric ordering (1, 2, 3, etc.)
+    //
+    // DATA FLOW:
+    // 1. Get current lab context (URL, journeys, order)
+    // 2. Filter all labs based on active filter type
+    // 3. Sort filtered labs using appropriate ordering system
+    // 4. Find current lab position in filtered list
+    // 5. Generate Previous/Next links with proper URLs and context
+    //
+    // BOOTCAMP SPECIAL HANDLING:
+    // - activeFilter === "bootcamp" triggers bootcamp-specific logic
+    // - Filters labs by presence of data-bootcamp-order attribute
+    // - Uses custom alphanumeric sorting for bootcamp sequence
+    // - Preserves query parameters (?activeFilter=bootcamp) for context
+    //
+    // URL GENERATION:
+    // - Includes Jekyll base URL for GitHub Pages compatibility
+    // - Preserves query string for filter context maintenance
+    // - Handles both relative and absolute URL scenarios
     function updatePrevNextNavigation() {
       const labData = document.getElementById("lab-data");
       const prevNextNav = document.getElementById("prev-next-nav");
@@ -478,50 +493,97 @@ layout: default
         .split(",");
       const currentOrder = parseInt(labData.getAttribute("data-current-order"));
 
-      // Get all lab items
+      // Get all lab items from hidden data container
       const labItems = Array.from(labData.querySelectorAll(".lab-item"));
 
-      // Filter labs based on active journey filter (if any)
+      // FILTERING LOGIC: Context-aware lab filtering
+      // Priority order ensures bootcamp is handled before general journey logic
       let filteredLabs = labItems;
-      if (activeFilterType === "journey" && activeFilter) {
+      if (activeFilter === "bootcamp") {
+        // BOOTCAMP FILTERING: Labs with bootcamp_order attribute only
+        // This ensures only bootcamp-assigned labs appear in bootcamp navigation
+        filteredLabs = labItems.filter((item) => {
+          const bootcampOrder = item.getAttribute("data-bootcamp-order");
+          return bootcampOrder && bootcampOrder.trim() !== "";
+        });
+      } else if (activeFilterType === "journey" && activeFilter) {
+        // JOURNEY FILTERING: Labs assigned to specific journey
+        // Uses journey array from lab frontmatter (e.g., ["quick-start", "business-user"])
         filteredLabs = labItems.filter((item) => {
           const labJourneys = item.getAttribute("data-journeys").split(",");
           return labJourneys.includes(activeFilter);
         });
       }
 
-      // Sort by order
-      filteredLabs.sort((a, b) => {
-        return (
-          parseInt(a.getAttribute("data-order")) -
-          parseInt(b.getAttribute("data-order"))
-        );
-      });
+      // SORTING LOGIC: Different ordering systems for different contexts
+      if (activeFilter === "bootcamp") {
+        // BOOTCAMP SORTING: Alphanumeric ordering (1a, 1b, 2, 3a, 3b, 4, 5a, 5b, 6, 7)
+        filteredLabs.sort((a, b) => {
+          const aOrder = a.getAttribute("data-bootcamp-order");
+          const bOrder = b.getAttribute("data-bootcamp-order");
 
-      // Find current lab position in filtered list
+          // ALPHANUMERIC PARSER: Handles "1a", "1b", "2", "3a" format
+          // Splits into numeric part (1, 2, 3) and letter part (a, b, empty)
+          const parseBootcampOrder = (order) => {
+            if (!order) return [0, ""];
+            const match = order.match(/^(\d+)([a-z]?)$/);
+            if (match) {
+              return [parseInt(match[1]), match[2] || ""];
+            }
+            return [0, order];
+          };
+
+          const [aNum, aLetter] = parseBootcampOrder(aOrder);
+          const [bNum, bLetter] = parseBootcampOrder(bOrder);
+
+          if (aNum !== bNum) return aNum - bNum;
+          return aLetter.localeCompare(bLetter);
+        });
+      } else {
+        // REGULAR JOURNEY SORTING: Simple numeric ordering
+        // Uses standard lab order field for sequential navigation
+        filteredLabs.sort((a, b) => {
+          return (
+            parseInt(a.getAttribute("data-order")) -
+            parseInt(b.getAttribute("data-order"))
+          );
+        });
+      }
+
+      // POSITION DETECTION: Find current lab in filtered and sorted list
       const currentIndex = filteredLabs.findIndex(
         (item) => item.getAttribute("data-url") === currentUrl
       );
 
+      // DEFAULT NAVIGATION: Placeholder text for edge cases
       let prevHtml = '<span class="nav-placeholder">← No previous lab</span>';
       let nextHtml = '<span class="nav-placeholder">No next lab →</span>';
 
+      // CONTEXT PRESERVATION: Maintain filter state across navigation
+      // Query string preserves ?activeFilter=bootcamp or journey parameters
+      const currentQueryString = window.location.search;
+
+      // URL CONSTRUCTION: GitHub Pages compatible URL generation
+      // Base URL ensures proper routing in subdirectory deployments
+      const baseUrl = labData.getAttribute("data-base-url") || "";
+
+      // PREVIOUS LAB LINK GENERATION
       if (currentIndex > 0) {
         const prevLab = filteredLabs[currentIndex - 1];
         const prevUrl = prevLab.getAttribute("data-url");
         const prevTitle = prevLab.getAttribute("data-title");
-        const fullPrevUrl = '{{ "" | relative_url }}' + prevUrl;
-        prevHtml = `<a href="${fullPrevUrl}${currentQueryString}" class="nav-button prev">← ${prevTitle}</a>`;
+        prevHtml = `<a href="${baseUrl}${prevUrl}${currentQueryString}" class="nav-button prev">← ${prevTitle}</a>`;
       }
 
+      // NEXT LAB LINK GENERATION
       if (currentIndex < filteredLabs.length - 1) {
         const nextLab = filteredLabs[currentIndex + 1];
         const nextUrl = nextLab.getAttribute("data-url");
         const nextTitle = nextLab.getAttribute("data-title");
-        const fullNextUrl = '{{ "" | relative_url }}' + nextUrl;
-        nextHtml = `<a href="${fullNextUrl}${currentQueryString}" class="nav-button next">${nextTitle} →</a>`;
+        nextHtml = `<a href="${baseUrl}${nextUrl}${currentQueryString}" class="nav-button next">${nextTitle} →</a>`;
       }
 
+      // RENDER NAVIGATION: Update DOM with generated navigation links
       prevNextNav.innerHTML = prevHtml + nextHtml;
     }
 

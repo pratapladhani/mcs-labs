@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+  lang="en"
+  data-theme="{% if page.theme_mode %}{{ page.theme_mode }}{% else %}light{% endif %}"
+  data-theme-family="{% if page.theme_family %}{{ page.theme_family }}{% else %}rich{% endif %}"
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,25 +11,28 @@
       {% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}
     </title>
 
-    <!-- Immediate theme detection to prevent flash -->
+    <!-- Immediate theme script that runs before any rendering -->
     <script>
-      // Load and initialize ThemeManager immediately
+      // Set theme attributes immediately from localStorage, before any rendering
       (function () {
-        // Simple theme detection for initial load to prevent flash
-        const savedTheme = localStorage.getItem("theme") || "rich-light";
+        const savedTheme = localStorage.getItem("theme-family") || "rich";
+        const savedMode = localStorage.getItem("theme-mode") || "light";
 
-        // Extract data-theme value from theme configuration
-        const themeDataMap = {
-          "rich-light": "light",
-          "rich-dark": "dark",
-          "minimal-light": "light",
-          "minimal-dark": "dark",
-        };
-
-        const dataTheme = themeDataMap[savedTheme] || "light";
-        document.documentElement.setAttribute("data-theme", dataTheme);
+        // Override HTML attributes with localStorage values immediately
+        document.documentElement.setAttribute("data-theme", savedMode);
+        document.documentElement.setAttribute("data-theme-family", savedTheme);
       })();
     </script>
+
+    <!-- Load both theme CSS files always to eliminate loading delays -->
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/css/themes/theme-rich.css' | relative_url }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/css/themes/theme-minimal.css' | relative_url }}"
+    />
 
     <!-- Favicon -->
     <link
@@ -39,6 +46,7 @@
       rel="stylesheet"
       href="{{ '/assets/css/style.css' | relative_url }}"
     />
+
     {% seo %}
   </head>
   <body class="{% if page.layout == 'lab' %}lab-page{% endif %}">
@@ -48,6 +56,15 @@
           <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
           <div class="header-actions">
             <nav class="main-nav">
+              <!-- NAVIGATION STRUCTURE:
+                   Home: Main homepage with journey cards (excludes bootcamp)
+                   All Labs: Complete lab listing page
+                   Bootcamp: Dedicated bootcamp page with special sequencing
+                   
+                   IMPORTANT: Bootcamp URL points to /labs/bootcamp/ dedicated page
+                   This provides consistent access to bootcamp content with special
+                   numbering system (1a, 1b, 2, 3a, 3b, etc.) while keeping it
+                   separate from homepage journey cards -->
               <a href="{{ '/' | relative_url }}">Home</a>
               <a href="{{ '/labs/' | relative_url }}">All Labs</a>
               <a href="{{ '/labs/bootcamp/' | relative_url }}">Bootcamp</a>
@@ -210,10 +227,8 @@
           }
         }
 
-        // Initialize theme system on page load
+        // Initialize theme system on page load (skip if already initialized)
         document.addEventListener("DOMContentLoaded", function () {
-          console.log("DOM loaded, initializing theme system...");
-
           // Check if ThemeManager is available
           if (typeof ThemeManager === "undefined") {
             console.error(
@@ -222,9 +237,19 @@
             return;
           }
 
-          // Initialize theme manager
-          ThemeManager.init();
-          console.log("ThemeManager initialized");
+          // Only initialize if not already done in head
+          if (!window._themeInitialized) {
+            ThemeManager.init();
+          } else {
+            // Sync ThemeManager state with already applied theme
+            const currentFamily =
+              document.documentElement.getAttribute("data-theme-family") ||
+              "rich";
+            const currentMode =
+              document.documentElement.getAttribute("data-theme") || "light";
+            // Update ThemeManager internal state without re-applying
+            ThemeManager.syncState(currentFamily, currentMode);
+          }
 
           // Initialize GitHub-style callouts for all pages
           initializeCallouts();
@@ -236,37 +261,24 @@
           const themeStyleBtns = document.querySelectorAll(".theme-style-btn");
           const lightDarkToggle = document.querySelector(".light-dark-toggle");
 
-          console.log("Theme style buttons found:", themeStyleBtns.length);
-          console.log("Light/dark toggle found:", lightDarkToggle);
-
           themeStyleBtns.forEach((btn) => {
             btn.addEventListener("click", function (e) {
               const selectedTheme = e.currentTarget.getAttribute("data-theme");
-              console.log("Theme style changed to:", selectedTheme);
               ThemeManager.changeThemeFamily(selectedTheme);
             });
           });
 
-          if (themeStyleBtns.length > 0) {
-            console.log("Theme style button listeners added");
-          } else {
-            console.error("Theme style buttons not found!");
-          }
-
           if (lightDarkToggle) {
             lightDarkToggle.addEventListener("click", function (e) {
-              console.log("Light/dark toggle clicked!");
               e.preventDefault();
               ThemeManager.toggleMode();
             });
-            console.log("Light/dark toggle listener added");
           } else {
             console.error("Light/dark toggle not found!");
           }
 
           // Listen for theme changes
           window.addEventListener("themeChanged", function (e) {
-            console.log("Theme changed event received:", e.detail);
             updateThemeControls(ThemeManager.getCurrentThemeInfo());
           });
         });
