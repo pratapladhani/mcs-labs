@@ -8,8 +8,6 @@ layout: default
   <!-- Left Sidebar Navigation -->
   <aside class="lab-sidebar">
     <div class="sidebar-content">
-      <h3>📚 Journey Labs</h3>
-
       {% comment %} Find which journeys this lab belongs to {% endcomment %} {%
       assign current_journeys = page.journeys %} {% comment %} Default to
       first/primary journey, will be overridden by JavaScript if URL param
@@ -423,6 +421,36 @@ layout: default
 
       if (journeyTitleText && journeyTitle) {
         journeyTitleText.textContent = journeyTitle;
+      }
+    } else if (activeFilterType === "section" && activeFilter) {
+      let sectionTitle = "";
+
+      switch (activeFilter) {
+        case "core_learning_path":
+          sectionTitle = "📚 Core Learning Path";
+          break;
+        case "intermediate_labs":
+          sectionTitle = "🎯 Intermediate Labs";
+          break;
+        case "advanced_labs":
+          sectionTitle = "🚀 Advanced Labs";
+          break;
+        case "specialized_labs":
+          sectionTitle = "⚙️ Specialized Labs";
+          break;
+        case "optional_labs":
+          sectionTitle = "📋 Optional Labs";
+          break;
+        case "external_labs":
+          sectionTitle = "🌐 External Labs";
+          break;
+        default:
+          sectionTitle = "📂 " + activeFilter.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          break;
+      }
+
+      if (journeyTitleText && sectionTitle) {
+        journeyTitleText.textContent = sectionTitle;
       }
     } else if (currentJourneys && currentJourneys.length > 0) {
       // Default to primary journey
