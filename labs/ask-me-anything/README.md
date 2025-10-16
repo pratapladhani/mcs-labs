@@ -475,9 +475,7 @@ Always start by triggering the  topic.
 Always append the user country () in knowledge search queries (e.g., "<question> in <country>?") that are HR related.
 ```
 
-32. We need to designate the topic to trigger in the instructions. **Type** `/` and select **Office Location**.
-
-32. We also need to set the variable value in-between the parenthesis. **Type** `/` and select **Power Fx**.
+32. We need to set the variable value in-between the parenthesis. **Type** `/` and select **Power Fx**.
 
   ![alt text](images/instructions-formula.png)
 
