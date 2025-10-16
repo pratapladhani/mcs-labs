@@ -387,11 +387,9 @@ Let's start by asking for the user country at the beginning of the conversation.
 
 ![alt text](images/select-user-id.png)
 
-10. Give your topic a name, such as `Office Location` and **Save**
-
-11. Test if everything is working as expected by **refreshing** the conversation test pane.
+10. Test if everything is working as expected by **refreshing** the conversation test pane.
    
-12. **Send** a message such as:
+11. **Send** a message such as:
 
 ```
 Hello!
