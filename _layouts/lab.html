@@ -445,7 +445,11 @@ layout: default
           sectionTitle = "🌐 External Labs";
           break;
         default:
-          sectionTitle = "📂 " + activeFilter.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          sectionTitle =
+            "📂 " +
+            activeFilter
+              .replace(/_/g, " ")
+              .replace(/\b\w/g, (l) => l.toUpperCase());
           break;
       }
 
