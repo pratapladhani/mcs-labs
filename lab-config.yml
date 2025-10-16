@@ -14,14 +14,6 @@ journeys:
     estimated_time: "3-4 hours"
     labs: [1, 2, 3, 4]  # Essential foundation labs
     
-  bootcamp:
-    title: "Bootcamp Journey"
-    description: "Intensive hands-on bootcamp covering agent building, SharePoint integration, autonomous AI, and DevOps practices."
-    icon: "⚔️"
-    difficulty: "Beginner to Advanced"
-    estimated_time: "7 hours"
-    labs: ["1a", "1b", 2, "3a", "3b", 4, "5a", "5b", 6, 7]  # Bootcamp-specific sequence with sub-labs
-    
   business-user:
     title: "Business User Journey"
     description: "Perfect for business professionals who want to create powerful AI assistants without deep technical knowledge."
@@ -499,25 +491,25 @@ journey_sequences:
 # Available journeys: quick-start, business-user, developer, autonomous-ai
 lab_journeys:
   # Core Learning Path - Foundation labs for everyone
-  agent-builder-web: ["quick-start", "business-user", "bootcamp"]
-  mbr-prep-sharepoint-agent: ["quick-start", "business-user", "developer", "bootcamp"]
-  public-website-agent: ["quick-start", "business-user", "bootcamp"]
+  agent-builder-web: ["quick-start", "business-user"]
+  mbr-prep-sharepoint-agent: ["quick-start", "business-user", "developer"]
+  public-website-agent: ["quick-start", "business-user"]
   standard-orchestrator: ["quick-start", "developer"]
   
   # Intermediate Labs - Building on basics
-  setup-for-success: ["business-user", "developer", "bootcamp"]
-  agent-builder-sharepoint: ["business-user", "developer", "bootcamp"]
-  ask-me-anything: ["business-user", "developer", "bootcamp"]
+  setup-for-success: ["business-user", "developer"]
+  agent-builder-sharepoint: ["business-user", "developer"]
+  ask-me-anything: ["business-user", "developer"]
   
   # Advanced Labs - Complex scenarios
-  autonomous-cua: ["autonomous-ai", "developer", "bootcamp"]
-  autonomous-account-news: ["autonomous-ai", "developer", "bootcamp"]
-  autonomous-support-agent: ["autonomous-ai", "developer", "bootcamp"]
+  autonomous-cua: ["autonomous-ai", "developer"]
+  autonomous-account-news: ["autonomous-ai", "developer"]
+  autonomous-support-agent: ["autonomous-ai", "developer"]
   
   # Specialized Labs - Technical depth
   measure-success: ["developer"]
-  pipelines-and-source-control: ["developer", "bootcamp"]
-  copilot-studio-kit: ["developer", "bootcamp"]
+  pipelines-and-source-control: ["developer"]
+  copilot-studio-kit: ["developer"]
   mcp-qualify-lead: ["developer"]
   
   # Optional Labs - Alternative approaches

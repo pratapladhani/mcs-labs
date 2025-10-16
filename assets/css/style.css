@@ -177,6 +177,20 @@ body.lab-page .site-content .container {
     color: var(--header-text);
 }
 
+/* Bootcamp navigation button styles */
+.site-header nav .bootcamp-nav-btn {
+    background-color: var(--accent-color, #0066cc);
+    color: white !important;
+    font-weight: 600;
+    border: 2px solid var(--accent-color, #0066cc);
+}
+
+.site-header nav .bootcamp-nav-btn:hover {
+    background-color: var(--accent-color-hover, #0052a3);
+    border-color: var(--accent-color-hover, #0052a3);
+    color: white !important;
+}
+
 /* ============================================================================
    THEME CONTROLS - Universal Styling System
    
@@ -842,12 +856,6 @@ body {
 .lab-card:hover .lab-sequence {
     transform: scale(1.1);
     box-shadow: 0 6px 16px rgba(0,120,212,0.5);
-}
-
-/* HIDE LAB NUMBERS - Remove numbering from both lab cards and sidebar navigation */
-.lab-sequence,
-.lab-order {
-    display: none !important;
 }
 
 /* Legacy support for .lab-number if still used anywhere */

@@ -967,6 +967,27 @@ section: $SectionName
         $journeyArray = $Lab.journeys | ForEach-Object { "`"$_`"" }
         $journeyString = "[" + ($journeyArray -join ", ") + "]"
         $frontMatter += "`njourneys: $journeyString"
+        
+        # Add bootcamp_order if lab is part of bootcamp journey
+        if ($Lab.journeys -contains "bootcamp") {
+            $bootcampOrderMap = @{
+                1  = "1a"    # agent-builder-web
+                2  = "1b"    # public-website-agent
+                3  = "2"     # mbr-prep-sharepoint-agent
+                11 = "3a"   # setup-for-success
+                12 = "3b"   # agent-builder-sharepoint
+                13 = "4"    # ask-me-anything
+                21 = "5a"   # autonomous-cua
+                22 = "5b"   # autonomous-account-news
+                23 = "6"    # autonomous-support-agent
+                32 = "7"    # pipelines-and-source-control
+                33 = "8"    # copilot-studio-kit (adding as 8 since it's not in the original bootcamp list)
+            }
+            
+            if ($bootcampOrderMap.ContainsKey([int]$Order)) {
+                $frontMatter += "`nbootcamp_order: `"$($bootcampOrderMap[[int]$Order])`""
+            }
+        }
     }
     
     # Add description (escape quotes)
@@ -1159,6 +1180,11 @@ function New-RootHomepage {
     $journeyCards = @()
     if ($Config.journeys) {
         foreach ($journeyKey in $Config.journeys.Keys) {
+            # Skip bootcamp journey - it should only appear as dynamic navigation, not as a homepage journey card
+            if ($journeyKey -eq "bootcamp") {
+                continue
+            }
+            
             $journey = $Config.journeys[$journeyKey]
             $stats = $journeyStats[$journeyKey]
             
