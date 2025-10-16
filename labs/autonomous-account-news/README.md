@@ -156,7 +156,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   4.  Click **Next**.
 
-  5.  Set the trigger interval as desired (e.g., once a day).
+  5.  Set the trigger interval to once a day at 9am.
 
   6.  Under **Additional instructions to the agent when it's invoked by this trigger**, clear any default content and replace it with: `Analyze Opportunities`.
 
@@ -195,7 +195,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   3. Search and select `List rows from selected environment`.
 
-  4. Choose an existing Dataverse connection or add a new one ().
+  4. Choose an existing Dataverse connection or add a new one (select Oauth as authentication type).
 
 > [!IMPORTANT]  
 > Create the connection using OAuth and sign in with your workshop credentials. Your user requires permission to access Opportunity records, which is provided as part of the workshop.
@@ -218,7 +218,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
 
   9. Under **Inputs**, change **Environments** to the following:
       - **Fill using**: `Custom value`
-      - **Value**: `Workshop Hub`
+      - **Value**: `Workshop Hub (DEV)`
   
      Change **Table name** to:
       - **Fill using**: `Custom value`
@@ -327,6 +327,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
       - Search results related to those opportunities
       - Citation names and URLs
       ```
+  10. Click **Save** to finalize the input configuration.
 
 > [!IMPORTANT]  
 > The description will guide the agent to populate this variable with a structured JSON format. You don't need to enforce a specific schema—just ensure it's easy for the agent to interpret in downstream steps.
@@ -334,7 +335,7 @@ Set up an autonomous agent with a recurring trigger that automatically activates
   10. In the authoring canvas: 
       - Select on **(+)** to add a node. 
       - Select **Variable management** and then **Set a variable value**.
-      - For **Set variable**, create a new variable, make it **Global**, and name it `searchResults`. 
+      - For **Set variable**, create a new variable, make it **Global**, and then name it `searchResults` (if you have an error saying the variable name already exists then you need to make it global first).
       - In **To value** select `Topic.searchResults`
 
       ![alt text](images/log-search-results.png)
