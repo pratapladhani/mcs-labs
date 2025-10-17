@@ -412,7 +412,7 @@ In this section, you'll learn how to create a new project in Azure DevOps, how t
 > If you're landing into a **Something went wrong!** error, follow these steps:
 > 1. Go to [aex.dev.azure.com](https://aex.dev.azure.com/).
 > 2. If prompted, create new organization (you can leave the default name) if prompted
-> 3. Skip to step 10.
+> 3. Skip to step 6.
 
 6. Select **Azure DevOps** to open the Azure DevOps portal.
 

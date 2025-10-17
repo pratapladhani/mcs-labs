@@ -387,17 +387,15 @@ Let's start by asking for the user country at the beginning of the conversation.
 
 ![alt text](images/select-user-id.png)
 
-10. Give your topic a name, such as `Office Location` and **Save**
-
-11. Test if everything is working as expected by **refreshing** the conversation test pane.
+10. Test if everything is working as expected by **refreshing** the conversation test pane.
    
-12. **Send** a message such as:
+11. **Send** a message such as:
 
 ```
 Hello!
 ```
 
-15. Navigate to the **Topics** tab, open the **Office Location** topic, and to see what values are returned from the connector, enter the **Variables** pane in the topic command bar. Go the **Test** to see the variable values at runtime (i.e., as you are testing in the conversation test pane).
+15. Navigate to the **Topics** tab, open the **Conversation Starts** topic, and to see what values are returned from the connector, enter the **Variables** pane in the topic command bar. Go the **Test** to see the variable values at runtime (i.e., as you are testing in the conversation test pane).
   
   ![alt text](images/variables-pane.png)
 
@@ -477,9 +475,7 @@ Always start by triggering the  topic.
 Always append the user country () in knowledge search queries (e.g., "<question> in <country>?") that are HR related.
 ```
 
-32. We need to designate the topic to trigger in the instructions. **Type** `/` and select **Office Location**.
-
-32. We also need to set the variable value in-between the parenthesis. **Type** `/` and select **Power Fx**.
+32. We need to set the variable value in-between the parenthesis. **Type** `/` and select **Power Fx**.
 
   ![alt text](images/instructions-formula.png)
 
