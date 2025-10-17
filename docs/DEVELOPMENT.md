@@ -378,3 +378,69 @@ Test-Path "favicon.ico"
 
 **Last Updated**: October 2025  
 **Maintainer**: Development Team
+
+## Markdown Authoring Notes – Fenced Code Blocks in Lists
+
+When placing a fenced code block (```) immediately after a numbered or bulleted list item, Kramdown (Jekyll's default Markdown processor) may render the fence as a separate block rather than nested under the list item unless it is indented.
+
+Recommended pattern:
+
+```markdown
+1. Do the thing:
+
+    ```
+    Your code or multi-line instructions here
+    ```
+```
+
+Key rules:
+- Add a blank line after the list item text.
+- Indent the opening and closing fence and all lines inside by 4 spaces (or one level of nesting) to associate the block with the list item.
+- Avoid trailing stray backticks or mixing inline code with list punctuation on the same line as the fence.
+
+### Automated Markdown Issue Detection
+
+The generation script includes a **detection-only** capability that scans lab source files (`labs/*/README.md`) for unindented fenced code blocks that immediately follow list items. This helps authors locate formatting issues early without risking unintended automatic modifications.
+
+Why this matters:
+- Kramdown requires indentation to nest a fenced block under a list item.
+- Unindented fences after numbered steps can break visual hierarchy and confuse readers.
+- Detection supports manual, reviewed fixes instead of silent mutations.
+
+Usage examples:
+```powershell
+# Run fast generation (skip PDFs) and report markdown issues
+pwsh -File scripts/Generate-Labs.ps1 -SkipPDFs -MarkdownDetectOnly
+
+# Filter to a journey while detecting issues
+pwsh -File scripts/Generate-Labs.ps1 -SelectedJourneys developer -SkipPDFs -MarkdownDetectOnly
+```
+
+Output format (example):
+```
+⚠️  Detected unindented fenced block after list item at line 162 in agent-builder-web
+=== Markdown Detection Summary ===
+Lab: agent-builder-web | Issues: 6 | Lines: 162, 178, 187, 193, 199, 227
+Total Labs With Issues: 6 | Total Fenced Blocks: 21
+=====================================
+```
+
+Fixing detected issues:
+1. Open the referenced `labs/<lab-id>/README.md`.
+2. Insert a blank line after the list item text if missing.
+3. Indent the opening fence, all enclosed lines, and closing fence with four spaces.
+4. Re-run the detection command to confirm the issue is cleared.
+
+Best practices:
+- Prefer indentation + blank line over alternative list syntaxes; it is the most reliable across Markdown renderers.
+- Avoid mixing list markers and backticks on the same line (e.g., `1. ```bash`).
+- Keep code fences minimal—remove trailing whitespace inside fenced blocks.
+
+Future enhancements (deferred):
+- Bullet list (`-` / `*`) fence detection.
+- CI integration to surface issues in pull requests.
+- Optional JSON report for tooling.
+
+If you would like CI integration, create an issue requesting "Add Markdown Detection to CI" and reference this section.
+
+This approach was applied in `labs/autonomous-support-agent/README.md` (steps 28 and 17 of the extended section) to fix mis-rendered instruction blocks.
