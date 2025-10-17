@@ -41,8 +41,12 @@ param(
     [switch]$SkipPDFs = $false,
     [switch]$ShowHelp = $false,
     [switch]$GeneratePDFs = $false,
-    [switch]$LocalTest = $false
+    [switch]$LocalTest = $false,
+    [switch]$MarkdownDetectOnly = $false       # Detect markdown issues without modifying source content
 )
+
+# Global collection for detection-only summary
+$script:MarkdownIssueLog = @()
 
 # Handle legacy parameter mapping
 if ($GeneratePDFs) { $SkipPDFs = $false }
@@ -64,17 +68,20 @@ DESCRIPTION:
     Features comprehensive error handling, modular functions, and detailed logging.
 
 PARAMETERS:
-    -SelectedJourneys    Array of journey names to filter labs (e.g., @("business-user", "developer"))
-    -SkipPDFs           Skip PDF generation (Jekyll files only)
-    -GeneratePDFs       Generate PDFs for all labs (requires Docker)
-    -LocalTest          Complete local testing: generate Jekyll files + PDFs + build site
-    -ShowHelp           Show this help message
+    -SelectedJourneys      Array of journey names to filter labs (e.g., @("business-user", "developer"))
+    -SkipPDFs             Skip PDF generation (Jekyll files only)
+    -GeneratePDFs         Generate PDFs for all labs (requires Docker)
+    -LocalTest            Complete local testing: generate Jekyll files + PDFs + build site
+    -MarkdownDetectOnly   Detection-only mode: report problematic fenced blocks but do not modify content
+    -ShowHelp             Show this help message
 
 EXAMPLES:
     .\Generate-Labs-Complete.ps1                                    # Generate all labs with PDFs
     .\Generate-Labs-Complete.ps1 -SkipPDFs                         # Jekyll files only
     .\Generate-Labs-Complete.ps1 -SelectedJourneys @("business-user") # Business user journey only
     .\Generate-Labs-Complete.ps1 -LocalTest                        # Complete local test
+    .\Generate-Labs-Complete.ps1 -MarkdownDetectOnly               # Detect markdown issues only (no fixes)
+    .\Generate-Labs-Complete.ps1 -SkipPDFs -MarkdownDetectOnly     # Fast detection-only run
 
 REQUIREMENTS:
     - PowerShell 5.1+ or PowerShell Core
@@ -882,6 +889,15 @@ function New-LocalLabFile {
         
         # Process content (remove duplicate titles, normalize formatting)
         $cleanContent = Get-CleanLabContent -Content $content -Title $Lab.title
+
+        # Optional markdown detection (fenced code blocks immediately following list items)
+        if ($MarkdownDetectOnly) {
+            # Detection only: capture issues but do not modify content
+            $detectResult = Test-MarkdownListCodeBlocks -Content $cleanContent -LabId $Lab.id
+            if ($detectResult.Fixes -gt 0) {
+                $script:MarkdownIssueLog += @{ Lab = $Lab.id; Count = $detectResult.Fixes; Lines = $detectResult.LineNumbers }
+            }
+        }
         
         # Combine front matter and content
         $finalContent = $frontMatter + "`n`n---`n`n" + $cleanContent
@@ -1047,6 +1063,73 @@ function Get-CleanLabContent {
     }
     
     return $cleanContent
+}
+
+function Test-MarkdownListCodeBlocks {
+    <#
+    .SYNOPSIS
+        Detect fenced code blocks that immediately follow list items without indentation (no mutation).
+    .DESCRIPTION
+        Kramdown requires indentation (4 spaces) to nest a fenced block inside a preceding list item.
+        This detection-only helper scans markdown lines and when it finds a numbered list item
+        followed directly (optionally with one blank line) by an unindented fenced code block, it
+        records the list item line number for reporting. Content is never modified.
+    .PARAMETER Content
+        The markdown content to analyze.
+    .PARAMETER LabId
+        Lab identifier (for logging context).
+    .OUTPUTS
+        Hashtable: @{ Content = <string>; Fixes = <int>; Warnings = <[string[]]> }
+    #>
+    param(
+        [Parameter(Mandatory)][string]$Content,
+        [string]$LabId = ""
+    )
+
+    $lines = $Content -split "`n"
+    $fixes = 0
+    $warnings = @()
+    $lineNumbers = @()
+
+    # Track original line numbers for logging
+    for ($i = 0; $i -lt $lines.Length - 1; $i++) {
+        $current = $lines[$i]
+
+        # Match numbered list item (e.g. '17. Something', may have leading spaces)
+        if ($current -match '^\s*\d+\.\s+') {
+            $nextIndex = $i + 1
+            # Skip a single blank line if present
+            if ($nextIndex -lt $lines.Length -and $lines[$nextIndex] -match '^\s*$') {
+                $nextIndex++
+            }
+
+            if ($nextIndex -lt $lines.Length -and $lines[$nextIndex] -match '^```(\w+)?\s*$') {
+                # Unindented fenced block detected after list item
+                # Ensure a blank line between list item and fence for readability
+                if ($lines[$i + 1] -notmatch '^\s*$' -and $lines[$i + 1] -match '^```') {
+                    # Insert blank line before fence
+                    $lines = $lines[0..$i] + @('') + $lines[($i + 1)..($lines.Length - 1)]
+                    $nextIndex++
+                }
+
+                # Record detection only; do not mutate lines
+                $insideFence = $true
+                for ($j = $nextIndex + 1; $j -lt $lines.Length -and $insideFence; $j++) {
+                    if ($lines[$j] -match '^```\s*$') { $insideFence = $false }
+                }
+                $fixes++
+                $lineNumbers += ($i + 1)
+                Write-Host "    ⚠️  Detected unindented fenced block after list item at line $($i+1) in $LabId" -ForegroundColor DarkYellow
+            }
+        }
+    }
+    if ($fixes -gt 0) {
+        Write-Host "    ⚠️  Markdown issues detected: $fixes fenced block(s)" -ForegroundColor Yellow
+    }
+    else {
+        Write-Host "    ℹ️  No markdown list/fence issues detected for $LabId" -ForegroundColor DarkGray
+    }
+    return @{ Content = $Content; Fixes = $fixes; Warnings = $warnings; LineNumbers = $lineNumbers }
 }
 
 function Build-ExternalLabContent {
@@ -1855,3 +1938,15 @@ function Show-FinalStatistics {
 
 # Execute main function
 Invoke-LabGeneration
+
+# Detection-only summary (printed after main execution if global log populated)
+if ($MarkdownDetectOnly -and $script:MarkdownIssueLog -and $script:MarkdownIssueLog.Count -gt 0) {
+    Write-Host "`n=== Markdown Detection Summary ===" -ForegroundColor Cyan
+    foreach ($entry in $script:MarkdownIssueLog) {
+        $lines = ($entry.Lines -join ', ')
+        Write-Host ("Lab: {0} | Issues: {1} | Lines: {2}" -f $entry.Lab, $entry.Count, $lines) -ForegroundColor Yellow
+    }
+    $totalIssues = ($script:MarkdownIssueLog | Measure-Object -Property Count -Sum).Sum
+    Write-Host "Total Labs With Issues: $($script:MarkdownIssueLog.Count) | Total Fenced Blocks: $totalIssues" -ForegroundColor Magenta
+    Write-Host "=====================================" -ForegroundColor Cyan
+}
