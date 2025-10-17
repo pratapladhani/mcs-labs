@@ -906,7 +906,7 @@ Use this tool to help users with meeting notes
     }
     ```
 
-20. Select **Save** and **Close**.
+20. Select **Save** and **Close** (IMPORTANT: if you don't save the adaptive card, the auto complete feature will not work in the next step)
 
 > [!TIP]
 > Notice how the Adaptive Card editor offers a visual editor to create your own Adaptive Card experience with a no-code/low-code editor.
