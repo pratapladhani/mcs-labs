@@ -17,7 +17,7 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
   entity_output: numeric
-  smart_quotes: "&#x2019;,&#x2019;,&#x201C;,&#x201D;"
+  smart_quotes: "8217,8217,8220,8221"
 
 # Development settings for better file watching
 livereload: true
