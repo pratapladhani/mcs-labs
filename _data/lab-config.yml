@@ -293,27 +293,27 @@ bootcamp_lab_orders:
 # - Module 3: Advanced Scenarios (Labs 6-8) - Complex integrations and autonomous agents
 # - Module 4: Enterprise Readiness (Labs 9-11) - Deployment, testing, and monitoring
 #
-# NOTE: This is a placeholder structure. Actual lab assignments will be added
-# as lab content is developed and compiled.
+# NOTE: Using existing labs for testing the workshop framework.
+# These will be replaced with Azure AI-specific labs as content is developed.
 azure_ai_workshop_lab_orders:
-  # Module 1: Foundation - Getting Started
-  1: "placeholder-lab-1"                 # To be determined based on final lab content
-  2: "placeholder-lab-2"                 # To be determined based on final lab content
+  # Module 1: Foundation - Getting Started with Copilot Studio
+  1: "agent-builder-web"                 # Create your first web-based AI assistant
+  2: "setup-for-success"                 # Set yourself up for success & ALM best practices
   
-  # Module 2: Azure AI Integration - Core Services
-  3: "placeholder-lab-3"                 # Azure OpenAI integration
-  4: "placeholder-lab-4"                 # Azure AI Search integration
-  5: "placeholder-lab-5"                 # Azure Cognitive Services integration
+  # Module 2: Azure AI Integration - Building on SharePoint and Data
+  3: "agent-builder-sharepoint"          # SharePoint-based AI assistant (demonstrates data integration)
+  4: "mbr-prep-sharepoint-agent"         # MBR Agent (business scenario with data)
+  5: "ask-me-anything"                   # Multi-agent system with knowledge integration
   
-  # Module 3: Advanced Scenarios - Complex Use Cases
-  6: "placeholder-lab-6"                 # Multi-agent orchestration with Azure
-  7: "placeholder-lab-7"                 # Autonomous agents with Azure AI
-  8: "placeholder-lab-8"                 # Custom connectors and advanced integration
+  # Module 3: Advanced Scenarios - Autonomous Agents and Complex Integration
+  6: "autonomous-support-agent"          # Autonomous support agent automation
+  7: "autonomous-account-news"           # Autonomous account news assistant
+  8: "autonomous-cua"                    # Computer Use automation for legacy systems
   
-  # Module 4: Enterprise Readiness - Production Deployment
-  9: "placeholder-lab-9"                 # ALM and deployment best practices
-  10: "placeholder-lab-10"               # Testing and quality assurance
-  11: "placeholder-lab-11"               # Monitoring and analytics
+  # Module 4: Enterprise Readiness - Production Deployment and Quality
+  9: "pipelines-and-source-control"      # Source control and deployment pipelines
+  10: "copilot-studio-kit"               # Testing and quality assurance framework
+  11: "measure-success"                  # Analytics and success measurement
 
 # =====================================================
 # LAB ORDERING - Explicit order values for navigation
