@@ -57,17 +57,20 @@
           <div class="header-actions">
             <nav class="main-nav">
               <!-- NAVIGATION STRUCTURE:
-                   Home: Main homepage with journey cards (excludes bootcamp)
+                   Home: Main homepage with journey cards (excludes bootcamp and workshops)
                    All Labs: Complete lab listing page
                    Bootcamp: Dedicated bootcamp page with special sequencing
+                   Azure AI Workshop: Dedicated workshop page for MCS + Azure AI integration
                    
-                   IMPORTANT: Bootcamp URL points to /labs/bootcamp/ dedicated page
-                   This provides consistent access to bootcamp content with special
-                   numbering system (1a, 1b, 2, 3a, 3b, etc.) while keeping it
-                   separate from homepage journey cards -->
+                   IMPORTANT: Bootcamp and Workshop URLs point to dedicated pages
+                   This provides consistent access to curated content with special
+                   numbering systems while keeping them separate from homepage journey cards -->
               <a href="{{ '/' | relative_url }}">Home</a>
               <a href="{{ '/labs/' | relative_url }}">All Labs</a>
               <a href="{{ '/labs/bootcamp/' | relative_url }}">Bootcamp</a>
+              <a href="{{ '/labs/azure-ai-workshop/' | relative_url }}"
+                >Azure AI Workshop</a
+              >
             </nav>
             <div class="theme-controls">
               <div class="theme-style-toggle">
