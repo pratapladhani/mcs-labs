@@ -21,15 +21,9 @@ layout: default
       </div>
 
       <nav class="journey-labs" id="journey-labs-nav">
-        {% comment %} Show all labs this lab belongs to, JavaScript will filter
-        based on URL params {% endcomment %} {% assign all_journey_labs =
-        site.labs | where_exp: "lab", "lab.journeys" | sort: "order" %} {% for
-        lab in all_journey_labs %} {% assign shared_journeys = "" %} {% for
-        lab_journey in lab.journeys %} {% for current_journey in
-        current_journeys %} {% if lab_journey == current_journey %} {% unless
-        shared_journeys contains lab_journey %} {% assign shared_journeys =
-        shared_journeys | append: lab_journey | append: "," %} {% endunless %}
-        {% endif %} {% endfor %} {% endfor %} {% if shared_journeys != "" %}
+        {% comment %} Show ALL labs - JavaScript will filter based on URL params (journey, workshop, section, bootcamp) {% endcomment %}
+        {% assign all_labs = site.labs | where_exp: "lab", "lab.lab_type != 'external'" | sort: "order" %}
+        {% for lab in all_labs %}
         <a
           href="{{ lab.url | relative_url }}"
           class="lab-nav-item {% if lab.url == page.url %}current{% endif %}"
@@ -49,7 +43,7 @@ layout: default
           <span class="lab-title">{{ lab.title }}</span>
           <span class="lab-duration">{{ lab.duration }}min</span>
         </a>
-        {% endif %} {% endfor %}
+        {% endfor %}
       </nav>
 
       {% comment %} Show other journeys this lab belongs to {% endcomment %} {%
@@ -94,6 +88,17 @@ layout: default
     </div>
   </aside>
 
+  {% comment %}Build workshop lab IDs array{% endcomment %}
+  {% assign workshop_lab_ids = "" %}
+  {% for order_pair in site.data.lab-config.azure_ai_workshop_lab_orders %}
+    {% assign lab_id = order_pair[1] %}
+    {% if forloop.first %}
+      {% assign workshop_lab_ids = lab_id %}
+    {% else %}
+      {% assign workshop_lab_ids = workshop_lab_ids | append: "," | append: lab_id %}
+    {% endif %}
+  {% endfor %}
+
   <!-- Main Lab Content -->
   <article
     class="lab-content"
@@ -106,6 +111,7 @@ layout: default
     {%
     endif
     %}
+    data-workshop-labs='["{{ workshop_lab_ids | split: "," | join: '","' }}"]'
   >
     {% if page.duration %}
     <div class="lab-meta-header">
@@ -232,11 +238,17 @@ layout: default
     const urlParams = new URLSearchParams(window.location.search);
     let filterJourney = urlParams.get("journey");
     const filterSection = urlParams.get("section");
+    const filterWorkshop = urlParams.get("workshop");
 
     // Check for bootcamp parameter (special case)
     const isBootcamp = urlParams.get("bootcamp") === "true";
     if (isBootcamp) {
       filterJourney = "bootcamp";
+    }
+
+    // Check for workshop parameter (special case)
+    if (filterWorkshop) {
+      filterJourney = filterWorkshop + "_workshop";
     }
 
     // Get the current lab's journeys and section from data attributes
@@ -259,6 +271,10 @@ layout: default
         activeFilter = filterJourney;
         activeFilterType = "journey";
       }
+    } else if (filterJourney && filterJourney.endsWith("_workshop")) {
+      // Special case for workshops - use workshop configuration
+      activeFilter = filterJourney;
+      activeFilterType = "workshop";
     } else if (
       filterJourney &&
       currentJourneys &&
@@ -280,12 +296,37 @@ layout: default
     // Get all lab navigation items
     const navItems = Array.from(document.querySelectorAll(".lab-nav-item"));
 
+    // For workshops, we need to get the workshop configuration from page data
+    let workshopLabIds = [];
+    if (activeFilterType === "workshop") {
+      // Extract workshop labs from data attribute if provided
+      const workshopData = labContent.getAttribute("data-workshop-labs");
+      if (workshopData) {
+        try {
+          workshopLabIds = JSON.parse(workshopData);
+        } catch (e) {
+          console.error("Failed to parse workshop data:", e);
+        }
+      }
+    }
+
     // First pass: filter items based on active filter
     const filteredItems = [];
     navItems.forEach(function (item) {
       let shouldShow = false;
 
-      if (activeFilterType === "journey") {
+      if (activeFilterType === "workshop") {
+        // For workshops, check if the lab's slug is in the workshop configuration
+        const labUrl = item.getAttribute("href");
+        if (labUrl && workshopLabIds.length > 0) {
+          // Extract lab ID from URL (e.g., /labs/agent-builder-web/ -> agent-builder-web)
+          const labIdMatch = labUrl.match(/\/labs\/([^\/\?]+)/);
+          if (labIdMatch) {
+            const labId = labIdMatch[1];
+            shouldShow = workshopLabIds.includes(labId);
+          }
+        }
+      } else if (activeFilterType === "journey") {
         if (activeFilter === "bootcamp") {
           // For bootcamp, filter by labs that have bootcamp_order
           shouldShow =
@@ -398,7 +439,17 @@ layout: default
     // Update the journey title based on active filter
     const journeyTitleText = document.getElementById("journey-title-text");
 
-    if (activeFilterType === "journey" && activeFilter) {
+    if (activeFilterType === "workshop" && activeFilter) {
+      let workshopTitle = "";
+
+      // Extract workshop name from filter (e.g., "azure-ai_workshop" -> "Azure AI")
+      const workshopName = activeFilter.replace("_workshop", "").replace(/-/g, " ");
+      workshopTitle = "☁️ " + workshopName.replace(/\b\w/g, l => l.toUpperCase()) + " Workshop";
+
+      if (journeyTitleText && workshopTitle) {
+        journeyTitleText.textContent = workshopTitle;
+      }
+    } else if (activeFilterType === "journey" && activeFilter) {
       let journeyTitle = "";
 
       switch (activeFilter) {
@@ -538,6 +589,22 @@ layout: default
           const bootcampOrder = item.getAttribute("data-bootcamp-order");
           return bootcampOrder && bootcampOrder.trim() !== "";
         });
+      } else if (activeFilterType === "workshop") {
+        // WORKSHOP FILTERING: Labs assigned to specific workshop
+        // Uses workshop configuration from data attribute
+        if (workshopLabIds.length > 0) {
+          filteredLabs = labItems.filter((item) => {
+            const labUrl = item.getAttribute("data-url");
+            if (labUrl) {
+              const labIdMatch = labUrl.match(/\/labs\/([^\/\?]+)/);
+              if (labIdMatch) {
+                const labId = labIdMatch[1];
+                return workshopLabIds.includes(labId);
+              }
+            }
+            return false;
+          });
+        }
       } else if (activeFilterType === "journey" && activeFilter) {
         // JOURNEY FILTERING: Labs assigned to specific journey
         // Uses journey array from lab frontmatter (e.g., ["quick-start", "business-user"])
