@@ -280,6 +280,42 @@ bootcamp_lab_orders:
   7: "copilot-studio-kit"                # Copilot Studio Kit
 
 # =====================================================
+# AZURE AI WORKSHOP LAB ORDERING - Specific sequence for Azure AI workshop
+# =====================================================
+# This section provides the specific lab numbering used in the Azure AI Workshop
+# which focuses on integrating Microsoft Copilot Studio with Azure AI services.
+# The workshop is designed to progressively build knowledge from foundational
+# concepts to advanced enterprise scenarios.
+#
+# Workshop Structure:
+# - Module 1: Foundation (Labs 1-2) - Basic agent building and setup
+# - Module 2: Azure Integration (Labs 3-5) - Connecting to Azure AI services
+# - Module 3: Advanced Scenarios (Labs 6-8) - Complex integrations and autonomous agents
+# - Module 4: Enterprise Readiness (Labs 9-11) - Deployment, testing, and monitoring
+#
+# NOTE: This is a placeholder structure. Actual lab assignments will be added
+# as lab content is developed and compiled.
+azure_ai_workshop_lab_orders:
+  # Module 1: Foundation - Getting Started
+  1: "placeholder-lab-1"                 # To be determined based on final lab content
+  2: "placeholder-lab-2"                 # To be determined based on final lab content
+  
+  # Module 2: Azure AI Integration - Core Services
+  3: "placeholder-lab-3"                 # Azure OpenAI integration
+  4: "placeholder-lab-4"                 # Azure AI Search integration
+  5: "placeholder-lab-5"                 # Azure Cognitive Services integration
+  
+  # Module 3: Advanced Scenarios - Complex Use Cases
+  6: "placeholder-lab-6"                 # Multi-agent orchestration with Azure
+  7: "placeholder-lab-7"                 # Autonomous agents with Azure AI
+  8: "placeholder-lab-8"                 # Custom connectors and advanced integration
+  
+  # Module 4: Enterprise Readiness - Production Deployment
+  9: "placeholder-lab-9"                 # ALM and deployment best practices
+  10: "placeholder-lab-10"               # Testing and quality assurance
+  11: "placeholder-lab-11"               # Monitoring and analytics
+
+# =====================================================
 # LAB ORDERING - Explicit order values for navigation
 # =====================================================
 # This section provides explicit ordering for all labs. The numbers determine
