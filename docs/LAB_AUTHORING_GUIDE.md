@@ -4,14 +4,14 @@ This guide ensures consistency across all Microsoft Copilot Studio Labs, regardl
 
 ## 📋 Quick Reference
 
-| Element | Format | Example |
-|---------|--------|---------|
-| Code (syntax highlighting) | ` ```language ` | ` ```javascript `, ` ```python ` |
-| Plain text (copy-paste) | ` ```text ` or ` ```plaintext ` | Instructions, configuration text |
-| Inline code | Single backticks | `variableName`, `FileName.ts` |
-| UI elements | **Bold** | **Save**, **Next**, **Create** |
-| Field names | _Italics_ | _Display Name_, _Description_ |
-| Headings | h2 for sections, h3 for subsections | `## Use Case 1`, `### Step-by-step` |
+| Element                    | Format                              | Example                             |
+| -------------------------- | ----------------------------------- | ----------------------------------- |
+| Code (syntax highlighting) | ` ```language `                     | ` ```javascript `, ` ```python `    |
+| Plain text (copy-paste)    | ` ```text ` or ` ```plaintext `     | Instructions, configuration text    |
+| Inline code                | Single backticks                    | `variableName`, `FileName.ts`       |
+| UI elements                | **Bold**                            | **Save**, **Next**, **Create**      |
+| Field names                | _Italics_                           | _Display Name_, _Description_       |
+| Headings                   | h2 for sections, h3 for subsections | `## Use Case 1`, `### Step-by-step` |
 
 ## 🎯 Core Principles
 
@@ -42,9 +42,19 @@ All labs must follow this structure:
 
 ## 💻 Code Block Standards
 
+### Default Behavior: Plain Text
+
+**By default, all code blocks are treated as plain text** unless you explicitly specify a language.
+
+This is because most lab content consists of:
+- Instructions to copy and paste
+- Configuration text
+- Sample data
+- User prompts and responses
+
 ### When to Use Syntax Highlighting
 
-Use syntax highlighting for **actual code** that should be visually parsed:
+**Only use language tags for actual code** that benefits from syntax highlighting:
 
 ````markdown
 ```javascript
@@ -71,15 +81,16 @@ def calculate_total(items):
 ```
 ````
 
-**Supported languages:**
+**Supported languages for syntax highlighting:**
 JavaScript, TypeScript, Python, C#, JSON, YAML, Bash, PowerShell, SQL, XML, HTML, CSS
 
-### When to Use Plain Text
+### When to Use Plain Text (Default)
 
-Use `text` or `plaintext` for **instructions to copy/paste** that aren't code:
+**For everything else, use no language tag or explicitly use `text`:**
 
+Simple fenced block (no language - treated as plain text):
 ````markdown
-```text
+```
 Extract Contract Number, Customer name, Vendor name and Date from {ContractInput}
 Customer Name: Adventure Works
 Vendor Name: Contoso Solutions Inc.
@@ -87,22 +98,72 @@ Date (Effective Date): March 10, 2024
 ```
 ````
 
+Explicit plain text tag (optional):
 ````markdown
-```plaintext
+```text
 New Contract Available for Review:
 Contract Number: AW2024-003
 Customer Name: Adventure Works
-Vendor Name: Contoso Solutions Inc.
 ```
 ````
 
+**Use plain text for:**
+- Copy-paste instructions for users
+- Configuration values
+- Sample prompts and outputs
+- Data to be entered into forms
+- Natural language content
+- Anything that isn't actual code
+
+### Quick Decision Guide
+
+Ask yourself: **"Would syntax highlighting make this easier to read?"**
+
+- ✅ **YES** - Function definitions, API calls, JSON configs, SQL queries → Use language tag
+- ❌ **NO** - Instructions, plain text, sample data, user prompts → Use no tag or `text`
+
 **Why this matters:**
 - Plain text blocks display with a "📋 Plain Text" indicator
-- No syntax highlighting applied (which would look wrong)
-- Users understand they should copy this exactly as-is
-- Consistent visual language across all labs
+- No confusing syntax highlighting on non-code content
+- Users understand they should copy text exactly as-is
+- Cleaner, more readable lab content
+- Better performance (no unnecessary highlighting)
 
-### Inline Code
+### Examples from Real Labs
+
+**❌ Don't do this (unnecessary highlighting):**
+````markdown
+```javascript
+Extract Contract Number, Customer name, and Vendor name from {ContractInput}
+```
+````
+
+**✅ Do this instead:**
+````markdown
+```
+Extract Contract Number, Customer name, and Vendor name from {ContractInput}
+```
+````
+
+**✅ Syntax highlighting for actual code:**
+````markdown
+```typescript
+export function visibleQuests(level: Level) {
+  const allowed = new Set(QUEST_VIS_BY_LEVEL[level]);
+  return QUESTS.filter(q => allowed.has(q.danger));
+}
+```
+````
+
+**✅ No highlighting for user instructions:**
+````markdown
+```
+Copilot Studio adds header → user-level: Mythic (from connector input)
+MCP server receives request with the user-level header
+```
+````
+
+## 💻 Code Block Standards
 
 Use single backticks for:
 - Variable names: `customerId`, `userName`
@@ -147,13 +208,13 @@ Always include descriptive alt text for accessibility:
 
 ### UI Elements
 
-| Element Type | Format | Example |
-|--------------|--------|---------|
-| Buttons | **Bold** | Click **Save** |
-| Tabs | **Bold** | Select the **Settings** tab |
-| Menu items | **Bold** | **File** > **New** > **Agent** |
-| Field names | _Italics_ | Enter your name in the _Display Name_ field |
-| Field values | `Code` | Set _Level_ to `Mythic` |
+| Element Type | Format    | Example                                     |
+| ------------ | --------- | ------------------------------------------- |
+| Buttons      | **Bold**  | Click **Save**                              |
+| Tabs         | **Bold**  | Select the **Settings** tab                 |
+| Menu items   | **Bold**  | **File** > **New** > **Agent**              |
+| Field names  | _Italics_ | Enter your name in the _Display Name_ field |
+| Field values | `Code`    | Set _Level_ to `Mythic`                     |
 
 ### Callout Boxes
 

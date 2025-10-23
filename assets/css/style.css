@@ -84,8 +84,10 @@ body {
     font-family: var(--font-family-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif);
     font-size: var(--font-size-base, 16px);
     line-height: var(--line-height-base, 1.6);
-    color: var(--text-primary); /* Theme-specific text color */
-    background-color: var(--bg-primary); /* Theme-specific background */
+    color: var(--text-primary);
+    /* Theme-specific text color */
+    background-color: var(--bg-primary);
+    /* Theme-specific background */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -126,7 +128,8 @@ body.lab-page .site-content .container {
 }
 
 .site-header h1 a {
-    color: var(--header-text); /* Uses theme-specific header text color */
+    color: var(--header-text);
+    /* Uses theme-specific header text color */
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: 600;
@@ -199,12 +202,15 @@ body.lab-page .site-content .container {
     display: flex;
     align-items: center;
     gap: 4px;
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark background */
+    background: rgba(0, 0, 0, 0.6);
+    /* Semi-transparent dark background */
     border-radius: 16px;
     padding: 2px;
     border: 1px solid rgba(0, 0, 0, 0.3);
-    -webkit-backdrop-filter: blur(8px); /* Safari compatibility */
-    backdrop-filter: blur(8px); /* Modern glass effect */
+    -webkit-backdrop-filter: blur(8px);
+    /* Safari compatibility */
+    backdrop-filter: blur(8px);
+    /* Modern glass effect */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -213,7 +219,8 @@ body.lab-page .site-content .container {
     background: transparent;
     border: none;
     padding: 6px 12px;
-    color: rgba(255, 255, 255, 0.9); /* Always white text for visibility */
+    color: rgba(255, 255, 255, 0.9);
+    /* Always white text for visibility */
     font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -258,7 +265,8 @@ body.lab-page .site-content .container {
 
 /* Circular light/dark mode toggle button */
 .light-dark-toggle {
-    background: rgba(0, 0, 0, 0.6); /* Matches theme toggle container */
+    background: rgba(0, 0, 0, 0.6);
+    /* Matches theme toggle container */
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     width: 32px;
@@ -270,8 +278,10 @@ body.lab-page .site-content .container {
     transition: all 0.2s ease;
     color: rgba(255, 255, 255, 0.9);
     font-size: 0.9rem;
-    -webkit-backdrop-filter: blur(8px); /* Safari compatibility */
-    backdrop-filter: blur(8px); /* Glass effect */
+    -webkit-backdrop-filter: blur(8px);
+    /* Safari compatibility */
+    backdrop-filter: blur(8px);
+    /* Glass effect */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -303,7 +313,7 @@ body {
 /* Journey Navigation Bar */
 .journey-nav-bar {
     background: var(--accent-secondary);
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding: 0.75rem 0;
 }
 
@@ -315,14 +325,14 @@ body {
 }
 
 .journey-nav .nav-label {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255, 255, 255, 0.8);
     font-size: 0.9rem;
     font-weight: 500;
     margin-right: 0.5rem;
 }
 
 .journey-link {
-    color: rgba(255,255,255,0.9);
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
@@ -346,11 +356,14 @@ body {
 /* Lab Layout with Sidebar */
 .lab-layout {
     display: flex;
-    width: 95%; /* Use percentage for full utilization */
-    max-width: none; /* Remove max-width constraint */
+    width: 95%;
+    /* Use percentage for full utilization */
+    max-width: none;
+    /* Remove max-width constraint */
     margin: 0 auto;
     gap: 2rem;
-    padding: 0 2.5%; /* Percentage-based padding */
+    padding: 0 2.5%;
+    /* Percentage-based padding */
     box-sizing: border-box;
 }
 
@@ -371,8 +384,10 @@ body {
 
 .sidebar-content {
     padding: 1.5rem;
-    padding-right: 1rem; /* Less right padding to account for scrollbar */
-    padding-bottom: 2rem; /* Extra padding at bottom for scroll fade */
+    padding-right: 1rem;
+    /* Less right padding to account for scrollbar */
+    padding-bottom: 2rem;
+    /* Extra padding at bottom for scroll fade */
 }
 
 /* Custom scrollbar for sidebar */
@@ -400,7 +415,8 @@ body {
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 6px; /* Account for scrollbar */
+    right: 6px;
+    /* Account for scrollbar */
     height: 15px;
     background: linear-gradient(transparent, var(--fade-gradient));
     pointer-events: none;
@@ -447,7 +463,8 @@ body {
 }
 
 /* Journey and Section headers for main content area */
-.content-journey-header, .section-header {
+.content-journey-header,
+.section-header {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-left: 4px solid var(--accent-primary);
@@ -458,20 +475,23 @@ body {
     transition: all 0.3s ease;
 }
 
-.content-journey-header h1, .section-header h1 {
+.content-journey-header h1,
+.section-header h1 {
     color: var(--accent-primary);
     margin-bottom: 0.5rem;
     font-size: 1.75rem;
 }
 
-.content-journey-header p, .section-header p {
+.content-journey-header p,
+.section-header p {
     color: var(--text-secondary);
     margin-bottom: 1rem;
     font-size: 1rem;
     line-height: 1.5;
 }
 
-.journey-stats, .section-stats {
+.journey-stats,
+.section-stats {
     background: var(--bg-tertiary);
     padding: 1rem;
     border-radius: 6px;
@@ -480,17 +500,18 @@ body {
     line-height: 1.6;
 }
 
-.journey-stats strong, .section-stats strong {
+.journey-stats strong,
+.section-stats strong {
     color: var(--text-primary);
 }
 
 /* Dark mode adjustments */
-[data-theme="dark"] .content-journey-header, 
+[data-theme="dark"] .content-journey-header,
 [data-theme="dark"] .section-header {
     border-left-color: var(--accent-secondary);
 }
 
-[data-theme="dark"] .content-journey-header h1, 
+[data-theme="dark"] .content-journey-header h1,
 [data-theme="dark"] .section-header h1 {
     color: var(--accent-secondary);
 }
@@ -613,11 +634,13 @@ body {
 /* Lab Content Adjustments */
 .lab-content {
     flex: 1;
-    min-width: 0; /* Prevent flex item from overflowing */
+    min-width: 0;
+    /* Prevent flex item from overflowing */
     background: var(--bg-secondary);
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow);
-    padding: 1.5rem 2rem 2rem 2rem; /* Reduced top padding from 2rem to 1.5rem */
+    padding: 1.5rem 2rem 2rem 2rem;
+    /* Reduced top padding from 2rem to 1.5rem */
     overflow-wrap: break-word;
     margin-bottom: 2rem;
     border: 1px solid var(--border-color);
@@ -626,7 +649,7 @@ body {
 }
 
 /* Lab page title - reduce top spacing */
-.lab-content > h1.lab-title {
+.lab-content>h1.lab-title {
     margin-top: 0;
     margin-bottom: 1.5rem;
     padding-top: 0;
@@ -773,7 +796,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-button:hover {
@@ -781,7 +804,7 @@ body {
     color: white;
     text-decoration: none;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .nav-button.journey {
@@ -795,38 +818,45 @@ body {
     background: var(--accent-primary);
     color: white;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Responsive Design for Navigation */
 @media (min-width: 1920px) {
     .lab-layout {
-        width: 92%; /* Slightly less margin on ultra-wide */
-        padding: 0 4%; /* Percentage-based padding */
-        gap: 3rem; /* Larger gap for ultra-wide screens */
+        width: 92%;
+        /* Slightly less margin on ultra-wide */
+        padding: 0 4%;
+        /* Percentage-based padding */
+        gap: 3rem;
+        /* Larger gap for ultra-wide screens */
     }
-    
+
     .lab-sidebar {
-        width: 320px; /* Wider sidebar for ultra-wide screens */
+        width: 320px;
+        /* Wider sidebar for ultra-wide screens */
     }
-    
+
     .sidebar-content {
         padding: 2rem;
         padding-right: 1.5rem;
         padding-bottom: 2.5rem;
     }
-    
+
     .lab-content {
-        padding: 3rem; /* More generous padding for content */
+        padding: 3rem;
+        /* More generous padding for content */
     }
 }
 
 @media (min-width: 1440px) and (max-width: 1919px) {
     .lab-layout {
-        width: 94%; /* Use more width on wide screens */
-        padding: 0 3%; /* Percentage-based padding */
+        width: 94%;
+        /* Use more width on wide screens */
+        padding: 0 3%;
+        /* Percentage-based padding */
     }
-    
+
     .lab-sidebar {
         width: 280px;
     }
@@ -837,7 +867,8 @@ body {
    ============================================================================ */
 
 .toc-toggle-btn {
-    display: none; /* Hidden on desktop */
+    display: none;
+    /* Hidden on desktop */
     position: fixed;
     bottom: 80px;
     right: 20px;
@@ -868,22 +899,23 @@ body {
     .lab-layout {
         flex-direction: column;
         width: 95%;
-        padding: 0 2.5%; /* Consistent percentage-based padding */
+        padding: 0 2.5%;
+        /* Consistent percentage-based padding */
     }
-    
+
     .lab-sidebar {
         width: 100%;
         position: static;
         order: 2;
     }
-    
+
     .lab-content {
         order: 1;
         padding: 1.5rem;
     }
 
     /* Reduce title size on tablets */
-    .lab-content > h1.lab-title {
+    .lab-content>h1.lab-title {
         font-size: 1.75rem;
     }
 
@@ -905,7 +937,7 @@ body {
         margin-bottom: 1rem;
     }
 
-    .lab-content > h1.lab-title {
+    .lab-content>h1.lab-title {
         font-size: 1.5rem;
         margin-bottom: 1rem;
     }
@@ -1055,11 +1087,11 @@ body {
         align-items: flex-start;
         gap: 0.5rem;
     }
-    
+
     .journey-nav .nav-label {
         margin-bottom: 0.5rem;
     }
-    
+
     .journey-nav-buttons {
         flex-direction: column;
         align-items: center;
@@ -1153,7 +1185,7 @@ body {
     justify-content: center;
     font-weight: bold;
     font-size: 1.2rem;
-    box-shadow: 0 4px 12px rgba(0,120,212,0.4);
+    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
     transition: all 0.3s ease;
     z-index: 2;
 }
@@ -1167,7 +1199,7 @@ body {
 
 .lab-card:hover .lab-sequence {
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(0,120,212,0.5);
+    box-shadow: 0 6px 16px rgba(0, 120, 212, 0.5);
 }
 
 /* Legacy support for .lab-number if still used anywhere */
@@ -1185,7 +1217,7 @@ body {
     justify-content: center;
     font-weight: bold;
     font-size: 1.1rem;
-    box-shadow: 0 2px 8px rgba(0,120,212,0.3);
+    box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
     transition: background-color 0.3s ease;
 }
 
@@ -1433,7 +1465,8 @@ body[data-lab-type="external"] .lab-downloads,
     transform: scale(1.05);
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-secondary {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -1450,7 +1483,7 @@ body[data-lab-type="external"] .lab-downloads,
 .btn-primary {
     background: var(--accent-primary);
     color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover {
@@ -1458,7 +1491,7 @@ body[data-lab-type="external"] .lab-downloads,
     color: white;
     text-decoration: none;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-secondary {
@@ -1518,7 +1551,7 @@ body[data-lab-type="external"] .lab-downloads,
     font-weight: 500;
     transition: all 0.2s ease;
     width: fit-content;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .pdf-download:hover {
@@ -1527,7 +1560,7 @@ body[data-lab-type="external"] .lab-downloads,
     border: 2px solid var(--accent-primary);
     text-decoration: none;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Dark mode adjustments for download buttons */
@@ -1684,7 +1717,7 @@ body[data-lab-type="external"] .lab-downloads,
     text-decoration: none;
     font-weight: 500;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: none;
 }
 
@@ -1693,7 +1726,7 @@ body[data-lab-type="external"] .lab-downloads,
     text-decoration: none;
     color: white;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Journey sections */
@@ -1836,7 +1869,8 @@ body[data-lab-type="external"] .lab-downloads,
     background: var(--bg-secondary);
 }
 
-.section-btn:hover, .section-btn.active {
+.section-btn:hover,
+.section-btn.active {
     background: var(--accent-tertiary);
     color: white;
     border-color: var(--accent-tertiary);
@@ -1849,7 +1883,7 @@ body[data-lab-type="external"] .lab-downloads,
     background: var(--bg-secondary);
 }
 
-[data-theme="dark"] .section-btn:hover, 
+[data-theme="dark"] .section-btn:hover,
 [data-theme="dark"] .section-btn.active {
     background: var(--accent-tertiary-dark);
     color: var(--dark-button-text);
@@ -1863,7 +1897,7 @@ body[data-lab-type="external"] .lab-downloads,
         grid-template-columns: 1fr 1fr;
         gap: 1.5rem;
     }
-    
+
     .filter-section {
         margin: 0.5rem 0;
     }
@@ -1874,7 +1908,7 @@ body[data-lab-type="external"] .lab-downloads,
         font-size: 0.85rem;
         padding: 0.5rem 1rem;
     }
-    
+
     .lab-filters {
         gap: 0.5rem;
     }
@@ -2062,7 +2096,7 @@ body[data-lab-type="external"] .lab-downloads,
     height: auto;
     margin: 1rem 0;
     border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Lab footer */
@@ -2159,16 +2193,16 @@ body[data-lab-type="external"] .lab-downloads,
     .container {
         padding: 0 15px;
     }
-    
+
     .labs-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .lab-content {
         padding: 1.5rem;
     }
-    
+
     .lab-meta-header {
         margin: -1.5rem -1.5rem 1.5rem -1.5rem;
         padding: 1rem 1.5rem;
@@ -2176,31 +2210,31 @@ body[data-lab-type="external"] .lab-downloads,
         align-items: flex-start;
         gap: 1rem;
     }
-    
+
     .lab-header-actions {
         align-self: stretch;
         justify-content: center;
     }
-    
+
     .lab-header h1 {
         font-size: 1.5rem;
     }
-    
+
     .lab-navigation {
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .prev-next-nav {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .journey-nav-buttons {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .nav-button {
         width: 100%;
         text-align: center;
@@ -2262,7 +2296,8 @@ table tbody tr:nth-child(even):hover {
 
 .lab-content table th {
     background-color: var(--accent-primary);
-    color: white; /* Ensure white text on blue background */
+    color: white;
+    /* Ensure white text on blue background */
     border: 1px solid var(--accent-secondary);
     font-weight: 600;
     text-align: center;
@@ -2332,7 +2367,7 @@ a:hover .external-link-icon {
 .lab-content h2[id^="lab-details"],
 .lab-content h2[id*="lab-details"],
 .lab-content h2:has(+ table),
-.lab-content h2 + h2,
+.lab-content h2+h2,
 .lab-content h2 {
     background: var(--bg-tertiary);
     padding: 1rem;
@@ -2528,8 +2563,10 @@ a:hover .external-link-icon {
 /* Base callout container styles */
 .callout {
     margin: 1.5rem 0;
-    padding: 1rem 1rem 1rem 3rem; /* Left padding for icon space */
-    border-left: 4px solid; /* Themed border color */
+    padding: 1rem 1rem 1rem 3rem;
+    /* Left padding for icon space */
+    border-left: 4px solid;
+    /* Themed border color */
     border-radius: 6px;
     position: relative;
     font-size: 0.95rem;
@@ -2665,7 +2702,8 @@ a:hover .external-link-icon {
 
 .code-container pre {
     margin: 0;
-    padding-right: 3rem; /* Reserve space for copy button */
+    padding-right: 3rem;
+    /* Reserve space for copy button */
     font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
     font-size: var(--font-size-sm, 0.9em);
 }
@@ -2740,16 +2778,20 @@ a:hover .external-link-icon {
 
 /* Base styling for clickable images */
 .lab-content img {
-    cursor: pointer; /* Indicates images are clickable */
+    cursor: pointer;
+    /* Indicates images are clickable */
     transition: all 0.3s ease;
     border-radius: 6px;
-    box-shadow: 0 2px 8px var(--shadow); /* Themed shadow */
+    box-shadow: 0 2px 8px var(--shadow);
+    /* Themed shadow */
 }
 
 /* Hover effect to indicate interactivity */
 .lab-content img:hover {
-    box-shadow: 0 4px 16px var(--shadow-hover); /* Enhanced shadow */
-    transform: translateY(-2px); /* Subtle lift effect */
+    box-shadow: 0 4px 16px var(--shadow-hover);
+    /* Enhanced shadow */
+    transform: translateY(-2px);
+    /* Subtle lift effect */
 }
 
 /* Full-screen overlay container */
@@ -2960,7 +3002,8 @@ a:hover .external-link-icon {
     justify-content: center;
     box-shadow: var(--shadow-lg);
     z-index: 1000;
-    font-size: 0; /* Hide any potential text content */
+    font-size: 0;
+    /* Hide any potential text content */
     -webkit-user-select: none;
     user-select: none;
 }
@@ -3000,7 +3043,7 @@ a:hover .external-link-icon {
         bottom: 1.5rem;
         right: 1.5rem;
     }
-    
+
     .scroll-to-top svg {
         width: 18px;
         height: 18px;
@@ -3012,15 +3055,15 @@ a:hover .external-link-icon {
     .scroll-to-top {
         transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    
+
     .scroll-to-top:hover {
         transform: none;
     }
-    
+
     .scroll-to-top svg {
         transition: none;
     }
-    
+
     .scroll-to-top:hover svg {
         transform: none;
     }
@@ -3113,7 +3156,8 @@ a:hover .external-link-icon {
 /* Style for code blocks containing mermaid syntax */
 pre.language-mermaid,
 code.language-mermaid {
-    display: none; /* Hide raw mermaid code */
+    display: none;
+    /* Hide raw mermaid code */
 }
 
 /* Show mermaid in code blocks for editing view */
@@ -3188,20 +3232,6 @@ pre code.language-plaintext {
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
 }
 
-/* Add a subtle visual indicator for plain text blocks */
-pre:has(code.plaintext)::before,
-pre:has(code.language-text)::before,
-pre:has(code.language-plaintext)::before {
-    content: '📋 Plain Text';
-    display: block;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
 /* Mobile responsive code blocks */
 @media (max-width: 768px) {
     pre {
@@ -3209,7 +3239,7 @@ pre:has(code.language-plaintext)::before {
         font-size: 0.85rem;
         border-radius: 6px;
     }
-    
+
     pre code {
         font-size: 0.85rem;
     }
@@ -3221,7 +3251,7 @@ pre:has(code.language-plaintext)::before {
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .bootcamp-stats {
         flex-direction: column;
         gap: 0.5rem;

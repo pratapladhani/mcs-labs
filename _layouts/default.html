@@ -383,33 +383,32 @@
     <script>
       // Initialize syntax highlighting on page load
       document.addEventListener('DOMContentLoaded', () => {
-        // Highlight all code blocks, but skip plain text blocks
+        // Only highlight code blocks that have an explicit language specified
         document.querySelectorAll('pre code').forEach((block) => {
-          // Skip if explicitly marked as plaintext, text, or nohighlight
           const classes = block.className.toLowerCase();
+          
+          // Check if block has a language class (e.g., language-javascript, language-python)
+          // Highlight.js uses 'language-*' pattern for language detection
+          const hasLanguage = classes.match(/language-\w+/);
+          
+          // Skip plain text blocks
           if (classes.includes('language-text') || 
               classes.includes('language-plaintext') || 
               classes.includes('nohighlight') ||
               classes.includes('no-highlight')) {
-            // Add a class to indicate it's plain text for styling
             block.classList.add('plaintext');
             return;
           }
           
-          // Skip if no language specified and content looks like plain text instructions
-          // (contains common instruction patterns)
-          if (!classes.includes('language-') && 
-              (block.textContent.includes(':') && 
-               (block.textContent.includes('Extract') || 
-                block.textContent.includes('Customer') || 
-                block.textContent.includes('Vendor') ||
-                block.textContent.includes('Contract')))) {
+          // Only apply syntax highlighting if a specific language is specified
+          if (hasLanguage && 
+              !classes.includes('language-text') && 
+              !classes.includes('language-plaintext')) {
+            hljs.highlightElement(block);
+          } else {
+            // Treat as plain text if no language specified
             block.classList.add('plaintext');
-            return;
           }
-          
-          // Apply syntax highlighting to code blocks
-          hljs.highlightElement(block);
         });
       });
       

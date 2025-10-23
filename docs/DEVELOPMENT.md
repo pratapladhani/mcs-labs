@@ -284,10 +284,11 @@ See `labs/guildhall-custom-mcp/README.md` for OAuth authentication flow diagram 
 
 ### Highlight.js Integration
 
-The site uses Highlight.js v11.9.0 for automatic syntax highlighting of code blocks:
+The site uses Highlight.js v11.9.0 for syntax highlighting with an **opt-in approach**:
 
 **Features:**
-- Automatic language detection for 190+ programming languages
+- **Opt-in by default**: Only code blocks with explicit language tags get highlighted
+- **Plain text by default**: Unlabeled code blocks are treated as plain text
 - Theme-aware styling (GitHub light/dark themes)
 - Support for common languages: JavaScript, TypeScript, Python, C#, JSON, YAML, Bash, PowerShell, SQL, XML
 - Dynamic theme switching
@@ -295,7 +296,7 @@ The site uses Highlight.js v11.9.0 for automatic syntax highlighting of code blo
 
 **Usage in Markdown:**
 
-For code with syntax highlighting:
+For code with syntax highlighting (explicitly specify language):
 ````markdown
 ```javascript
 function hello() {
@@ -304,24 +305,32 @@ function hello() {
 ```
 ````
 
-For plain text (instructions, copy-paste content):
+For plain text (no language tag needed):
 ````markdown
-```text
+```
 Extract Contract Number, Customer name, Vendor name and Date from {ContractInput}
 Customer Name: Adventure Works
 Vendor Name: Contoso Solutions Inc.
 ```
 ````
 
-Or use `plaintext`:
+You can also explicitly mark as plain text:
 ````markdown
-```plaintext
+```text
 Your plain text instructions here
 ```
 ````
 
-**Auto-Detection:**
-The system automatically detects plain text blocks that contain common instruction patterns (Extract, Customer, Vendor, Contract keywords) and skips syntax highlighting for them.
+**Opt-In Approach:**
+The system only applies syntax highlighting when:
+1. A code block has an explicit language class (e.g., `language-javascript`)
+2. The language is not `text` or `plaintext`
+
+All other code blocks are treated as plain text, which is appropriate since most lab content consists of:
+- Instructions to copy and paste
+- Configuration text
+- Sample data
+- User prompts and responses
 
 **Plain Text Indicator:**
 Plain text blocks display a "📋 Plain Text" label to distinguish them from code blocks.
@@ -331,6 +340,7 @@ Plain text blocks display a "📋 Plain Text" label to distinguish them from cod
 - GitHub light theme for light mode, GitHub dark theme for dark mode
 - Custom CSS styling in `assets/css/style.css`
 - Automatic theme switching integrated with site theme system
+- Only processes blocks with explicit language tags for better performance
 
 ## 🎨 Theme System
 
