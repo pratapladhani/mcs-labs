@@ -3129,6 +3129,70 @@ code.language-mermaid {
     overflow-x: auto;
 }
 
+/* ============================================================================
+   SYNTAX HIGHLIGHTING FOR CODE BLOCKS
+   ============================================================================ */
+
+/* Base code block styling */
+pre {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    display: block;
+}
+
+/* Inline code styling */
+code {
+    background: var(--bg-tertiary);
+    color: var(--accent-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    font-size: 0.9em;
+    border: 1px solid var(--border-light);
+}
+
+/* Remove styling from inline code inside pre blocks */
+pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+}
+
+/* Ensure highlight.js styles work with our theme */
+.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* Mobile responsive code blocks */
+@media (max-width: 768px) {
+    pre {
+        padding: 1rem;
+        font-size: 0.85rem;
+        border-radius: 6px;
+    }
+    
+    pre code {
+        font-size: 0.85rem;
+    }
+}
+
 /* Responsive design for bootcamp page */
 @media (max-width: 768px) {
     .bootcamp-nav {
