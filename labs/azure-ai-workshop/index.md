@@ -80,7 +80,7 @@ Calculate workshop statistics dynamically
   </ul>
 
   <h3>Workshop Structure</h3>
-  <p>The workshop consists of 5 hands-on labs designed to build your skills progressively. Labs 1-2 are available now, with Labs 3-5 coming soon. Each lab includes step-by-step instructions, real-world scenarios, and downloadable resources.</p>
+  <p>The workshop consists of 5 hands-on labs designed to build your skills progressively. Each lab includes step-by-step instructions, real-world scenarios, and downloadable resources.</p>
 </div>
 
 <div class="bootcamp-labs">
