@@ -60,15 +60,15 @@ Calculate workshop statistics dynamically
 
 <div class="workshop-overview">
   <h2>🎯 Workshop Overview</h2>
-  <p>This comprehensive workshop is designed to help you master the integration of Microsoft Copilot Studio with Azure AI services. You'll learn how to build, deploy, and manage intelligent agents that leverage the full power of Azure's AI ecosystem.</p>
+  <p>This focused hands-on workshop helps you master the integration of Microsoft Copilot Studio with Azure AI services. Through 5 progressive labs, you'll learn to build intelligent agents that leverage live data, Azure AI capabilities, custom models, and enterprise data fabric patterns.</p>
   
   <h3>What You'll Learn</h3>
   <ul>
-    <li>🤖 <strong>Intelligent Agent Development:</strong> Build sophisticated AI agents using Microsoft Copilot Studio</li>
-    <li>☁️ <strong>Azure AI Integration:</strong> Leverage Azure OpenAI, Azure AI Search, and other Azure AI services</li>
-    <li>🔧 <strong>Advanced Orchestration:</strong> Master multi-agent systems and complex workflows</li>
-    <li>🚀 <strong>Enterprise Deployment:</strong> Deploy production-ready solutions with best practices</li>
-    <li>📊 <strong>Monitoring & Analytics:</strong> Track performance and optimize your AI solutions</li>
+    <li>🔗 <strong>MCP Data Integration:</strong> Connect agents to live data using Model Context Protocol and Dataverse</li>
+    <li>🎤 <strong>Azure AI Services:</strong> Implement Azure AI Search for document queries and Speech-to-Text for audio transcription</li>
+    <li>🤖 <strong>BYOM Capabilities:</strong> Bring Your Own Model to extend Copilot Studio with custom AI models</li>
+    <li>⚙️ <strong>Custom MCP Servers:</strong> Build and deploy MCP servers for advanced extensibility</li>
+    <li>📊 <strong>Data Fabric Patterns:</strong> Integrate enterprise data fabric for unified data access</li>
   </ul>
 
   <h3>Prerequisites</h3>
@@ -80,7 +80,7 @@ Calculate workshop statistics dynamically
   </ul>
 
   <h3>Workshop Structure</h3>
-  <p>The workshop is organized into progressive modules, each building on the previous ones. Labs are numbered to guide you through a logical learning path, from foundational concepts to advanced enterprise scenarios.</p>
+  <p>The workshop consists of 5 hands-on labs designed to build your skills progressively. Labs 1-2 are available now, with Labs 3-5 coming soon. Each lab includes step-by-step instructions, real-world scenarios, and downloadable resources.</p>
 </div>
 
 <div class="bootcamp-labs">

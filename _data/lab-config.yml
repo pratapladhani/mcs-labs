@@ -172,6 +172,30 @@ lab_metadata:
     difficulty: "Intermediate (Level 200)"
     duration: 40
     section: "intermediate_labs"
+    
+  14:
+    id: "dataverse-mcp-connector"
+    title: "Contoso Agent and Dataverse MCP Connector - Build an AI Agent with Live Data Integration"
+    description: "Create and configure a Copilot Agent in Copilot Studio with Dataverse MCP Server integration to streamline business workflows and enable natural language interactions with enterprise data."
+    difficulty: "Beginner (Level 100)"
+    duration: 30
+    section: "intermediate_labs"
+    
+  15:
+    id: "contract-alerts-azure-ai"
+    title: "Proactive Contract Alerts in Teams with Azure AI Search and Speech-to-Text"
+    description: "Configure Copilot Studio agents to proactively notify users, search contract documents, and transcribe audio files using Azure AI services for intelligent event-driven automation."
+    difficulty: "Intermediate (Level 200)"
+    duration: 70
+    section: "intermediate_labs"
+    
+  16:
+    id: "data-fabric-agent"
+    title: "Connecting Fabric Data Agents with Microsoft Copilot Studio for Agent-to-Agent Communication"
+    description: "Build intelligent agent-to-agent communication between Microsoft Fabric Data Agents and Copilot Studio to unlock powerful e-commerce analytics capabilities using meta-prompts and semantic models."
+    difficulty: "Advanced (Level 300)"
+    duration: 45
+    section: "intermediate_labs"
 
   # === ADVANCED LABS (21-30) ===
   21:
@@ -284,36 +308,30 @@ bootcamp_lab_orders:
 # =====================================================
 # This section provides the specific lab numbering used in the Azure AI Workshop
 # which focuses on integrating Microsoft Copilot Studio with Azure AI services.
-# The workshop is designed to progressively build knowledge from foundational
-# concepts to advanced enterprise scenarios.
+# The workshop is designed as a focused 5-lab curriculum covering data integration,
+# AI services, BYOM capabilities, MCP extensibility, and data fabric patterns.
 #
-# Workshop Structure:
-# - Module 1: Foundation (Labs 1-2) - Basic agent building and setup
-# - Module 2: Azure Integration (Labs 3-5) - Connecting to Azure AI services
-# - Module 3: Advanced Scenarios (Labs 6-8) - Complex integrations and autonomous agents
-# - Module 4: Enterprise Readiness (Labs 9-11) - Deployment, testing, and monitoring
-#
-# NOTE: Using existing labs for testing the workshop framework.
-# These will be replaced with Azure AI-specific labs as content is developed.
+# Workshop Structure: 5 Labs (260 minutes / ~4.3 hours)
+# - Lab 1: Dataverse MCP integration for live data access (40 min)
+# - Lab 2: Azure AI Search and Speech-to-Text integration (60 min)
+# - Lab 3: BYOM (Bring Your Own Model) Tool in Studio (40 min) - COMING SOON
+# - Lab 4: Extend with MCP Server (75 min) - COMING SOON
+# - Lab 5: Data Fabric Agent with A2A Communication (45 min)
 azure_ai_workshop_lab_orders:
-  # Module 1: Foundation - Getting Started with Copilot Studio
-  1: "agent-builder-web"                 # Create your first web-based AI assistant
-  2: "setup-for-success"                 # Set yourself up for success & ALM best practices
+  # Lab 1: Dataverse MCP Connector (40 min)
+  1: "dataverse-mcp-connector"           # Contoso Agent + Dataverse MCP integration for live data access
   
-  # Module 2: Azure AI Integration - Building on SharePoint and Data
-  3: "agent-builder-sharepoint"          # SharePoint-based AI assistant (demonstrates data integration)
-  4: "mbr-prep-sharepoint-agent"         # MBR Agent (business scenario with data)
-  5: "ask-me-anything"                   # Multi-agent system with knowledge integration
+  # Lab 2: Azure AI Services Integration (60 min)
+  2: "contract-alerts-azure-ai"          # Proactive Contract Alerts + Azure AI Search + Speech-to-Text
   
-  # Module 3: Advanced Scenarios - Autonomous Agents and Complex Integration
-  6: "autonomous-support-agent"          # Autonomous support agent automation
-  7: "autonomous-account-news"           # Autonomous account news assistant
-  8: "autonomous-cua"                    # Computer Use automation for legacy systems
+  # Lab 3: BYOM Tool in Studio (40 min) - COMING SOON
+  # 3: "byom-tool-studio"                # Bring Your Own Model capabilities in Copilot Studio
   
-  # Module 4: Enterprise Readiness - Production Deployment and Quality
-  9: "pipelines-and-source-control"      # Source control and deployment pipelines
-  10: "copilot-studio-kit"               # Testing and quality assurance framework
-  11: "measure-success"                  # Analytics and success measurement
+  # Lab 4: Extend with MCP Server (75 min) - COMING SOON
+  # 4: "extend-mcp-server"               # Build and deploy custom MCP server for extensibility
+  
+  # Lab 5: Data Fabric Agent (45 min)
+  5: "data-fabric-agent"                 # Fabric Data Agents with Agent-to-Agent communication
 
 # =====================================================
 # LAB ORDERING - Explicit order values for navigation
@@ -332,6 +350,9 @@ lab_orders:
   setup-for-success: 11
   agent-builder-sharepoint: 12
   ask-me-anything: 13
+  dataverse-mcp-connector: 14
+  contract-alerts-azure-ai: 15
+  data-fabric-agent: 16
   
   # Advanced Labs (21-30) - Complex scenarios and autonomous agents
   autonomous-cua: 21
@@ -577,6 +598,9 @@ lab_journeys:
   setup-for-success: ["business-user", "developer"]
   agent-builder-sharepoint: ["business-user", "developer"]
   ask-me-anything: ["business-user", "developer"]
+  dataverse-mcp-connector: ["business-user", "developer"]
+  contract-alerts-azure-ai: ["developer"]
+  data-fabric-agent: ["developer"]
   
   # Advanced Labs - Complex scenarios
   autonomous-cua: ["autonomous-ai", "developer"]
