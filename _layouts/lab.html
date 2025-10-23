@@ -113,6 +113,8 @@ layout: default
     %}
     data-workshop-labs='["{{ workshop_lab_ids | split: "," | join: '","' }}"]'
   >
+    <h1 class="lab-title">{{ page.title }}</h1>
+    
     {% if page.duration %}
     <div class="lab-meta-header">
       <div class="lab-meta">
@@ -370,8 +372,20 @@ layout: default
           : parseInt(a.dataset.order) || 999;
         const orderB = b.dataset.bootcampOrder
           ? getBootcampSortValue(b.dataset.bootcampOrder)
-          : parseInt(b.dataset.order) || 999;
+          : parseInt(a.dataset.order) || 999;
         return orderA - orderB;
+      } else if (activeFilterType === "workshop" && workshopLabIds.length > 0) {
+        // For workshops, sort by position in workshop configuration array
+        const labUrlA = a.getAttribute("href");
+        const labUrlB = b.getAttribute("href");
+        const labIdMatchA = labUrlA ? labUrlA.match(/\/labs\/([^\/\?]+)/) : null;
+        const labIdMatchB = labUrlB ? labUrlB.match(/\/labs\/([^\/\?]+)/) : null;
+        const labIdA = labIdMatchA ? labIdMatchA[1] : null;
+        const labIdB = labIdMatchB ? labIdMatchB[1] : null;
+        
+        const indexA = labIdA ? workshopLabIds.indexOf(labIdA) : 999;
+        const indexB = labIdB ? workshopLabIds.indexOf(labIdB) : 999;
+        return indexA - indexB;
       } else {
         // For other journeys, sort by regular order
         const orderA = parseInt(a.dataset.order) || 999;

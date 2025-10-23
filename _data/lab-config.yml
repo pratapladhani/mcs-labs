@@ -196,6 +196,22 @@ lab_metadata:
     difficulty: "Advanced (Level 300)"
     duration: 45
     section: "intermediate_labs"
+    
+  17:
+    id: "guildhall-custom-mcp"
+    title: "Build and Connect Your Guild's Custom MCP Server"
+    description: "Deploy a custom MCP server locally and connect it to a Copilot Studio agent with OAuth 2.0 authentication, custom headers, and domain-specific tools for the Adventurers' Guild."
+    difficulty: "Intermediate (Level 200)"
+    duration: 70
+    section: "intermediate_labs"
+    
+  18:
+    id: "mcs-byom"
+    title: "Bring Your Own Model (BYOM) Tool in Copilot Studio"
+    description: "Integrate custom AI models into Copilot Studio agents using the Bring Your Own Model capability, enabling specialized AI functionality tailored to your business needs."
+    difficulty: "Intermediate (Level 200)"
+    duration: 40
+    section: "intermediate_labs"
 
   # === ADVANCED LABS (21-30) ===
   21:
@@ -311,11 +327,11 @@ bootcamp_lab_orders:
 # The workshop is designed as a focused 5-lab curriculum covering data integration,
 # AI services, BYOM capabilities, MCP extensibility, and data fabric patterns.
 #
-# Workshop Structure: 5 Labs (260 minutes / ~4.3 hours)
+# Workshop Structure: 5 Labs (285 minutes / ~4.75 hours)
 # - Lab 1: Dataverse MCP integration for live data access (40 min)
 # - Lab 2: Azure AI Search and Speech-to-Text integration (60 min)
-# - Lab 3: BYOM (Bring Your Own Model) Tool in Studio (40 min) - COMING SOON
-# - Lab 4: Extend with MCP Server (75 min) - COMING SOON
+# - Lab 3: BYOM (Bring Your Own Model) Tool in Studio (40 min) - PLACEHOLDER
+# - Lab 4: Build and deploy custom MCP server (Guild Hall) (70 min)
 # - Lab 5: Data Fabric Agent with A2A Communication (45 min)
 azure_ai_workshop_lab_orders:
   # Lab 1: Dataverse MCP Connector (40 min)
@@ -325,10 +341,10 @@ azure_ai_workshop_lab_orders:
   2: "contract-alerts-azure-ai"          # Proactive Contract Alerts + Azure AI Search + Speech-to-Text
   
   # Lab 3: BYOM Tool in Studio (40 min) - COMING SOON
-  # 3: "byom-tool-studio"                # Bring Your Own Model capabilities in Copilot Studio
+  3: "mcs-byom"                          # Bring Your Own Model capabilities in Copilot Studio
   
-  # Lab 4: Extend with MCP Server (75 min) - COMING SOON
-  # 4: "extend-mcp-server"               # Build and deploy custom MCP server for extensibility
+  # Lab 4: Extend with MCP Server (70 min)
+  4: "guildhall-custom-mcp"              # Build and deploy custom MCP server for extensibility
   
   # Lab 5: Data Fabric Agent (45 min)
   5: "data-fabric-agent"                 # Fabric Data Agents with Agent-to-Agent communication
@@ -353,6 +369,8 @@ lab_orders:
   dataverse-mcp-connector: 14
   contract-alerts-azure-ai: 15
   data-fabric-agent: 16
+  guildhall-custom-mcp: 17
+  mcs-byom: 18
   
   # Advanced Labs (21-30) - Complex scenarios and autonomous agents
   autonomous-cua: 21
@@ -600,6 +618,8 @@ lab_journeys:
   ask-me-anything: ["business-user", "developer"]
   dataverse-mcp-connector: ["business-user", "developer"]
   contract-alerts-azure-ai: ["developer"]
+  mcs-byom: ["developer"]
+  guildhall-custom-mcp: ["developer"]
   data-fabric-agent: ["developer"]
   
   # Advanced Labs - Complex scenarios
