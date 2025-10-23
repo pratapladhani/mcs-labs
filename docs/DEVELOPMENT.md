@@ -276,9 +276,61 @@ See `labs/guildhall-custom-mcp/README.md` for OAuth authentication flow diagram 
 - Original code preservation for clean re-rendering
 
 **Styling:**
-- Responsive container with max-width and auto margins
+- Responsive containers with max-width and auto margins
 - Theme-aware colors synchronized with site themes
 - Custom CSS in `assets/css/style.css` (lines 3097-3137)
+
+## 💻 Code Syntax Highlighting
+
+### Highlight.js Integration
+
+The site uses Highlight.js v11.9.0 for automatic syntax highlighting of code blocks:
+
+**Features:**
+- Automatic language detection for 190+ programming languages
+- Theme-aware styling (GitHub light/dark themes)
+- Support for common languages: JavaScript, TypeScript, Python, C#, JSON, YAML, Bash, PowerShell, SQL, XML
+- Dynamic theme switching
+- Mobile responsive styling
+
+**Usage in Markdown:**
+
+For code with syntax highlighting:
+````markdown
+```javascript
+function hello() {
+  console.log("Hello, world!");
+}
+```
+````
+
+For plain text (instructions, copy-paste content):
+````markdown
+```text
+Extract Contract Number, Customer name, Vendor name and Date from {ContractInput}
+Customer Name: Adventure Works
+Vendor Name: Contoso Solutions Inc.
+```
+````
+
+Or use `plaintext`:
+````markdown
+```plaintext
+Your plain text instructions here
+```
+````
+
+**Auto-Detection:**
+The system automatically detects plain text blocks that contain common instruction patterns (Extract, Customer, Vendor, Contract keywords) and skips syntax highlighting for them.
+
+**Plain Text Indicator:**
+Plain text blocks display a "📋 Plain Text" label to distinguish them from code blocks.
+
+**Implementation Details:**
+- Highlight.js loaded from CDN in `_layouts/default.html`
+- GitHub light theme for light mode, GitHub dark theme for dark mode
+- Custom CSS styling in `assets/css/style.css`
+- Automatic theme switching integrated with site theme system
 
 ## 🎨 Theme System
 

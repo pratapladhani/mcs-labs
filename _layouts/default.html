@@ -383,8 +383,32 @@
     <script>
       // Initialize syntax highlighting on page load
       document.addEventListener('DOMContentLoaded', () => {
-        // Highlight all code blocks
+        // Highlight all code blocks, but skip plain text blocks
         document.querySelectorAll('pre code').forEach((block) => {
+          // Skip if explicitly marked as plaintext, text, or nohighlight
+          const classes = block.className.toLowerCase();
+          if (classes.includes('language-text') || 
+              classes.includes('language-plaintext') || 
+              classes.includes('nohighlight') ||
+              classes.includes('no-highlight')) {
+            // Add a class to indicate it's plain text for styling
+            block.classList.add('plaintext');
+            return;
+          }
+          
+          // Skip if no language specified and content looks like plain text instructions
+          // (contains common instruction patterns)
+          if (!classes.includes('language-') && 
+              (block.textContent.includes(':') && 
+               (block.textContent.includes('Extract') || 
+                block.textContent.includes('Customer') || 
+                block.textContent.includes('Vendor') ||
+                block.textContent.includes('Contract')))) {
+            block.classList.add('plaintext');
+            return;
+          }
+          
+          // Apply syntax highlighting to code blocks
           hljs.highlightElement(block);
         });
       });
