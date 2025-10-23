@@ -30,8 +30,26 @@ This repository features a sophisticated lab navigation system:
 - **Bootcamp System**: Special curated sequence with custom ordering (1a, 1b, 2, 3a, 3b, etc.) for intensive learning
 - **Smart Previous/Next**: Context-aware navigation that respects your current journey or bootcamp progress
 - **Responsive Design**: Optimized for both desktop and mobile learning experiences
+- **Mobile TOC**: Floating table of contents button on screens ≤ 1366px for easy navigation
+- **Multi-Level Navigation**: Hierarchical TOC supporting both main sections (h2) and subsections (h3)
 
 Access the bootcamp through the top navigation or visit [Labs Portal - Bootcamp](https://microsoft.github.io/mcs-labs/labs/bootcamp/).
+
+### 🎨 Enhanced Features
+
+**Visual & Interactive:**
+
+- **Multi-Theme System**: Choose between Rich (colorful) or Minimal (clean) themes, each with light/dark modes
+- **Mermaid Diagrams**: Interactive diagrams that adapt to your theme preference
+- **Responsive Breakpoints**: Optimized for tablets (1366px) and mobile devices
+- **Smooth Animations**: Polished transitions and hover effects throughout
+
+**Content Quality:**
+
+- **Professional Layout**: Clean typography with Source Sans Pro font family
+- **Code Highlighting**: Syntax highlighting for multiple programming languages
+- **Progressive Navigation**: Context-aware previous/next buttons guide your learning path
+- **Search & Filter**: Quick access to specific labs by journey, bootcamp, or topic
 
 ### Automated HTML and PDF Generation
 

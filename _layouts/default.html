@@ -342,11 +342,30 @@
       });
     </script>
 
-    <!-- Mermaid Diagram Support -->
+    <!-- 
+      Mermaid Diagram Support
+      ========================
+      Provides interactive diagram rendering with theme integration.
+      
+      Features:
+      - Dynamic theme switching (light/dark mode support)
+      - Auto re-rendering when theme changes
+      - Custom color palette matching site themes
+      - Preserves original diagram code for re-rendering
+      
+      Usage in markdown:
+      <div class="mermaid">
+      graph TD
+          A[Start] --> B[End]
+      </div>
+      
+      See labs/guildhall-custom-mcp/README.md for OAuth flow example.
+    -->
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
       
-      // Initialize Mermaid with theme support
+      // Initialize Mermaid with dynamic theme support
+      // Automatically detects current theme (light/dark) and configures colors accordingly
       function initializeMermaid() {
         const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
         const theme = isDarkMode ? 'dark' : 'default';
@@ -354,8 +373,10 @@
         mermaid.initialize({
           startOnLoad: true,
           theme: theme,
-          securityLevel: 'loose',
+          securityLevel: 'loose', // Allows full Mermaid feature set including click events
           themeVariables: {
+            // Custom color palette that adapts to light/dark modes
+            // These values provide good contrast and readability in both themes
             primaryColor: isDarkMode ? '#2b6cb0' : '#3182ce',
             primaryTextColor: isDarkMode ? '#e2e8f0' : '#1a202c',
             primaryBorderColor: isDarkMode ? '#4299e1' : '#2c5282',
@@ -382,23 +403,27 @@
         });
       }
       
-      // Initialize on load
+      // Initialize diagrams on page load
       initializeMermaid();
       
-      // Re-initialize when theme changes
+      // Listen for theme changes and re-render all diagrams with new colors
+      // The 'themechange' event is fired by theme-manager.js when user switches themes
       window.addEventListener('themechange', () => {
         initializeMermaid();
-        // Re-render all mermaid diagrams
+        
+        // Re-render all mermaid diagrams with updated theme
+        // We store the original code to allow clean re-rendering
         document.querySelectorAll('.mermaid').forEach((element) => {
           const code = element.getAttribute('data-original-code') || element.textContent;
           element.setAttribute('data-original-code', code);
-          element.removeAttribute('data-processed');
-          element.innerHTML = code;
+          element.removeAttribute('data-processed'); // Clear Mermaid's processed flag
+          element.innerHTML = code; // Reset to original code
         });
-        mermaid.run();
+        mermaid.run(); // Re-process all diagrams
       });
       
-      // Store original code for re-rendering
+      // Store original diagram code on page load for theme switching
+      // This preserves the source code before Mermaid transforms it into SVG
       document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.mermaid').forEach((element) => {
           const code = element.textContent;

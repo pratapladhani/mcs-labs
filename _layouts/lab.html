@@ -490,7 +490,9 @@ layout: default
       const workshopName = activeFilter.replace("_workshop", "").replace(/-/g, " ");
       workshopTitle = "☁️ " + workshopName.replace(/\b\w/g, l => l.toUpperCase()) + " Workshop";
       
-      // Fix specific acronyms (AI should be uppercase)
+      // Fix specific acronyms (AI should be uppercase, not "Ai")
+      // This handles cases where title capitalization creates "Azure Ai Workshop"
+      // and corrects it to "Azure AI Workshop"
       workshopTitle = workshopTitle.replace(/\bAi\b/g, "AI");
 
       if (journeyTitleText && workshopTitle) {
@@ -1192,8 +1194,16 @@ layout: default
     }
 
     // ========================================================================
+    // ========================================================================
     // Table of Contents Generation
     // ========================================================================
+    // Generates navigation from h2 and h3 headings in lab content
+    // Supports both desktop sidebar and mobile popup overlay
+    // Features:
+    // - Multi-level navigation (h2 and h3 headings)
+    // - Smooth scrolling to sections
+    // - Visual hierarchy with indentation for h3 items
+    // - Synchronized between desktop and mobile TOCs
     function generateTableOfContents() {
       const tocNav = document.getElementById("toc-nav");
       const tocMobileNav = document.getElementById("toc-mobile-nav");
@@ -1201,7 +1211,8 @@ layout: default
       
       if (!tocNav || !labBody) return;
 
-      // Find h2 and h3 headings in the lab content
+      // Find h2 and h3 headings in the lab content for multi-level TOC
+      // h2 = main sections, h3 = subsections (e.g., "Use Case 1", "Use Case 2")
       const headings = labBody.querySelectorAll("h2, h3");
       
       if (headings.length === 0) {
@@ -1229,7 +1240,9 @@ layout: default
         link.title = heading.textContent; // Show full text on hover
         link.className = "toc-link";
         
-        // Add data-level attribute for styling (h2=2, h3=3)
+        // Add data-level attribute for CSS styling
+        // Level 2 (h2) = main sections with standard styling
+        // Level 3 (h3) = subsections with indentation and smaller font
         link.setAttribute("data-level", heading.tagName === "H2" ? "2" : "3");
 
         // Smooth scroll to section
@@ -1302,21 +1315,31 @@ layout: default
         }
       }, { passive: true });
 
-      // Mobile TOC button functionality
+      // ========================================================================
+      // Mobile TOC Button and Overlay Functionality
+      // ========================================================================
+      // Responsive navigation for screens ≤ 1366px
+      // Features:
+      // - Floating action button (bottom-right corner)
+      // - Full-screen overlay with slide-in panel
+      // - Auto-close on link click or outside click
+      // - Synchronized with desktop TOC content
       const tocToggleBtn = document.getElementById("toc-toggle-btn");
       const tocMobileOverlay = document.getElementById("toc-mobile-overlay");
       const tocCloseBtn = document.getElementById("toc-close-btn");
 
       if (tocToggleBtn && tocMobileOverlay) {
+        // Open mobile TOC overlay when floating button is clicked
         tocToggleBtn.addEventListener("click", function() {
           tocMobileOverlay.classList.add("active");
         });
 
+        // Close overlay when X button is clicked
         tocCloseBtn.addEventListener("click", function() {
           tocMobileOverlay.classList.remove("active");
         });
 
-        // Close on overlay click (outside content)
+        // Close overlay when clicking outside the panel (on the backdrop)
         tocMobileOverlay.addEventListener("click", function(e) {
           if (e.target === tocMobileOverlay) {
             tocMobileOverlay.classList.remove("active");

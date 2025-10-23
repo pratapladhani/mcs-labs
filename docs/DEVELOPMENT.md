@@ -212,6 +212,120 @@ assets/css/themes/
 └── theme-minimal.css  # Minimal theme family (clean, blog-style)
 ```
 
+## 📱 Mobile Responsive Features
+
+### Mobile Table of Contents (TOC)
+
+The site includes a sophisticated mobile navigation system for lab pages:
+
+**Features:**
+- **Floating Action Button**: Appears on screens ≤ 1366px in bottom-right corner
+- **Full-Screen Overlay**: Semi-transparent backdrop with slide-in panel
+- **Multi-Level Navigation**: Supports both h2 (sections) and h3 (subsections) headings
+- **Auto-Close Behavior**: Closes when clicking links or outside the panel
+- **Smooth Scrolling**: Animated scroll to sections when TOC links are clicked
+
+**Responsive Breakpoint:**
+- **Desktop**: Sidebar TOC visible, floating button hidden (> 1366px)
+- **Tablet/Mobile**: Sidebar hidden, floating button visible (≤ 1366px)
+
+**Implementation:**
+- HTML structure in `_layouts/lab.html` (lines 232-271)
+- JavaScript handlers in `_layouts/lab.html` (lines 1290-1340)
+- CSS styling in `assets/css/style.css` (lines 820-995)
+
+### Why 1366px Breakpoint?
+
+We use 1366px instead of the traditional 1024px to accommodate:
+- Modern tablets in landscape mode
+- Smaller laptop screens
+- Better readability on medium-sized devices
+- Smoother transition between mobile and desktop layouts
+
+## 🎨 Mermaid Diagram Support
+
+### Interactive Diagram Rendering
+
+The site supports Mermaid.js v11 for creating interactive diagrams directly in markdown:
+
+**Features:**
+- **Theme Integration**: Diagrams automatically adapt to light/dark modes
+- **Dynamic Re-rendering**: Diagrams update colors when theme changes
+- **Rich Diagram Types**: Sequence, flowchart, class, state, Gantt, and more
+- **Responsive Design**: Diagrams scale appropriately on mobile devices
+
+**Usage Example:**
+```html
+<div class="mermaid">
+sequenceDiagram
+    participant User
+    participant System
+    User->>System: Request
+    System-->>User: Response
+</div>
+```
+
+**Real-World Example:**
+See `labs/guildhall-custom-mcp/README.md` for OAuth authentication flow diagram (47 lines, replaces static PNG image).
+
+**Implementation:**
+- Mermaid v11 ESM module loaded from CDN
+- Theme detection and configuration in `_layouts/default.html` (lines 346-407)
+- Custom color variables for 20+ diagram elements
+- Event-driven re-rendering on theme changes
+- Original code preservation for clean re-rendering
+
+**Styling:**
+- Responsive container with max-width and auto margins
+- Theme-aware colors synchronized with site themes
+- Custom CSS in `assets/css/style.css` (lines 3097-3137)
+
+## 🎨 Theme System
+
+### Modern Multi-Theme Architecture
+
+The site now supports multiple theme families with light/dark variants:
+
+```css
+/* Theme family variables in theme-minimal.css */
+:root {
+    --bg-primary: white;
+    --text-primary: #34343c;
+    --heading-color: #2a2a2a;
+    /* ... */
+}
+
+[data-theme="dark"] {
+    /* Dark mode overrides */
+    --bg-primary: #1a1a1a;
+    --text-primary: #ffffff;
+    /* ... */
+}
+
+/* Theme-specific component overrides */
+html[data-theme-family="minimal"] .lab-card {
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px var(--shadow);
+}
+```
+
+### Theme System Implementation
+
+- **Theme Families**: Rich vs Minimal design approaches
+- **Mode Variants**: Light and Dark modes within each family
+- **Dynamic Loading**: Theme CSS files loaded asynchronously via theme-manager.js
+- **FOUC Prevention**: Immediate theme detection prevents flash of unstyled content
+- **Data Attributes**: `data-theme-family` and `data-theme` applied to HTML element
+- **Local Storage**: Separate storage for theme family and mode preferences
+
+### Theme File Structure
+
+```
+assets/css/themes/
+├── theme-rich.css     # Rich theme family (colorful, gradients)
+└── theme-minimal.css  # Minimal theme family (clean, blog-style)
+```
+
 ### Adding New Themed Components
 
 1. Define CSS Custom Properties for colors in theme files
