@@ -1201,8 +1201,8 @@ layout: default
       
       if (!tocNav || !labBody) return;
 
-      // Find only h2 headings in the lab content (main sections only)
-      const headings = labBody.querySelectorAll("h2");
+      // Find h2 and h3 headings in the lab content
+      const headings = labBody.querySelectorAll("h2, h3");
       
       if (headings.length === 0) {
         tocNav.innerHTML = '<p class="toc-empty">No sections found</p>';
@@ -1228,6 +1228,9 @@ layout: default
         link.textContent = heading.textContent;
         link.title = heading.textContent; // Show full text on hover
         link.className = "toc-link";
+        
+        // Add data-level attribute for styling (h2=2, h3=3)
+        link.setAttribute("data-level", heading.tagName === "H2" ? "2" : "3");
 
         // Smooth scroll to section
         link.addEventListener("click", function(e) {

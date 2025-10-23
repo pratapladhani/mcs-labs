@@ -341,5 +341,70 @@
         });
       });
     </script>
+
+    <!-- Mermaid Diagram Support -->
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+      
+      // Initialize Mermaid with theme support
+      function initializeMermaid() {
+        const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+        const theme = isDarkMode ? 'dark' : 'default';
+        
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: theme,
+          securityLevel: 'loose',
+          themeVariables: {
+            primaryColor: isDarkMode ? '#2b6cb0' : '#3182ce',
+            primaryTextColor: isDarkMode ? '#e2e8f0' : '#1a202c',
+            primaryBorderColor: isDarkMode ? '#4299e1' : '#2c5282',
+            lineColor: isDarkMode ? '#718096' : '#4a5568',
+            secondaryColor: isDarkMode ? '#2d3748' : '#edf2f7',
+            tertiaryColor: isDarkMode ? '#1a202c' : '#f7fafc',
+            background: isDarkMode ? '#1a202c' : '#ffffff',
+            mainBkg: isDarkMode ? '#2d3748' : '#ffffff',
+            secondBkg: isDarkMode ? '#1a202c' : '#edf2f7',
+            labelBackground: isDarkMode ? '#2d3748' : '#edf2f7',
+            labelTextColor: isDarkMode ? '#e2e8f0' : '#1a202c',
+            edgeLabelBackground: isDarkMode ? '#2d3748' : '#ffffff',
+            noteTextColor: isDarkMode ? '#e2e8f0' : '#1a202c',
+            noteBkgColor: isDarkMode ? '#2d3748' : '#fef5e7',
+            noteBorderColor: isDarkMode ? '#4299e1' : '#f39c12',
+            actorBkg: isDarkMode ? '#2b6cb0' : '#3182ce',
+            actorBorder: isDarkMode ? '#4299e1' : '#2c5282',
+            actorTextColor: isDarkMode ? '#ffffff' : '#ffffff',
+            actorLineColor: isDarkMode ? '#718096' : '#4a5568',
+            signalColor: isDarkMode ? '#e2e8f0' : '#1a202c',
+            signalTextColor: isDarkMode ? '#e2e8f0' : '#1a202c',
+            sequenceNumberColor: isDarkMode ? '#ffffff' : '#ffffff'
+          }
+        });
+      }
+      
+      // Initialize on load
+      initializeMermaid();
+      
+      // Re-initialize when theme changes
+      window.addEventListener('themechange', () => {
+        initializeMermaid();
+        // Re-render all mermaid diagrams
+        document.querySelectorAll('.mermaid').forEach((element) => {
+          const code = element.getAttribute('data-original-code') || element.textContent;
+          element.setAttribute('data-original-code', code);
+          element.removeAttribute('data-processed');
+          element.innerHTML = code;
+        });
+        mermaid.run();
+      });
+      
+      // Store original code for re-rendering
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.mermaid').forEach((element) => {
+          const code = element.textContent;
+          element.setAttribute('data-original-code', code);
+        });
+      });
+    </script>
   </body>
 </html>

@@ -923,7 +923,40 @@ The guild treasury (`chest` tool) is protected by OAuth 2.0 authentication. To a
 
 **The Authentication Flow:**
 
-![OAuth Authentication Flow](images/auth-flow.png)
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant User
+    participant Agent as Copilot Studio<br/>Agent
+    participant Connector as MCP Connector
+    participant EntraID as Microsoft<br/>Entra ID
+    participant MCP as MCP Server
+
+    User->>Agent: "How much gold in treasury?"
+    Agent->>Connector: Invoke chest tool
+
+    Note over Connector: Check for cached token<br/>(None found - first request)
+
+    Connector->>EntraID: Request token with:<br/>• client_id (Connector App ID)<br/>• client_secret<br/>• scope: Chest.Open<br/>• resource: api://[MCP Server App ID]
+
+    Note over EntraID: 1. Validate client credentials<br/>2. Check permissions (Chest.Open)<br/>3. Generate access token
+
+    EntraID->>Connector: Return access token with:<br/>• aud: api://[MCP Server App ID]<br/>• scp: Chest.Open<br/>• exp: expiration timestamp
+
+    Note over Connector: Cache token for<br/>future requests
+
+    Connector->>MCP: POST /mcp<br/>Authorization: Bearer {token}
+
+    Note over MCP: Validate token:<br/>✓ Verify JWT signature<br/>✓ Check audience matches server<br/>✓ Check scope contains Chest.Open<br/>✓ Check token not expired
+
+    alt Valid Token
+        MCP->>Agent: Success<br/>{ gold: 1000 }
+        Agent->>User: "The coffers hold<br/>1,000 gold!"
+    else Invalid Token
+        MCP->>Agent: 401 Unauthorized
+        Agent->>User: "The treasury<br/>remains sealed"
+    end
+</div>
 
 **Why This Architecture?**
 

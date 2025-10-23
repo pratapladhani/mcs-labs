@@ -705,6 +705,12 @@ body {
     text-overflow: ellipsis;
 }
 
+/* Indent h3 TOC entries */
+.toc-link[data-level="3"] {
+    padding-left: 1.5rem;
+    font-size: 0.8rem;
+}
+
 .toc-link:hover {
     background: var(--hover-bg);
     color: var(--accent-primary);
@@ -3077,6 +3083,50 @@ a:hover .external-link-icon {
 .bootcamp-stats span {
     color: var(--text-secondary);
     font-size: 0.95rem;
+}
+
+/* ============================================================================
+   MERMAID DIAGRAMS
+   ============================================================================ */
+
+.mermaid {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 0;
+    overflow-x: auto;
+    text-align: center;
+}
+
+/* Make Mermaid diagrams responsive */
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Ensure text is readable in both themes */
+.mermaid text {
+    fill: var(--text-primary) !important;
+}
+
+/* Style for code blocks containing mermaid syntax */
+pre.language-mermaid,
+code.language-mermaid {
+    display: none; /* Hide raw mermaid code */
+}
+
+/* Show mermaid in code blocks for editing view */
+.mermaid-source {
+    display: block;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
 }
 
 /* Responsive design for bootcamp page */
