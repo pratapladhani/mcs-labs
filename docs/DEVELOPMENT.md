@@ -282,17 +282,27 @@ See `labs/guildhall-custom-mcp/README.md` for OAuth authentication flow diagram 
 
 ## 💻 Code Syntax Highlighting
 
-### Highlight.js Integration
+### Jekyll Rouge Integration
 
-The site uses Highlight.js v11.9.0 for syntax highlighting with an **opt-in approach**:
+The site uses Jekyll's built-in Rouge syntax highlighter for server-side code highlighting:
 
 **Features:**
+- **Server-side rendering**: Syntax highlighting happens during Jekyll build (faster page loads)
 - **Opt-in by default**: Only code blocks with explicit language tags get highlighted
 - **Plain text by default**: Unlabeled code blocks are treated as plain text
-- Theme-aware styling (GitHub light/dark themes)
-- Support for common languages: JavaScript, TypeScript, Python, C#, JSON, YAML, Bash, PowerShell, SQL, XML
-- Dynamic theme switching
-- Mobile responsive styling
+- **No JavaScript required**: Highlighting works even with JavaScript disabled
+- **Theme-aware styling**: Custom GitHub-style colors for light/dark modes
+- **Support for 100+ languages**: Including JavaScript, TypeScript, Python, C#, JSON, YAML, Bash, PowerShell, SQL, XML, and more
+
+**Configuration:**
+```yaml
+# In _config.yml
+highlighter: rouge
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+```
 
 **Usage in Markdown:**
 
@@ -321,26 +331,23 @@ Your plain text instructions here
 ```
 ````
 
-**Opt-In Approach:**
-The system only applies syntax highlighting when:
-1. A code block has an explicit language class (e.g., `language-javascript`)
-2. The language is not `text` or `plaintext`
+**How It Works:**
+1. Rouge processes code blocks during Jekyll build
+2. Generates semantic HTML with class names (e.g., `.kd` for keywords, `.nx` for names)
+3. CSS in `assets/css/style.css` provides colors for each token type
+4. Theme switching updates colors via CSS variables
 
-All other code blocks are treated as plain text, which is appropriate since most lab content consists of:
-- Instructions to copy and paste
-- Configuration text
-- Sample data
-- User prompts and responses
-
-**Plain Text Indicator:**
-Plain text blocks display a "📋 Plain Text" label to distinguish them from code blocks.
+**Supported in lab content:**
+- Instructions to copy and paste (plain text)
+- Configuration text (plain text)
+- Sample data (plain text)
+- Actual code snippets (highlighted with language tags)
 
 **Implementation Details:**
-- Highlight.js loaded from CDN in `_layouts/default.html`
-- GitHub light theme for light mode, GitHub dark theme for dark mode
-- Custom CSS styling in `assets/css/style.css`
-- Automatic theme switching integrated with site theme system
-- Only processes blocks with explicit language tags for better performance
+- Rouge configuration in `_config.yml`
+- Syntax highlighting CSS in `assets/css/style.css` with `.highlight` classes
+- Light/dark theme colors defined with `[data-theme="dark"]` selectors
+- GitHub-style color scheme matching the site's design system
 
 ## 🎨 Theme System
 

@@ -123,11 +123,11 @@ Ask yourself: **"Would syntax highlighting make this easier to read?"**
 - ❌ **NO** - Instructions, plain text, sample data, user prompts → Use no tag or `text`
 
 **Why this matters:**
-- Plain text blocks display with a "📋 Plain Text" indicator
+- Plain text blocks are rendered without syntax highlighting (cleaner for instructions)
 - No confusing syntax highlighting on non-code content
 - Users understand they should copy text exactly as-is
 - Cleaner, more readable lab content
-- Better performance (no unnecessary highlighting)
+- Better performance (server-side highlighting only for actual code)
 
 ### Examples from Real Labs
 

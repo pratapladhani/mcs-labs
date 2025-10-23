@@ -3174,8 +3174,69 @@ code.language-mermaid {
 }
 
 /* ============================================================================
-   SYNTAX HIGHLIGHTING FOR CODE BLOCKS
+   SYNTAX HIGHLIGHTING FOR CODE BLOCKS (Jekyll Rouge)
    ============================================================================ */
+
+/* Rouge syntax highlighting theme colors */
+.highlight {
+    background: var(--bg-secondary);
+}
+
+/* Keywords */
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, 
+.highlight .kr, .highlight .kt { color: #d73a49; font-weight: 600; }
+
+/* Names and identifiers */
+.highlight .nx, .highlight .nf, .highlight .nc { color: #6f42c1; }
+
+/* Strings */
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .dl { color: #032f62; }
+
+/* Numbers */
+.highlight .m, .highlight .mi, .highlight .mf { color: #005cc5; }
+
+/* Comments */
+.highlight .c, .highlight .c1, .highlight .cm { color: #6a737d; font-style: italic; }
+
+/* Operators */
+.highlight .o { color: #d73a49; }
+
+/* Punctuation */
+.highlight .p { color: #24292e; }
+
+/* Built-in types */
+.highlight .nb { color: #005cc5; }
+
+/* Dark mode colors */
+[data-theme="dark"] .highlight .k, 
+[data-theme="dark"] .highlight .kd,
+[data-theme="dark"] .highlight .kn,
+[data-theme="dark"] .highlight .kp,
+[data-theme="dark"] .highlight .kr,
+[data-theme="dark"] .highlight .kt { color: #ff7b72; }
+
+[data-theme="dark"] .highlight .nx,
+[data-theme="dark"] .highlight .nf,
+[data-theme="dark"] .highlight .nc { color: #d2a8ff; }
+
+[data-theme="dark"] .highlight .s,
+[data-theme="dark"] .highlight .s1,
+[data-theme="dark"] .highlight .s2,
+[data-theme="dark"] .highlight .dl { color: #a5d6ff; }
+
+[data-theme="dark"] .highlight .m,
+[data-theme="dark"] .highlight .mi,
+[data-theme="dark"] .highlight .mf { color: #79c0ff; }
+
+[data-theme="dark"] .highlight .c,
+[data-theme="dark"] .highlight .c1,
+[data-theme="dark"] .highlight .cm { color: #8b949e; }
+
+[data-theme="dark"] .highlight .o { color: #ff7b72; }
+
+[data-theme="dark"] .highlight .p { color: #c9d1d9; }
+
+[data-theme="dark"] .highlight .nb { color: #79c0ff; }
 
 /* Base code block styling */
 pre {
