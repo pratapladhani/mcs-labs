@@ -2,6 +2,32 @@
 
 This guide explains how PDFs are generated for lab download functionality, both on GitHub Actions and locally.
 
+## 🎯 Critical Design Principle: Local/CI Parity
+
+**IMPORTANT**: Local PDF generation must exactly match GitHub Actions behavior to prevent workflow failures.
+
+### Why This Matters
+- **Prevent CI Failures**: Testing locally catches issues before they break the deployment pipeline
+- **Consistent Output**: Users get identical PDFs whether generated locally or in CI
+- **Faster Iteration**: Debug PDF rendering issues locally without pushing to GitHub
+- **Environment Parity**: Same tools, same versions, same configuration
+
+### How We Maintain Parity
+1. **Pandoc 3.1.3**: Both environments use the exact same version from GitHub releases
+2. **Mermaid.js v11**: Same CDN version loaded in both local and CI scripts
+3. **Identical Preprocessing**: AWK/PowerShell callout handling produces same output
+4. **Same Commands**: Pandoc flags and extensions match character-for-character
+5. **Same Working Directory**: Both run Pandoc from lab directory for image resolution
+
+### Testing Before Push
+```powershell
+# ALWAYS test locally before pushing changes that affect PDFs:
+.\scripts\Generate-Labs.ps1 -GeneratePDFs
+
+# For quick iteration on a single lab:
+.\scripts\Generate-Labs.ps1 -SingleLabPDF "your-lab-name" -GeneratePDFs
+```
+
 ## Overview
 
 PDFs are generated from lab markdown files using a multi-stage process:
@@ -220,8 +246,22 @@ assets/pdfs/{lab-name}.pdf
 
 ### For Lab Authors
 
-1. **Test locally first**: Generate PDFs locally before pushing to ensure proper formatting
-2. **Use appropriate code fences**: Only use language tags for actual code that needs syntax highlighting
+1. **⚠️ ALWAYS Test Locally Before Pushing**
+   ```powershell
+   # Test all PDFs before committing changes
+   .\scripts\Generate-Labs.ps1 -GeneratePDFs
+   
+   # Quick test for the lab you're editing
+   .\scripts\Generate-Labs.ps1 -SingleLabPDF "your-lab-name" -GeneratePDFs
+   ```
+   **Why**: Catches PDF rendering issues locally instead of breaking CI/deployment
+
+2. **Maintain Environment Parity**
+   - Use the same Pandoc version (3.1.3) locally and in CI
+   - Use the same Mermaid.js version (v11) in both environments
+   - Keep preprocessing logic (AWK/PowerShell) identical
+   
+3. **Use appropriate code fences**: Only use language tags for actual code that needs syntax highlighting
 3. **Include images**: PDFs embed images automatically - no special handling needed
 4. **Use callouts**: GitHub-style `[!NOTE]`, `[!WARNING]` etc. render beautifully in PDFs
 5. **Test Mermaid diagrams**: Complex diagrams may need adjustment for PDF printing

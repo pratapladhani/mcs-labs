@@ -18,6 +18,38 @@ This document contains essential information for developing the Microsoft Copilo
 2. **Separation of Concerns**: All styling is handled in main CSS file, NOT in generated HTML
 3. **Dynamic Content Generation**: Labs are generated from PowerShell scripts, not manually created
 4. **Multi-Theme System**: CSS Custom Properties with theme families (Rich/Minimal) and mode variants (Light/Dark) support
+5. **🎯 Local/CI Parity (CRITICAL)**: Local PDF generation MUST exactly match GitHub Actions to prevent deployment failures
+
+### 🎯 Local/CI Parity Principle
+
+**CRITICAL FOR ALL CONTRIBUTORS**: 
+
+This project maintains strict parity between local development and CI/CD environments. This means:
+
+- **Same Tools, Same Versions**: Pandoc 3.1.3, Mermaid.js v11, Node.js 18
+- **Identical Commands**: Pandoc flags, extensions, and working directories match exactly
+- **Same Preprocessing**: AWK (CI) and PowerShell (local) produce identical output
+- **Same Configuration**: CSS, fonts, rendering settings are identical
+
+**Why This Matters**:
+- Prevents CI failures from PDF rendering issues
+- Enables faster iteration (test locally, not in CI)
+- Ensures consistent output for end users
+- Reduces debugging time and failed deployments
+
+**Before Pushing Any Changes**:
+```powershell
+# ALWAYS test locally if you modified:
+# - Lab markdown content
+# - PDF generation scripts
+# - Pandoc configuration
+# - Mermaid diagrams
+# - Callout preprocessing
+
+.\scripts\Generate-Labs.ps1 -GeneratePDFs
+```
+
+See [LOCAL_PDF_GENERATION.md](LOCAL_PDF_GENERATION.md) for complete details.
 
 ## 🚀 Development Environment Setup
 

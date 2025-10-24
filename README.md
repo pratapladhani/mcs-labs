@@ -67,6 +67,19 @@ This repository uses GitHub Actions to automatically convert lab markdown files 
 - ✅ Syntax-highlighted code blocks
 - ✅ Professional layout with page numbers and headers
 
+**🎯 Local/CI Parity (CRITICAL)**:
+- Local PDF generation MUST match GitHub Actions exactly to prevent deployment failures
+- **Always test locally before pushing** if you modify lab content, diagrams, or PDF generation
+- See [LOCAL_PDF_GENERATION.md](./docs/LOCAL_PDF_GENERATION.md) for complete testing guide
+
+```powershell
+# Test PDF generation locally before pushing
+.\scripts\Generate-Labs.ps1 -GeneratePDFs
+
+# Quick test for a single lab
+.\scripts\Generate-Labs.ps1 -SingleLabPDF "your-lab-name" -GeneratePDFs
+```
+
 ### For Contributors
 
 - **📖 Full documentation**: See [Contributing Guide](https://github.com/microsoft/mcs-labs/blob/main/.github/CONTRIBUTING.md) for technical details

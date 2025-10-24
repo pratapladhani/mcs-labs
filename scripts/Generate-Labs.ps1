@@ -413,7 +413,15 @@ function Invoke-PDFGeneration {
     # Generate PDFs for each lab
     $results = @()
     $processed = 0
-    $total = $AllLabs.Count
+    
+    # Calculate total based on whether we're filtering to a single lab
+    $labsToProcess = if ($script:SingleLabPDF) {
+        $AllLabs | Where-Object { $_.id -eq $script:SingleLabPDF }
+    }
+    else {
+        $AllLabs
+    }
+    $total = $labsToProcess.Count
     
     foreach ($lab in $AllLabs) {
         $processed++

@@ -123,9 +123,185 @@ This document tracks important architectural decisions made during the developme
 
 ---
 
+## ADR-006: Local/CI Parity for PDF Generation
+
+**Status**: Accepted  
+**Date**: October 2025  
+**Context**: PDF generation was working differently in local Docker environment vs GitHub Actions, causing deployment failures when PDFs rendered correctly locally but broke in CI.
+
+**Decision**: Maintain strict parity between local PDF generation and GitHub Actions CI/CD pipeline. Local environment must exactly match CI tools, versions, and commands.
+
+**Consequences**:
+- ✅ Prevents CI failures from PDF rendering issues
+- ✅ Faster iteration - test locally instead of pushing to CI
+- ✅ Consistent output for end users regardless of generation method
+- ✅ Reduces debugging time and failed deployments
+- ❌ Requires careful version management across environments
+- ❌ Local testing mandatory before pushing PDF-related changes
+
+**Implementation Details**:
+- **Pandoc 3.1.3**: Same version in Docker (GitHub releases) and CI (pandoc/actions/setup@v1.1.1)
+- **Mermaid.js v11**: Identical CDN version in both environments
+- **Preprocessing**: AWK (CI) and PowerShell (local) produce identical output for callouts
+- **Pandoc Commands**: Exact same flags, extensions (+raw_html+raw_attribute), working directory
+- **Font Stack**: Noto Color Emoji fonts installed in both environments
+- **Testing Requirement**: `.\scripts\Generate-Labs.ps1 -GeneratePDFs` before pushing changes
+
+**Related Files**:
+- `.github/workflows/build-and-deploy.yml` (CI)
+- `scripts/Generate-Labs.ps1` (Local)
+- `Dockerfile` (Pandoc 3.1.3 installation)
+- `.github/scripts/generate-pdf.js` (PDF generation)
+
+---
+
+## ADR-007: Single Source of Truth for Lab Metadata
+
+**Status**: Accepted  
+**Date**: October 2025  
+**Context**: Lab metadata (duration, difficulty) existed in multiple places - README files and lab-config.yml were getting out of sync, causing incorrect values to display on lab pages.
+
+**Decision**: Make `lab-config.yml` the single source of truth for lab metadata. PowerShell script overrides README-parsed values with config values.
+
+**Consequences**:
+- ✅ Single file to update for metadata changes
+- ✅ Handles duration ranges (60-75 minutes) that regex can't parse
+- ✅ Consistent values across all pages and PDFs
+- ✅ Easier to maintain and audit metadata
+- ❌ README table and config can drift if not careful
+- ❌ Requires regeneration of Jekyll files after config updates
+
+**Implementation Details**:
+```powershell
+# In Generate-Labs.ps1 - Override README values with config
+if ($Config.lab_metadata) {
+    foreach ($order in $Config.lab_metadata.Keys) {
+        $configLab = $Config.lab_metadata[$order]
+        if ($configLab.id -eq $folder.Name) {
+            $lab.difficulty = [int]$matches[1]  # Extract from "Level 200"
+            $lab.duration = [int]$configLab.duration
+            break
+        }
+    }
+}
+```
+
+**Related Files**:
+- `lab-config.yml` (source of truth)
+- `_data/lab-config.yml` (symbolic link to root)
+- `scripts/Generate-Labs.ps1` (override logic)
+- `_layouts/lab.html` (displays metadata)
+
+---
+
+## ADR-008: Symbolic Link for Configuration Deduplication
+
+**Status**: Accepted  
+**Date**: October 2025  
+**Context**: `lab-config.yml` existed in two locations (root and `_data/`) and was getting out of sync, causing stale metadata to be used by Jekyll.
+
+**Decision**: Replace `_data/lab-config.yml` with a symbolic link pointing to root `lab-config.yml`.
+
+**Consequences**:
+- ✅ Single file to maintain - no duplication
+- ✅ Jekyll always uses latest config values
+- ✅ Eliminates configuration drift
+- ✅ Git tracks the symlink correctly
+- ❌ Requires symlink support in deployment environment
+- ❌ Windows requires admin or developer mode for symlinks
+
+**Implementation Details**:
+```powershell
+# Create symbolic link
+Remove-Item "_data\lab-config.yml" -Force
+New-Item -ItemType SymbolicLink -Path "_data\lab-config.yml" -Target "lab-config.yml"
+```
+
+**Git Behavior**:
+- Symlink tracked as type change: `T _data/lab-config.yml`
+- Works cross-platform (Windows, Mac, Linux)
+- GitHub Pages deployment supports symlinks
+
+**Related Files**:
+- `lab-config.yml` (source file)
+- `_data/lab-config.yml` (symlink)
+
+---
+
+## ADR-009: Theme Loading Optimization
+
+**Status**: Accepted  
+**Date**: October 2025  
+**Context**: Loading both theme CSS files simultaneously caused a visible flash when navigating between pages, degrading user experience.
+
+**Decision**: Load only the active theme CSS file synchronously during page load, with FOUC (Flash of Unstyled Content) prevention.
+
+**Consequences**:
+- ✅ Eliminates navigation flash
+- ✅ Faster page load (only one CSS file)
+- ✅ Smooth 150ms fade-in transition
+- ✅ Better perceived performance
+- ❌ Theme switching requires CSS file swap (brief delay)
+- ❌ More complex JavaScript for theme management
+
+**Implementation Details**:
+```javascript
+// In default.html - Inline script runs before rendering
+(function () {
+  const savedTheme = localStorage.getItem("theme-family") || "rich";
+  document.documentElement.setAttribute("data-theme-family", savedTheme);
+  
+  // Load only active theme CSS synchronously
+  const themePath = '/mcs-labs/assets/css/themes/theme-' + savedTheme + '.css';
+  document.write('<link rel="stylesheet" href="' + themePath + '" id="active-theme-css">');
+  
+  setTimeout(() => document.documentElement.classList.add('theme-ready'), 50);
+})();
+```
+
+**CSS FOUC Prevention**:
+```css
+html:not(.theme-ready) body {
+  visibility: hidden;
+  opacity: 0;
+}
+html.theme-ready body {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.15s ease-in;
+}
+```
+
+**Related Files**:
+- `_layouts/default.html` (inline script)
+- `assets/js/theme-manager.js` (theme switching)
+- `assets/css/themes/theme-rich.css`
+- `assets/css/themes/theme-minimal.css`
+
+---
+
 ## Future Considerations
 
-### ADR-006: Component-Based Architecture (Proposed)
+### ADR-010: Mermaid Diagram Rendering Strategy (Implemented)
+
+**Status**: Accepted  
+**Date**: October 2025  
+**Context**: Mermaid diagrams needed to render in both web portal and PDFs with proper theming and spacing.
+
+**Decision**: Use Markdown code fences for Mermaid diagrams with JavaScript transformation for web rendering.
+
+**Implementation**:
+- Source: ` ```mermaid` in README files
+- Web: JavaScript converts to `<div class="mermaid">` using `innerHTML` (preserves HTML)
+- PDF: Puppeteer + Mermaid.js v11 renders to static SVG
+- BR tags: `<br/>` supported in Mermaid syntax for line breaks
+
+**Related Files**:
+- `_layouts/default.html` (code block converter JavaScript)
+- `.github/scripts/generate-pdf.js` (Mermaid v11 rendering)
+- `labs/guildhall-custom-mcp/README.md` (example with BR tags)
+
+### ADR-011: Component-Based Architecture (Proposed)
 
 **Status**: Under Consideration  
 **Context**: As the project grows, we may need more modular CSS and HTML components.
@@ -138,7 +314,20 @@ This document tracks important architectural decisions made during the developme
 - More complex build process
 - Need to evaluate impact on generation scripts
 
-### ADR-007: Build Pipeline Optimization (Proposed)
+### ADR-011: Component-Based Architecture (Proposed)
+
+**Status**: Under Consideration  
+**Context**: As the project grows, we may need more modular CSS and HTML components.
+
+**Potential Decision**: Implement a component-based architecture using Jekyll includes and modular CSS.
+
+**Considerations**:
+- Would improve maintainability
+- Better code reuse across labs
+- More complex build process
+- Need to evaluate impact on generation scripts
+
+### ADR-012: Build Pipeline Optimization (Proposed)
 
 **Status**: Under Consideration  
 **Context**: Build times may become an issue as content grows.
