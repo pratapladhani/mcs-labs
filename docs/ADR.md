@@ -194,37 +194,52 @@ if ($Config.lab_metadata) {
 
 ---
 
-## ADR-008: Symbolic Link for Configuration Deduplication
+## ADR-008: Automatic Configuration Synchronization
 
 **Status**: Accepted  
 **Date**: October 2025  
-**Context**: `lab-config.yml` existed in two locations (root and `_data/`) and was getting out of sync, causing stale metadata to be used by Jekyll.
+**Context**: `lab-config.yml` existed in two locations (root and `_data/`) and was getting out of sync, causing stale metadata to be used by Jekyll. Initial approach using symbolic links failed in GitHub Actions CI with `Errno::ELOOP` error.
 
-**Decision**: Replace `_data/lab-config.yml` with a symbolic link pointing to root `lab-config.yml`.
+**Decision**: Maintain `lab-config.yml` at root as single source of truth, with automatic file copy to `_data/` directory during lab generation.
 
 **Consequences**:
-- ✅ Single file to maintain - no duplication
-- ✅ Jekyll always uses latest config values
+- ✅ Single file to maintain - no manual duplication
+- ✅ Jekyll always uses latest config values after generation
 - ✅ Eliminates configuration drift
-- ✅ Git tracks the symlink correctly
-- ❌ Requires symlink support in deployment environment
-- ❌ Windows requires admin or developer mode for symlinks
+- ✅ Works in all environments (local, CI, Windows, Mac, Linux)
+- ✅ No symlink compatibility issues
+- ❌ Requires running generation script to sync changes
+- ❌ Two files exist in git (but one is auto-generated)
+
+**Why Not Symbolic Links?**:
+Symbolic links seemed ideal but failed in GitHub Actions with:
+```
+Errno::ELOOP - Too many levels of symbolic links @ rb_sysopen - /home/runner/work/mcs-labs/mcs-labs/_data/lab-config.yml
+```
+CI runners don't handle symlinks the same way as local filesystems.
 
 **Implementation Details**:
 ```powershell
-# Create symbolic link
-Remove-Item "_data\lab-config.yml" -Force
-New-Item -ItemType SymbolicLink -Path "_data\lab-config.yml" -Target "lab-config.yml"
+# In scripts/Generate-Labs.ps1 - Automatic sync after generation
+Write-Host "`n📋  Syncing configuration..." -ForegroundColor Yellow
+$sourceConfig = Join-Path $Paths.root "lab-config.yml"
+$destConfig = Join-Path $Paths.root "_data/lab-config.yml"
+if (Test-Path $sourceConfig) {
+    Copy-Item -Path $sourceConfig -Destination $destConfig -Force
+    Write-Host "✅  Synced lab-config.yml to _data/ directory" -ForegroundColor Green
+}
 ```
 
-**Git Behavior**:
-- Symlink tracked as type change: `T _data/lab-config.yml`
-- Works cross-platform (Windows, Mac, Linux)
-- GitHub Pages deployment supports symlinks
+**Workflow**:
+1. Edit `lab-config.yml` (root) to update metadata
+2. Run `.\scripts\Generate-Labs.ps1` to generate Jekyll files
+3. Script automatically copies config to `_data/` directory
+4. Jekyll uses synced config for site generation
 
 **Related Files**:
-- `lab-config.yml` (source file)
-- `_data/lab-config.yml` (symlink)
+- `lab-config.yml` (source of truth)
+- `_data/lab-config.yml` (auto-synced copy)
+- `scripts/Generate-Labs.ps1` (sync logic)
 
 ---
 

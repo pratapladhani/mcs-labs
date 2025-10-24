@@ -2043,6 +2043,15 @@ function Show-FinalStatistics {
     Write-Host "    ⏱️   Total Processing Time: $([math]::Round($ProcessingTime.TotalSeconds, 2)) seconds" -ForegroundColor Cyan
     Write-Host "    🏭  Labs per Second: $([math]::Round($AllLabs.Count / $ProcessingTime.TotalSeconds, 2))" -ForegroundColor Cyan
     
+    # Sync lab-config.yml to _data directory for Jekyll
+    Write-Host "`n📋  Syncing configuration..." -ForegroundColor Yellow
+    $sourceConfig = Join-Path $Paths.root "lab-config.yml"
+    $destConfig = Join-Path $Paths.root "_data/lab-config.yml"
+    if (Test-Path $sourceConfig) {
+        Copy-Item -Path $sourceConfig -Destination $destConfig -Force
+        Write-Host "✅  Synced lab-config.yml to _data/ directory" -ForegroundColor Green
+    }
+    
     Write-Host "="*80 -ForegroundColor Cyan
     Write-Host "✅  All processing completed successfully!" -ForegroundColor Green
     Write-Host "="*80 -ForegroundColor Cyan
