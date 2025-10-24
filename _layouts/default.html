@@ -11,28 +11,48 @@
       {% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}
     </title>
 
+    <!-- Prevent FOUC by hiding content until theme is ready -->
+    <style>
+      /* Hide body content until theme CSS is loaded */
+      html:not(.theme-ready) body {
+        visibility: hidden;
+      }
+      
+      /* Prevent layout shift during theme loading */
+      html:not(.theme-ready) body {
+        opacity: 0;
+      }
+      
+      /* Smooth transition when theme becomes ready */
+      html.theme-ready body {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.15s ease-in;
+      }
+    </style>
+
     <!-- Immediate theme script that runs before any rendering -->
     <script>
-      // Set theme attributes immediately from localStorage, before any rendering
+      // Set theme attributes and load correct CSS immediately from localStorage
       (function () {
         const savedTheme = localStorage.getItem("theme-family") || "rich";
         const savedMode = localStorage.getItem("theme-mode") || "light";
+        const baseUrl = window.location.pathname.includes('/mcs-labs') ? '/mcs-labs' : '';
 
         // Override HTML attributes with localStorage values immediately
         document.documentElement.setAttribute("data-theme", savedMode);
         document.documentElement.setAttribute("data-theme-family", savedTheme);
+
+        // Load only the active theme CSS synchronously
+        const themePath = baseUrl + '/assets/css/themes/theme-' + savedTheme + '.css';
+        document.write('<link rel="stylesheet" href="' + themePath + '" id="active-theme-css">');
+        
+        // Mark theme as ready after a brief moment to allow CSS to apply
+        setTimeout(function() {
+          document.documentElement.classList.add('theme-ready');
+        }, 50);
       })();
     </script>
-
-    <!-- Load both theme CSS files always to eliminate loading delays -->
-    <link
-      rel="stylesheet"
-      href="{{ '/assets/css/themes/theme-rich.css' | relative_url }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ '/assets/css/themes/theme-minimal.css' | relative_url }}"
-    />
 
     <!-- Favicon -->
     <link

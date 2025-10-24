@@ -870,6 +870,29 @@ function Get-AllLabsFromFolders {
     foreach ($folder in $labFolders) {
         $lab = Get-LabFromReadme -LabPath $folder.FullName -LabId $folder.Name
         if ($lab) {
+            # Override duration and difficulty with config values if they exist
+            # This allows lab-config.yml to be the source of truth for metadata
+            if ($Config.lab_metadata) {
+                foreach ($order in $Config.lab_metadata.Keys) {
+                    $configLab = $Config.lab_metadata[$order]
+                    if ($configLab.id -eq $folder.Name) {
+                        # Extract numeric difficulty from config (e.g., "Intermediate (Level 200)" -> 200)
+                        if ($configLab.difficulty -match '(\d+)') {
+                            $lab.difficulty = [int]$matches[1]
+                        }
+                        # Use duration from config
+                        if ($configLab.duration) {
+                            $lab.duration = [int]$configLab.duration
+                        }
+                        # Use section from config if specified
+                        if ($configLab.section) {
+                            $lab.section = $configLab.section
+                        }
+                        break
+                    }
+                }
+            }
+            
             # Assign journeys from config or auto-assign
             if ($LabJourneys.ContainsKey($folder.Name)) {
                 $lab.journeys = $LabJourneys[$folder.Name]
