@@ -8,7 +8,7 @@ Build intelligent agent-to-agent communication between Microsoft Fabric Data Age
 
 | Level | Persona         | Duration   | Purpose                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ----- | --------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 300   | Maker/Developer | 20 minutes | After completing this lab, participants will be able to create and configure Fabric Data Agents with meta-prompts, establish a connection with Fabric Data agents from  Microsoft Copilot Studio, and enable intelligent data querying through connected agents. Participants will gain hands-on experience with agent orchestration and understand how to leverage AI-powered data agents for business intelligence. |
+| 200   | Maker/Developer | 20 minutes | After completing this lab, participants will be able to create and configure Fabric Data Agents with meta-prompts, establish a connection with Fabric Data agents from  Microsoft Copilot Studio, and enable intelligent data querying through connected agents. Participants will gain hands-on experience with agent orchestration and understand how to leverage AI-powered data agents for business intelligence. |
 
 ---
 
@@ -69,10 +69,9 @@ By mastering the techniques in this lab, you'll enable your organization to buil
 
 ## 📄 Documentation and Additional Training Links
 
-- [Microsoft Fabric Data Agents Documentation](https://learn.microsoft.com/fabric/data-agents/overview)
+- [Microsoft Fabric data agent concepts (preview)](https://learn.microsoft.com/en-us/fabric/data-science/concept-data-agent)
 - [Copilot Studio Add Other Agents (preview)](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-add-other-agents)
-- [Fabric Semantic Models Best Practices](https://learn.microsoft.com/fabric/semantic-models/best-practices)
-- [Consume a Fabric Data Agent in Microsoft Copilot Studio (preview)](https://learn.microsoft.com/en-us/fabric/data-science/data-agent-microsoft-copilot-studio)
+- [Microsoft Fabric documentation](https://learn.microsoft.com/en-us/fabric/)
 
 ---
 
