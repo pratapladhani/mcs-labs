@@ -291,8 +291,6 @@ In this section, you'll learn how to create custom prompts that structure agent 
 
 21. Let's execute this prompt to get information on an account. Type `Execute prompt Show Account Details for Fourth Coffee`.
 
-    Make sure you have turned on activity tracking and ensure that the prompt is passing in the GUID of the account if you see an error.
-
     ![Execute prompt with MCP enabled](images/step17c-mcp-enabled.png)
 
     > [!TIP]
