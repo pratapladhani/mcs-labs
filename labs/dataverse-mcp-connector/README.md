@@ -287,13 +287,11 @@ In this section, you'll learn how to create custom prompts that structure agent 
 
 20. Now we can test out our prompt. Let's go back over to our Contoso Agent and test again. In our testing pane, type `List Prompts`. We will see information on our Show Account Details Prompt.
 
-    ![List Prompts](images/step17a-list-prompts.png)
+    ![List Prompts](images/step17a1-list-prompts.png)
 
 21. Let's execute this prompt to get information on an account. Type `Execute prompt Show Account Details for Fourth Coffee`.
 
-    Make sure you have turned on activity tracking and ensure that the prompt is passing in the GUID of the account if you see an error.
-
-    ![Execute prompt with MCP enabled](images/step17c-mcp-enabled.png)
+    ![Execute prompt with MCP enabled](images/step17a2-execute-prompts.png)
 
     > [!TIP]
     > More information: [Use prompts to make your agent perform specific tasks - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/prompts)
@@ -308,6 +306,8 @@ If you are seeing an issue while running the above prompt, please make sure to e
 ![MCP disabled error](images/step17b-mcp-disabled.png)
 
 Navigate to the **Power Platform admin center** → **Environments** → **Settings** → **Product** → **Features** and check: Dataverse MCP is turned **On**.
+
+![Activate Dataverse MCP setting](images/step17c-mcp-enabled.png)
 
 ---
 
