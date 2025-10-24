@@ -299,6 +299,36 @@ bootcamp_lab_orders:
   7: "copilot-studio-kit" # Copilot Studio Kit
 
 # =====================================================
+# AZURE AI WORKSHOP LAB ORDERING - Specific sequence for Azure AI workshop
+# =====================================================
+# This section provides the specific lab numbering used in the Azure AI Workshop
+# which focuses on integrating Microsoft Copilot Studio with Azure AI services.
+# The workshop is designed as a focused 5-lab curriculum covering data integration,
+# AI services, BYOM capabilities, MCP extensibility, and data fabric patterns.
+#
+# Workshop Structure: 5 Labs (285 minutes / ~4.75 hours)
+# - Lab 1: Dataverse MCP integration for live data access (40 min)
+# - Lab 2: Azure AI Search and Speech-to-Text integration (60 min)
+# - Lab 3: BYOM (Bring Your Own Model) Tool in Studio (40 min)
+# - Lab 4: Build and deploy custom MCP server (Guild Hall) (70 min)
+# - Lab 5: Data Fabric Agent with A2A Communication (45 min)
+azure_ai_workshop_lab_orders:
+  # Lab 1: Dataverse MCP Connector (40 min)
+  1: "dataverse-mcp-connector" # Contoso Agent + Dataverse MCP integration for live data access
+
+  # Lab 2: Azure AI Services Integration (60 min)
+  2: "contract-alerts-azure-ai" # Proactive Contract Alerts + Azure AI Search + Speech-to-Text
+
+  # Lab 3: BYOM Tool in Studio (40 min)
+  3: "mcs-byom" # Bring Your Own Model capabilities in Copilot Studio
+
+  # Lab 4: Extend with MCP Server (70 min)
+  4: "guildhall-custom-mcp" # Build and deploy custom MCP server for extensibility
+
+  # Lab 5: Data Fabric Agent (45 min)
+  5: "data-fabric-agent" # Fabric Data Agents with Agent-to-Agent communication
+
+# =====================================================
 # LAB ORDERING - Explicit order values for navigation
 # =====================================================
 # This section provides explicit ordering for all labs. The numbers determine
