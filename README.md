@@ -53,11 +53,19 @@ Access the bootcamp through the top navigation or visit [Labs Portal - Bootcamp]
 
 ### Automated HTML and PDF Generation
 
-This repository uses GitHub Actions to automatically convert lab markdown files into professional HTML and PDF formats:
+This repository uses GitHub Actions to automatically convert lab markdown files into professional HTML and PDF formats using **Pandoc 3.1.3**:
 
 - **HTML versions**: Web-ready with styling and navigation
-- **PDF versions**: Print-ready with bookmarks and professional layout  
+- **PDF versions**: Print-ready with embedded images, Mermaid diagrams, and syntax highlighting
+- **Local generation**: PDFs can also be generated locally using Docker (see [LOCAL_PDF_GENERATION.md](./docs/LOCAL_PDF_GENERATION.md))
 - **Generated files**: Available in the `dist/` directory and deployed to [GitHub Pages](https://pratapladhani.github.io/mcs-labs/)
+
+**Key PDF Features:**
+- ✅ GitHub-style callouts ([!NOTE], [!WARNING], etc.) rendered with proper styling
+- ✅ Mermaid diagrams rendered to static SVG
+- ✅ Embedded images (no external dependencies)
+- ✅ Syntax-highlighted code blocks
+- ✅ Professional layout with page numbers and headers
 
 ### For Contributors
 

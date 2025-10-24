@@ -378,6 +378,17 @@
         const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
         const theme = isDarkMode ? 'dark' : 'default';
         
+        // Convert code blocks with language-mermaid to mermaid divs for rendering
+        document.querySelectorAll('pre > code.language-mermaid').forEach(code => {
+          const pre = code.closest('pre');
+          if (pre) {
+            const div = document.createElement('div');
+            div.className = 'mermaid';
+            div.innerHTML = code.innerHTML; // Use innerHTML to preserve <br/> tags
+            pre.parentNode.replaceChild(div, pre);
+          }
+        });
+        
         mermaid.initialize({
           startOnLoad: true,
           theme: theme,

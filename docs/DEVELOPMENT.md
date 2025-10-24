@@ -8,6 +8,7 @@ This document contains essential information for developing the Microsoft Copilo
 - **Static Site Generator**: Jekyll (Ruby-based)
 - **CSS Framework**: Custom CSS with CSS Custom Properties
 - **Content Generation**: PowerShell scripts
+- **PDF Generation**: Pandoc 3.1.3 + Puppeteer + Mermaid.js v11
 - **Containerization**: Docker & Docker Compose
 - **Deployment**: GitHub Pages
 
@@ -280,7 +281,271 @@ See `labs/guildhall-custom-mcp/README.md` for OAuth authentication flow diagram 
 - Theme-aware colors synchronized with site themes
 - Custom CSS in `assets/css/style.css` (lines 3097-3137)
 
-## 💻 Code Syntax Highlighting
+## � PDF Generation System
+
+### Overview
+
+PDFs are generated from lab markdown files using a multi-stage pipeline that ensures parity between **local development** (Docker) and **production** (GitHub Actions).
+
+**Critical Requirement**: Both environments use **identical versions** of all tools to ensure consistent output.
+
+### Technology Stack
+
+| Tool           | Version  | Purpose                                            |
+| -------------- | -------- | -------------------------------------------------- |
+| **Pandoc**     | 3.1.3    | Markdown → HTML conversion with embedded resources |
+| **Node.js**    | 18       | JavaScript runtime for Puppeteer                   |
+| **Puppeteer**  | Latest   | Headless Chrome for PDF generation                 |
+| **Mermaid.js** | v11      | Diagram rendering in PDFs                          |
+| **Rouge**      | (Jekyll) | Syntax highlighting (embedded in HTML)             |
+
+### PDF Generation Pipeline
+
+```
+labs/{lab-name}/README.md
+  ↓ (1) Markdown Preprocessing
+labs/{lab-name}/{lab-name}_processed.md
+  ↓ (2) Pandoc HTML Conversion
+dist/{lab-name}/{lab-name}.html
+  ↓ (3) HTML Post-Processing
+dist/{lab-name}/{lab-name}.html (cleaned)
+  ↓ (4) Mermaid Rendering + PDF Generation
+assets/pdfs/{lab-name}.pdf
+```
+
+### Stage 1: Markdown Preprocessing
+
+**Purpose**: Transform GitHub-style callouts and remove duplicate headers.
+
+**Callout Processing:**
+```powershell
+# GitHub-style alerts → HTML divs
+> [!NOTE]        → <div class="note">**Note:** ...</div>
+> [!TIP]         → <div class="tip">**Tip:** ...</div>
+> [!IMPORTANT]   → <div class="important">**Important:** ...</div>
+> [!WARNING]     → <div class="warning">**Warning:** ...</div>
+> [!CAUTION]     → <div class="caution">**Caution:** ...</div>
+```
+
+**Implementation:**
+- **GitHub Actions**: AWK script in `.github/workflows/build-and-deploy.yml` (lines 127-150)
+- **Local (PowerShell)**: `scripts/Generate-Labs.ps1` (lines 490-530)
+
+**Key Feature**: Supports **indented callouts** (e.g., inside lists):
+```markdown
+1. Step one
+   > [!NOTE]
+   > This callout is indented and still processes correctly
+```
+
+**Regex Pattern**: `^([[:space:]]*)> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]`
+
+### Stage 2: Pandoc HTML Conversion
+
+**Purpose**: Convert preprocessed markdown to self-contained HTML with embedded images.
+
+**Critical Command** (must run from lab directory):
+```bash
+cd labs/{lab-name}/
+pandoc {lab-name}_processed.md \
+  -o ../../dist/{lab-name}/{lab-name}.html \
+  --standalone \
+  --embed-resources \
+  --css='../../.github/styles/html.css' \
+  --html-q-tags \
+  --section-divs \
+  --id-prefix='' \
+  --metadata title="Lab Title" \
+  --metadata lang='en' \
+  -f markdown+auto_identifiers+gfm_auto_identifiers+emoji \
+  -t html5
+```
+
+**Why run from lab directory?**
+- `--embed-resources` converts image paths like `images/screenshot.png` to embedded base64
+- Running from lab directory ensures Pandoc finds images in `labs/{lab-name}/images/`
+- Prevents "image not found" errors that occur when running from `dist/` directory
+
+**Pandoc 3.1.3 Features:**
+- `--embed-resources`: Embeds all images, CSS, and assets into HTML
+- `--standalone`: Generates complete HTML document with `<head>` and `<body>`
+- `--section-divs`: Wraps sections in `<div>` for better styling
+- GFM auto identifiers: GitHub-flavored markdown link compatibility
+
+### Stage 3: HTML Post-Processing
+
+**Purpose**: Clean up Pandoc-generated HTML for better PDF rendering.
+
+**Operations** (using sed in Docker):
+```bash
+# Remove Pandoc's title block header (redundant in PDFs)
+sed -i '/<header id="title-block-header">/,/<\/header>/d' {html-file}
+
+# Remove empty id attributes (cleaner HTML)
+sed -i 's/id=""//g' {html-file}
+
+# Add target="_blank" to external links (PDF accessibility)
+sed -i 's/<a href="\(https\?:\/\/[^"]*\)"/<a href="\1" target="_blank" rel="noopener noreferrer"/g' {html-file}
+```
+
+### Stage 4: Mermaid Rendering + PDF Generation
+
+**Purpose**: Render interactive Mermaid diagrams and generate print-ready PDFs.
+
+**Implementation**: `.github/scripts/generate-pdf.js`
+
+**Process:**
+1. **Load HTML** in headless Chrome (Puppeteer)
+2. **Detect Mermaid diagrams**:
+   ```javascript
+   const hasMermaid = await page.evaluate(() => {
+     return document.querySelectorAll('.mermaid, div.mermaid').length > 0;
+   });
+   ```
+3. **Inject Mermaid.js** from CDN if diagrams found
+4. **Configure Mermaid** with PDF-friendly settings:
+   ```javascript
+   mermaid.initialize({
+     startOnLoad: false,
+     theme: 'default',
+     sequence: { useMaxWidth: true, wrap: true },
+     flowchart: { useMaxWidth: true }
+   });
+   ```
+5. **Render diagrams** to static SVG:
+   ```javascript
+   await mermaid.run({ querySelector: '.mermaid, div.mermaid' });
+   ```
+6. **Wait for rendering** (1 second for complex diagrams)
+7. **Generate PDF** with Puppeteer
+
+**PDF Configuration:**
+```javascript
+{
+  format: 'Letter',
+  margin: { top: '0.75in', bottom: '1.0in', left: '0.75in', right: '0.75in' },
+  printBackground: true,
+  displayHeaderFooter: true,
+  headerTemplate: '<div></div>',
+  footerTemplate: `
+    <div style="font-size: 10px; text-align: center; width: 100%; margin: 0 0.75in;">
+      <span class="pageNumber"></span> of <span class="totalPages"></span> | ${title}
+    </div>
+  `
+}
+```
+
+### Local vs GitHub Actions Parity
+
+**Ensuring Consistency:**
+
+| Component          | GitHub Actions           | Local (Docker)                | Verification       |
+| ------------------ | ------------------------ | ----------------------------- | ------------------ |
+| **Pandoc**         | 3.1.3 (via setup action) | 3.1.3 (manual install)        | `pandoc --version` |
+| **Node.js**        | 18                       | 18                            | `node --version`   |
+| **Preprocessing**  | AWK script               | PowerShell (equivalent logic) | Output comparison  |
+| **Pandoc args**    | Build workflow           | Generate-Labs.ps1             | Exact match        |
+| **HTML cleanup**   | sed commands             | sed in Docker                 | Exact match        |
+| **PDF generation** | generate-pdf.js          | Same file                     | Shared code        |
+
+**Docker Pandoc Installation** (`Dockerfile` lines 10-27):
+```dockerfile
+# Install Pandoc 3.1.3 (matching GitHub Actions version)
+RUN wget https://github.com/jgm/pandoc/releases/download/3.1.3/pandoc-3.1.3-1-amd64.deb \
+    && dpkg -i pandoc-3.1.3-1-amd64.deb \
+    && rm pandoc-3.1.3-1-amd64.deb
+```
+
+**Why specific version?**
+- `--embed-resources` flag requires Pandoc 3.x
+- Older versions use deprecated `--self-contained`
+- Ensures identical output between local and CI
+
+### Common PDF Issues & Solutions
+
+**Problem**: Images showing as alt text instead of embedded images
+**Cause**: Pandoc running from wrong directory, can't find image files
+**Solution**: Always run Pandoc from lab directory (`cd labs/{lab-name}/ && pandoc ...`)
+
+**Problem**: Callouts not rendering (showing raw markdown)
+**Cause**: Preprocessor regex not matching indented callouts
+**Solution**: Use pattern `^([[:space:]]*)>` instead of `^>` to capture indentation
+
+**Problem**: Mermaid diagrams missing from PDFs
+**Cause**: Puppeteer not loading Mermaid.js library
+**Solution**: Detect diagrams, inject Mermaid.js CDN, render before PDF generation
+
+**Problem**: Pandoc version mismatch errors
+**Cause**: Docker using old Pandoc from Debian packages
+**Solution**: Rebuild Docker image with Pandoc 3.1.3 from GitHub releases
+
+**Problem**: PDFs failing silently in GitHub Actions
+**Cause**: Missing dependencies or wrong Node.js version
+**Solution**: Check workflow logs, ensure Pandoc setup action completed successfully
+
+### Development Workflow
+
+**Testing PDFs locally:**
+```powershell
+# Clean previous output
+Remove-Item -Path "assets/pdfs" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "dist" -Recurse -Force -ErrorAction SilentlyContinue
+
+# Generate PDFs for all labs
+.\scripts\Generate-Labs.ps1
+
+# Generate PDFs for specific journey only
+.\scripts\Generate-Labs.ps1 -SelectedJourneys @("developer")
+
+# Skip PDFs during rapid iteration (much faster!)
+.\scripts\Generate-Labs.ps1 -SkipPDFs
+```
+
+**Debugging:**
+```bash
+# Check Pandoc version in Docker
+docker-compose exec jekyll-dev pandoc --version
+
+# View PDF generation logs
+docker-compose logs -f jekyll-dev
+
+# Test Pandoc manually
+docker-compose exec jekyll-dev bash
+cd /workspace/labs/agent-builder-web/
+pandoc README.md -o test.html --embed-resources
+```
+
+### Best Practices
+
+**For Lab Authors:**
+1. ✅ Test PDFs locally before pushing to GitHub
+2. ✅ Use relative image paths: `images/screenshot.png` (not absolute)
+3. ✅ Test Mermaid diagrams in both web view and PDF
+4. ✅ Use appropriate callout types for context ([!NOTE], [!WARNING], etc.)
+5. ✅ Keep Mermaid diagrams simple for better PDF rendering
+
+**For Developers:**
+1. ✅ Always match Pandoc versions between local and CI
+2. ✅ Run Pandoc from lab directory for correct image resolution
+3. ✅ Use `--embed-resources` instead of deprecated `--self-contained`
+4. ✅ Test callout preprocessing with indented examples
+5. ✅ Clean `dist/` and `assets/pdfs/` before final testing
+
+**For CI/CD:**
+1. ✅ Pin Pandoc version in GitHub Actions (`pandoc/actions/setup@v1.1.1`)
+2. ✅ Verify all prerequisites (Node.js 18, Puppeteer dependencies)
+3. ✅ Check workflow logs for PDF generation errors
+4. ✅ Test with labs containing all features (callouts, Mermaid, images, code blocks)
+
+### Further Reading
+
+See **[LOCAL_PDF_GENERATION.md](./LOCAL_PDF_GENERATION.md)** for:
+- Complete local PDF generation guide
+- Docker setup instructions
+- Troubleshooting common issues
+- FAQ and best practices
+
+## �💻 Code Syntax Highlighting
 
 ### Jekyll Rouge Integration
 
