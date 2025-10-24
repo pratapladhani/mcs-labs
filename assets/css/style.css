@@ -2067,6 +2067,13 @@ body[data-lab-type="external"] .lab-downloads,
     font-size: var(--font-size-sm, 0.9em);
 }
 
+/* ============================================
+ * CODE BLOCK IMPROVEMENTS
+ * ============================================
+ * Enhanced code block styling for better readability
+ * and consistent overflow handling across devices
+ */
+
 .lab-body pre {
     background: var(--pre-bg);
     border: 1px solid var(--border-color);
@@ -2076,43 +2083,18 @@ body[data-lab-type="external"] .lab-downloads,
     margin-bottom: 1rem;
     font-family: var(--font-family-monospace, 'Consolas', 'Monaco', monospace);
     font-size: var(--font-size-sm, 0.9em);
+    /* Prevents code blocks from overflowing container width on mobile */
     max-width: 100%;
 }
 
 .lab-body pre code {
     background: none;
     padding: 0;
+    /* Preserves code formatting and enables horizontal scroll for long lines
+     * instead of wrapping, which maintains code readability */
     white-space: pre;
     word-wrap: normal;
     overflow-wrap: normal;
-}
-
-/* Collapsible details elements */
-.lab-body details {
-    margin: 1rem 0;
-}
-
-.lab-body details summary {
-    cursor: pointer;
-    font-weight: 600;
-    padding: 0.5rem;
-    background: var(--callout-note-bg, #e3f2fd);
-    border-left: 4px solid var(--callout-note-border, #2196F3);
-    border-radius: 4px;
-    -webkit-user-select: none;
-    user-select: none;
-}
-
-.lab-body details summary:hover {
-    background: var(--callout-note-hover-bg, #bbdefb);
-}
-
-.lab-body details[open] summary {
-    margin-bottom: 0.5rem;
-}
-
-.lab-body details pre {
-    margin-top: 0.5rem;
 }
 
 .lab-body blockquote {
