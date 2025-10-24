@@ -291,7 +291,7 @@ In this section, you'll learn how to create custom prompts that structure agent 
 
 21. Let's execute this prompt to get information on an account. Type `Execute prompt Show Account Details for Fourth Coffee`.
 
-    ![Execute prompt with MCP enabled](images/step17c-mcp-enabled.png)
+    ![Execute prompt with MCP enabled](images/step17b-mcp-disabled.png)
 
     > [!TIP]
     > More information: [Use prompts to make your agent perform specific tasks - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/prompts)
@@ -303,7 +303,7 @@ In this section, you'll learn how to create custom prompts that structure agent 
 
 If you are seeing an issue while running the above prompt, please make sure to enable the Dataverse MCP option under Power Platform Admin Center:
 
-![MCP disabled error](images/step17b-mcp-disabled.png)
+![MCP disabled error](images/step17c-mcp-enabled.png)
 
 Navigate to the **Power Platform admin center** → **Environments** → **Settings** → **Product** → **Features** and check: Dataverse MCP is turned **On**.
 
