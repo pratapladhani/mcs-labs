@@ -45,13 +45,16 @@
 # - Maintains consistency across event pages and navigation
 event_configs:
   bootcamp:
-    title: "⚔️ Bootcamp Journey"
+    title: "⚔️ Architecture Bootcamp"
+    description: "Intensive hands-on bootcamp covering agent building, SharePoint integration, autonomous AI, and DevOps practices."
     config_key: "bootcamp_lab_orders"
   azure-ai-workshop:
-    title: "☁️ Azure AI Workshop"
+    title: "☁️ MCS + Azure AI Workshop"
+    description: "Comprehensive hands-on workshop combining Microsoft Copilot Studio with Azure AI services for building intelligent, enterprise-grade AI solutions."
     config_key: "azure_ai_workshop_lab_orders"
   mcs-in-a-day:
     title: "⚡ MCS in a Day"
+    description: "Fast-track full-day workshop introducing Microsoft Copilot Studio through hands-on labs covering declarative agents, custom agents, and autonomous AI."
     config_key: "mcs_in_a_day_lab_orders"
 
 # =====================================================
