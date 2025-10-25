@@ -6,9 +6,9 @@ Configure Copilot Studio agents to proactively notify users, search contract doc
 
 ## 🧭 Lab Details
 
-| Level | Persona | Duration | Purpose |
-| ----- | ------- | -------- | ------- |
-| 200 | Maker | 60–75 minutes | After completing this lab, participants will be able to configure Copilot Studio agents to proactively notify users when new files are added to Azure Blob Storage, connect Azure AI Search as a knowledge source to enable contextual question-answering over documents, integrate Azure Speech-to-Text services to automatically transcribe audio files, and understand how to combine low-code and Azure AI-based services to extend Copilot Studio functionality end-to-end. |
+| Level | Persona | Duration      | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----- | ------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 200   | Maker   | 60–75 minutes | After completing this lab, participants will be able to configure Copilot Studio agents to proactively notify users when new files are added to Azure Blob Storage, connect Azure AI Search as a knowledge source to enable contextual question-answering over documents, integrate Azure Speech-to-Text services to automatically transcribe audio files, and understand how to combine low-code and Azure AI-based services to extend Copilot Studio functionality end-to-end. |
 
 ---
 
@@ -57,12 +57,12 @@ This lab focuses on closing the gap between basic copilot functionality and ente
 
 ## 🎓 Core Concepts Overview
 
-| Concept | Why it matters |
-|---------|----------------|
-| **Event-driven Copilot Flows** | Enables copilots to react automatically to real-world triggers (like new files in Azure Blob Storage). This bridges the gap between conversational AI and operational workflows, delivering faster user notifications and reducing manual tracking while maintaining enterprise security and compliance. |
-| **Connecting Azure Services to Copilot Studio** | Shows how to extend copilots beyond chat by connecting them securely to Azure resources (Blob Storage, AI Search, Speech). This integration gives copilots access to enterprise data and intelligence while maintaining governance, enabling true digital transformation of business processes. |
-| **Azure AI Search as Knowledge Source** | Demonstrates how to add contextual understanding by letting copilots query and summarize enterprise documents. This makes business data instantly searchable and conversational, improving productivity and decision-making by transforming static documents into interactive knowledge. |
-| **Speech-to-Text Integration** | Introduces real-time AI transcription capabilities so copilots can understand and summarize customer calls or meetings. This adds "hearing" to your Copilot—turning unstructured audio into structured insights for teams, enabling faster follow-ups and better customer service. |
+| Concept                                         | Why it matters                                                                                                                                                                                                                                                                                           |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Event-driven Copilot Flows**                  | Enables copilots to react automatically to real-world triggers (like new files in Azure Blob Storage). This bridges the gap between conversational AI and operational workflows, delivering faster user notifications and reducing manual tracking while maintaining enterprise security and compliance. |
+| **Connecting Azure Services to Copilot Studio** | Shows how to extend copilots beyond chat by connecting them securely to Azure resources (Blob Storage, AI Search, Speech). This integration gives copilots access to enterprise data and intelligence while maintaining governance, enabling true digital transformation of business processes.          |
+| **Azure AI Search as Knowledge Source**         | Demonstrates how to add contextual understanding by letting copilots query and summarize enterprise documents. This makes business data instantly searchable and conversational, improving productivity and decision-making by transforming static documents into interactive knowledge.                 |
+| **Speech-to-Text Integration**                  | Introduces real-time AI transcription capabilities so copilots can understand and summarize customer calls or meetings. This adds "hearing" to your Copilot—turning unstructured audio into structured insights for teams, enabling faster follow-ups and better customer service.                       |
 
 ---
 
@@ -100,10 +100,10 @@ In this lab, you'll transform your Copilot Studio agent into an intelligent, eve
 
 ## 🧩 Use Cases Covered
 
-| Step | Use Case | Value added | Effort |
-|------|----------|-------------|--------|
-| 1 | [Event-Driven Contract Notifications](#-use-case-1-event-driven-contract-notifications) | Automate contract processing with proactive Teams notifications and AI-powered content extraction | 35 min |
-| 2 | [Intelligent Document Search and Audio Transcription](#-use-case-2-intelligent-document-search-and-audio-transcription) | Enable semantic document search and speech-to-text capabilities for comprehensive business intelligence | 30 min |
+| Step | Use Case                                                                                                                | Value added                                                                                             | Effort |
+| ---- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------ |
+| 1    | [Event-Driven Contract Notifications](#-use-case-1-event-driven-contract-notifications)                                 | Automate contract processing with proactive Teams notifications and AI-powered content extraction       | 35 min |
+| 2    | [Intelligent Document Search and Audio Transcription](#-use-case-2-intelligent-document-search-and-audio-transcription) | Enable semantic document search and speech-to-text capabilities for comprehensive business intelligence | 30 min |
 
 ---
 
@@ -115,9 +115,9 @@ In this lab, you'll transform your Copilot Studio agent into an intelligent, eve
 
 Build an intelligent agent flow that automatically detects new contract uploads and sends proactive Teams notifications with AI-extracted key details.
 
-| Use case | Value added | Estimated effort |
-|----------|-------------|------------------|
-| Event-Driven Contract Notifications | Automate contract processing with proactive Teams notifications and AI-powered content extraction | 35 minutes |
+| Use case                            | Value added                                                                                       | Estimated effort |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------- |
+| Event-Driven Contract Notifications | Automate contract processing with proactive Teams notifications and AI-powered content extraction | 35 minutes       |
 
 **Summary of tasks**
 
@@ -168,23 +168,39 @@ Create and configure an event-driven flow that monitors Azure Blob Storage for n
 
 6. Once the connection is setup, use the dropdown to select the **Storage account name** in the container.
 
+![alt text](images/2a6.png)
+
 #### Configure Blob Content Processing
 
 7. Add a new action – **Get Blob Content (V2)** in the Azure Blob Storage actions to the flow.
 
+![alt text](images/2a7.png)
+
 8. Since the connection is already established to blob storage account, you can select the **Storage account name** from the dropdown menu. For the **Blob** field, type `/` and then container name. Then `/` and add the Dynamic content from the trigger node – `body/Name` (Ex: `/{Container Name}/{Dynamic Content}`).
+
+![alt text](images/2a8.png)
 
 9. Add a new action in the flow and select action - **Extract information from Contract** (AI Builder pre-built prompt).
 
+![alt text](images/2a9.png)
+
 10. In the **Extract information from Contract** action parameters, select **Dynamic content** as **File Content** (from Get Blob content node) into **Contract file** field.
+
+![alt text](images/2a10.png)
 
 #### Create Custom AI Prompt for Notifications
 
 11. Add a new action in the flow and select action – **Run a prompt**.
 
+![alt text](images/2a11.png)
+
 12. Click the dropdown in the **Prompt** and then **+New custom prompt** under Prompt parameter to create a new prompt.
 
+![alt text](images/2a12.png)
+
 13. In the new pop-up prompt window, update the prompt name to – **Extract Contract Info**.
+
+![alt text](images/2a13.png)
 
 14. Copy and paste the following in the instructions:
     ```
@@ -196,9 +212,17 @@ Create and configure an event-driven flow that monitors Azure Blob Storage for n
     Date (Effective Date): March 10, 2024
     ```
 
+![alt text](images/2a14a.png)
+
 15. Replace `{ContractInput}` with a new input parameter by clicking **+ Add Content**, select **Text** and name it `ContractInput`. Click **Save**.
 
+![alt text](images/2a15.png)
+
 16. Select the newly created prompt in the dropdown for **Prompt** and pass the dynamic content **Body** (from Extract information from contract node) into **ContractInput**.
+
+![alt text](images/2a16a.png)
+
+![alt text](images/2a16b.png)
 
 > [!TIP]
 > If you do not see the Body from the Extract information from contract node action, you can click "See more" to view all the dynamic content, or use Insert Expression with: `body('Extract_information_from_Contract')`
@@ -212,6 +236,8 @@ Create and configure an event-driven flow that monitors Azure Blob Storage for n
     - **Recipient:** Your lab user account
     - **Message:** Text (Dynamic Content from Run a prompt action)
 
+![alt text](images/2a17.png)
+
 18. Switch to the overview tab and click **edit** to change the name of the flow to – **New Contracts Notification** and select **Save**.
 
 19. Click on **Publish** to Publish the Agent flow.
@@ -219,6 +245,10 @@ Create and configure an event-driven flow that monitors Azure Blob Storage for n
 #### Testing Lab 2A
 
 Open Teams in the browser using your lab credentials and open your Contoso Agent. The proctors will be adding documents to the Azure Blob storage every 5–10 minutes to trigger the agent flow. You should see a proactive notification from your Contoso Agent with key details.
+
+![alt text](images/2atesta.png)
+
+![alt text](images/2atestb.png)
 
 > [!TIP]
 > Try asking for a follow-up question on this contract and the agent does not provide a good answer yet! This is what we will achieve next in Lab 2B.
@@ -255,9 +285,9 @@ Open Teams in the browser using your lab credentials and open your Contoso Agent
 
 Connect Azure AI Search for semantic document search and integrate Speech-to-Text services for comprehensive business intelligence capabilities.
 
-| Use case | Value added | Estimated effort |
-|----------|-------------|------------------|
-| Intelligent Document Search and Audio Transcription | Enable semantic document search and speech-to-text capabilities for comprehensive business intelligence | 30 minutes |
+| Use case                                            | Value added                                                                                             | Estimated effort |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------- |
+| Intelligent Document Search and Audio Transcription | Enable semantic document search and speech-to-text capabilities for comprehensive business intelligence | 30 minutes       |
 
 **Summary of tasks**
 
@@ -271,17 +301,29 @@ In this section, you'll learn how to connect Azure AI Search as a knowledge sour
 
 1. Open **Contoso Agent** and click on **+Add Knowledge** on the overview tab.
 
+![alt text](images/2b1.png)
+
 2. Select **Azure AI Search**.
 
+![alt text](images/2b2.png)
+
 3. Click on **Your connections** and select **Create new connection**.
+
+![alt text](images/2b3.png)
 
 4. Use the provided Endpoint URL and Access Key to connect to Azure AI Search service:
    - **Endpoint URL:** `https://ppcaisearch001.search.windows.net`
    - **Azure AI Search Admin Key:** `[Provided in LAB Environment]`
 
+![alt text](images/2b4.png)
+
 5. Select the available index and select **Add to agent**.
 
+![alt text](images/2b5.png)
+
 6. Once the Azure AI Search service is connected as knowledge source, select it to edit the **Name** and **Description**.
+
+![alt text](images/2b6.png)
 
 7. Update the following and then click **Save**:
    - **Name:** `Contoso Contracts`
@@ -299,22 +341,36 @@ In this section, you'll learn how to connect Azure AI Search as a knowledge sour
      • Governing Law: Specifies applicable legal jurisdiction
      ```
 
+![alt text](images/2b7.png)
+
 8. Go to **Agent Overview** tab and click **Edit** to add additional instruction to the agent instructions, then click **Save**:
    ```
    For Contract related queries, use the Contoso Contracts knowledge source
    ```
 
+![alt text](images/2b8.png)
+
 #### Testing Lab 2B
 
 In your test window, send a message like: `Contract terms and renewal details for Fourth Coffee`
+
+![alt text](images/2btest.png)
 
 #### Lab 2C: Speech-to-Text Integration with Copilot Studio
 
 1. In Copilot Studio, open **Agent Flows**, Select **+New agent flow**.
 
+![alt text](images/2c1a.png)
+
+![alt text](images/2c1b.png)
+
 2. Add a Trigger – **When an agent calls the flow**.
 
+![alt text](images/2c2.png)
+
 3. Add a new action **Create transcription (V3.1)** from Azure Batch Speech-to-text actions.
+
+![alt text](images/2c4.png)
 
 4. Create connection with provided details then click **Create new**:
    - **Connection name:** `SpeechtoTextConnection`
@@ -322,23 +378,35 @@ In your test window, send a message like: `Contract terms and renewal details fo
    - **Account Key:** `[Provided in LAB Environment]`
    - **Region:** `westus`
 
+![alt text](images/2c5.png)
+
 5. Add the following Action parameters for **Create transcription (V3.1)**:
    - **Transcription/locale:** `en-US`
    - **Transcription/displayName:** `Call transcription`
    - **transcription/contentUrls:** (Advanced Parameters) `[Provided in LAB Environment - Audio File URL]`
+
+![alt text](images/2c6.png)
 
 6. Add an **Initialize variable** action with Parameters:
    - **Name:** `TranscriptionID`
    - **Type:** `String`
    - **Value:** `trim(last(split(outputs('Create_transcription_(V3.1)')?['body/self'], '/')))` (Insert expression)
 
+![alt text](images/2c7.png)
+
 7. Add a **Delay** action with Count = 30 and Unit = Second.
 
+![alt text](images/2c8.png)
+
 8. Add a **Get transcriptions list files (V3.1)** from Azure Batch Speech-to-text actions and pass the **TranscriptionID** variable as Dynamic Content.
+
+![alt text](images/2c9.png)
 
 9. Add a **Get transcription file (V3.1)** action with Parameters:
    - **Id:** `variables('TranscriptionID')`
    - **File Id:** `last(split(first(body('Get_transcriptions_list_files_(V3.1)')?['values'])?['self'], '/files/'))` (Insert expression)
+
+![alt text](images/2c10.png)
 
 10. Add an **HTTP** action with:
     - **URI:** `body('Get_transcription_file_(V3.1)')?['links']?['contentUrl']`
@@ -346,23 +414,41 @@ In your test window, send a message like: `Contract terms and renewal details fo
     - **Headers Key:** `Accept`
     - **Headers Value:** `application/json`
 
+![alt text](images/2c11.png)
+
 11. Add a **Compose** action. In the **Inputs** field paste: `body('HTTP')?['combinedRecognizedPhrases']`
+
+![alt text](images/2c12.png)
 
 12. Add an Action - **Respond to the Agent** with a Text output parameter:
     - **Name:** `Transcript`
     - **Value:** `first(outputs('Compose'))?['display']`
 
+![alt text](images/2c13.png)
+
 13. Click on **Save draft** to save the agent flow. Go to **Overview** tab and update the flow name to – **Transcribe Customer Call** and **Publish** the flow.
+
+![alt text](images/2c14.png)
 
 14. Open the **Contoso Agent**, go to **Tools** tab and select **+Add a tool**.
 
+![alt text](images/2c15.png)
+
 15. In the **Add tool** window, Select **Flow** filter and select the newly created **Transcribe Customer Call** flow and add to the agent by selecting **Add to agent** button.
 
+![alt text](images/2c16.png)
+
 16. In the **Contoso Agent Overview** tab, update instructions to direct the agent to this Agent flow for customer call insights. Type `/` and then scroll down and select the **Transcribe Agent Flow**.
+
+![alt text](images/2c17a.png)
+
+![alt text](images/2c17b.png)
 
 #### Testing Lab 2C
 
 In your Agent Test pane, send a message: `Customer call insights`. (If prompted, create the required connection and retry)
+
+![alt text](images/2ctest.png)
 
 ---
 
