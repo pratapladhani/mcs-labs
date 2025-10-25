@@ -142,19 +142,29 @@ Create and configure an event-driven flow that monitors Azure Blob Storage for n
 > [!IMPORTANT]
 > We are required to publish the Agent to Teams and Microsoft 365 Copilot channel so that the agent can message/ping proactively in Teams.
 
+![alt text](images/2a1.png)
+
 2. Select the **Channels** tab and click on **Teams and Microsoft 365 Copilot**, then select **Add channel**.
+
+![alt text](images/2a2.png)
 
 #### Create Event-Driven Agent Flow
 
 3. Select **Flows** and click on **+ New agent flow** to add a new Agent Flow to notify users when new documents are uploaded to blob storage.
 
+![alt text](images/2a3.png)
+
 4. In the designer, select **Add a trigger node** and search for **blob**. Select **When a blob is added or modified (properties only) (V2)** trigger.
+
+![alt text](images/2a4.png)
 
 5. Select **change connection reference** to add a new connection. Provide the following details to connect to Azure Blob Storage account:
    - **Connection name:** `ContractsBlobStorage`
    - **Authentication type:** `Access Key`
    - **Azure Storage Account Name:** `ppccontractblob`
-   - **Azure Storage Account Access Key:** `[PROVIDED IN LAB ENVIRONMENT]`
+   - **Azure Storage Account Access Key:** `[Provided in LAB Environment]`
+
+![alt text](images/2a5.png)
 
 6. Once the connection is setup, use the dropdown to select the **Storage account name** in the container.
 
@@ -266,8 +276,8 @@ In this section, you'll learn how to connect Azure AI Search as a knowledge sour
 3. Click on **Your connections** and select **Create new connection**.
 
 4. Use the provided Endpoint URL and Access Key to connect to Azure AI Search service:
-   - **Endpoint URL:** `[PROVIDED IN LAB ENVIRONMENT]`
-   - **Azure AI Search Admin Key:** `[PROVIDED IN LAB ENVIRONMENT]`
+   - **Endpoint URL:** `https://ppcaisearch001.search.windows.net`
+   - **Azure AI Search Admin Key:** `[Provided in LAB Environment]`
 
 5. Select the available index and select **Add to agent**.
 
@@ -309,13 +319,13 @@ In your test window, send a message like: `Contract terms and renewal details fo
 4. Create connection with provided details then click **Create new**:
    - **Connection name:** `SpeechtoTextConnection`
    - **Auth. Type:** `API Key`
-   - **Account Key:** `[PROVIDED IN LAB ENVIRONMENT]`
+   - **Account Key:** `[Provided in LAB Environment]`
    - **Region:** `westus`
 
 5. Add the following Action parameters for **Create transcription (V3.1)**:
    - **Transcription/locale:** `en-US`
    - **Transcription/displayName:** `Call transcription`
-   - **transcription/contentUrls:** (Advanced Parameters) `[PROVIDED IN LAB ENVIRONMENT - Audio File URL]`
+   - **transcription/contentUrls:** (Advanced Parameters) `[Provided in LAB Environment - Audio File URL]`
 
 6. Add an **Initialize variable** action with Parameters:
    - **Name:** `TranscriptionID`
