@@ -366,11 +366,11 @@ azure_ai_workshop_lab_orders:
 # with Microsoft Copilot Studio, covering declarative agents, custom agents,
 # advanced multi-agent systems, and autonomous agents.
 #
-# Workshop Structure: 5 Labs (~3.5 hours of hands-on)
+# Workshop Structure: 5 Labs (~3 hours of hands-on)
 # - Lab 1: Create simple agents for Microsoft 365 Copilot (30 min)
 # - Lab 2: Create agents for your website (30 min)
 # - Lab 3: Create and deploy an agent to SharePoint (30 min)
-# - Lab 4: Create an advanced employee agent (60 min)
+# - Lab 4: Create an advanced employee agent (30 min)
 # - Lab 5: Create an autonomous agent (30 min)
 mcs_in_a_day_lab_orders:
   # Lab 1: Declarative Agent for M365 Copilot (30 min)
@@ -382,8 +382,8 @@ mcs_in_a_day_lab_orders:
   # Lab 3: Deploy Agent to SharePoint (30 min)
   3: "agent-builder-sharepoint" # Create and deploy an agent to SharePoint
 
-  # Lab 4: Advanced Multi-Agent System (60 min)
-  4: "ask-me-anything" # Create an advanced employee agent
+  # Lab 4: Advanced Multi-Agent System (30 min)
+  4: "ask-me-anything-30-mins" # Create an advanced employee agent (30 min version)
 
   # Lab 5: Autonomous Agent (30 min)
   5: "autonomous-support-agent" # Create an autonomous agent
