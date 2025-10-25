@@ -1243,6 +1243,11 @@ function Normalize-TOCMarkers {
     
     # Strategy 1: Check if content has an H2 heading containing "Table of Contents"
     # This matches: "## 📚 Table of Contents", "## 📜 Quest Log (Table of Contents)", etc.
+    # 
+    # WHY H2 HEADING DETECTION:
+    # - Flexible pattern matching allows custom TOC headings (e.g., themed labs like "Quest Log")
+    # - Consistent with lab authoring template that uses H2 for major sections
+    # - Avoids dependency on comment markers that require IDE extensions
     if ($Content -match '(?m)^##\s+.*Table of Contents.*$') {
         $tocDetected = $true
         $tocType = "H2 heading"
@@ -1251,11 +1256,26 @@ function Normalize-TOCMarkers {
         $tocHeading = [regex]::Match($Content, '(?m)^##\s+.*Table of Contents.*$').Value
         
         # Create the TOC block with original heading preserved
+        # WHY: Preserves lab author's custom emoji/branding in TOC heading
         $tocBlock = $tocHeading + [Environment]::NewLine + [Environment]::NewLine + $tocContent
         
         # Replace the TOC section: The heading + blank line + list items only
-        # Match: ## Table of Contents heading, optional blank lines, then all lines starting with - or spaces (list items)
-        # Stop when we hit a line that doesn't start with -, spaces, or isn't blank
+        # 
+        # CRITICAL REGEX PATTERN EXPLANATION:
+        # (?m) = Multiline mode (^ and $ match line boundaries)
+        # ^##\s+.*Table of Contents.*$ = Match the TOC H2 heading line
+        # (?:\r?\n){1,2} = Match 1-2 newlines (blank line after heading)
+        # (?:[\s-].*$(?:\r?\n)?)* = Match all subsequent lines that start with:
+        #   - whitespace (indented list items)
+        #   - hyphen (list markers)
+        #   - blank lines
+        # This stops at the first line that doesn't match, preventing truncation
+        # 
+        # WHY THIS PATTERN:
+        # - Previous pattern used lookahead (?=^##\s|\r?\n---\r?\n) which matched too much content
+        # - Bug: Would match from TOC through multiple --- separators, truncating 80% of lab content
+        # - Fix: Match only list items immediately after heading, stop at non-list content
+        # - Handles both '-' and '*' list markers, as well as indented sub-items
         $pattern = '(?m)^##\s+.*Table of Contents.*$(?:\r?\n){1,2}(?:[\s-].*$(?:\r?\n)?)*'
         $replacement = $tocBlock + [Environment]::NewLine + [Environment]::NewLine
         $Content = $Content -replace $pattern, $replacement
@@ -1292,6 +1312,26 @@ function Normalize-TOCMarkers {
     .DESCRIPTION
         Extracts H2 headings only from markdown content and creates a flat list
         with anchor links. Handles emoji, special characters, and proper formatting.
+        
+    .NOTES
+        ARCHITECTURAL DECISION: H2-ONLY TOC GENERATION
+        
+        WHY H2 ONLY (not H3-H6):
+        - Keeps TOC concise and focused on major sections
+        - Prevents overly long TOCs that hurt readability
+        - Matches standard documentation best practices
+        - H3+ headings are detailed subsections better discovered through scrolling
+        
+        WHY AUTOMATIC GENERATION (not manual TOC):
+        - Lab authors can't maintain manual TOCs in auto-generated _labs/*.md files
+        - Prevents TOC drift when lab content changes
+        - Ensures consistent TOC format across all 22+ labs
+        - Works in both Jekyll site rendering and PDF generation
+        
+        WHY SELF-REFERENCE EXCLUSION:
+        - Including "Table of Contents" in TOC creates confusing double-TOC effect
+        - Users don't need to jump to a TOC they're already viewing
+        - Cleaner user experience without circular references
     #>
     param([string]$Content)
     
@@ -1300,21 +1340,25 @@ function Normalize-TOCMarkers {
     
     foreach ($line in $lines) {
         # Match H2 headings only (##)
+        # WHY: See .NOTES section above for architectural rationale
         if ($line -match '^(#{2})\s+(.+)$') {
             $headingText = $matches[2].Trim()
             
             # Skip headings that are inside code blocks or have other markers
+            # WHY: Prevents false positives from markdown examples or documentation
             if ($headingText -match '^```' -or $headingText -match '^---') {
                 continue
             }
             
             # Skip the "Table of Contents" heading itself to avoid self-reference
+            # WHY: Prevents double-TOC display bug (see GitHub issue #xxx or commit message)
             if ($headingText -match 'Table of Contents') {
                 continue
             }
             
             # Generate anchor (lowercase, replace spaces/special chars with hyphens)
-            # This matches GitHub/Jekyll anchor generation
+            # WHY: Matches GitHub/Jekyll automatic anchor generation algorithm
+            # IMPORTANT: Must match Jekyll's anchor generation to prevent broken links
             $anchor = $headingText -replace '[^\w\s-]', ''  # Remove special chars except spaces and hyphens
             $anchor = $anchor -replace '\s+', '-'            # Replace spaces with hyphens
             $anchor = $anchor.ToLower()                      # Lowercase

@@ -90,13 +90,21 @@ This document contains essential context for GitHub Copilot when working on the 
 3. **Suggest documentation**: When big features are added, list docs that need updates
 4. **Check comments**: Review code snippets and suggest where comments are needed
 5. **Enforce quality**: Don't just fix issues - explain why and document properly
+6. **BEFORE ANY COMMIT**: Proactively ask "Have we added documentation and comments for this change?"
 
 **BLOCKING Actions (Stop User):**
 
 - ❌ Committing to `main` without going through feature branch
 - ❌ Pushing without local testing
-- ❌ Major features without documentation updates
-- ❌ Code without adequate comments for collaborators
+- ❌ **Major features without documentation updates - STOP and ask first**
+- ❌ **Code without adequate comments for collaborators - STOP and add them first**
+- ❌ Committing without asking about documentation/comments
+
+**CRITICAL: Before ANY git commit command:**
+
+1. Check if code has adequate comments explaining WHY
+2. Check if documentation needs updating (for major features)
+3. If either is missing, STOP and complete them BEFORE committing
 
 **Example Enforcement:**
 
