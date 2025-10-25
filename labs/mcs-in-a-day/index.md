@@ -1,31 +1,31 @@
 ---
 layout: default
-title: MCS + Azure AI Workshop
-description: Comprehensive hands-on workshop combining Microsoft Copilot Studio with Azure AI services for building intelligent, enterprise-grade AI solutions
+title: MCS in a Day
+description: Fast-track full-day workshop introducing Microsoft Copilot Studio through hands-on labs covering declarative agents, custom agents, and autonomous AI
 ---
 
 <!-- 
-🎯 AZURE AI WORKSHOP PAGE: Static structure with dynamic Jekyll templating
+🎯 MCS IN A DAY EVENT PAGE: Static structure with dynamic Jekyll templating
 📝 This page combines curated content with dynamic lab data from lab-config.yml
-🔄 Lab cards are auto-generated from azure_ai_workshop_lab_orders configuration
+🔄 Lab cards are auto-generated from mcs_in_a_day_lab_orders configuration
 -->
 
 {% comment %}
 Load configuration data for dynamic content generation
 {% endcomment %}
 {% assign config_data = site.data.lab-config %}
-{% assign workshop_orders = config_data.azure_ai_workshop_lab_orders %}
+{% assign event_orders = config_data.mcs_in_a_day_lab_orders %}
 {% assign lab_metadata = config_data.lab_metadata %}
 
 {% comment %}
-Calculate workshop statistics dynamically
+Calculate event statistics dynamically
 {% endcomment %}
-{% assign total_labs = workshop_orders.size %}
+{% assign total_labs = event_orders.size %}
 {% assign total_duration = 0 %}
 {% assign min_difficulty = 400 %}
 {% assign max_difficulty = 0 %}
 
-{% for order_pair in workshop_orders %}
+{% for order_pair in event_orders %}
   {% assign lab_id = order_pair[1] %}
   {% for lab_num in lab_metadata %}
     {% assign lab_data = lab_num[1] %}
@@ -48,8 +48,8 @@ Calculate workshop statistics dynamically
 <div class="event-nav">
   <a href="{{ '/labs/' | relative_url }}" class="nav-link">← Back to All Labs</a>
   <div class="event-info">
-    <h1>☁️ MCS + Azure AI Workshop</h1>
-    <p>Comprehensive hands-on workshop combining Microsoft Copilot Studio with Azure AI services for building intelligent, enterprise-grade AI solutions.</p>
+    <h1>⚡ MCS in a Day</h1>
+    <p>Fast-track full-day workshop introducing Microsoft Copilot Studio through hands-on labs covering declarative agents, custom agents, and autonomous AI.</p>
     <div class="event-stats">
       <span>📊 <strong>Difficulty:</strong> Level {{ min_difficulty }} to {{ max_difficulty }}</span>
       <span>⏱️ <strong>Estimated Time:</strong> {{ total_hours }} hours</span>
@@ -59,38 +59,56 @@ Calculate workshop statistics dynamically
 </div>
 
 <div class="event-overview">
-  <h2>🎯 Workshop Overview</h2>
-  <p>This focused hands-on workshop helps you master the integration of Microsoft Copilot Studio with Azure AI services. Through 5 progressive labs, you'll learn to build intelligent agents that leverage live data, Azure AI capabilities, custom models, and enterprise data fabric patterns.</p>
+  <h2>🎯 Event Overview</h2>
+  <p>MCS in a Day is an intensive full-day workshop designed to give you hands-on experience with Microsoft Copilot Studio. From your first declarative agent to advanced autonomous AI systems, you'll build real-world solutions that showcase the power and flexibility of the platform.</p>
   
   <h3>What You'll Learn</h3>
   <ul>
-    <li>🔗 <strong>MCP Data Integration:</strong> Connect agents to live data using Model Context Protocol and Dataverse</li>
-    <li>🎤 <strong>Azure AI Services:</strong> Implement Azure AI Search for document queries and Speech-to-Text for audio transcription</li>
-    <li>🤖 <strong>BYOM Capabilities:</strong> Bring Your Own Model to extend Copilot Studio with custom AI models</li>
-    <li>⚙️ <strong>Custom MCP Servers:</strong> Build and deploy MCP servers for advanced extensibility</li>
-    <li>📊 <strong>Data Fabric Patterns:</strong> Integrate enterprise data fabric for unified data access</li>
+    <li>🤖 <strong>Declarative Agents:</strong> Build your first agents for Microsoft 365 Copilot with zero code</li>
+    <li>🌐 <strong>Custom Agents:</strong> Create agents that connect to websites and SharePoint</li>
+    <li>🔗 <strong>Multi-Agent Systems:</strong> Build advanced employee agents that work together</li>
+    <li>🚀 <strong>Autonomous AI:</strong> Deploy autonomous agents that take proactive actions</li>
+    <li>📊 <strong>Analytics & Governance:</strong> Understand agent analytics, licensing, and deployment best practices</li>
   </ul>
+
+  <h3>Event Schedule</h3>
+  <div class="schedule-overview">
+    <p><strong>Duration:</strong> Full day (9:00 AM - 4:15 PM)</p>
+    <ul>
+      <li>09:00-09:30 | Introductions & Lab Environment Setup</li>
+      <li>09:30-10:30 | Microsoft Copilot Studio 101</li>
+      <li>10:30-11:00 | ☕ Coffee Break</li>
+      <li>11:00-12:30 | Labs 1-3: Declarative & Custom Agents</li>
+      <li>12:30-13:30 | 🍽️ Lunch Break</li>
+      <li>13:30-14:00 | Lab 4: Advanced Employee Agent</li>
+      <li>14:00-14:30 | Agent Analytics & Deployment Fundamentals</li>
+      <li>14:30-15:00 | ☕ Coffee Break</li>
+      <li>15:00-15:30 | Lab 5: Autonomous Agent</li>
+      <li>15:30-16:00 | Licensing & Governance 101</li>
+      <li>16:00-16:15 | Wrap-up and Q&A</li>
+    </ul>
+  </div>
 
   <h3>Prerequisites</h3>
   <ul>
-    <li>✅ Basic understanding of AI concepts and chatbots</li>
-    <li>✅ Access to Microsoft 365 and Azure subscriptions</li>
-    <li>✅ Familiarity with Microsoft Copilot Studio (recommended but not required)</li>
-    <li>✅ Basic knowledge of Azure services (helpful but not mandatory)</li>
+    <li>✅ Basic understanding of AI and chatbot concepts</li>
+    <li>✅ Access to Microsoft 365 subscription (provided in lab environment)</li>
+    <li>✅ No prior Copilot Studio experience required - we'll start from the basics!</li>
+    <li>✅ Laptop with modern web browser (Chrome, Edge, or Firefox recommended)</li>
   </ul>
 
   <h3>Workshop Structure</h3>
-  <p>The workshop consists of 5 hands-on labs designed to build your skills progressively. Each lab includes step-by-step instructions, real-world scenarios, and downloadable resources.</p>
+  <p>The workshop consists of 5 progressive hands-on labs interspersed with instructor-led sessions on theory, best practices, and real-world scenarios. Each lab includes step-by-step instructions and downloadable resources.</p>
 </div>
 
 <div class="event-labs">
 <h2>📚 Workshop Labs</h2>
 <div class="labs-grid">
   {% comment %}
-  Generate lab cards dynamically from azure_ai_workshop_lab_orders
+  Generate lab cards dynamically from mcs_in_a_day_lab_orders
   {% endcomment %}
-  {% for order_pair in workshop_orders %}
-    {% assign workshop_order = order_pair[0] %}
+  {% for order_pair in event_orders %}
+    {% assign event_order = order_pair[0] %}
     {% assign lab_id = order_pair[1] %}
     
     {% comment %}Find lab metadata for this lab{% endcomment %}
@@ -108,9 +126,9 @@ Calculate workshop statistics dynamically
     {% if lab_info %}
   <div class="lab-card">
     <div class="lab-sequence">
-      <span class="sequence-number">{{ workshop_order }}</span>
+      <span class="sequence-number">{{ event_order }}</span>
     </div>
-    <h3><a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?event=azure-ai-workshop">{{ lab_info.title }}</a></h3>
+    <h3><a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?event=mcs-in-a-day">{{ lab_info.title }}</a></h3>
       <p>{{ lab_info.description | default: lab_info.title }}</p>
       <div class="lab-meta">
         <span class="difficulty">{{ lab_info.difficulty | replace: ' (', ' ' | replace: ')', '' }}</span>
@@ -118,7 +136,7 @@ Calculate workshop statistics dynamically
         <span class="section {{ lab_info.section }}">📂 {% case lab_info.section %}{% when 'core_learning_path' %}Core Learning Path{% when 'intermediate_labs' %}Intermediate Labs{% when 'advanced_labs' %}Advanced Labs{% when 'specialized_labs' %}Specialized Labs{% when 'optional_labs' %}Optional Labs{% when 'external_labs' %}External Labs{% else %}{{ lab_info.section | replace: '_', ' ' | capitalize }}{% endcase %}</span>
       </div>
       <div class="lab-actions">
-        <a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?event=azure-ai-workshop" class="btn-primary">Start Lab →</a>
+        <a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?event=mcs-in-a-day" class="btn-primary">Start Lab →</a>
         <a href="{{ '/assets/pdfs/' | relative_url }}{{ lab_id }}.pdf" class="btn-secondary" target="_blank">📄 Download PDF</a>
       </div>
     </div>
@@ -131,9 +149,9 @@ Calculate workshop statistics dynamically
   <h2>📖 Additional Resources</h2>
   <ul>
     <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank">Microsoft Copilot Studio Documentation</a></li>
-    <li><a href="https://learn.microsoft.com/en-us/azure/ai-services/" target="_blank">Azure AI Services Documentation</a></li>
-    <li><a href="https://learn.microsoft.com/en-us/azure/search/" target="_blank">Azure AI Search Documentation</a></li>
-    <li><a href="https://learn.microsoft.com/en-us/azure/ai-services/openai/" target="_blank">Azure OpenAI Service Documentation</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-get-started" target="_blank">Get Started with Copilot Studio</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-autonomous-agents" target="_blank">Autonomous Agents Overview</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/" target="_blank">Microsoft 365 Copilot Extensibility</a></li>
   </ul>
 </div>
 
@@ -145,5 +163,6 @@ Calculate workshop statistics dynamically
     <li>📚 Consult the linked documentation for detailed technical information</li>
     <li>💡 Check the troubleshooting sections in each lab</li>
     <li>🤝 Reach out to your workshop instructor or facilitator</li>
+    <li>💭 Participate in Q&A sessions during breaks and wrap-up</li>
   </ul>
 </div>

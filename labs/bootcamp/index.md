@@ -45,12 +45,12 @@ Calculate bootcamp statistics dynamically
 
 {% assign total_hours = total_duration | divided_by: 60.0 | round: 1 %}
 
-<div class="bootcamp-nav">
+<div class="event-nav">
   <a href="{{ '/labs/' | relative_url }}" class="nav-link">← Back to All Labs</a>
-  <div class="bootcamp-info">
+  <div class="event-info">
     <h1>⚔️ Bootcamp Journey</h1>
     <p>Intensive hands-on bootcamp covering agent building, SharePoint integration, autonomous AI, and DevOps practices.</p>
-    <div class="bootcamp-stats">
+    <div class="event-stats">
       <span>📊 <strong>Difficulty:</strong> Level {{ min_difficulty }} to {{ max_difficulty }}</span>
       <span>⏱️ <strong>Estimated Time:</strong> {{ total_hours }} hours</span>
       <span>📚 <strong>Total Labs:</strong> {{ total_labs }} labs ({{ total_duration }} min)</span>
@@ -58,7 +58,7 @@ Calculate bootcamp statistics dynamically
   </div>
 </div>
 
-<div class="bootcamp-labs">
+<div class="event-labs">
 <div class="labs-grid">
   {% comment %}
   Generate lab cards dynamically from bootcamp_lab_orders
@@ -84,7 +84,7 @@ Calculate bootcamp statistics dynamically
     <div class="lab-sequence">
       <span class="sequence-number">{{ bootcamp_order }}</span>
     </div>
-    <h3><a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?bootcamp=true">{{ lab_info.title }}</a></h3>
+    <h3><a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?event=bootcamp">{{ lab_info.title }}</a></h3>
       <p>{{ lab_info.description | default: lab_info.title }}</p>
       <div class="lab-meta">
         <span class="difficulty">{{ lab_info.difficulty | replace: ' (', ' ' | replace: ')', '' }}</span>
@@ -92,7 +92,7 @@ Calculate bootcamp statistics dynamically
         <span class="section {{ lab_info.section }}">📂 {% case lab_info.section %}{% when 'core_learning_path' %}Core Learning Path{% when 'intermediate_labs' %}Intermediate Labs{% when 'advanced_labs' %}Advanced Labs{% when 'specialized_labs' %}Specialized Labs{% when 'optional_labs' %}Optional Labs{% when 'external_labs' %}External Labs{% else %}{{ lab_info.section | replace: '_', ' ' | capitalize }}{% endcase %}</span>
       </div>
       <div class="lab-actions">
-        <a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?bootcamp=true" class="btn-primary">Start Lab →</a>
+        <a href="{{ '/labs/' | relative_url }}{{ lab_id }}/?event=bootcamp" class="btn-primary">Start Lab →</a>
         <a href="{{ '/assets/pdfs/' | relative_url }}{{ lab_id }}.pdf" class="btn-secondary" target="_blank">📄 Download PDF</a>
       </div>
     </div>

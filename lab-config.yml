@@ -8,24 +8,51 @@
 # JOURNEY SYSTEM:
 # - The 'journeys' section defines journey cards displayed on the homepage
 # - Only journeys listed here will appear as cards on the main page
-# - Bootcamp is intentionally EXCLUDED from this section to prevent homepage display
+# - Events (Bootcamp, Workshops) are intentionally EXCLUDED from homepage display
 #
-# BOOTCAMP CONFIGURATION:
-# - Bootcamp has a dedicated page at /labs/bootcamp/ with special numbering (1a, 1b, 2, 3a, etc.)
-# - bootcamp_lab_orders section defines lab sequence for bootcamp page
-# - Bootcamp navigation link is hardcoded in _layouts/default.html header
-# - labs/?bootcamp=true parameter still works for dynamic filtering
+# EVENT SYSTEM (Bootcamp & Workshops):
+# - Events have dedicated pages with custom numbering and lab sequences
+# - Event configuration: event_configs section centralizes titles and metadata
+# - Event lab orders: <event_name>_lab_orders defines lab sequence per event
+# - Event navigation: Links hardcoded in _layouts/default.html header
+# - Event context: All events use unified ?event=<event-name> parameter
 #
 # LAB ASSIGNMENT SYSTEM:
 # - lab_journeys section assigns individual labs to their respective journeys
 # - Labs can be assigned to multiple journeys for cross-journey visibility
-# - Bootcamp labs are NOT assigned here to prevent homepage appearance
+# - Event labs are NOT assigned here to prevent homepage appearance
 #
 # NAVIGATION ARCHITECTURE:
-# - Homepage: Shows journey cards (excludes bootcamp)
-# - Top Navigation: Home | All Labs | Bootcamp (hardcoded links)
-# - Bootcamp Page: Uses bootcamp_lab_orders for custom sequencing
-# - All Labs Page: Shows all labs regardless of journey assignment
+# - Homepage: Shows journey cards (excludes events)
+# - Top Navigation: Home | All Labs | Bootcamp | Azure AI Workshop | MCS in a Day
+# - Event Pages: Use <event_name>_lab_orders for custom sequencing
+# - All Labs Page: Shows all labs regardless of journey/event assignment
+
+# =====================================================
+# EVENT CONFIGURATIONS - Centralized event metadata
+# =====================================================
+# This section provides metadata for all events (Bootcamp, Workshops, etc.)
+# Used by JavaScript in _layouts/lab.html for dynamic navigation and filtering
+#
+# Event URL Pattern: /labs/<lab-id>/?event=<event-name>
+# JavaScript Detection: Reads ?event= parameter and looks up config_key
+# Lab Ordering: Each event has corresponding <config_key> section below
+#
+# WHY THIS EXISTS:
+# - Single source of truth for event titles and icons
+# - Enables JavaScript to map ?event=bootcamp → bootcamp_lab_orders
+# - Simplifies adding new events (add entry here + create lab_orders section)
+# - Maintains consistency across event pages and navigation
+event_configs:
+  bootcamp:
+    title: "⚔️ Bootcamp Journey"
+    config_key: "bootcamp_lab_orders"
+  azure-ai-workshop:
+    title: "☁️ Azure AI Workshop"
+    config_key: "azure_ai_workshop_lab_orders"
+  mcs-in-a-day:
+    title: "⚡ MCS in a Day"
+    config_key: "mcs_in_a_day_lab_orders"
 
 # =====================================================
 # JOURNEY DEFINITIONS - Learning paths with metadata
@@ -327,6 +354,36 @@ azure_ai_workshop_lab_orders:
 
   # Lab 5: Data Fabric Agent (45 min)
   5: "data-fabric-agent" # Fabric Data Agents with Agent-to-Agent communication
+
+# =====================================================
+# MCS IN A DAY EVENT LAB ORDERING - Specific sequence for MCS in a Day workshop
+# =====================================================
+# This section provides the specific lab numbering used in the MCS in a Day event.
+# This is a full-day workshop (9:00-16:15) designed to provide hands-on experience
+# with Microsoft Copilot Studio, covering declarative agents, custom agents,
+# advanced multi-agent systems, and autonomous agents.
+#
+# Workshop Structure: 5 Labs (~3.5 hours of hands-on)
+# - Lab 1: Create simple agents for Microsoft 365 Copilot (30 min)
+# - Lab 2: Create agents for your website (30 min)
+# - Lab 3: Create and deploy an agent to SharePoint (30 min)
+# - Lab 4: Create an advanced employee agent (60 min)
+# - Lab 5: Create an autonomous agent (30 min)
+mcs_in_a_day_lab_orders:
+  # Lab 1: Declarative Agent for M365 Copilot (30 min)
+  1: "agent-builder-web" # Create simple agents for Microsoft 365 Copilot
+
+  # Lab 2: Custom Agent for Website (30 min)
+  2: "public-website-agent" # Create agents for your website
+
+  # Lab 3: Deploy Agent to SharePoint (30 min)
+  3: "agent-builder-sharepoint" # Create and deploy an agent to SharePoint
+
+  # Lab 4: Advanced Multi-Agent System (60 min)
+  4: "ask-me-anything" # Create an advanced employee agent
+
+  # Lab 5: Autonomous Agent (30 min)
+  5: "autonomous-support-agent" # Create an autonomous agent
 
 # =====================================================
 # LAB ORDERING - Explicit order values for navigation
