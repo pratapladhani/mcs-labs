@@ -23,7 +23,62 @@ This guide ensures consistency across all Microsoft Copilot Studio Labs, regardl
 - Author guidance in HTML comments
 - Tested user experience patterns
 
-### 2. Follow the Two-Use-Case Pattern
+### 2. Table of Contents (Automatically Generated)
+
+**🎯 You DO NOT need to manually maintain the TOC** - it's automatically generated from your H2 headings!
+
+#### How It Works
+
+The PowerShell generation script (`scripts/Generate-Labs.ps1`) automatically:
+1. Detects the `## 📚 Table of Contents` heading in your lab
+2. Scans all H2 headings (`##`) in your lab content
+3. Generates anchor links matching Jekyll's anchor format
+4. Replaces the TOC section with fresh, accurate links
+
+#### What You Need to Do
+
+**In your lab's README.md:**
+```markdown
+## 📚 Table of Contents
+
+<!-- The content here doesn't matter - it will be auto-generated -->
+<!-- You can leave this empty or add placeholder text -->
+```
+
+**That's it!** The generation script handles the rest.
+
+#### Rules & Behavior
+
+- **H2 headings only**: Only `##` headings appear in the TOC (not H3, H4, etc.)
+  - *Why*: Keeps TOCs concise and focused on major sections
+  - *Impact*: Subsections (###) are discoverable through scrolling
+  
+- **Self-reference excluded**: The "Table of Contents" heading itself won't appear in the TOC
+  - *Why*: Prevents confusing double-TOC effect
+  - *Impact*: Users see clean, logical navigation
+
+- **Emoji preserved**: Your custom TOC heading emoji is kept
+  - Example: `## 📚 Table of Contents` or `## 📜 Quest Log (Table of Contents)`
+  
+- **Automatic anchors**: Anchor links match Jekyll/GitHub format
+  - Lowercase, hyphens for spaces, special characters removed
+  - Example: `## 🎯 Summary of Targets` → `#summary-of-targets`
+
+#### Troubleshooting
+
+**Double TOC appearing?**
+- Your manual TOC list might use `*` instead of `-` for bullets
+- Solution: Remove manual list items or switch to `-` bullets
+
+**TOC links broken?**
+- Ensure your H2 headings are properly formatted (`##` with space)
+- Check for unusual characters in heading text
+
+**TOC not updating?**
+- Run `.\scripts\Generate-Labs.ps1 -SkipPDFs` to regenerate
+- Changes to README.md require regeneration to reflect in `_labs/*.md`
+
+### 3. Follow the Two-Use-Case Pattern
 
 All labs must follow this structure:
 - Exactly 2 use cases (no more, no less)
@@ -31,7 +86,7 @@ All labs must follow this structure:
 - Clear value proposition for each
 - Realistic time estimates (tested with actual users)
 
-### 3. Write for Your Audience
+### 4. Write for Your Audience
 
 **Know your persona:**
 - **Maker**: Business users, no-code/low-code focus
