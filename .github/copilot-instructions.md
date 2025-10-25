@@ -40,9 +40,21 @@ This document contains essential context for GitHub Copilot when working on the 
    git push origin main
    ```
 
-5. **Pull Request**: Submit PR from feature branch to upstream repo
+5. **Pull Request**: Submit PR from feature branch to upstream repo using GitHub CLI
    - **Target**: `upstream/main` ← `origin/feature/branch-name`
    - **Purpose**: Contribute changes back to main repository
+   - **Method**: ALWAYS use GitHub CLI (`gh pr create`) - user preference
+   
+   ```powershell
+   # Create PR description file
+   # Create file: pr-body.md with PR description
+   
+   # Create PR using GitHub CLI
+   gh pr create --repo microsoft/mcs-labs --base main --head pratapladhani:feature/branch-name --title "feat: Brief title" --body-file pr-body.md
+   
+   # Clean up
+   Remove-Item pr-body.md
+   ```
 
 ### Quality Gates - Enforce Before Commit
 
