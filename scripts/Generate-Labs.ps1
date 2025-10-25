@@ -1027,7 +1027,7 @@ function New-LocalLabFile {
         $frontMatter = Build-JekyllFrontMatter -Lab $Lab -Order $Order -SectionName $SectionName -LabType $LabType -Description $description
         
         # Process content (remove duplicate titles, normalize formatting)
-        $cleanContent = Get-CleanLabContent -Content $content -Title $Lab.title
+        $cleanContent = Get-CleanLabContent -Content $content -Title $Lab.title -LabId $Lab.id
 
         # Optional markdown detection (fenced code blocks immediately following list items)
         if ($MarkdownDetectOnly) {
@@ -1182,7 +1182,7 @@ function Get-CleanLabContent {
     .SYNOPSIS
         Clean and normalize lab content for Jekyll processing
     #>
-    param($Content, $Title)
+    param($Content, $Title, $LabId = "unknown")
     
     # Clean up content - remove leading/trailing whitespace and normalize newlines
     $cleanContent = $Content.Trim()
@@ -1201,12 +1201,178 @@ function Get-CleanLabContent {
         }
     }
     
+    # Normalize TOC markers to ensure consistency
+    $cleanContent = Normalize-TOCMarkers -Content $cleanContent -LabId $LabId
+    
     # Escape pipes in markdown link text to prevent Kramdown from treating them as table separators
     # Pattern: [text with | pipes](url) -> [text with \| pipes](url)
     # Uses negative lookbehind to avoid double-escaping already escaped pipes
     $cleanContent = $cleanContent -replace '\[([^\]]*(?<!\\))\|([^\]]*)\]\(', '[$1\|$2]('
     
     return $cleanContent
+}
+
+function Normalize-TOCMarkers {
+    <#
+    .SYNOPSIS
+        Generate and insert proper TOC content by parsing markdown headings
+    .DESCRIPTION
+        Detects TOC sections using multiple patterns:
+        1. Any H2 heading containing "Table of Contents" (e.g., "## 📚 Table of Contents")
+        2. Legacy <!-- TOC --> marker format
+        
+        Generates TOC from H2-H6 headings and replaces manual TOC content with
+        auto-generated version. Excludes H1 lab title from TOC.
+        
+        Strategy:
+        - Detect TOC section using flexible pattern matching
+        - Parse all headings from H2 to H6 (excluding H1 lab title)
+        - Generate markdown list with proper indentation and anchor links
+        - Replace manual TOC content with generated version
+    #>
+    param(
+        [string]$Content,
+        [string]$LabId = "unknown"
+    )
+    
+    # Generate TOC content from headings
+    $tocContent = Generate-TOCFromHeadings -Content $Content
+    
+    $tocDetected = $false
+    $tocType = "none"
+    
+    # Strategy 1: Check if content has an H2 heading containing "Table of Contents"
+    # This matches: "## 📚 Table of Contents", "## 📜 Quest Log (Table of Contents)", etc.
+    # 
+    # WHY H2 HEADING DETECTION:
+    # - Flexible pattern matching allows custom TOC headings (e.g., themed labs like "Quest Log")
+    # - Consistent with lab authoring template that uses H2 for major sections
+    # - Avoids dependency on comment markers that require IDE extensions
+    if ($Content -match '(?m)^##\s+.*Table of Contents.*$') {
+        $tocDetected = $true
+        $tocType = "H2 heading"
+        
+        # Find the H2 heading line that contains "Table of Contents"
+        $tocHeading = [regex]::Match($Content, '(?m)^##\s+.*Table of Contents.*$').Value
+        
+        # Create the TOC block with original heading preserved
+        # WHY: Preserves lab author's custom emoji/branding in TOC heading
+        $tocBlock = $tocHeading + [Environment]::NewLine + [Environment]::NewLine + $tocContent
+        
+        # Replace the TOC section: The heading + blank line + list items only
+        # 
+        # CRITICAL REGEX PATTERN EXPLANATION:
+        # (?m) = Multiline mode (^ and $ match line boundaries)
+        # ^##\s+.*Table of Contents.*$ = Match the TOC H2 heading line
+        # (?:\r?\n){1,2} = Match 1-2 newlines (blank line after heading)
+        # (?:[\s-].*$(?:\r?\n)?)* = Match all subsequent lines that start with:
+        #   - whitespace (indented list items)
+        #   - hyphen (list markers)
+        #   - blank lines
+        # This stops at the first line that doesn't match, preventing truncation
+        # 
+        # WHY THIS PATTERN:
+        # - Previous pattern used lookahead (?=^##\s|\r?\n---\r?\n) which matched too much content
+        # - Bug: Would match from TOC through multiple --- separators, truncating 80% of lab content
+        # - Fix: Match only list items immediately after heading, stop at non-list content
+        # - Handles both '-' and '*' list markers, as well as indented sub-items
+        $pattern = '(?m)^##\s+.*Table of Contents.*$(?:\r?\n){1,2}(?:[\s-].*$(?:\r?\n)?)*'
+        $replacement = $tocBlock + [Environment]::NewLine + [Environment]::NewLine
+        $Content = $Content -replace $pattern, $replacement
+        
+        Write-Host "    📋  TOC detected ($tocType): $($tocHeading.Trim())" -ForegroundColor DarkGray
+    }
+    else {
+        # No TOC found - auto-add one after "## 🧭 Lab Details"
+        # Find the "## 🧭 Lab Details" section and insert TOC after it
+        # Look for the Lab Details heading followed by content until the next ## or ---
+        if ($Content -match '(?ms)(^##\s+🧭\s+Lab Details.*?)(?=^##\s|\r?\n---\r?\n)') {
+            $labDetailsSection = $matches[1]
+            
+            # Create new TOC section
+            $tocSection = "---" + [Environment]::NewLine + [Environment]::NewLine +
+            "## 📚 Table of Contents" + [Environment]::NewLine + [Environment]::NewLine +
+            $tocContent + [Environment]::NewLine + [Environment]::NewLine
+            
+            # Insert TOC section after Lab Details section
+            $Content = $Content -replace [regex]::Escape($labDetailsSection), ($labDetailsSection + [Environment]::NewLine + [Environment]::NewLine + $tocSection)
+            
+            Write-Host "    ➕  TOC auto-added after Lab Details section" -ForegroundColor Green
+        }
+        else {
+            Write-Host "    ⚠️  No TOC section and couldn't find Lab Details section in $LabId" -ForegroundColor Yellow
+        }
+    }
+    
+    return $Content
+}function Generate-TOCFromHeadings {
+    <#
+    .SYNOPSIS
+        Parse markdown headings and generate TOC list items
+    .DESCRIPTION
+        Extracts H2 headings only from markdown content and creates a flat list
+        with anchor links. Handles emoji, special characters, and proper formatting.
+        
+    .NOTES
+        ARCHITECTURAL DECISION: H2-ONLY TOC GENERATION
+        
+        WHY H2 ONLY (not H3-H6):
+        - Keeps TOC concise and focused on major sections
+        - Prevents overly long TOCs that hurt readability
+        - Matches standard documentation best practices
+        - H3+ headings are detailed subsections better discovered through scrolling
+        
+        WHY AUTOMATIC GENERATION (not manual TOC):
+        - Lab authors can't maintain manual TOCs in auto-generated _labs/*.md files
+        - Prevents TOC drift when lab content changes
+        - Ensures consistent TOC format across all 22+ labs
+        - Works in both Jekyll site rendering and PDF generation
+        
+        WHY SELF-REFERENCE EXCLUSION:
+        - Including "Table of Contents" in TOC creates confusing double-TOC effect
+        - Users don't need to jump to a TOC they're already viewing
+        - Cleaner user experience without circular references
+    #>
+    param([string]$Content)
+    
+    $lines = $Content -split "`n"
+    $tocLines = @()
+    
+    foreach ($line in $lines) {
+        # Match H2 headings only (##)
+        # WHY: See .NOTES section above for architectural rationale
+        if ($line -match '^(#{2})\s+(.+)$') {
+            $headingText = $matches[2].Trim()
+            
+            # Skip headings that are inside code blocks or have other markers
+            # WHY: Prevents false positives from markdown examples or documentation
+            if ($headingText -match '^```' -or $headingText -match '^---') {
+                continue
+            }
+            
+            # Skip the "Table of Contents" heading itself to avoid self-reference
+            # WHY: Prevents double-TOC display bug (see GitHub issue #xxx or commit message)
+            if ($headingText -match 'Table of Contents') {
+                continue
+            }
+            
+            # Generate anchor (lowercase, replace spaces/special chars with hyphens)
+            # WHY: Matches GitHub/Jekyll automatic anchor generation algorithm
+            # IMPORTANT: Must match Jekyll's anchor generation to prevent broken links
+            $anchor = $headingText -replace '[^\w\s-]', ''  # Remove special chars except spaces and hyphens
+            $anchor = $anchor -replace '\s+', '-'            # Replace spaces with hyphens
+            $anchor = $anchor.ToLower()                      # Lowercase
+            $anchor = $anchor -replace '-+', '-'             # Collapse multiple hyphens
+            $anchor = $anchor.Trim('-')                      # Remove leading/trailing hyphens
+            
+            # Create TOC entry (no indentation for H2 only)
+            $tocEntry = "- [$headingText](#$anchor)"
+            $tocLines += $tocEntry
+        }
+    }
+    
+    # Join all TOC lines
+    return ($tocLines -join [Environment]::NewLine)
 }
 
 function Test-MarkdownListCodeBlocks {

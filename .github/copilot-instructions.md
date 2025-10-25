@@ -40,9 +40,22 @@ This document contains essential context for GitHub Copilot when working on the 
    git push origin main
    ```
 
-5. **Pull Request**: Submit PR from feature branch to upstream repo
+5. **Pull Request**: Submit PR from feature branch to upstream repo using GitHub CLI
+
    - **Target**: `upstream/main` ← `origin/feature/branch-name`
    - **Purpose**: Contribute changes back to main repository
+   - **Method**: ALWAYS use GitHub CLI (`gh pr create`) - user preference
+
+   ```powershell
+   # Create PR description file
+   # Create file: pr-body.md with PR description
+
+   # Create PR using GitHub CLI
+   gh pr create --repo microsoft/mcs-labs --base main --head pratapladhani:feature/branch-name --title "feat: Brief title" --body-file pr-body.md
+
+   # Clean up
+   Remove-Item pr-body.md
+   ```
 
 ### Quality Gates - Enforce Before Commit
 
@@ -77,13 +90,21 @@ This document contains essential context for GitHub Copilot when working on the 
 3. **Suggest documentation**: When big features are added, list docs that need updates
 4. **Check comments**: Review code snippets and suggest where comments are needed
 5. **Enforce quality**: Don't just fix issues - explain why and document properly
+6. **BEFORE ANY COMMIT**: Proactively ask "Have we added documentation and comments for this change?"
 
 **BLOCKING Actions (Stop User):**
 
 - ❌ Committing to `main` without going through feature branch
 - ❌ Pushing without local testing
-- ❌ Major features without documentation updates
-- ❌ Code without adequate comments for collaborators
+- ❌ **Major features without documentation updates - STOP and ask first**
+- ❌ **Code without adequate comments for collaborators - STOP and add them first**
+- ❌ Committing without asking about documentation/comments
+
+**CRITICAL: Before ANY git commit command:**
+
+1. Check if code has adequate comments explaining WHY
+2. Check if documentation needs updating (for major features)
+3. If either is missing, STOP and complete them BEFORE committing
 
 **Example Enforcement:**
 
