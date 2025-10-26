@@ -149,7 +149,7 @@ Create Nova AI with custom instructions and Wikipedia knowledge integration usin
 
 2. Make sure you're in the correct environment by looking at the top right corner. In these labs, the environment name should start by **'DEV - '**.
 
-2. Go to **Solutions** (under the `...` menu in the left-hand bar navigation). If you completed the setup lab, select the solution you had created. If you don't have a solution, create a new one. 
+2. Go to **Solutions** (under the `...` menu in the left-hand bar navigation). If you already have a solution, select it. If you don't have a solution, create a new one with a new publisher.
 
 3. Once in your solution, select **+ New** and choose **Agent** > **Agent**.
 
