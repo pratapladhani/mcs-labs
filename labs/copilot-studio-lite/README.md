@@ -8,7 +8,7 @@ Master agent creation from basic web-grounded assistants to advanced SharePoint-
 
 | Level | Persona | Duration | Purpose |
 | ----- | ------- | -------- | ------- |
-| 100-200 | Maker (Basic to Intermediate) | 40 minutes | After completing this lab, attendees will be able to create progressively sophisticated Copilot agents, starting with simple web-based knowledge sources, advancing to SharePoint integration, and mastering advanced AI capabilities like code interpretation, data analysis, and image generation. |
+| 100-200 | Maker (Basic to Intermediate) | 30 minutes | After completing this lab, attendees will be able to create progressively sophisticated Copilot agents, starting with simple web-based knowledge sources, advancing to SharePoint integration, and mastering advanced AI capabilities like code interpretation, data analysis, and image generation. |
 
 ---
 
@@ -43,7 +43,7 @@ Think of building agents like teaching a new team member:
 - "We want AI assistance grounded in our actual business documents, not generic responses"
 - "We need professional visuals for presentations but don't have design resources"
 
-**This 40-minute investment will teach you skills you'll use repeatedly** to create agents for any department or use case.
+**This 30-minute investment will teach you skills you'll use repeatedly** to create agents for any department or use case.
 
 ---
 
@@ -62,8 +62,8 @@ The progressive approach ensures you understand core concepts before adding comp
 | Concept | Why it matters |
 |---------|----------------|
 | **Agent** | A customized digital assistant that can answer questions, retrieve information, and guide users through tasks based on configured instructions, prompts, and knowledge sources. Understanding agents is fundamental to automating knowledge work. |
-| **Microsoft 365 Copilot vs. Copilot Chat** | Microsoft 365 Copilot ($30/user/month) is grounded in your organization's data (emails, meetings, documents) while Copilot Chat uses public web data by default. Knowing which to use determines your agent's capabilities and data access. |
-| **Declarative Agent** | A simple type of Copilot agent built through instructions, prompts, and knowledge sources without coding. Perfect for most business use cases where you need to scope behavior and ground responses in specific data. |
+| **Microsoft 365 Copilot vs. Copilot Chat** | Microsoft 365 Copilot ($30/user/month) is grounded in your organization's data (emails, meetings, documents) while Copilot Chat comes for free with select [Microsoft 365, Office 365, and Microsoft Teams plans](https://learn.microsoft.com/en-us/copilot/manage#microsoft-365--chat-eligibility) and uses public web data by default. Knowing which to use determines your agent's capabilities and data access. Copilot Chat can be extended with some premium capabilities with a pay-as-you-go subscription and/or with Copilot Credits (pre-purchased capacity) |
+| **Declarative Agent** | A simple type of Copilot agent built through instructions, prompts, and knowledge sources. Perfect for most business use cases where you need to scope behavior and ground responses in specific data. |
 | **Grounding** | Anchoring agent responses to specific data sources (websites, SharePoint, files) to ensure accuracy and minimize hallucinations. This is what makes your agent trustworthy and business-ready. |
 | **Code Interpreter** | An advanced feature that writes and executes code in real-time to analyze data, generate charts, and perform calculations. Transforms your agent from information retrieval to data analysis powerhouse. |
 | **Image Generator** | AI capability that creates original images from text descriptions, useful for creating presentation visuals, badges, diagrams, and marketing materials without design skills. |
@@ -107,8 +107,8 @@ In this lab, you'll progress from basic agent creation to advanced AI capabiliti
 
 | Step | Use Case | Value added | Effort |
 |------|----------|-------------|--------|
-| 1 | [Create a web-based learning assistant](#-use-case-1-create-a-web-based-learning-assistant) | Build foundational skills by creating an instructional agent grounded in trusted documentation | 20 min |
-| 2 | [Build an advanced SharePoint-integrated sales assistant](#-use-case-2-build-an-advanced-sharepoint-integrated-sales-assistant) | Master advanced features including SharePoint integration, code interpretation, and image generation for business intelligence | 20 min |
+| 1 | [Create a web-based learning assistant](#-use-case-1-create-a-web-based-learning-assistant) | Build foundational skills by creating an instructional agent grounded in trusted documentation | 15 min |
+| 2 | [Build an advanced SharePoint-integrated sales assistant](#-use-case-2-build-an-advanced-sharepoint-integrated-sales-assistant) | Master advanced features including SharePoint integration, code interpretation, and image generation for business intelligence | 15 min |
 
 ---
 
@@ -122,7 +122,7 @@ Build your first Copilot agent that helps users learn about Microsoft Copilot ca
 
 | Use case | Value added | Estimated effort |
 |----------|-------------|------------------|
-| Create a web-based learning assistant | Build foundational skills by creating an instructional agent grounded in trusted documentation | 20 minutes |
+| Create a web-based learning assistant | Build foundational skills by creating an instructional agent grounded in trusted documentation | 15 minutes |
 
 **Summary of tasks**
 
@@ -141,7 +141,8 @@ Create, configure, and test a web-based Copilot agent that serves as a knowledge
 #### Navigate to Microsoft 365 Copilot
 
 1. Navigate to [Microsoft 365 Copilot home page](https://m365.cloud.microsoft/chat/?auth=2&home=1)  
-   _Note: if you see 'coming soon' try again in a few minutes._
+
+<!-- 
 
 > [!IMPORTANT]
 > - If the Microsoft 365 Copilot URL is `https://copilot.cloud.microsoft/` or if the Copilot pane is on the right-hand side, this means you're on the **wrong** page.
@@ -160,24 +161,29 @@ Create, configure, and test a web-based Copilot agent that serves as a knowledge
 >
 >   ![alt text](images/logged-in-user.png)
 
+ -->
+
 2. Go to the **Chat** tab.
 
 > [!TIP]  
-> Microsoft 365 Copilot and Copilot Chat are meant for internal, employee experiences – B2E (Business-to-Employee). When a user has access to both, they see a toggle in the user interface to switch between the Work (Microsoft 365 Copilot) and Web experiences (Copilot Chat).
+> Both Microsoft 365 Copilot and Copilot Chat are designed for internal, employee-facing (B2E) experiences.  
+>  
+> - Users who have **only Copilot Chat** will **not see any toggle** in the interface – this is expected.  
+> - Users who have **both** Microsoft 365 Copilot and Copilot Chat will see a **toggle** that lets them switch between the **Work** (Microsoft 365 Copilot) and **Web** (Copilot Chat) experiences.  
 >
 > ![alt text](images/m365-copilot.png)
 >  
 > **Microsoft 365 Copilot** is a per-user license ($30/user/mo.) with premium features:
 > - Advanced agents like the research and analysts Frontier ones, grounded on enterprise data and using the latest reasoning models
-> - Surface areas (e.g., integration with Office applications)
-> - Knowledge sources (e.g., your enterprise data from Outlook, Teams or SharePoint)
+> - Knowledge sources (e.g., your enterprise data from Outlook, Teams, SharePoint, or Copilot connectors)
 >  
-> **Copilot Chat** can be seen as a free enterprise equivalent to ChatGPT. It uses the same underlying models and can use data from the Web to generate answers to user queries.
+> **Copilot Chat** is the enterprise version of ChatGPT included with many Microsoft 365 licenses at no extra cost. It uses the same underlying models and can access web data to generate answers.
 > - Copilot Chat can leverage premium capabilities like organization-tenant grounding for answers when tied to a pay-as-you-go Azure subscription.
 >  
-> Two types of agents can be surfaced in Microsoft 365 Copilot or Copilot Chat:
-> - **Declarative agents**: Use Copilot as their core. They simply scope their tasks with specific instructions, pre-defined prompts, knowledge sources, and actions. Ideal for simple scoped knowledge retrieval or task-specific use-cases.
-> - **Custom engine agents**: Don't use Copilot at their core – they come with their own orchestration, knowledge, skills, etc. and they can run on a different platform than Microsoft Copilot. Ideal for more advanced or complex use-cases.
+> Two types of agents can appear in Microsoft 365 Copilot or Copilot Chat:  
+>  
+> - **Declarative agents**: These rely on Copilot’s built-in orchestration, search, and reasoning. They define their behavior through instructions, pre-defined prompts, knowledge sources, and actions. Ideal for scoped knowledge retrieval or task-specific use cases.  
+> - **Custom engine agents**: These do **not** use Copilot as their core engine. They include their own orchestration, knowledge, and skills, and may run on a different platform than Microsoft Copilot. Ideal for advanced or complex scenarios.
 
 #### Test the basic Copilot experience
 
@@ -186,19 +192,19 @@ Create, configure, and test a web-based Copilot agent that serves as a knowledge
 4. Test the basic experience by typing:
 
 ```
-Upcoming features in Microsoft Copilot Studio roadmap
+What are new features in the Microsoft Copilot Studio roadmap?
 ```
 
 ![alt text](images/simple-copilot-search.png)
 
-5. Select **Start a new chat** to reset.
+5. Select **Start a new chat** (top right icon) to reset. Notice how your history of converations is saved on the left-hand side.
 
 #### Create your learning assistant agent
 
 6. On the side pane, expand **Agents** and select **Create agent**  
 
 > [!TIP]  
-> If you don't see **Create agent**, try refreshing with Ctrl + F5. Your user account may still be provisioning services.
+> If you don't see **Create agent**, try refreshing with Ctrl + F5.
 
 7. Notice that you can explore existing **templates**. But for this lab, when prompted to **describe the agent**, reply with:
 
@@ -254,10 +260,16 @@ Yes, add https://learn.microsoft.com/en-us/microsoft-365-copilot/ and https://le
 What are the differences between Microsoft 365 Copilot and Copilot Chat?
 ```
 
+<!-- 
+
 > [!TIP]
 > If your training tenant is getting throttled because of lack of AI capacity (to prioritize production workloads), you may see a message like this: `Sorry, I wasn't able to respond to that. Is there something else I can help with?`. It's OK, **just test your agent while configuring it**, and not after you created it. You may try again later.
 >
 > ![alt text](images/copilot-error.png)
+
+ -->
+
+![alt text](images/declarative-agent-test.png)
 
 > [!IMPORTANT]  
 > If you need to update a declarative agent, select `...` next to the agent name and select **Edit**, or go to **Create agent** then navigate to **My agents** in the breadcrumbs.
@@ -323,6 +335,8 @@ Build a sophisticated Sales Admin Assistant that integrates organizational data 
 > [!IMPORTANT]
 > The URL of the SharePoint site is available in **Lab Resources** (specific per training).
 
+![alt text](images/sales-docs.png)
+
 2. Locate the following sample files:
    - **Sales Excel file**: A spreadsheet containing sales data with columns for dates, product lines, revenue, and quarters
    - **Sales policy document**: A Word document containing sales policies, procedures, and guidelines
@@ -361,6 +375,8 @@ You are a Sales Admin Assistant. Your job is to help sales managers track revenu
     - Select both the **Sales Policy Document** and **Sales Excel** file
     - You will see them being added as SharePoint documents
   
+![alt text](images/add-files.png)
+
 > [!TIP]
 > - If you can't see the files you just opened, an alternative approach is to **paste** and **add** the SharePoint URL of the Sales folder.
 > - Another alternative approach is to **download** the files locally and **upload** them to your agent.
@@ -371,13 +387,18 @@ You are a Sales Admin Assistant. Your job is to help sales managers track revenu
     - **Code interpreter** (for data analysis and chart generation)
     - **Image generator** (for creating visual content)
 
-> [!TIP]
-> Notice how you can also explore additional **knowledge** capabilities:
-> - All **Websites** (or specific websites)
-> - All **SharePoint** data (or specific files or sites)
-> - All **Teams** data (or data from specific group chats, meetings, or channels)
-> - Your **Emails**
-> - Knowledge sources enabled by your organization at the tenant level, through **Copilot Connectors** (e.g., ServiceNow)
+![alt text](images/configured-sources-and-settings.png)
+
+> [!TIP]  
+> You can explore additional **knowledge** capabilities:  
+> - All **websites** (or specific ones)  
+> - All **SharePoint** data (or specific files or sites)  
+> - Organization-wide knowledge sources enabled through **Copilot Connectors** (e.g., ServiceNow)  
+>  
+> If your account has a **Microsoft 365 Copilot** license, you can also access:  
+> - **My Teams chats and meetings**  
+> - **My emails**
+
 
 #### Finalize and create
 
@@ -400,6 +421,8 @@ What are the key guidelines in our sales policy regarding customer discounts?
 
 16. Verify the agent references your SharePoint policy document and provides accurate information.
 
+![alt text](images/sales-policy-question.png)
+
 #### Test code interpreter with data analysis
 
 17. **Start a new chat** and test the **code interpreter** capability with a data analysis request:
@@ -412,8 +435,6 @@ How are sales trending for home appliances?
 
 ![alt text](images/sales-data-analysis.png)
 
-![alt text](images/code-interpreter.png)
-
 19. **Observe** how the agent:
     - Accesses your Excel data
     - Uses code interpreter to process the data
@@ -425,7 +446,7 @@ How are sales trending for home appliances?
 20. **Start a new chat** and test the **image generation** capability with a relevant request:
 
 ```
-Design a professional badge for the first place winner of our 2026 sales contest. It should look modern and premium, with gold colors, the text '1st Place – Sales Contest 2026', and a ribbon or trophy element.
+Design a professional badge for the first place winner of our sales contest. It should look modern and premium, with gold colors, the text '1st Place – Sales Contest', and a ribbon or trophy element.
 ```
 
 ![alt text](images/image-generator.png)
