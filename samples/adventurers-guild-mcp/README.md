@@ -42,27 +42,26 @@ curl -sL https://aka.ms/DevTunnelCliInstall | bash
 
    You'll see the Guild Hall welcome message:
    ```
-   ╔═══════════════════════════════════════════════════════════════════╗
-   ║                                                                   ║
-   ║   ⚔️  THE ADVENTURERS' GUILD - MCP SERVER  ⚔️                     ║
-   ║                                                                   ║
-   ║   🏰 Guild Hall Status: OPEN FOR BUSINESS                        ║
-   ║   🌐 Portal Address: http://localhost:3000/mcp                    ║
-   ║   📜 Protocol: Model Context Protocol (Streamable HTTP)          ║
-   ║                                                                   ║
-   ║   Available Services:                                            ║
-   ║   • 📋 Quest Board (list_quests)                                 ║
-   ║   • 👥 Party Roster (parties)                                    ║
-   ║   • 💰 Treasury Vault (chest) - Auth Required                    ║
-   ║   • 🤝 Party Hiring (hire_party)                                 ║
-   ║   • 🏛️  Guild Hall Overview (guild://guildhall)                  ║
-   ║                                                                   ║
-   ║   Guild Ranks: Novice → Adept → Veteran → Mythic               ║
-   ║                                                                   ║
-   ║   "Fortune favors the bold, but wisdom favors the prepared."     ║
-   ║   - Guild Master Aldric Ironquill                                ║
-   ║                                                                   ║
-   ╚═══════════════════════════════════════════════════════════════════╝
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ⚔️  THE ADVENTURERS' GUILD – MCP SERVER ⚔️
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   🏰 Guild Hall Status: OPEN FOR BUSINESS
+   🌐 Portal Address: http://localhost:3000/mcp
+   📜 Protocol: Model Context Protocol (Streamable HTTP)
+
+   Available Services:
+     📜 Quest Board (list_quests)
+     👥 Party Roster (parties)
+     💰 Treasury Vault (chest) – Auth Required
+     🤝 Party Hiring (hire_party)
+
+   Guild Ranks: Novice → Adept → Veteran → Mythic
+
+   "Fortune favors the bold, but wisdom favors the prepared."
+   — Guild Master Aldric Ironquill
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
    🎲 The tavern is bustling with adventurers...
    🔥 The hearth is warm and inviting...
@@ -144,13 +143,6 @@ Hire a party for a quest. Validates:
   "party_id": "p1"
 }
 ```
-
----
-
-## Resources
-
-### `guild://guildhall`
-A rich DM-style narrative describing the Adventurers' Guild Hall, including the Quest Board, Party Roster, Treasury, and guild rules.
 
 ---
 
