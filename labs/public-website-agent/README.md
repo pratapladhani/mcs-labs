@@ -266,7 +266,7 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 
 6. Go to the **Tools** tab and choose **+ Add a tool**.
 
-7. Search for `MSN Weather` and select **Get current weather** action.
+7. Search for `MSN Weather` and select **Get current weather** action. Configure a connection if one doesn't already exist.
 
 8. Select **Add and configure**.
 
