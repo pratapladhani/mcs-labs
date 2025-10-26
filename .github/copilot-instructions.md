@@ -188,6 +188,35 @@ before we implement. [presents detailed plan] Does this approach work for you?"
 3. Run `.\scripts\Generate-Labs.ps1 -SkipPDFs`
 4. Script generates all `_labs/*.md` and index files
 
+**⚠️ CRITICAL: When adding a NEW LAB:**
+
+1. **Create lab folder**: `labs/your-lab-name/` with `README.md` and `images/`
+2. **Update lab-config.yml** (MANDATORY - 5 sections to update):
+   - `lab_metadata`: Add entry with id, title, difficulty, duration, section
+   - `lab_orders`: Assign display order number (check existing numbers to avoid conflicts)
+   - `lab_journeys`: Assign to one or more journeys (quick-start, business-user, developer, autonomous-ai)
+   - Event-specific orders: Add to `bootcamp_lab_orders`, `azure_ai_workshop_lab_orders`, `mcs_in_a_day_lab_orders` if applicable
+3. **Run generation**: `.\scripts\Generate-Labs.ps1 -SkipPDFs` (automatically runs config audit first)
+4. **Test locally**: `docker-compose up -d` and verify at http://localhost:4000/mcs-labs/
+5. **Generate PDFs**: `.\scripts\Generate-Labs.ps1 -GeneratePDFs` (before committing)
+
+**Built-in Safety**: Generate-Labs.ps1 automatically runs a configuration audit before generation. It will fail fast if:
+
+- Lab folders exist without config entries
+- Config entries exist without lab folders (except external labs)
+- This prevents accidental generation with incomplete configuration
+
+**Common mistake**: Adding lab folder without updating lab-config.yml → Caught by automated audit!
+
+**Verification checklist after adding new lab:**
+
+- ✅ Lab appears in "All Labs" page
+- ✅ Lab appears in assigned journey(s)
+- ✅ Lab has correct metadata (title, duration, difficulty)
+- ✅ Lab navigation works (prev/next buttons)
+- ✅ PDF generates successfully
+- ✅ Lab appears in event pages if assigned to events
+
 ### 4. Local/CI Parity - Test Before Push (ADR-006)
 
 **CRITICAL**: Always test PDFs locally before pushing:

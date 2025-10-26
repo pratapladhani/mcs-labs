@@ -5,6 +5,15 @@
 # IMPORTANT CONFIGURATION NOTES:
 # =================================
 #
+# ⚠️ CRITICAL: When adding a NEW LAB to the labs/ folder:
+# 1. Create the lab folder and README.md in labs/
+# 2. Add an entry to lab_metadata section (assign a number and metadata)
+# 3. Add an entry to lab_orders section (set the display order)
+# 4. Add to lab_journeys section (assign to one or more journeys)
+# 5. Add to event-specific lab_orders if needed (bootcamp, workshop, etc.)
+# 6. Run Generate-Labs.ps1 to generate the Jekyll files
+# 7. Test locally before committing
+#
 # JOURNEY SYSTEM:
 # - The 'journeys' section defines journey cards displayed on the homepage
 # - Only journeys listed here will appear as cards on the main page
@@ -179,6 +188,13 @@ lab_metadata:
     title: "Proactive Contract Alerts in Teams with Azure AI Search and Speech-to-Text"
     difficulty: "Intermediate (Level 200)"
     duration: 70
+    section: "core_learning_path"
+
+  6:
+    id: "copilot-studio-lite"
+    title: "Build Progressive AI Assistants with Copilot Studio Lite in Microsoft 365 Copilot"
+    difficulty: "Beginner to Intermediate (Level 100-200)"
+    duration: 40
     section: "core_learning_path"
 
   # === INTERMEDIATE LABS (11-20) ===
@@ -366,27 +382,27 @@ azure_ai_workshop_lab_orders:
 # with Microsoft Copilot Studio, covering declarative agents, custom agents,
 # advanced multi-agent systems, and autonomous agents.
 #
-# Workshop Structure: 5 Labs (~3.5 hours of hands-on)
-# - Lab 1: Create simple agents for Microsoft 365 Copilot (30 min)
-# - Lab 2: Create agents for your website (30 min)
-# - Lab 3: Create and deploy an agent to SharePoint (30 min)
-# - Lab 4: Create an advanced employee agent (60 min)
-# - Lab 5: Create an autonomous agent (30 min)
+# Workshop Structure: 5 Labs (135 minutes / ~2.25 hours)
+# - Lab 1: Build Progressive AI Assistants with Copilot Studio Lite (40 min)
+# - Lab 2: Give your public website chatbot a brain and make it an agent (25 min)
+# - Lab 3: Create a Monthly Business Review (MBR) Agent (20 min)
+# - Lab 4: Create an 'Ask me anything' agent for your employees (30 min)
+# - Lab 5: Autonomous Support Agent - Unlock productivity with AI automation (20 min)
 mcs_in_a_day_lab_orders:
-  # Lab 1: Declarative Agent for M365 Copilot (30 min)
-  1: "agent-builder-web" # Create simple agents for Microsoft 365 Copilot
+  # Lab 1: Build Progressive AI Assistants with Copilot Studio Lite (15 min)
+  1: "copilot-studio-lite" # Build Progressive AI Assistants with Copilot Studio Lite in M365 Copilot
 
-  # Lab 2: Custom Agent for Website (30 min)
-  2: "public-website-agent" # Create agents for your website
+  # Lab 2: Custom Agent for Website (25 min)
+  2: "public-website-agent" # Give your public website chatbot a brain and make it an agent
 
-  # Lab 3: Deploy Agent to SharePoint (30 min)
-  3: "agent-builder-sharepoint" # Create and deploy an agent to SharePoint
+  # Lab 3: MBR Agent (20 min)
+  3: "mbr-prep-sharepoint-agent" # Create a Monthly Business Review (MBR) Agent
 
-  # Lab 4: Advanced Multi-Agent System (60 min)
-  4: "ask-me-anything" # Create an advanced employee agent
+  # Lab 4: Ask Me Anything Agent (30 min)
+  4: "ask-me-anything-30-mins" # Create an 'Ask me anything' agent for your employees (30 min version)
 
-  # Lab 5: Autonomous Agent (30 min)
-  5: "autonomous-support-agent" # Create an autonomous agent
+  # Lab 5: Autonomous Support Agent (20 min)
+  5: "autonomous-support-agent" # Autonomous Support Agent - Unlock new levels of productivity with AI automation
 
 # =====================================================
 # LAB ORDERING - Explicit order values for navigation
@@ -400,6 +416,7 @@ lab_orders:
   public-website-agent: 2
   mbr-prep-sharepoint-agent: 3
   standard-orchestrator: 4
+  copilot-studio-lite: 5
 
   # Intermediate Labs (11-20) - Building on basics
   setup-for-success: 11
