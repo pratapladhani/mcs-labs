@@ -455,112 +455,6 @@ server.tool(
 
 /**
  * ──────────────────────────────────────────────────────────────────────────────
- * RESOURCES: Expose game data as MCP resources
- * ──────────────────────────────────────────────────────────────────────────────
- */
-
-// Register resource: Guildhall Overview (DM-style narrative) - purely descriptive, no data
-server.resource(
-  "Guild Hall Overview",
-  "guild://guildhall",
-  {
-    title: "The Adventurers' Guild Hall",
-    description: "A detailed DM-style description of the Guild Hall and all its features",
-    mimeType: "text/markdown"
-  },
-  async () => {
-    const narrative = `# 🏰 The Adventurers' Guild Hall
-
-*You push open the heavy oak doors and step into the bustling heart of the Adventurers' Guild. The air smells of old parchment, leather, and the faint tang of ale from the common room. Sunlight streams through stained glass windows depicting legendary heroes of ages past, casting colorful patterns across worn stone floors.*
-
-*The hall is alive with activity. Grizzled veterans swap war stories over mugs of ale, fresh-faced novices nervously check their gear, and a group of dwarves in the corner argue loudly about the proper way to sharpen a battle-axe.*
-
----
-
-## 📜 The Quest Board
-
-*To your left, a massive corkboard dominates the wall, covered in yellowed parchments held by rusty tacks. Each notice bears wax seals, hastily scrawled details, and the occasional bloodstain. A grizzled dwarf with a pipe stands nearby, pointing at various postings with a gnarled finger.*
-
-**"Aye, that's the Quest Board,"** *he grumbles.* **"Been standing here thirty years, watching heroes take on everything from rat infestations to dragon negotiations. Some come back rich. Some don't come back at all. The board updates daily—easy coin for vermin control, good pay for escort jobs, and legendary rewards for the truly mad or truly skilled."**
-
-*He taps his pipe thoughtfully.* **"Your guild rank determines what you're allowed to attempt. Novices get the safer work. Veterans get the deadly stuff. Simple as that."**
-
-**To browse available quests, use the \`list_quests\` tool.**
-
----
-
-## 🗡️ The Common Hall & Party Roster
-
-*In the center of the hall, various adventuring parties lounge at wooden tables, sharpening weapons, mending armor, or engaged in heated games of dice. A half-elf bard strums a lute in the corner, singing a rather unflattering song about a paladin who mistook a mimic for a treasure chest.*
-
-*Some groups wear matching colors—professional outfits with reputations to uphold. Others look like they met five minutes ago in a tavern brawl and decided violence was more profitable together.*
-
-**"Looking to hire a party?"** *calls a halfling rogue from atop a barrel, juggling three daggers.* **"We've got everyone from budget-friendly newbies to the legendary types who charge more than a small castle. Different parties, different specialties, different fees. Your guild rank determines who'll even talk to you—the elite won't waste time on novices, but there's plenty of eager folks at every level."**
-
-*She catches all three daggers with a flourish.* **"Word of advice: match the party to the quest. Don't send a group of sneaky types to fight undead hordes. And always—ALWAYS—make sure the quest reward covers their expected pay, or they'll leave you stranded halfway through."**
-
-**To browse available parties and filter by class or budget, use the \`parties\` tool.**
-
----
-
-## 💰 The Treasury Vault
-
-*Behind a reinforced iron door marked with glowing arcane sigils, you can see the guild's treasure vault. A stern-looking half-elf treasurer sits at an ancient desk, quill in hand, ledger open before her. Security is tight—guards flank the door, and rumor has it the vault itself is trapped with enough magic to turn would-be thieves into decorative statues.*
-
-**"Ah, another adventurer checking their coffers,"** *she says without looking up.* **"The guild holds your gold secure. Safer here than on the road, I assure you. Of course, I'll need to see your credentials before I open your account. No guild seal? No access. We've had too many… incidents… with unauthorized withdrawals."**
-
-*She adjusts her spectacles and fixes you with a sharp gaze.* **"Standard procedure. Show me your authorization, and I'll tell you your balance. Otherwise, you're wasting both our time."**
-
-**To check your gold balance, use the \`chest\` tool (requires authorization header).**
-
----
-
-## 🎲 Guild Services & Regulations
-
-*A notice board near the entrance lists the guild's services and rules in neat calligraphy:*
-
-### Available Tools:
-- **Quest Board (\`list_quests\`)** - Browse available quests filtered by your guild rank
-- **Party Roster (\`parties\`)** - View available adventuring parties, filter by class or budget
-- **Treasury Check (\`chest\`)** - Check your gold balance (authorization required)
-
-### Guild Ranks:
-Your rank determines quest difficulty and available parties:
-- **Novice** - Starting adventurers, basic quests
-- **Adept** - Proven heroes, more dangerous quests unlocked
-- **Veteran** - Experienced warriors, access to deadly quests
-- **Mythic** - Legendary heroes, no restrictions
-
-*Set your rank with the \`x-level\` header when making requests.*
-
-### Authorization:
-Some services require verification. Provide your guild credentials via the \`authorization\` header to access restricted areas like the Treasury.
-
----
-
-*The guild hall buzzes with constant activity. Somewhere, a bard finishes his song to scattered applause. Dice clatter on tabletops. The smell of roasting meat wafts from the kitchens. A group of adventurers celebrates a successful quest, gold coins clinking into purses. Another group plots their next move, maps spread across a table.*
-
-*This is where legends begin. Where ordinary people become heroes. Where the desperate seek salvation and the ambitious seek glory.*
-
-**The grizzled dwarf from the Quest Board catches your eye and raises his mug.** *"So, adventurer—what'll it be? Quests? Parties? Checking your coin? The guild's got it all. Just remember: fortune favors the bold, but it also favors those who actually read the quest details before charging in."*
-
-*He chuckles and takes a long drink.* **"Now get to it. Adventure awaits."**
-`;
-
-    return [
-      {
-        uri: "guild://guildhall",
-        name: "guildhall.md",
-        title: "The Adventurers' Guild Hall",
-        mimeType: "text/markdown",
-        text: narrative
-      }
-    ];
-  }
-);
-
-/**
- * ──────────────────────────────────────────────────────────────────────────────
  * Express + transport setup
  * ──────────────────────────────────────────────────────────────────────────────
  */
@@ -615,34 +509,43 @@ const PORT = process.env.PORT || 3000;
 setupServer()
   .then(() => {
     app.listen(PORT, () => {
+      const portalUrl = `http://localhost:${PORT}/mcp`;
+
+      // ANSI color codes
+      const cyan = "\x1b[36m";
+      const yellow = "\x1b[33m";
+      const green = "\x1b[32m";
+      const bold = "\x1b[1m";
+      const reset = "\x1b[0m";
+      const dim = "\x1b[2m";
+
       console.log(`
-╔═══════════════════════════════════════════════════════════════════╗
-║                                                                   ║
-║   ⚔️  THE ADVENTURERS' GUILD - MCP SERVER  ⚔️                     ║
-║                                                                   ║
-║   🏰 Guild Hall Status: OPEN FOR BUSINESS                        ║
-║   🌐 Portal Address: http://localhost:${PORT}/mcp                    ║
-║   📜 Protocol: Model Context Protocol (Streamable HTTP)          ║
-║                                                                   ║
-║   Available Services:                                            ║
-║   • 📋 Quest Board (list_quests)                                 ║
-║   • 👥 Party Roster (parties)                                    ║
-║   • 💰 Treasury Vault (chest) - Auth Required                    ║
-║   • 🤝 Party Hiring (hire_party)                                 ║
-║   • 🏛️  Guild Hall Overview (guild://guildhall)                  ║
-║                                                                   ║
-║   Guild Ranks: Novice → Adept → Veteran → Mythic               ║
-║                                                                   ║
-║   "Fortune favors the bold, but wisdom favors the prepared."     ║
-║   - Guild Master Aldric Ironquill                                ║
-║                                                                   ║
-╚═══════════════════════════════════════════════════════════════════╝
+${cyan}${bold}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${reset}
+${bold}⚔️  THE ADVENTURERS' GUILD – MCP SERVER ⚔️${reset}
+${cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${reset}
+
+${green}🏰 Guild Hall Status:${reset} OPEN FOR BUSINESS
+${green}🌐 Portal Address:${reset} ${yellow}${portalUrl}${reset}
+${green}📜 Protocol:${reset} Model Context Protocol (Streamable HTTP)
+
+${bold}Available Services:${reset}
+${dim}  📜 Quest Board (list_quests)
+  👥 Party Roster (parties)
+  💰 Treasury Vault (chest) – Auth Required
+  🤝 Party Hiring (hire_party)${reset}
+
+${bold}Guild Ranks:${reset} Novice → Adept → Veteran → Mythic
+
+${dim}"Fortune favors the bold, but wisdom favors the prepared."
+— Guild Master Aldric Ironquill${reset}
+
+${cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${reset}
 
 🎲 The tavern is bustling with adventurers...
 🔥 The hearth is warm and inviting...
 📜 Fresh quests have been posted on the board...
 
-⚡ Server ready to accept connections!
+⚡ ${bold}Server ready to accept connections!${reset}
 `);
     });
   })

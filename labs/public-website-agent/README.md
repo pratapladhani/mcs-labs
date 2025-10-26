@@ -149,7 +149,7 @@ Create Nova AI with custom instructions and Wikipedia knowledge integration usin
 
 2. Make sure you're in the correct environment by looking at the top right corner. In these labs, the environment name should start by **'DEV - '**.
 
-2. Go to **Solutions** (under the `...` menu in the left-hand bar navigation). If you completed the setup lab, select the solution you had created. If you don't have a solution, create a new one. 
+2. Go to **Solutions** (under the `...` menu in the left-hand bar navigation). If you already have a solution, select it. If you don't have a solution, create a new one with a new publisher.
 
 3. Once in your solution, select **+ New** and choose **Agent** > **Agent**.
 
@@ -266,7 +266,7 @@ In this section, you'll disable general knowledge to reduce hallucinations, then
 
 6. Go to the **Tools** tab and choose **+ Add a tool**.
 
-7. Search for `MSN Weather` and select **Get current weather** action.
+7. Search for `MSN Weather` and select **Get current weather** action. Configure a connection if one doesn't already exist.
 
 8. Select **Add and configure**.
 
