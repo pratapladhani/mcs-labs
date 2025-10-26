@@ -138,28 +138,31 @@ In this quest, you will complete four use cases:
 5. You'll see the Guild Hall welcome message. Your server is ready when you see:
 
    ```
-   ⚔️  THE ADVENTURERS' GUILD - MCP SERVER  ⚔️
-   
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ⚔️  THE ADVENTURERS' GUILD – MCP SERVER ⚔️
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
    🏰 Guild Hall Status: OPEN FOR BUSINESS
    🌐 Portal Address: http://localhost:3000/mcp
    📜 Protocol: Model Context Protocol (Streamable HTTP)
-   
+
    Available Services:
-   • 📋 Quest Board (list_quests)
-   • 👥 Party Roster (parties)
-   • 💰 Treasury Vault (chest) - Auth Required
-   • 🤝 Party Hiring (hire_party)
-   • 🏛️  Guild Hall Overview (guild://guildhall)
-   
+     📜 Quest Board (list_quests)
+     👥 Party Roster (parties)
+     💰 Treasury Vault (chest) – Auth Required
+     🤝 Party Hiring (hire_party)
+
    Guild Ranks: Novice → Adept → Veteran → Mythic
-   
+
    "Fortune favors the bold, but wisdom favors the prepared."
-   - Guild Master Aldric Ironquill
-   
+   — Guild Master Aldric Ironquill
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
    🎲 The tavern is bustling with adventurers...
    🔥 The hearth is warm and inviting...
    📜 Fresh quests have been posted on the board...
-   
+
    ⚡ Server ready to accept connections!
    ```
 
@@ -190,11 +193,19 @@ In this quest, you will complete four use cases:
 10. Note the output:
 
     ```
-    Hosting port 3000 at https://abc123xyz.usw2.devtunnels.ms/
+    Hosting port 3000 at https://abc123xyz-3000.usw2.devtunnels.ms/
     Ready to accept connections for tunnel: abc123xyz
     ```
 
 11. **Copy your tunnel URL** – you'll need it in Use Case 2.
+
+    > [!IMPORTANT]
+    > **⚠️ Use the URL with the port embedded in the path!**
+    > 
+    > ✅ **CORRECT:** `https://kmvg53tj-3000.eun1.devtunnels.ms`  
+    > ❌ **WRONG:** `https://kmvg53tj.eun1.devtunnels.ms:3000`
+    > 
+    > The port must be part of the hostname (after a hyphen), NOT appended after a colon. Copilot Studio requires the embedded format for proper routing.
 
 ---
 
@@ -220,8 +231,6 @@ In this quest, you will complete four use cases:
     - **parties**
     - **chest**
     - **hire_party**
-
-15. Verify the **Guild Hall Overview** resource is also discovered.
 
 ---
 
@@ -284,9 +293,17 @@ Your MCP server is running locally and accessible via Dev Tunnel. ✅
       adventuring parties, and treasury. Supports rank-based access control 
       (Novice, Adept, Veteran, Mythic).
       ```
-    - **Server URL:** `https://your-tunnel-url.devtunnels.ms/mcp`
+    - **Server URL:** `https://your-tunnel-url-3000.devtunnels.ms/mcp`
       
-      *(Use your actual Dev Tunnel URL from Use Case 1)*
+      *(Use your actual Dev Tunnel URL from Use Case 1 - make sure it includes the port in the hostname!)*
+
+    > [!IMPORTANT]
+    > **⚠️ Double-check your tunnel URL format!**
+    > 
+    > ✅ **CORRECT:** `https://kmvg53tj-3000.eun1.devtunnels.ms/mcp`  
+    > ❌ **WRONG:** `https://kmvg53tj.eun1.devtunnels.ms:3000/mcp`
+    > 
+    > If you use the wrong format, the connection will fail. The port must be embedded in the hostname with a hyphen.
 
 10. **Authentication type:** Select **None**
 
@@ -728,12 +745,18 @@ You've mastered passing context via custom headers! ✅
 
 13. Click **Add permissions** (bottom).
 
-14. Click **✅ Grant admin consent for [Your Organization]** (top of permissions list).
-
-15. Click **Yes** to confirm.
 
     > [!NOTE]
-    > **What just happened?** You've requested permission for your connector app to access the `Chest.Open` scope exposed by the Guildhall MCP Server app registration. The admin consent grants this permission immediately without requiring individual user consent.
+    > **For this lab:** The **Guildhall MCP Server** app registration has been pre-provisioned in your workshop tenant. This app registration represents the MCP server as a protected resource in Microsoft Entra ID and exposes the `Chest.Open` scope.
+    > 
+    > **For production scenarios:** You would need to create your own app registration to represent your MCP server:
+    > 1. Register a new app in Azure Portal
+    > 2. Navigate to **Expose an API**
+    > 3. Set the **Application ID URI** (e.g., `api://your-server-id`)
+    > 4. Define custom scopes (e.g., `Chest.Open`, `Quest.Read`)
+    > 5. Grant these scopes to your connector app registrations
+    > 
+    > Learn more: [Expose an API](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-expose-web-apis)
 
 ---
 
@@ -957,14 +980,6 @@ You, O Master Developer, have achieved what few dare attempt! Through cunning, s
 ### 🎭 Your Legend Grows!
 
 The Guild Master himself, Aldric Ironquill, raises his goblet in your honor! The tavern erupts in cheers! Bards compose ballads of your technical prowess! Your name shall be inscribed in the **Book of Distinguished Developers**, forevermore!
-
----
-
-### ⚔️ Farewell, Champion of Code! ⚔️
-
-*May your servers be robust, your agents intelligent, and your quests successful!*
-
-*The Guild Hall's doors remain forever open to you. Return anytime the call to adventure stirs your soul!*
 
 ---
 
