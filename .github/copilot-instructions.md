@@ -59,6 +59,21 @@ This document contains essential context for GitHub Copilot when working on the 
    Remove-Item pr-body.md
    ```
 
+6. **PR Merge Verification**: ALWAYS verify PR is merged before branch cleanup
+
+   - **STOP if**: User wants to delete feature branch or switch away
+   - **Action**: Ask "Has the PR been merged to upstream? Let me verify first."
+   - **Verification**: Check PR status before any cleanup operations
+   - **Why**: Prevents accidental loss of work if PR hasn't been merged yet
+   - **Safe to delete**: Only after confirming PR is merged to upstream/main
+
+   ```powershell
+   # Verify PR status before cleanup
+   gh pr view <PR-number> --repo microsoft/mcs-labs
+
+   # Only proceed with cleanup if status shows "MERGED"
+   ```
+
 ### Quality Gates - Enforce Before Commit
 
 **Documentation Updates (REQUIRED for big features):**
@@ -105,6 +120,7 @@ This document contains essential context for GitHub Copilot when working on the 
 - ❌ **Code without adequate comments for collaborators - STOP and add them first**
 - ❌ **UI changes without CSS verification - STOP and check all CSS files first**
 - ❌ Committing without asking about documentation/comments
+- ❌ **Deleting feature branch before PR is merged - STOP and verify PR status first**
 
 **CRITICAL: Before ANY git commit command:**
 
