@@ -26,14 +26,18 @@
   - [🧩 Use Cases Covered](#-use-cases-covered)
   - [🛠️ Instructions by Use Case](#️-instructions-by-use-case)
   - [🤖 Use Case #1: Intelligent Assessments](#-use-case-1-intelligent-assessments)
+    - [Summary of tasks](#summary-of-tasks)
     - [Objective](#objective)
     - [Step-by-step instructions](#step-by-step-instructions)
       - [Lab 3A: Add Prompt as a Tool](#lab-3a-add-prompt-as-a-tool)
     - [Testing Lab 3A](#testing-lab-3a)
     - [🏅 Congratulations! You have completed Intelligent Assessments](#-congratulations-you-have-completed-intelligent-assessments)
     - [Test your understanding](#test-your-understanding)
+      - [Challenge: Apply this to your own use case](#challenge-apply-this-to-your-own-use-case)
   - [🔁 Summary of Learnings](#-summary-of-learnings)
   - [📌 Conclusions and Recommendations](#-conclusions-and-recommendations)
+  - [🔧 Azure Setup (For Reference Only)](#-azure-setup-for-reference-only)
+    - [Create Azure AI Foundry Resource](#create-azure-ai-foundry-resource)
 
 ---
 
@@ -85,8 +89,8 @@ This lab focuses on using industry-specific and task-based AI models for specifi
 
 ## 📄 Documentation and Additional Training Links
 
-* [Bring your own model for your prompts | Microsoft Learn](https://learn.microsoft.com/en-us/ai-builder/byom-for-your-prompts)
-* [Azure AI Foundry Models | Microsoft Azure](https://azure.microsoft.com/en-us/products/ai-foundry/models)
+- [Bring your own model for your prompts | Microsoft Learn](https://learn.microsoft.com/en-us/ai-builder/byom-for-your-prompts)
+- [Azure AI Foundry Models | Microsoft Azure](https://azure.microsoft.com/en-us/products/ai-foundry/models)
 
 ---
 
@@ -130,7 +134,7 @@ Use **Bring Your Own Model (BYOM)** in **Prompts** to run predefined prompts tha
 | ----------------------- | ----------------------------------------------------------- | ---------------- |
 | Intelligent Assessments | Enable intelligent assessments based on predefined criteria | 30 minutes       |
 
-**Summary of tasks**
+### Summary of tasks
 
 In this section, you'll learn how to use **Bring Your Own Model (BYOM)** in Prompts for a specific task. In this lab, you'll create a custom Prompt that automatically retrieves results from a knowledge source --- in this case, an **Azure AI Search Index** --- and allows you to execute a custom prompt to gather additional insights and perform entity extraction, reasoning based on business requirements.
 
@@ -152,13 +156,17 @@ Create a reusable prompt template that leverages Azure AI Foundry models to perf
 
 2. Click on **+Add tool** and select **+ New Tool**.
 
+   ![Add tool menu](images/image1.png)
+
+   ![New tool option](images/image2.png)
+
 3. Select **Prompt**.
+
+   ![Select Prompt](images/image3.png)
 
 4. Provide a unique name, for example: `RiskAssessment-YourName`
 
-5. Click on **+ Add Content** and select input as **text** and give it a name: `Contract`.
-
-6. Add the following prompt with input of type text called `contract`:
+5. Add the following prompt:
 
     ```
     You are tasked with reviewing **contract** details to identify and flag any potential risks. Your goal is to analyze the provided contract thoroughly and extract risk items based solely on the information contained within it.
@@ -213,34 +221,60 @@ Create a reusable prompt template that leverages Azure AI Foundry models to perf
     Are there clear performance metrics, service-level agreements (SLAs), and penalties for non-performance or delays?
     ```
 
-7. Click on the **Models** tab and select **Azure AI Foundry Models**.
+6. Select the word **"contract"** on the first line of the prompt, then click on **+ Add Content**, select input as **text**, give it a name: `Contract`, and click **Close**.
+
+   ![Add content button](images/image4.png)
+
+   ![Input configuration](images/image5.png)
+
+   ![Contract input](images/image6.png)
+
+7. Click on the **Models** tab and click on the **"+"** icon in the **Azure AI Foundry Models** section.
+
+   ![Models tab](images/image7.png)
 
 8. Click on **Connect a new model**.
 
+   ![Connect new model](images/image8.png)
+
 9. Use the provided Model Deployment Name, Base Model Name, Azure Model Endpoint URL, API Key, Model Description to connect to the Azure AI Foundry Model:
 
-   - _Model Deployment Name_: `[PROVIDED IN LAB ENVIRONMENT]`
-   - _Base Model Name_: `[PROVIDED IN LAB ENVIRONMENT]`
-   - _Azure Model endpoint URL_: `[PROVIDED IN LAB ENVIRONMENT]`
-   - _API Key_: `[PROVIDED IN LAB ENVIRONMENT]`
-   - _Model Description_: `[PROVIDED IN LAB ENVIRONMENT]`
+   - **Model Deployment Name**: `[PROVIDED IN LAB ENVIRONMENT]`
+   - **Base Model Name**: `[PROVIDED IN LAB ENVIRONMENT]`
+   - **Azure Model endpoint URL**: `[PROVIDED IN LAB ENVIRONMENT]`
+   - **API Key**: `[PROVIDED IN LAB ENVIRONMENT]`
+   - **Model Description**: `[PROVIDED IN LAB ENVIRONMENT]`
+
+   ![Model connection details](images/image9.png)
 
 > [!NOTE]
-> All connection details including endpoint URLs and API keys will be provided by your lab instructor or found in your lab environment documentation.
+> All connection details including endpoint URLs and API keys will be provided by your lab instructor or found in your lab environment documentation. Make sure the checkbox for "Test the connection with the model to validate the correct link to Foundry" is selected.
 
 10. Click on **Connect**.
 
 11. Once the model is added, make sure it is selected in the Model Dropdown.
 
+    ![Model selected](images/image10.png)
+
 12. Click **Add and Configure** in the Add Tool dialog.
 
-13. In the input use the default value of **Dynamically Fill With AI**. In the completion select **Write the response with Generative AI** and then click **Save**.
+    ![Add and Configure](images/image11.png)
 
-14. Go to **Agent Overview** tab and click **Edit** to add the additional instruction to the agent instructions, then click **Save**:
+13. In the input use the default value of **Dynamically Fill With AI**.
+
+    ![Dynamically fill with AI](images/image12.png)
+
+14. In the completion select **Write the response with Generative AI** and then click **Save**.
+
+    ![Write response with AI](images/image13.png)
+
+15. Go to **Agent Overview** tab and click **Edit** to add the additional instruction to the agent instructions, then click **Save**:
 
     ```
     For Contract risks related queries, get the information from Contoso Contracts Knowledge source and then use the tool "YourPromptName" to identify if there are any risks.
     ```
+
+    ![Agent instructions](images/image14.png)
 
 ---
 
@@ -249,7 +283,7 @@ Create a reusable prompt template that leverages Azure AI Foundry models to perf
 In your test window, send a message like:
 
 ```
-Contract assessment for Fourth Coffee
+Perform detailed Contract assessment for Fourth Coffee
 ```
 
 ---
@@ -266,7 +300,7 @@ Contract assessment for Fourth Coffee
 2. Where do you select your custom BYOM model when creating a prompt in Copilot Studio?
 3. Which service must your custom model be deployed in before using it as BYOM in Copilot Studio?
 
-**Challenge: Apply this to your own use case**
+#### Challenge: Apply this to your own use case
 
 - Consider what other assessment types in your organization could benefit from Bring Your Own Model capabilities.
 - Explore how you could combine search results and use them to run assessments.
@@ -300,5 +334,50 @@ Now that you've integrated Azure AI Foundry models into Copilot Studio, take a m
 - **Consider different user personas** when designing prompts and response structures.
 
 By following these principles, you'll create powerful, user-friendly agents that seamlessly integrate enterprise data into natural language workflows, improving productivity and decision-making across your organization.
+
+---
+
+## 🔧 Azure Setup (For Reference Only)
+
+This section provides background on the Azure AI Foundry resource used to deploy an off-the-shelf model from the model catalog. **You don't need to perform these steps in the lab**, as the resources are already pre-created for you. This reference is meant to help you understand how each component fits into the overall solution architecture. You'll see how the Azure AI Foundry resource is created and how a model is deployed from the model catalog.
+
+### Create Azure AI Foundry Resource
+
+**Pre-requisites:**
+
+- Azure Subscription
+
+**Step-by-Step instructions:**
+
+1. Login to **Azure AI Foundry Portal** at <https://ai.azure.com/>, click on **"Create New"**.
+
+   ![Create new in Azure AI Foundry](images/image15.png)
+
+2. Select **Azure AI Foundry resource (recommended)**, then click **Next**.
+
+   ![Select Azure AI Foundry resource](images/image16.png)
+
+3. Enter the **Project Name** and **Azure AI Foundry resource name**. Select the **Subscription**, **Resource Group**, and **Region**, then click **Create**.
+
+   ![Configure Azure AI Foundry resource](images/image17.png)
+
+4. Once the resource is created, you'll be redirected to the resource home page. Click **Model Catalog** in the left-hand navigation to view the list of available models in Azure AI Foundry.
+
+   ![Model Catalog](images/image18.png)
+
+5. Depending on which model you want to deploy, search for it in the catalog. For example, in this lab, we'll be using the **"grok-4-fast-reasoning"** model from **xAI**.
+
+   ![Search for model](images/image19.png)
+
+6. Select the model (for example, **"grok-4-fast-reasoning"**), then click **"Use this model."**
+
+   > [!NOTE]
+   > To see the Azure AI Foundry model in Copilot Studio Prompts, the model must be of type **Chat Completion**.
+
+   ![Select model](images/image20.png)
+
+7. Enter the **deployment name**, then click **"Connect and Deploy"** to deploy the selected model.
+
+   ![Deploy model](images/image21.png)
 
 ---
