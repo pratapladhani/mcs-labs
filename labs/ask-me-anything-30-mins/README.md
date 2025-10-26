@@ -191,6 +191,11 @@ Set up your development environment by creating a solution and custom publisher 
 
 ### Step by step instructions
 
+
+> [!IMPORTANT]
+>
+> - You don't need to create a new solution if you already have one created in this environment. You can skip to the next use case if you already have one.
+
 #### Open the Solutions area
 
 1. Go to the [https://copilotstudio.microsoft.com](https://copilotstudio.microsoft.com/).
@@ -283,7 +288,7 @@ In this section, you'll learn how to create connection references in your soluti
 
 ### Step-by-step instructions
 
-1. Open the solution you created in Use Case #1.
+1. Open your solution.
 
 2. Select **+ New**, then go to **More** and choose **Connection Reference**.
 
