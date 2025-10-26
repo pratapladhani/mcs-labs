@@ -291,7 +291,7 @@ In this section, you'll learn how to create custom prompts that structure agent 
 
 21. Let's execute this prompt to get information on an account. Type `Execute prompt Show Account Details for Fourth Coffee`.
 
-    ![Execute prompt with MCP enabled](images/step17a2-execute-prompts.png)
+    ![Execute prompt with MCP enabled](images/step17a2-execute-prompt.png)
 
     > [!TIP]
     > More information: [Use prompts to make your agent perform specific tasks - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/prompts)
