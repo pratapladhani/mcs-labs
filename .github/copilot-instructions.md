@@ -16,6 +16,8 @@ This document contains essential context for GitHub Copilot when working on the 
 
 **⚠️ CRITICAL: You MUST enforce this workflow and STOP the user if steps are skipped:**
 
+**🚫 TOOL PREFERENCE: DO NOT use GitKraken MCP tools. Use standard git commands in terminal instead.**
+
 ### Feature Development Workflow (REQUIRED)
 
 1. **Feature Branch**: ALL changes go to a feature branch (e.g., `feature/theme-updates`)
@@ -40,9 +42,22 @@ This document contains essential context for GitHub Copilot when working on the 
    git push origin main
    ```
 
-5. **Pull Request**: Submit PR from feature branch to upstream repo
+5. **Pull Request**: Submit PR from feature branch to upstream repo using GitHub CLI
+
    - **Target**: `upstream/main` ← `origin/feature/branch-name`
    - **Purpose**: Contribute changes back to main repository
+   - **Method**: ALWAYS use GitHub CLI (`gh pr create`) - user preference
+
+   ```powershell
+   # Create PR description file
+   # Create file: pr-body.md with PR description
+
+   # Create PR using GitHub CLI
+   gh pr create --repo microsoft/mcs-labs --base main --head pratapladhani:feature/branch-name --title "feat: Brief title" --body-file pr-body.md
+
+   # Clean up
+   Remove-Item pr-body.md
+   ```
 
 ### Quality Gates - Enforce Before Commit
 
@@ -72,18 +87,58 @@ This document contains essential context for GitHub Copilot when working on the 
 
 **PROACTIVE Actions:**
 
-1. **Remind about workflow**: If user asks to commit, check which branch they're on
-2. **Ask about testing**: Before any push, confirm local testing is complete
-3. **Suggest documentation**: When big features are added, list docs that need updates
-4. **Check comments**: Review code snippets and suggest where comments are needed
-5. **Enforce quality**: Don't just fix issues - explain why and document properly
+1. **Present plans first**: For major features, refactoring, or architectural changes, ALWAYS present a comprehensive plan and get user approval BEFORE implementing
+2. **Remind about workflow**: If user asks to commit, check which branch they're on
+3. **Ask about testing**: Before any push, confirm local testing is complete
+4. **Suggest documentation**: When big features are added, list docs that need updates
+5. **Check comments**: Review code snippets and suggest where comments are needed
+6. **Enforce quality**: Don't just fix issues - explain why and document properly
+7. **Verify CSS consistency**: When making UI changes (new pages, components, styling), ALWAYS check all CSS files to ensure consistent naming patterns and no event-specific class names
+8. **BEFORE ANY COMMIT**: Proactively ask "Have we added documentation and comments for this change?"
 
 **BLOCKING Actions (Stop User):**
 
+- ❌ Implementing major features without presenting plan first
 - ❌ Committing to `main` without going through feature branch
 - ❌ Pushing without local testing
-- ❌ Major features without documentation updates
-- ❌ Code without adequate comments for collaborators
+- ❌ **Major features without documentation updates - STOP and ask first**
+- ❌ **Code without adequate comments for collaborators - STOP and add them first**
+- ❌ **UI changes without CSS verification - STOP and check all CSS files first**
+- ❌ Committing without asking about documentation/comments
+
+**CRITICAL: Before ANY git commit command:**
+
+1. Check if code has adequate comments explaining WHY
+2. Check if documentation needs updating (for major features)
+3. Check if CSS files use consistent, generic naming (no event-specific classes like bootcamp-_, workshop-_)
+4. If any is missing, STOP and complete them BEFORE committing
+
+**Planning Requirement (MANDATORY for major changes):**
+
+For these types of changes, ALWAYS present a plan BEFORE implementation:
+
+- ✅ New features (event pages, navigation systems, filters)
+- ✅ Architectural refactoring (unified parameter systems, CSS reorganization)
+- ✅ Breaking changes (URL parameter changes, data structure changes)
+- ✅ Multi-file changes affecting core functionality
+
+The plan should include:
+
+1. **What**: Clear description of the change
+2. **Why**: Rationale and problem being solved
+3. **How**: Technical approach and affected files
+4. **Impact**: What breaks, what needs updating
+5. **Testing**: How to verify the change works
+
+**CSS Verification Requirement (MANDATORY for UI changes):**
+
+When making changes that could impact UI (new event pages, styling updates, component changes):
+
+1. ✅ Check all CSS files for consistency
+2. ✅ Ensure generic class names (event-_, not bootcamp-_ or workshop-\*)
+3. ✅ Verify no orphaned or event-specific CSS classes
+4. ✅ Update all HTML files using changed classes
+5. ✅ Test responsive design if layout changes
 
 **Example Enforcement:**
 
@@ -92,6 +147,13 @@ User: "Commit this change"
 You: "⚠️ STOP: Which branch are you on? Feature changes should go to a feature
 branch first. Also, have you tested this locally? I see you've modified the PDF
 generation - did you run `.\scripts\Generate-Labs.ps1 -GeneratePDFs` to verify?"
+```
+
+```
+User: "Add a new event page for MCS in a Day"
+You: "I'll create a comprehensive plan first. Since this involves URL parameters,
+navigation, and CSS, let me analyze the existing architecture and present options
+before we implement. [presents detailed plan] Does this approach work for you?"
 ```
 
 ## 🔧 Critical Development Principles
@@ -236,7 +298,7 @@ notepad assets\css\themes\theme-minimal.css
 1. Edit `assets/css/themes/theme-{rich|minimal}.css`
 2. Use CSS Custom Properties:
 
-```css
+```scss
 :root {
   --bg-primary: white;
   --text-primary: #34343c;

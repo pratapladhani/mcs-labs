@@ -88,14 +88,37 @@ layout: default
     </div>
   </aside>
 
-  {% comment %}Build workshop lab IDs array{% endcomment %}
-  {% assign workshop_lab_ids = "" %}
+  {% comment %}Build event lab IDs arrays for all events{% endcomment %}
+  {% comment %}Bootcamp labs{% endcomment %}
+  {% assign bootcamp_lab_ids = "" %}
+  {% for order_pair in site.data.lab-config.bootcamp_lab_orders %}
+    {% assign lab_id = order_pair[1] %}
+    {% if forloop.first %}
+      {% assign bootcamp_lab_ids = lab_id %}
+    {% else %}
+      {% assign bootcamp_lab_ids = bootcamp_lab_ids | append: "," | append: lab_id %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %}Azure AI Workshop labs{% endcomment %}
+  {% assign azure_ai_workshop_lab_ids = "" %}
   {% for order_pair in site.data.lab-config.azure_ai_workshop_lab_orders %}
     {% assign lab_id = order_pair[1] %}
     {% if forloop.first %}
-      {% assign workshop_lab_ids = lab_id %}
+      {% assign azure_ai_workshop_lab_ids = lab_id %}
     {% else %}
-      {% assign workshop_lab_ids = workshop_lab_ids | append: "," | append: lab_id %}
+      {% assign azure_ai_workshop_lab_ids = azure_ai_workshop_lab_ids | append: "," | append: lab_id %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %}MCS in a Day labs{% endcomment %}
+  {% assign mcs_in_a_day_lab_ids = "" %}
+  {% for order_pair in site.data.lab-config.mcs_in_a_day_lab_orders %}
+    {% assign lab_id = order_pair[1] %}
+    {% if forloop.first %}
+      {% assign mcs_in_a_day_lab_ids = lab_id %}
+    {% else %}
+      {% assign mcs_in_a_day_lab_ids = mcs_in_a_day_lab_ids | append: "," | append: lab_id %}
     {% endif %}
   {% endfor %}
 
@@ -111,7 +134,9 @@ layout: default
     {%
     endif
     %}
-    data-workshop-labs='["{{ workshop_lab_ids | split: "," | join: '","' }}"]'
+    data-event-labs-bootcamp='["{{ bootcamp_lab_ids | split: "," | join: '","' }}"]'
+    data-event-labs-azure-ai-workshop='["{{ azure_ai_workshop_lab_ids | split: "," | join: '","' }}"]'
+    data-event-labs-mcs-in-a-day='["{{ mcs_in_a_day_lab_ids | split: "," | join: '","' }}"]'
   >
     <h1 class="lab-title">{{ page.title }}</h1>
     
@@ -266,21 +291,43 @@ layout: default
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    // ========================================================================
+    // UNIFIED EVENT PARAMETER SYSTEM
+    // ========================================================================
+    // All events (Bootcamp, Azure AI Workshop, MCS in a Day) now use the
+    // unified ?event=<event-name> parameter for consistent navigation.
+    //
+    // Event Mapping:
+    // - ?event=bootcamp → bootcamp_lab_orders
+    // - ?event=azure-ai-workshop → azure_ai_workshop_lab_orders
+    // - ?event=mcs-in-a-day → mcs_in_a_day_lab_orders
+    //
+    // This replaces the old dual system:
+    // - OLD: ?bootcamp=true and ?workshop=azure-ai
+    // - NEW: ?event=bootcamp and ?event=azure-ai-workshop
+    //
+    // Event configuration is centralized in lab-config.yml under event_configs
+    // ========================================================================
+
     // Check for filter context in URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     let filterJourney = urlParams.get("journey");
     const filterSection = urlParams.get("section");
-    const filterWorkshop = urlParams.get("workshop");
+    const filterEvent = urlParams.get("event");
 
-    // Check for bootcamp parameter (special case)
-    const isBootcamp = urlParams.get("bootcamp") === "true";
-    if (isBootcamp) {
-      filterJourney = "bootcamp";
-    }
+    // Event configuration mapping (from lab-config.yml)
+    // Maps event parameter values to their corresponding lab order configuration keys
+    const eventConfigMap = {
+      "bootcamp": "bootcamp_lab_orders",
+      "azure-ai-workshop": "azure_ai_workshop_lab_orders",
+      "mcs-in-a-day": "mcs_in_a_day_lab_orders"
+    };
 
-    // Check for workshop parameter (special case)
-    if (filterWorkshop) {
-      filterJourney = filterWorkshop + "_workshop";
+    // Check for unified event parameter
+    if (filterEvent && eventConfigMap[filterEvent]) {
+      // Convert event name to internal filter format for consistency with existing code
+      // This allows events to be treated as "special journeys" in the navigation logic
+      filterJourney = filterEvent;
     }
 
     // Get the current lab's journeys and section from data attributes
@@ -294,19 +341,10 @@ layout: default
     let activeFilter = null;
     let activeFilterType = null;
 
-    if (filterJourney === "bootcamp") {
-      // Special case for bootcamp - check if current lab has bootcamp_order
-      const currentBootcampOrder = labContent.getAttribute(
-        "data-bootcamp-order"
-      );
-      if (currentBootcampOrder) {
-        activeFilter = filterJourney;
-        activeFilterType = "journey";
-      }
-    } else if (filterJourney && filterJourney.endsWith("_workshop")) {
-      // Special case for workshops - use workshop configuration
-      activeFilter = filterJourney;
-      activeFilterType = "workshop";
+    if (filterEvent && eventConfigMap[filterEvent]) {
+      // Event context detected (bootcamp, azure-ai-workshop, mcs-in-a-day)
+      activeFilter = filterEvent;
+      activeFilterType = "event";
     } else if (
       filterJourney &&
       currentJourneys &&
@@ -328,16 +366,18 @@ layout: default
     // Get all lab navigation items
     const navItems = Array.from(document.querySelectorAll(".lab-nav-item"));
 
-    // For workshops, we need to get the workshop configuration from page data
-    let workshopLabIds = [];
-    if (activeFilterType === "workshop") {
-      // Extract workshop labs from data attribute if provided
-      const workshopData = labContent.getAttribute("data-workshop-labs");
-      if (workshopData) {
+    // For events, we need to get the event lab IDs from page data attributes
+    let eventLabIds = [];
+    if (activeFilterType === "event") {
+      // Map event name to data attribute name
+      // e.g., "bootcamp" → "data-event-labs-bootcamp"
+      const eventDataAttr = "data-event-labs-" + activeFilter;
+      const eventData = labContent.getAttribute(eventDataAttr);
+      if (eventData) {
         try {
-          workshopLabIds = JSON.parse(workshopData);
+          eventLabIds = JSON.parse(eventData);
         } catch (e) {
-          console.error("Failed to parse workshop data:", e);
+          console.error("Failed to parse event data for " + activeFilter + ":", e);
         }
       }
     }
@@ -347,15 +387,15 @@ layout: default
     navItems.forEach(function (item) {
       let shouldShow = false;
 
-      if (activeFilterType === "workshop") {
-        // For workshops, check if the lab's slug is in the workshop configuration
+      if (activeFilterType === "event") {
+        // For events, check if the lab's slug is in the event configuration
         const labUrl = item.getAttribute("href");
-        if (labUrl && workshopLabIds.length > 0) {
+        if (labUrl && eventLabIds.length > 0) {
           // Extract lab ID from URL (e.g., /labs/agent-builder-web/ -> agent-builder-web)
           const labIdMatch = labUrl.match(/\/labs\/([^\/\?]+)/);
           if (labIdMatch) {
             const labId = labIdMatch[1];
-            shouldShow = workshopLabIds.includes(labId);
+            shouldShow = eventLabIds.includes(labId);
           }
         }
       } else if (activeFilterType === "journey") {
@@ -404,8 +444,8 @@ layout: default
           ? getBootcampSortValue(b.dataset.bootcampOrder)
           : parseInt(a.dataset.order) || 999;
         return orderA - orderB;
-      } else if (activeFilterType === "workshop" && workshopLabIds.length > 0) {
-        // For workshops, sort by position in workshop configuration array
+      } else if (activeFilterType === "event" && eventLabIds.length > 0) {
+        // For events, sort by position in event configuration array
         const labUrlA = a.getAttribute("href");
         const labUrlB = b.getAttribute("href");
         const labIdMatchA = labUrlA ? labUrlA.match(/\/labs\/([^\/\?]+)/) : null;
@@ -413,8 +453,8 @@ layout: default
         const labIdA = labIdMatchA ? labIdMatchA[1] : null;
         const labIdB = labIdMatchB ? labIdMatchB[1] : null;
         
-        const indexA = labIdA ? workshopLabIds.indexOf(labIdA) : 999;
-        const indexB = labIdB ? workshopLabIds.indexOf(labIdB) : 999;
+        const indexA = labIdA ? eventLabIds.indexOf(labIdA) : 999;
+        const indexB = labIdB ? eventLabIds.indexOf(labIdB) : 999;
         return indexA - indexB;
       } else {
         // For other journeys, sort by regular order
@@ -480,23 +520,22 @@ layout: default
       });
     }
 
-    // Update the journey title based on active filter
+    // Update the journey/event title based on active filter
     const journeyTitleText = document.getElementById("journey-title-text");
 
-    if (activeFilterType === "workshop" && activeFilter) {
-      let workshopTitle = "";
+    if (activeFilterType === "event" && activeFilter) {
+      // Event titles are centralized in lab-config.yml under event_configs
+      // Map event names to their configured titles
+      const eventTitles = {
+        "bootcamp": "⚔️ Bootcamp Journey",
+        "azure-ai-workshop": "☁️ Azure AI Workshop",
+        "mcs-in-a-day": "⚡ MCS in a Day"
+      };
 
-      // Extract workshop name from filter (e.g., "azure-ai_workshop" -> "Azure AI")
-      const workshopName = activeFilter.replace("_workshop", "").replace(/-/g, " ");
-      workshopTitle = "☁️ " + workshopName.replace(/\b\w/g, l => l.toUpperCase()) + " Workshop";
-      
-      // Fix specific acronyms (AI should be uppercase, not "Ai")
-      // This handles cases where title capitalization creates "Azure Ai Workshop"
-      // and corrects it to "Azure AI Workshop"
-      workshopTitle = workshopTitle.replace(/\bAi\b/g, "AI");
+      const eventTitle = eventTitles[activeFilter] || "";
 
-      if (journeyTitleText && workshopTitle) {
-        journeyTitleText.textContent = workshopTitle;
+      if (journeyTitleText && eventTitle) {
+        journeyTitleText.textContent = eventTitle;
       }
     } else if (activeFilterType === "journey" && activeFilter) {
       let journeyTitle = "";
@@ -629,26 +668,19 @@ layout: default
       const labItems = Array.from(labData.querySelectorAll(".lab-item"));
 
       // FILTERING LOGIC: Context-aware lab filtering
-      // Priority order ensures bootcamp is handled before general journey logic
+      // Priority order ensures events are handled before general journey logic
       let filteredLabs = labItems;
-      if (activeFilter === "bootcamp") {
-        // BOOTCAMP FILTERING: Labs with bootcamp_order attribute only
-        // This ensures only bootcamp-assigned labs appear in bootcamp navigation
-        filteredLabs = labItems.filter((item) => {
-          const bootcampOrder = item.getAttribute("data-bootcamp-order");
-          return bootcampOrder && bootcampOrder.trim() !== "";
-        });
-      } else if (activeFilterType === "workshop") {
-        // WORKSHOP FILTERING: Labs assigned to specific workshop
-        // Uses workshop configuration from data attribute
-        if (workshopLabIds.length > 0) {
+      if (activeFilterType === "event") {
+        // EVENT FILTERING: Labs assigned to specific event
+        // Uses event configuration from data attributes
+        if (eventLabIds.length > 0) {
           filteredLabs = labItems.filter((item) => {
             const labUrl = item.getAttribute("data-url");
             if (labUrl) {
               const labIdMatch = labUrl.match(/\/labs\/([^\/\?]+)/);
               if (labIdMatch) {
                 const labId = labIdMatch[1];
-                return workshopLabIds.includes(labId);
+                return eventLabIds.includes(labId);
               }
             }
             return false;
@@ -664,8 +696,8 @@ layout: default
       }
 
       // SORTING LOGIC: Different ordering systems for different contexts
-      if (activeFilter === "bootcamp") {
-        // BOOTCAMP SORTING: Alphanumeric ordering (1a, 1b, 2, 3a, 3b, 4, 5a, 5b, 6, 7)
+      if (activeFilterType === "event" && activeFilter === "bootcamp") {
+        // BOOTCAMP EVENT SORTING: Alphanumeric ordering (1a, 1b, 2, 3a, 3b, 4, 5a, 5b, 6, 7)
         filteredLabs.sort((a, b) => {
           const aOrder = a.getAttribute("data-bootcamp-order");
           const bOrder = b.getAttribute("data-bootcamp-order");
@@ -686,6 +718,20 @@ layout: default
 
           if (aNum !== bNum) return aNum - bNum;
           return aLetter.localeCompare(bLetter);
+        });
+      } else if (activeFilterType === "event" && eventLabIds.length > 0) {
+        // EVENT SORTING: Sort by position in event configuration array
+        filteredLabs.sort((a, b) => {
+          const labUrlA = a.getAttribute("data-url");
+          const labUrlB = b.getAttribute("data-url");
+          const labIdMatchA = labUrlA ? labUrlA.match(/\/labs\/([^\/\?]+)/) : null;
+          const labIdMatchB = labUrlB ? labUrlB.match(/\/labs\/([^\/\?]+)/) : null;
+          const labIdA = labIdMatchA ? labIdMatchA[1] : null;
+          const labIdB = labIdMatchB ? labIdMatchB[1] : null;
+          
+          const indexA = labIdA ? eventLabIds.indexOf(labIdA) : 999;
+          const indexB = labIdB ? eventLabIds.indexOf(labIdB) : 999;
+          return indexA - indexB;
         });
       } else {
         // REGULAR JOURNEY SORTING: Simple numeric ordering
