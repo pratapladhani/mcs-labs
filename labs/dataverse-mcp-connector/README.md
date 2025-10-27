@@ -67,18 +67,18 @@ By giving you hands-on experience on how the Dataverse MCP Server integrates wit
 
 ## 📄 Documentation and Additional Training Links
 
-* [Overview - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/)
-* [Connect to Dataverse with model context protocol (MCP) - Power Apps | Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/mcp)
-* [Use prompts to make your agent perform specific tasks - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/prompts)
-* [Configure suggested prompts for Teams and Microsoft 365 - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/configuration-suggested-prompts)
+- [Overview - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/)
+- [Connect to Dataverse with model context protocol (MCP) - Power Apps | Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/mcp)
+- [Use prompts to make your agent perform specific tasks - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/prompts)
+- [Configure suggested prompts for Teams and Microsoft 365 - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/configuration-suggested-prompts)
 
 ---
 
 ## ✅ Prerequisites
 
-* Access to Microsoft Copilot Studio, with permissions to create, edit, and publish agents and agent flows.
-* Power Platform environment enabled for Copilot Studio.
-* Basic familiarity with Copilot Studio concepts such as agent setup, knowledge sources, and flows.
+- Access to Microsoft Copilot Studio, with permissions to create, edit, and publish agents and agent flows.
+- Power Platform environment enabled for Copilot Studio.
+- Basic familiarity with Copilot Studio concepts such as agent setup, knowledge sources, and flows.
 
 ---
 
@@ -86,11 +86,11 @@ By giving you hands-on experience on how the Dataverse MCP Server integrates wit
 
 In this lab, you'll build and configure a Copilot Agent that integrates with Dataverse to provide natural language access to business data. By the end of the lab, you will:
 
-* Create and configure a Copilot Agent in Copilot Studio with proper instructions and suggested prompts.
-* Integrate the Dataverse MCP Server to enable natural language queries against Account and Contact tables.
-* Test agent functionality with real data queries and understand tool execution flow.
-* Create custom prompts to structure agent responses for consistent, business-relevant outputs.
-* Apply activity tracking to troubleshoot and optimize agent performance.
+- Create and configure a Copilot Agent in Copilot Studio with proper instructions and suggested prompts.
+- Integrate the Dataverse MCP Server to enable natural language queries against Account and Contact tables.
+- Test agent functionality with real data queries and understand tool execution flow.
+- Create custom prompts to structure agent responses for consistent, business-relevant outputs.
+- Apply activity tracking to troubleshoot and optimize agent performance.
 
 ---
 
@@ -220,7 +220,7 @@ Create and configure a functional Copilot Agent with Dataverse MCP Server integr
 
     ![Test contacts query](images/step12-test-contacts.png)---
 
-###  🏅 Congratulations! You've completed Create and Configure Copilot Agent!
+### 🏅 Congratulations! You've completed Create and Configure Copilot Agent
 
 ---
 
@@ -228,21 +228,21 @@ Create and configure a functional Copilot Agent with Dataverse MCP Server integr
 
 **Key takeaways:**
 
-* **Agent Configuration** – Proper instructions and descriptions help the agent understand its role and limitations, ensuring it uses only the specified tools and data sources.
-* **MCP Server Integration** – The Dataverse MCP Server provides dynamic, real-time access to business data through natural language queries.
-* **Activity Tracking** – The Activity Map helps troubleshoot agent behavior by showing which tools are executed and their inputs/outputs.
+- **Agent Configuration** – Proper instructions and descriptions help the agent understand its role and limitations, ensuring it uses only the specified tools and data sources.
+- **MCP Server Integration** – The Dataverse MCP Server provides dynamic, real-time access to business data through natural language queries.
+- **Activity Tracking** – The Activity Map helps troubleshoot agent behavior by showing which tools are executed and their inputs/outputs.
 
 **Lessons learned & troubleshooting tips:**
 
-* You must create your agent before adding MCP Servers as Tools
-* Use Activity Map to debug and understand tool execution flow
-* Suggested prompts help guide users but don't appear in Copilot Studio testing
+- You must create your agent before adding MCP Servers as Tools
+- Use Activity Map to debug and understand tool execution flow
+- Suggested prompts help guide users but don't appear in Copilot Studio testing
 
 **Challenge: Apply this to your own use case**
 
-* What other Dataverse tables could benefit from natural language access in your organization?
-* How would you modify the agent instructions for different business scenarios?
-* Consider what additional suggested prompts would be valuable for your users.
+- What other Dataverse tables could benefit from natural language access in your organization?
+- How would you modify the agent instructions for different business scenarios?
+- Consider what additional suggested prompts would be valuable for your users.
 
 ---
 
@@ -260,7 +260,7 @@ In this section, you'll learn how to create custom prompts that structure agent 
 
 **Scenario:** Different users might get varying levels of detail when querying account information. By creating structured prompts, you ensure all users receive consistent, relevant account details that support their business decisions.
 
-### Step-by-step instructions
+### Step-by-step instructions use case 2
 
 15. If you tried some different testing in the Copilot, you may have noticed you will get different attributes for accounts and contacts. If you want a more structured response, you can create a prompt in the Tools. In the **Tools** tab, click **+ Add a tool** then **+ New tool**.
 
@@ -313,21 +313,21 @@ Navigate to the **Power Platform admin center** → **Environments** → **Setti
 
 ---
 
-###  🏅 Congratulations! You've completed Structure Agent Responses with Custom Prompts!
+### 🏅 Congratulations! You've completed Structure Agent Responses with Custom Prompts
 
 ---
 
-### Test your understanding
+### Test your understanding for custom prompts
 
-* How do custom prompts improve the user experience compared to free-form queries?
-* What business scenarios would benefit from structured, consistent data presentation?
-* How would you extend this approach to other Dataverse tables like Opportunities or Cases?
+- How do custom prompts improve the user experience compared to free-form queries?
+- What business scenarios would benefit from structured, consistent data presentation?
+- How would you extend this approach to other Dataverse tables like Opportunities or Cases?
 
 **Challenge: Apply this to your own use case**
 
-* Create additional structured prompts for Contact details or other relevant business entities
-* Consider what fields would be most valuable for different user personas (sales, support, management)
-* Think about how structured responses could support specific business processes in your organization
+- Create additional structured prompts for Contact details or other relevant business entities
+- Consider what fields would be most valuable for different user personas (sales, support, management)
+- Think about how structured responses could support specific business processes in your organization
 
 ---
 
@@ -337,11 +337,11 @@ True learning comes from doing, questioning, and reflecting—so let's put your 
 
 To maximize the impact of Copilot Agent and Dataverse MCP integration:
 
-* **Start with Clear Instructions** – Well-defined agent instructions and limitations ensure consistent behavior and appropriate tool usage
-* **Leverage Activity Tracking** – Use the Activity Map to understand tool execution flow, troubleshoot issues, and optimize performance
-* **Structure Your Responses** – Custom prompts provide consistent, business-relevant outputs that support decision-making
-* **Design for Your Users** – Suggested prompts and structured responses should align with real business workflows and user needs
-* **Test Thoroughly** – Regular testing with realistic queries helps identify edge cases and improvement opportunities
+- **Start with Clear Instructions** – Well-defined agent instructions and limitations ensure consistent behavior and appropriate tool usage
+- **Leverage Activity Tracking** – Use the Activity Map to understand tool execution flow, troubleshoot issues, and optimize performance
+- **Structure Your Responses** – Custom prompts provide consistent, business-relevant outputs that support decision-making
+- **Design for Your Users** – Suggested prompts and structured responses should align with real business workflows and user needs
+- **Test Thoroughly** – Regular testing with realistic queries helps identify edge cases and improvement opportunities
 
 ---
 
@@ -349,12 +349,12 @@ To maximize the impact of Copilot Agent and Dataverse MCP integration:
 
 **Copilot Agent and Dataverse MCP golden rules:**
 
-* Always define clear agent instructions that specify data sources and limitations
-* Use structured prompts to ensure consistent, valuable responses for business users
-* Implement activity tracking to monitor and optimize agent performance
-* Design suggested prompts that align with real user workflows and common tasks
-* Test with realistic business scenarios to validate agent functionality
-* Consider different user personas when designing prompts and response structures
+- Always define clear agent instructions that specify data sources and limitations
+- Use structured prompts to ensure consistent, valuable responses for business users
+- Implement activity tracking to monitor and optimize agent performance
+- Design suggested prompts that align with real user workflows and common tasks
+- Test with realistic business scenarios to validate agent functionality
+- Consider different user personas when designing prompts and response structures
 
 By following these principles, you'll create powerful, user-friendly agents that seamlessly integrate enterprise data into natural language workflows, improving productivity and decision-making across your organization.
 
