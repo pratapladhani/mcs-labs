@@ -299,13 +299,13 @@ Date (Effective Date): March 10, 2024
 
 ![Post a message in a chat or channel action configured with Power Virtual Agents, Contoso Agent bot, recipient, and dynamic message content](images/2a15.png)
 
-2A.16 Switch to the overview tab and click **edit** to change the name of the flow to – **New Contracts Notification** and select **Save**.
+2A.16 **Save Draft** and Switch to the overview tab and click **edit** to change the name of the flow to – **New Contracts Notification** and select **Save**.
 
 ![Flow overview tab showing edit button for renaming the flow](images/2a16a.png)
 
 ![Flow name editor showing New Contracts Notification as the flow name with Save button](images/2a16b.png)
 
-2A.17 Click on **Publish** to Publish the Agent flow.
+2A.17 Switch to the **Designer** tab and Click on **Publish** to Publish the Agent flow.
 
 ![Publish button in agent flow interface to deploy the flow](images/2a17.png)
 
@@ -363,7 +363,7 @@ In this section, you'll learn how to connect Azure AI Search as a knowledge sour
 
 **Scenario:** Users need to ask natural language questions about contracts and get instant answers, plus the ability to transcribe customer call recordings for quick insights and searchable content.
 
-### Step-by-step instructions
+### Step-by-step instructions Lab 2B
 
 #### Lab 2B: Configure Azure AI Search on Blob Storage
 
@@ -563,7 +563,7 @@ In your Agent **Test pane**, send a message:
 
 ---
 
-### Test your understanding
+### Test your understanding for Azure AI and Speech to Text
 
 - How does Azure AI Search improve the agent's ability to answer contract-related questions compared to basic document storage?
 - What are the key components required for Speech-to-Text integration, and how do they work together?
