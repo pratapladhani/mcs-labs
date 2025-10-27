@@ -39,16 +39,7 @@
     /* ========================================
        TYPOGRAPHY - CHIRPY THEME FONTS
        ======================================== */
-    /* Chirpy font stack */
-    --font-family-base: 'Source Sans Pro', 'Microsoft Yahei', sans-serif;
-    --font-family-monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Monaco, 'Courier New', monospace;
-
-    /* Typography scale from Chirpy */
-    --font-size-base: 16px;
-    --font-size-sm: 14px;
-    --font-size-lg: 18px;
-    --line-height-base: 1.75;
-    --line-height-tight: 1.4;
+    /* Note: Removed all typography variables (font-family, font-size, line-height) to match rich theme - themes should only define colors */
 
     /* ========================================
        CHIRPY LIGHT THEME COLORS - EXACT COPY
@@ -208,13 +199,7 @@
     /* ========================================
        TYPOGRAPHY - CONSISTENT WITH LIGHT MODE
        ======================================== */
-    --font-family-base: 'Source Sans Pro', 'Microsoft Yahei', sans-serif;
-    --font-family-monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Monaco, 'Courier New', monospace;
-    --font-size-base: 16px;
-    --font-size-sm: 14px;
-    --font-size-lg: 18px;
-    --line-height-base: 1.75;
-    --line-height-tight: 1.4;
+    /* Note: Removed all typography variables (font-family, font-size, line-height) to match rich theme - themes should only define colors */
 
     /* ========================================
        CHIRPY DARK THEME COLORS - EXACT COPY

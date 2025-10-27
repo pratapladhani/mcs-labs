@@ -156,6 +156,87 @@ function Initialize-Environment {
     Write-Host "✅  Environment initialized successfully" -ForegroundColor Green
 }
 
+function Invoke-LabConfigAudit {
+    <#
+    .SYNOPSIS
+        Run lab configuration audit to verify all labs have proper config entries
+    .DESCRIPTION
+        Checks for labs missing config entries and orphaned configs
+        Ensures configuration integrity before generation
+    #>
+    
+    Write-Host ""
+    Write-Host "🔍  Running Lab Configuration Audit..." -ForegroundColor Cyan
+    
+    # Excluded event/special folders (not expected to have local folders)
+    $excludedFolders = @("bootcamp", "azure-ai-workshop", "mcs-in-a-day")
+    
+    # External labs (configured but intentionally have no local folder)
+    $externalLabs = @("mcs-mcp-external")
+    
+    # Get all lab folders
+    $labFolders = Get-ChildItem -Path "labs\" -Directory -ErrorAction SilentlyContinue | 
+    Where-Object { $_.Name -notin $excludedFolders } |
+    Select-Object -ExpandProperty Name
+    
+    if (-not $labFolders) {
+        Write-Host "⚠️  No lab folders found in labs/ directory" -ForegroundColor Yellow
+        return
+    }
+    
+    # Extract lab IDs from lab-config.yml
+    $configContent = Get-Content -Path "lab-config.yml" -Raw
+    $configIds = [regex]::Matches($configContent, 'id:\s*"([^"]+)"') | 
+    ForEach-Object { $_.Groups[1].Value } |
+    Select-Object -Unique
+    
+    # Check for missing configurations
+    $missingConfigs = $labFolders | Where-Object { $_ -notin $configIds }
+    $orphanedConfigs = $configIds | Where-Object { $_ -notin $labFolders -and $_ -notin $externalLabs }
+    
+    # Report results
+    $hasIssues = $false
+    
+    if ($missingConfigs.Count -gt 0) {
+        $hasIssues = $true
+        Write-Host ""
+        Write-Host "❌  LABS MISSING CONFIG ENTRIES:" -ForegroundColor Red
+        Write-Host "    ================================" -ForegroundColor Red
+        foreach ($lab in $missingConfigs) {
+            Write-Host "    • $lab" -ForegroundColor Yellow
+        }
+        Write-Host ""
+        Write-Host "    Please update lab-config.yml with entries for:" -ForegroundColor Yellow
+        Write-Host "    1. lab_metadata" -ForegroundColor Yellow
+        Write-Host "    2. lab_orders" -ForegroundColor Yellow
+        Write-Host "    3. lab_journeys (or event orders)" -ForegroundColor Yellow
+        Write-Host "    See docs/NEW_LAB_CHECKLIST.md for details" -ForegroundColor Cyan
+    }
+    
+    if ($orphanedConfigs.Count -gt 0) {
+        $hasIssues = $true
+        Write-Host ""
+        Write-Host "⚠️  CONFIGS WITHOUT MATCHING FOLDERS:" -ForegroundColor Yellow
+        Write-Host "    =====================================" -ForegroundColor Yellow
+        foreach ($config in $orphanedConfigs) {
+            Write-Host "    • $config (config exists but no labs/$config/ folder)" -ForegroundColor Yellow
+        }
+        Write-Host ""
+        Write-Host "    Either create the lab folder or remove from config" -ForegroundColor Yellow
+    }
+    
+    if ($hasIssues) {
+        Write-Host ""
+        Write-Host "❌  Lab configuration audit FAILED" -ForegroundColor Red
+        Write-Host "    Configuration issues must be resolved before generation" -ForegroundColor Yellow
+        Write-Host "    Run: .\scripts\Check-LabConfigs.ps1 -Verbose for details" -ForegroundColor Cyan
+        Write-Host ""
+        exit 1
+    }
+    
+    Write-Host "✅  Lab configuration audit passed ($($labFolders.Count) labs, $($configIds.Count) configs)" -ForegroundColor Green
+}
+
 function Get-Configuration {
     <#
     .SYNOPSIS
@@ -2101,6 +2182,9 @@ function Invoke-LabGeneration {
     try {
         # Initialize environment
         Initialize-Environment
+        
+        # Run configuration audit
+        Invoke-LabConfigAudit
         
         # Load configuration and set up paths
         $config = Get-Configuration

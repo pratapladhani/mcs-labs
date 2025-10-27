@@ -199,6 +199,140 @@ When editing `scripts/Generate-Labs.ps1`:
 2. **Test generation**: Always run the script after changes
 3. **Clean architecture**: HTML structure only, styling in CSS only
 
+## 🆕 Adding New Labs - Complete Checklist
+
+**⚠️ CRITICAL**: When adding a new lab to the project, you MUST update `lab-config.yml` in FIVE places or the lab will not appear anywhere on the site!
+
+### Step-by-Step Process:
+
+#### 1. Create Lab Folder Structure
+```powershell
+# Create the lab folder with required files
+mkdir labs/your-lab-name
+mkdir labs/your-lab-name/images
+
+# Create README.md with lab content
+# Ensure frontmatter includes: title, description, duration, difficulty
+```
+
+#### 2. Update lab-config.yml - lab_metadata Section
+```yaml
+lab_metadata:
+  # ... existing entries ...
+  6:  # Use next available number
+    id: "your-lab-name"  # MUST match folder name
+    title: "Your Lab Title"
+    difficulty: "Beginner (Level 100)" # or Level 200, 300, etc.
+    duration: 40  # minutes
+    section: "core_learning_path"  # or advanced_topics
+```
+
+#### 3. Update lab-config.yml - lab_orders Section
+```yaml
+lab_orders:
+  # ... existing entries ...
+  your-lab-name: 5  # Set display order (check existing to avoid conflicts)
+```
+
+#### 4. Update lab-config.yml - lab_journeys Section
+```yaml
+lab_journeys:
+  quick-start:
+    - "your-lab-name"  # Add to appropriate journey(s)
+  developer:
+    - "your-lab-name"  # Can be in multiple journeys
+```
+
+#### 5. Update Event-Specific Orders (if applicable)
+```yaml
+# Only if lab should appear in events
+bootcamp_lab_orders:
+  1: "your-lab-name"  # Set event-specific order
+
+azure_ai_workshop_lab_orders:
+  1: "your-lab-name"
+
+mcs_in_a_day_lab_orders:
+  1: "your-lab-name"
+```
+
+#### 6. Generate and Test
+```powershell
+# Generate lab files
+.\scripts\Generate-Labs.ps1 -SkipPDFs
+
+# Start/restart Docker
+docker-compose down
+docker-compose up -d
+
+# Test locally
+# Navigate to: http://localhost:4000/mcs-labs/
+```
+
+#### 7. Verification Checklist
+- ✅ Lab appears in "All Labs" page
+- ✅ Lab appears in assigned journey(s) homepage card
+- ✅ Lab has correct metadata (title, duration, difficulty)
+- ✅ Lab navigation works (prev/next buttons)
+- ✅ Lab images display correctly
+- ✅ Lab appears in event pages (if assigned)
+
+#### 8. Generate PDFs (Before Committing)
+```powershell
+# Generate PDFs for final verification
+.\scripts\Generate-Labs.ps1 -GeneratePDFs
+
+# Verify PDF in assets/pdfs/your-lab-name.pdf
+```
+
+### Common Mistakes to Avoid:
+
+❌ **Creating lab folder without updating lab-config.yml**
+   - Result: Lab won't appear anywhere
+
+❌ **Adding to lab_metadata but forgetting lab_orders**
+   - Result: Lab appears but has broken navigation
+
+❌ **Adding to lab_journeys but not lab_metadata**
+   - Result: Jekyll build errors, lab won't render
+
+❌ **Using different id in metadata vs folder name**
+   - Result: Lab won't be found, broken links
+
+❌ **Not testing locally before pushing**
+   - Result: CI failures, broken production site
+
+### Pro Tips:
+
+💡 **Check existing lab configs for examples**:
+```powershell
+# Search for existing lab in config
+Select-String -Path "lab-config.yml" -Pattern "agent-builder-web"
+```
+
+💡 **Use single lab PDF generation for testing**:
+```powershell
+.\scripts\Generate-Labs.ps1 -SingleLabPDF "your-lab-name" -GeneratePDFs
+```
+
+💡 **Verify lab folder name matches config id**:
+```powershell
+# List all lab folders
+Get-ChildItem -Path "labs\" -Directory | Select-Object Name
+
+# Compare with lab_metadata ids in config
+```
+
+💡 **Regular audit of labs vs config**:
+```powershell
+# Check for labs without config entries
+$folders = (Get-ChildItem -Path "labs\" -Directory).Name
+$configIds = (Select-String -Path "lab-config.yml" -Pattern 'id: "([^"]+)"' -AllMatches).Matches | ForEach-Object { $_.Groups[1].Value }
+$folders | Where-Object { $_ -notin $configIds -and $_ -ne "bootcamp" -and $_ -ne "azure-ai-workshop" -and $_ -ne "mcs-in-a-day" }
+```
+
+
+
 ## 🎨 Theme System
 
 ### Modern Multi-Theme Architecture

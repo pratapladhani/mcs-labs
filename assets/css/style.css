@@ -117,14 +117,33 @@ body.lab-page .site-content .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 1rem;
+}
+
+.site-header h1 {
+    flex-shrink: 1;
+    /* Allow title to shrink if needed */
+    min-width: 0;
+    /* Allow text truncation */
+    margin: 0;
+}
+
+.site-header nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 1;
+    /* Allow nav to shrink */
+    flex-wrap: wrap;
+    /* Allow nav items to wrap within nav */
 }
 
 .header-actions {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-shrink: 0;
+    /* Prevent shrinking - theme controls should stay visible */
 }
 
 .site-header h1 a {
@@ -134,11 +153,6 @@ body.lab-page .site-content .container {
     font-size: 1.5rem;
     font-weight: 600;
     transition: color 0.3s ease;
-}
-
-.site-header nav {
-    display: flex;
-    gap: 0.5rem;
 }
 
 .site-header nav a {
@@ -3486,6 +3500,7 @@ pre code.language-plaintext {
 
 /* Responsive design for event pages */
 @media (max-width: 768px) {
+
     .event-nav {
         flex-direction: column;
         gap: 1rem;
