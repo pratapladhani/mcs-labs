@@ -296,7 +296,7 @@ In this section, you'll learn how to create connection references in your soluti
 
 3. In the solution, select **New**, then go to **More** and choose **Connection reference**.
 
-4. Use the connector name (e.g., `Service Now`) as the name. Optionally, prefix with your project name.
+4. Use the connector name (e.g., `ServiceNow`) as the name. Optionally, prefix with your project name.
 
 5. Select the connector (e.g., **ServiceNow**).
 
@@ -308,7 +308,7 @@ In this section, you'll learn how to create connection references in your soluti
 
 > [!IMPORTANT]
 >
-> - For **ServiceNow** configuration values, use the provided values in the <a href="https://aka.ms/MCSWorkshopLabAssets" target="_blank">**Lab Resources**</a> web page.
+> - For **ServiceNow** configuration values, use the provided values in the **Lab Resources**.
 > - For **ServiceNow**'s `Instance` configuration, be sure to scroll down in the connection screen.
 
 7. Log in through Power Apps in a new tab if needed, then close the tab to return to Copilot Studio.
@@ -375,7 +375,7 @@ Create a new agent with SharePoint knowledge integration that provides grounded,
 
 > [!IMPORTANT]
 >
-> - For configuration, use the provided values in the <a href="https://aka.ms/MCSWorkshopLabAssets" target="_blank">**Lab Resources**</a> web page.
+> - For configuration, use the provided values in the **Lab Resources** web page.
 
 10. Choose **Add to agent**. *Shared Documents* will soon show up under the Knowledge area with the status as Ready.
 
