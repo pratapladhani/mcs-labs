@@ -324,8 +324,8 @@ server.tool(
   "hire_party",
   "Hire an adventuring party for a quest. Validates quest reward vs party expectations and checks if you have enough gold.",
   {
-    quest_id: z.string().describe("The ID of the quest (e.g., 'q1', 'q2'). Use the output of list_quests to find IDs."),
-    party_id: z.string().describe("The ID of the party to hire (e.g., 'p1', 'p2'). Use the output of parties to find IDs.")
+    quest_id: z.string().describe("The ID of the quest (e.g., 'q1', 'q2'). ALWAYS trigger the list_quests tool to find IDs."),
+    party_id: z.string().describe("The ID of the party to hire (e.g., 'p1', 'p2'). ALWAYS trigger the parties tool to find IDs.")
   },
   async ({ quest_id, party_id }) => {
     const ctx = getCurrentContext();
@@ -366,90 +366,136 @@ server.tool(
       };
     }
 
-    // 3) Check if quest reward meets party expectations
-    if (quest.reward < party.expected_reward) {
-      return {
-        content: [{
-          type: "text",
-          text: JSON.stringify({
-            error: "Party refuses the quest - reward too low!",
-            party_name: party.name,
-            party_says: `"${quest.reward} gold for a ${quest.danger} quest? We expect at least ${party.expected_reward} gold. Come back with a better offer, or find a cheaper party."`,
-            quest_reward: quest.reward,
-            party_expected: party.expected_reward,
-            shortfall: party.expected_reward - quest.reward,
-            hint: "Find a quest with higher rewards or hire a less expensive party."
-          }, null, 2)
-        }]
-      };
-    }
-
-    // 4) Check authorization for chest access
+    // 3) Check authorization for chest access (moved before reward check)
     if (!ctx.authed) {
+      // Without auth, we strictly check quest reward vs party expectations
+      if (quest.reward < party.expected_reward) {
+        return {
+          content: [{
+            type: "text",
+            text: JSON.stringify({
+              error: "Party refuses the quest - reward too low!",
+              party_name: party.name,
+              party_says: `"${quest.reward} gold for a ${quest.danger} quest? We expect at least ${party.expected_reward} gold. Come back with a better offer, find a cheaper party, or show us you have guild funds to cover the difference."`,
+              quest_reward: quest.reward,
+              party_expected: party.expected_reward,
+              shortfall: party.expected_reward - quest.reward,
+              hint: "Provide authorization to access guild treasury and pay the difference, find a quest with higher rewards, or hire a less expensive party."
+            }, null, 2)
+          }]
+        };
+      }
+      
+      // Quest reward meets expectations but no auth
       return {
         content: [{
           type: "text",
           text: JSON.stringify({
             error: "Authorization required to access guild treasury.",
-            treasurer_says: "I need to verify you have the funds to pay this party. Show me your guild credentials (authorization header) before I approve this contract.",
+            treasurer_says: "The quest reward covers their fee, but I still need to verify your guild credentials before I approve this contract.",
             quest: quest.title,
             party: party.name,
             cost: party.expected_reward,
-            hint: "Provide authorization header to verify your gold balance."
+            quest_covers: quest.reward,
+            hint: "Provide authorization header to complete the hiring process."
           }, null, 2)
         }]
       };
     }
 
-    // 5) Check if player has enough gold
+    // 4) Check if player has enough gold in chest to cover the party cost
     if (CHEST_GOLD < party.expected_reward) {
       return {
         content: [{
           type: "text",
           text: JSON.stringify({
             error: "Insufficient funds in guild treasury!",
-            treasurer_says: `"You only have ${CHEST_GOLD} gold, but ${party.name} demands ${party.expected_reward} gold. Come back when you're not broke."`,
+            treasurer_says: `"You only have ${CHEST_GOLD} gold, but ${party.name} demands ${party.expected_reward} gold. The quest only pays ${quest.reward} gold. Even with the quest reward, you can't afford them. Come back when you're not broke."`,
             your_balance: CHEST_GOLD,
             party_cost: party.expected_reward,
+            quest_reward: quest.reward,
+            total_available: CHEST_GOLD + quest.reward,
             shortfall: party.expected_reward - CHEST_GOLD,
-            hint: "You need more gold before hiring this party."
+            hint: "You need more gold in the treasury before hiring this party."
           }, null, 2)
         }]
       };
     }
 
-    // 6) Success! Deduct gold and send party on quest
+    // 5) Success! Determine if we're subsidizing from the chest
+    const subsidyNeeded = party.expected_reward - quest.reward;
+    const isSubsidized = subsidyNeeded > 0;
+    
     CHEST_GOLD -= party.expected_reward;
 
-    return {
-      content: [{
-        type: "text",
-        text: JSON.stringify({
-          success: true,
-          message: "Party hired successfully!",
-          quest: {
-            id: quest.id,
-            title: quest.title,
-            danger: quest.danger,
-            reward: quest.reward
-          },
-          party: {
-            id: party.id,
-            name: party.name,
-            paid: party.expected_reward,
-            members: party.members
-          },
-          treasury: {
-            paid_to_party: party.expected_reward,
-            remaining_balance: CHEST_GOLD,
-            expected_quest_reward: quest.reward,
-            expected_profit: quest.reward - party.expected_reward
-          },
-          narrator: `The ${party.name} accepts your contract with a firm handshake. Gold changes hands, gear is checked one last time, and they set off toward their destination. The guild treasurer updates your ledger with a satisfied nod. "${quest.title}" is officially underway!`,
-          hint: "Quest rewards will be added to your chest upon completion (simulated in this demo)."
-        }, null, 2)
-      }]
-    };
+    if (isSubsidized) {
+      // Party accepts but grumbles about low quest reward
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify({
+            success: true,
+            message: "Party hired successfully (with treasury subsidy)!",
+            quest: {
+              id: quest.id,
+              title: quest.title,
+              danger: quest.danger,
+              reward: quest.reward
+            },
+            party: {
+              id: party.id,
+              name: party.name,
+              paid: party.expected_reward,
+              members: party.members,
+              reaction: "grudgingly_accepts"
+            },
+            treasury: {
+              paid_to_party: party.expected_reward,
+              covered_by_quest_reward: quest.reward,
+              subsidized_from_treasury: subsidyNeeded,
+              remaining_balance: CHEST_GOLD,
+              net_cost: subsidyNeeded
+            },
+            narrator: `The ${party.name} exchanges skeptical glances. "${quest.reward} gold for a ${quest.danger} quest?" their leader mutters. "That's ${subsidyNeeded} gold short of our usual rate." You slide additional coin from the guild treasury across the table. "The Guild covers the difference," you assure them. They count the gold twice, then nod. "Fine. We'll take it. But next time, bring us a quest that pays properly." They gather their gear and depart, professionalism winning out over pride.`,
+            hint: "Quest rewards will be added to your chest upon completion, but the net cost to the guild is the subsidy amount."
+          }, null, 2)
+        }]
+      };
+    } else {
+      // Quest reward meets or exceeds expectations - happy party
+      const profit = quest.reward - party.expected_reward;
+      
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify({
+            success: true,
+            message: "Party hired successfully!",
+            quest: {
+              id: quest.id,
+              title: quest.title,
+              danger: quest.danger,
+              reward: quest.reward
+            },
+            party: {
+              id: party.id,
+              name: party.name,
+              paid: party.expected_reward,
+              members: party.members,
+              reaction: "enthusiastic"
+            },
+            treasury: {
+              paid_to_party: party.expected_reward,
+              remaining_balance: CHEST_GOLD,
+              expected_quest_reward: quest.reward,
+              expected_profit: profit
+            },
+            narrator: `The ${party.name} accepts your contract with enthusiasm. "${quest.reward} gold for a ${quest.danger} quest? That's fair coin!" Gold changes hands, gear is checked one last time, and they set off toward their destination with high spirits. The guild treasurer updates your ledger with a satisfied nod. "${quest.title}" is officially underway!`,
+            hint: "Quest rewards will be added to your chest upon completion, resulting in a net profit of " + profit + " gold."
+          }, null, 2)
+        }]
+      };
+    }
   }
 );
 
