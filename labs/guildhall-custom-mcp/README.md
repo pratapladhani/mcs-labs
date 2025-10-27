@@ -217,12 +217,24 @@ In this quest, you will complete four use cases:
 
 12. Test the tunnel endpoint:
 
+    **Mac/Linux:**
     ```bash
     curl https://your-tunnel-url.devtunnels.ms/mcp \
       -H "Content-Type: application/json" \
       -H "Accept: application/json, text/event-stream" \
       -d '{"jsonrpc":"2.0","id":"1","method":"tools/list"}'
     ```
+
+    **Windows (PowerShell):**
+    ```powershell
+    curl https://your-tunnel-url.devtunnels.ms/mcp `
+      -H "Content-Type: application/json" `
+      -H "Accept: application/json, text/event-stream" `
+      -d '{"jsonrpc":"2.0","id":"1","method":"tools/list"}'
+    ```
+
+    > [!NOTE]
+    > **PowerShell uses backticks (`)** for line continuation instead of backslashes (`\`).
 
 13. Expected: JSON response listing available tools like `list_quests`, `parties`, `chest`, and `hire_party`.
 
