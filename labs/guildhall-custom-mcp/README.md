@@ -166,6 +166,10 @@ In this quest, you will complete four use cases:
    ⚡ Server ready to accept connections!
    ```
 
+   > [!NOTE]
+   > **Alternative: Lab-Hosted MCP Server**  
+   > If you're unable to deploy the MCP server locally, a pre-hosted version is available. Check the **Lab Resources** page for the endpoint URL under "Build and Connect Your Guild's Custom MCP Server."
+
 ---
 
 #### 🌉 Step 4: Create Dev Tunnel
