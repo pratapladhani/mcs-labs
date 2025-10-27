@@ -388,7 +388,7 @@ By the end of this module, your copilot will be able to **search**, **understand
 2B.4 Use the provided Endpoint URL and Access Key to connect to Azure AI Search service:
 
 - **Endpoint URL:** `https://ppcaisearch001.search.windows.net`
-- **Azure AI Search Admin Key:** `[Provided in LAB Environment]`
+- **Azure AI Search Admin Key:** `[[Provided in Lab Resources]`
 
 ![Azure AI Search connection configuration with Endpoint URL and Admin Key fields](images/2b4.png)
 
@@ -461,7 +461,7 @@ By the end of this module, your copilot will be able to **listen and understand 
 
 - **Connection name:** `SpeechtoTextConnection`
 - **Auth. Type:** `API Key`
-- **Account Key:** `[Provided in LAB Environment]`
+- **Account Key:** `[[Provided in Lab Resources]`
 - **Region:** `eastus`
 
 ![Azure Speech Service connection configuration with connection name, API Key authentication, account key, and region fields](images/2c4.png)
@@ -470,7 +470,7 @@ By the end of this module, your copilot will be able to **listen and understand 
 
 - **Transcription/locale:** `en-US`
 - **Transcription/displayName:** `Call transcription`
-- **transcription/contentUrls:** (Advanced Parameters) `[Provided in LAB Environment - Audio File URL]`
+- **transcription/contentUrls:** (Advanced Parameters) `[[Provided in Lab Resources - Audio File URL]`
 
 ![Create transcription action configuration showing locale, displayName, and contentUrls parameters](images/2c5.png)
 
