@@ -1338,32 +1338,34 @@ function Normalize-TOCMarkers {
         # Find the H2 heading line that contains "Table of Contents"
         $tocHeading = [regex]::Match($Content, '(?m)^##\s+.*Table of Contents.*$').Value
         
-        # Create the TOC block with original heading preserved
-        # WHY: Preserves lab author's custom emoji/branding in TOC heading
-        $tocBlock = $tocHeading + [Environment]::NewLine + [Environment]::NewLine + $tocContent
+        # SIMPLE SPLIT-AND-REBUILD APPROACH (most reliable):
+        # 1. Split content at TOC heading
+        # 2. Find where TOC content ends (next ## heading)
+        # 3. Rebuild with new TOC in between
         
-        # Replace the TOC section: The heading + blank line + list items only
-        # 
-        # CRITICAL REGEX PATTERN EXPLANATION:
-        # (?m) = Multiline mode (^ and $ match line boundaries)
-        # ^##\s+.*Table of Contents.*$ = Match the TOC H2 heading line
-        # (?:\r?\n){1,2} = Match 1-2 newlines (blank line after heading)
-        # (?:(?!^---$)[\s-].*$(?:\r?\n)?)* = Match all subsequent lines that:
-        #   - Do NOT match horizontal rule (^---$) using negative lookahead (?!^---$)
-        #   - Start with whitespace (indented list items) or hyphen (list markers)
-        # This stops at horizontal rules (---) which separate TOC from content sections
-        # 
-        # WHY THIS PATTERN:
-        # - Previous pattern (?:[\s-].*$)* matched horizontal rules (---), deleting content after TOC
-        # - Bug: Horizontal rules start with '-', so pattern continued matching and deleted "Why This Matters", "Introduction", etc.
-        # - Fix: Added negative lookahead (?!^---$) to stop at horizontal rules
-        # - Handles both '-' and '*' list markers, as well as indented sub-items
-        # - Preserves all content sections that follow the TOC
-        $pattern = '(?m)^##\s+.*Table of Contents.*$(?:\r?\n){1,2}(?:(?!^---$)[\s-].*$(?:\r?\n)?)*'
-        $replacement = $tocBlock + [Environment]::NewLine + [Environment]::NewLine
-        $Content = $Content -replace $pattern, $replacement
-        
-        Write-Host "    📋  TOC detected ($tocType): $($tocHeading.Trim())" -ForegroundColor DarkGray
+        # Split at TOC heading
+        $beforeTOC = $Content -split [regex]::Escape($tocHeading), 2
+        if ($beforeTOC.Count -eq 2) {
+            $contentAfterTOCHeading = $beforeTOC[1]
+            
+            # Find the next H2 heading OR horizontal rule after TOC (this is where content resumes)
+            # Match: any content (non-greedy) up to EITHER the first H2 heading OR ---
+            # CRITICAL: Use (?s) to make . match newlines, capture TOC content, then capture EVERYTHING after
+            if ($contentAfterTOCHeading -match '(?s)^(.*?)(\r?\n)((?:##\s+.+|---).*)') {
+                $oldTOCContent = $matches[1]  # The old TOC list (will be discarded)
+                $newline = $matches[2]        # Preserve newline style
+                $restOfContent = $matches[3]  # Everything from ## or --- onward (keep ALL of this)
+                
+                # Rebuild: before + heading + new TOC + rest
+                $Content = $beforeTOC[0] + $tocHeading + [Environment]::NewLine + [Environment]::NewLine + 
+                           $tocContent + [Environment]::NewLine + [Environment]::NewLine + $restOfContent
+                
+                Write-Host "    📋  TOC detected ($tocType): $($tocHeading.Trim())" -ForegroundColor DarkGray
+            }
+            else {
+                Write-Host "    ⚠️  Could not find end of TOC section in $LabId" -ForegroundColor Yellow
+            }
+        }
     }
     else {
         # No TOC found - auto-add one after "## 🧭 Lab Details"

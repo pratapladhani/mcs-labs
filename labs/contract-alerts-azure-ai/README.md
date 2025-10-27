@@ -214,8 +214,8 @@ By the end of this module, your copilot will be able to **detect new files**, **
 
 - **Connection name:** `ContractsBlobStorage`
 - **Authentication type:** `Access Key`
-- **Azure Storage Account Name:** `ppccontractblob`
-- **Azure Storage Account Access Key:** `[Provided in LAB Environment]`
+- **Azure Storage Account Name:** `[Provided in Lab Resources]`
+- **Azure Storage Account Access Key:** `[Provided in Lab Resources]`
 
 ![Azure Blob Storage connection configuration dialog with connection name, authentication type, and account credentials](images/2a5.png)
 
