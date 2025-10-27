@@ -25,13 +25,13 @@
   - [🎯 Summary of Targets](#-summary-of-targets)
   - [🧩 Use Cases Covered](#-use-cases-covered)
   - [🛠️ Instructions by Use Case](#️-instructions-by-use-case)
-  - [🤖 Use Case #1: Intelligent Assessments](#-use-case-1-intelligent-assessments)
+  - [💬 Use Case #1: Chit Chat Generator](#-use-case-1-chit-chat-generator)
     - [Summary of tasks](#summary-of-tasks)
     - [Objective](#objective)
     - [Step-by-step instructions](#step-by-step-instructions)
-      - [Lab 3A: Add Prompt as a Tool](#lab-3a-add-prompt-as-a-tool)
+      - [Lab 3A: Turn off General Knowledge and Add a topic Chit Chat](#lab-3a-turn-off-general-knowledge-and-add-a-topic-chit-chat)
     - [Testing Lab 3A](#testing-lab-3a)
-    - [🏅 Congratulations! You have completed Intelligent Assessments](#-congratulations-you-have-completed-intelligent-assessments)
+    - [🏅 Congratulations! You have completed Chit Chat Generator](#-congratulations-you-have-completed-chit-chat-generator)
     - [Test your understanding](#test-your-understanding)
       - [Challenge: Apply this to your own use case](#challenge-apply-this-to-your-own-use-case)
   - [🔁 Summary of Learnings](#-summary-of-learnings)
@@ -51,14 +51,13 @@ This lab demonstrates how Copilot Studio provides flexibility to integrate model
 
 **Think of your current contract management workflow:**
 
-- **Without intelligent agents**, sales operations teams must manually identify contract risks---a slow, repetitive, and error-prone process that reduces efficiency and increases the chance of oversight.
+- **Without intelligent agents**, sales operations teams must manually identify key contract details---a slow, repetitive, and error-prone process that reduces efficiency and increases the chance of oversight.
 
-- **With intelligent agents**, you can automatically apply your company's specific rules and regulations to identify and categorize contract risks. For example, when a user asks the agent about potential risks, it considers all relevant factors and internal guidelines to deliver a more accurate and consistent risk assessment.
+- **With intelligent agents**, you can automatically extract key details and apply your company's specific rules and regulations to identify and categorize contract risks and other related tasks. For example, when a user asks the agent about potential risks, it considers all relevant factors and internal guidelines to deliver a more accurate and consistent risk assessment. While doing that often organization prefer that Agent should not use its General knowledge and only give information from the Companies data.
 
 **Common challenges solved by this lab:**
 
-- **Inconsistent Risk Assessment:** The agent ensures all contracts are evaluated using standardized rules and criteria, reducing human bias and variability.
-- **Time-Consuming Manual Review:** It automates the risk identification process, significantly speeding up contract analysis and freeing teams for higher-value tasks.
+- **How to enable chit-chat functionality in your agent without using the General knowledge.** When we turn off the General Knowledge in the Agent, it does not give answers to the questions which are not found in the Knowledge sources and tools.
 
 **By bringing your own model from Azure AI Foundry, makers learn to:**
 
@@ -69,11 +68,11 @@ This lab demonstrates how Copilot Studio provides flexibility to integrate model
 
 ## 🌐 Introduction
 
-As organizations increasingly embrace AI agents, the demand for domain-specific agents is growing rapidly. For example, in sales operations, teams often need to manually identify contract risks---a slow, repetitive, and error-prone process. This manual approach not only reduces efficiency but also increases the likelihood of oversight and compliance issues.
+As organizations increasingly adopt AI agents, the demand for accurate, domain-specific solutions continues to grow. In areas like sales operations, teams often spend a lot of time manually identifying and extracting key contract details or assessing potential risks---a repetitive, time-consuming process that's prone to human error. This not only hurts efficiency but also raises the risk of compliance issues.
 
-As AI agents mature, there's a clear shift toward leveraging domain-specific models tailored for specialized tasks. For instance, models trained for risk identification can be integrated into sales operations to automatically detect potential contract risks, enabling faster, more accurate, and consistent decision-making.
+To solve these challenges, we can build agents in Copilot Studio that draw exclusively from a company's internal data. This ensures responses are precise, contextually relevant, and aligned with organizational knowledge, while general knowledge is turned off. Because the agent is intentionally designed to avoid using general knowledge, it won't engage in casual or "chit-chat" conversations---keeping the focus on delivering accurate, business-specific insights.
 
-This lab focuses on using industry-specific and task-based AI models for specific agent scenarios through the Bring Your Own Model (BYOM) capability.
+This lab focuses on using industry-specific and task-based AI models for targeted agent scenarios, such as chit-chat, through the Bring Your Own Model (BYOM) capability.
 
 ---
 
@@ -81,7 +80,6 @@ This lab focuses on using industry-specific and task-based AI models for specifi
 
 | Concept                              | Why it matters                                                                                                                                                                                                                                                                                                               |
 | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Adding Tools and Configuration**   | In Copilot Studio, **Tools** are pre-built or custom components that let your agent perform actions, fetch data, or integrate with other systems. They act like skills or plugins, giving your agent specific powers beyond simple conversation.                                                                             |
 | **Using Prompts as Tool**            | In Copilot Studio, **Prompts** are instructions or templates that guide the Large Language Model (LLM), such as GPT, and small language models on how to think, respond, or generate content. They work like a smart script for your AI, helping it reason, retrieve information, and produce useful, context-aware answers. |
 | **Create Reusable Prompt Templates** | In Copilot Studio, you can create reusable natural language instructions that harness both large and small language models to perform tasks such as summarization, reasoning, or data extraction.                                                                                                                            |
 
@@ -108,7 +106,7 @@ This lab focuses on using industry-specific and task-based AI models for specifi
 
 By the end of this lab, you will:
 
-- Use the **Mistral Model/grok-4-fast-reasoning** via **Bring Your Own Model (BYOM)** in Prompts to run predefined prompts, extract specific information, and perform reasoning or entity extraction.
+- Use the **grok-3-mini from xAI** via **Bring Your Own Model (BYOM)** in Prompts to run predefined prompts, extract specific information, and perform lightweight reasoning or entity extraction.
 - Understand how to **combine Low-Code tools with Azure AI Foundry services** to extend Microsoft Copilot Studio's functionality.
 - Learn how to use **industry-specific and task-based AI models** for targeted agent tasks through the **Bring Your Own Model (BYOM)** capability.
 
@@ -116,9 +114,9 @@ By the end of this lab, you will:
 
 ## 🧩 Use Cases Covered
 
-| Step | Use Case                                                        | Value Added                                                 | Effort     |
-| ---- | --------------------------------------------------------------- | ----------------------------------------------------------- | ---------- |
-| 1    | [Intelligent Assessments](#-use-case-1-intelligent-assessments) | Enable intelligent assessments based on predefined criteria | 30 minutes |
+| Step | Use Case                                                  | Value Added                                                    | Effort     |
+| ---- | --------------------------------------------------------- | -------------------------------------------------------------- | ---------- |
+| 1    | [Chit Chat Generator](#-use-case-1-chit-chat-generator) | Enable intelligent responses based on predefined criteria | 30 minutes |
 
 ---
 
@@ -126,169 +124,166 @@ By the end of this lab, you will:
 
 ---
 
-## 🤖 Use Case #1: Intelligent Assessments
+## 💬 Use Case #1: Chit Chat Generator
 
 Use **Bring Your Own Model (BYOM)** in **Prompts** to run predefined prompts that extract specific information, perform reasoning, and enable entity extraction.
 
-| Use case                | Value added                                                 | Estimated effort |
-| ----------------------- | ----------------------------------------------------------- | ---------------- |
-| Intelligent Assessments | Enable intelligent assessments based on predefined criteria | 30 minutes       |
+| Use case            | Value added                                                   | Estimated effort |
+| ------------------- | ------------------------------------------------------------- | ---------------- |
+| Chit Chat Generator | Enable intelligent responses based on predefined criteria | 30 minutes       |
 
 ### Summary of tasks
 
-In this section, you'll learn how to use **Bring Your Own Model (BYOM)** in Prompts for a specific task. In this lab, you'll create a custom Prompt that automatically retrieves results from a knowledge source --- in this case, an **Azure AI Search Index** --- and allows you to execute a custom prompt to gather additional insights and perform entity extraction, reasoning based on business requirements.
+In this section, you'll learn how to use **Bring Your Own Model (BYOM)** in Prompts for a specific task. In this lab, you'll create a custom Prompt designed for one purpose --- to handle general chit-chat or casual conversational questions without relying on the Agent's built-in knowledge.
 
-Using this approach, you can create custom prompts tailored to specific scenarios. The **Azure AI Foundry** service offers a wide range of generative AI models, and depending on your business needs, latency, and other factors, you can bring those models into Copilot Studio through custom prompts instead of relying on the default models. Additionally, this approach allows you to use simpler, more focused instructions for your agents while handling domain-specific tasks or assessments through prompts. This makes managing instructions and prompts more flexible and efficient.
+Using this approach, you can create custom prompts tailored to specific scenarios. The Azure AI Foundry service provides a wide range of generative AI models, and depending on your business needs, latency requirements, and other factors, you can bring these models into Copilot Studio through custom prompts instead of relying on the default models.
 
-**Scenario:** The user needs to run some predefined assessments --- for example, a **risk assessment** on contracts which are stored in the knowledge source--- and generate an instant report.
+This method also lets you use simpler, more focused instructions for your agents while handling specific tasks through prompts, making it easier and more efficient to manage both instructions and prompts.
+
+**Scenario:** The user needs to turn off the Agent's general knowledge and add support for handling generic chit-chat or casual conversational questions.
 
 ### Objective
 
-Create a reusable prompt template that leverages Azure AI Foundry models to perform intelligent contract risk assessment based on predefined criteria.
+Create a reusable prompt template that leverages Azure AI Foundry models to handle chit-chat conversations when general knowledge is disabled.
 
 ---
 
 ### Step-by-step instructions
 
-#### Lab 3A: Add Prompt as a Tool
+#### Lab 3A: Turn off General Knowledge and Add a topic Chit Chat
 
 1. Open **Contoso Agent** that was built in Lab 2.
 
-2. Click on **+Add tool** and select **+ New Tool**.
+2. Click on **Settings**.
 
-   ![Add tool menu](images/image1.png)
+   ![Settings button](images/image1.png)
 
-   ![New tool option](images/image2.png)
+3. In the **Generative AI** section, scroll down, turn off **Use General Knowledge**, and then click **Save**.
 
-3. Select **Prompt**.
+   ![Turn off General Knowledge](images/image2.png)
 
-   ![Select Prompt](images/image3.png)
+4. Click on "X" to close.
 
-4. Provide a unique name, for example: `RiskAssessment-YourName`
+   ![Close settings](images/image3.png)
 
-5. Add the following prompt:
+5. On the Agent's overview page, click **Topics**, then select **+ Add a topic from blank**.
+
+   ![Add topic button](images/image4.png)
+
+   ![Add topic from blank](images/image5.png)
+
+6. Enter the title **"Chit Chat"** and add the following text in the **Description** field:
+
+   ```
+   This topic provides capabilities to allow the user to do chit chat with this agent. It should stay focused to only handle simple chit chat scenarios like "Hello" or "How old are you?" type of things but stay away from any non-chit chat related topics. Do not use this topic for things like "Goodbye".
+   ```
+
+   ![Topic title and description](images/image6.png)
+
+7. Then select **Add node** and click on **Add a Tool** and **New Prompt**.
+
+   ![Add node and tool](images/image7.png)
+
+   ![New Prompt](images/image8.png)
+
+8. Provide a unique name, for example: `Chit Chat Generator`
+
+9. Add the following prompt:
 
     ```
-    You are tasked with reviewing **contract** details to identify and flag any potential risks. Your goal is to analyze the provided contract thoroughly and extract risk items based solely on the information contained within it.
-    
-    ### Instructions:
-    
-    1. Carefully read and understand the contract details.
-    
-    2. Identify all potential risks present in the contract.
-    
-    3. Categorize each risk by its severity level: High, Medium, or Low.
-    
-    4. List the risks ordered by severity:
-    - Highest risks first
-    - Followed by medium risks
-    - Then low risks
-    
-    5. For each risk, provide a clear and concise reasoning explaining why it is considered a risk.
-    
-    6. Ensure all information and risk assessments are factually accurate and strictly derived from the provided contract details.
-    
-    These are the **Contract Risk Assessment Questionnaire that will help you in the assessment**:
-    
-    **Scope Clarity:**
-    Are the roles, responsibilities, and deliverables of all parties clearly defined without ambiguity or overlapping obligations?
-    
-    **Termination Terms:**
-    Does the contract specify clear conditions for termination (by either party) and outline consequences or penalties for early termination?
-    
-    **Payment and Pricing:**
-    Are payment terms (amounts, schedules, methods, and penalties for late payments) explicitly stated and free of conflicting clauses?
-    
-    **Liability and Indemnity:**
-    Are liability limits, indemnification obligations, and exclusions of liability balanced and reasonable for all parties?
-    
-    **Confidentiality and Data Protection:**
-    Does the agreement adequately protect sensitive data and comply with applicable privacy laws (e.g., GDPR, HIPAA, etc.)?
-    
-    **Intellectual Property Rights:**
-    Are ownership and usage rights for intellectual property clearly defined---especially for deliverables, software, or creative outputs?
-    
-    **Compliance and Legal Obligations:**
-    Does the contract ensure adherence to all relevant laws, regulations, and industry standards, including export controls or anti-bribery clauses?
-    
-    **Dispute Resolution:**
-    Are the mechanisms for dispute resolution (e.g., arbitration, jurisdiction, governing law) clearly established and practical?
-    
-    **Force Majeure and Unforeseen Events:**
-    Does the contract include a comprehensive force majeure clause that adequately addresses risks such as natural disasters, pandemics, or supply disruptions?
-    
-    **Performance and Penalty Clauses:**
-    Are there clear performance metrics, service-level agreements (SLAs), and penalties for non-performance or delays?
+    Respond to this **Query** with an appropriate chit chat response. Do not leverage any information within the model to provide details outside of a simple chit chat response to the question. You should make the response be friendly and professional. It should never talk about politics, religion, or anything that is not just simple chit chat type discussion such as "Hello", "How are you?", or "How old are you?".
     ```
 
-6. Select the word **"contract"** on the first line of the prompt, then click on **+ Add Content**, select input as **text**, give it a name: `Contract`, and click **Close**.
+10. Select the word **"Query"** on the first line of the prompt and then click on **+ Add Content** and select input as **text** and give it a name `Query`, add Sample data `"Hello, how are you today"` and click **Close**.
 
-   ![Add content button](images/image4.png)
+    ![Add Content button](images/image9.png)
 
-   ![Input configuration](images/image5.png)
+    ![Query input configuration](images/image10.png)
 
-   ![Contract input](images/image6.png)
+    ![Query sample data](images/image11.png)
 
-7. Click on the **Models** tab and click on the **"+"** icon in the **Azure AI Foundry Models** section.
+11. Click on the **Model** and click on **"+"** sign in the **Azure AI Foundry Models**.
 
-   ![Models tab](images/image7.png)
+    ![Models tab](images/image12.png)
 
-8. Click on **Connect a new model**.
+12. Click on **Connect a new model**.
 
-   ![Connect new model](images/image8.png)
+    ![Connect new model](images/image13.png)
 
-9. Use the provided Model Deployment Name, Base Model Name, Azure Model Endpoint URL, API Key, Model Description to connect to the Azure AI Foundry Model:
+13. Use the provided Model Deployment Name, Base Model Name, Azure Model Endpoint URL, API Key, Model Description to connect to the Azure AI Foundry Model. Make sure the checkbox for "Test the connection with the model to validate the correct link to Foundry" is selected.
 
-   - **Model Deployment Name**: `[PROVIDED IN LAB ENVIRONMENT]`
-   - **Base Model Name**: `[PROVIDED IN LAB ENVIRONMENT]`
-   - **Azure Model endpoint URL**: `[PROVIDED IN LAB ENVIRONMENT]`
-   - **API Key**: `[PROVIDED IN LAB ENVIRONMENT]`
-   - **Model Description**: `[PROVIDED IN LAB ENVIRONMENT]`
+    - **Model Deployment Name**: `[PROVIDED IN LAB ENVIRONMENT]` / grok-3-mini
+    - **Base Model Name**: `[PROVIDED IN LAB ENVIRONMENT]` / grok-3-mini
+    - **Azure Model endpoint URL**: `[PROVIDED IN LAB ENVIRONMENT]`
+    - **API Key**: `[PROVIDED IN LAB ENVIRONMENT]`
+    - **Model Description**: `[PROVIDED IN LAB ENVIRONMENT]` / grok-3-mini
 
-   ![Model connection details](images/image9.png)
+    ![Model connection details](images/image14.png)
 
 > [!NOTE]
-> All connection details including endpoint URLs and API keys will be provided by your lab instructor or found in your lab environment documentation. Make sure the checkbox for "Test the connection with the model to validate the correct link to Foundry" is selected.
+> All connection details including endpoint URLs and API keys will be provided by your lab instructor or found in your lab environment documentation.
 
-10. Click on **Connect**.
+14. Click on **Connect**.
 
-11. Once the model is added, make sure it is selected in the Model Dropdown.
+15. Click **Close** once the model is connected.
 
-    ![Model selected](images/image10.png)
+    ![Model connected](images/image15.png)
 
-12. Click **Add and Configure** in the Add Tool dialog.
+16. Once the model is added, make sure it is selected in the Model Dropdown and then click **Save**.
 
-    ![Add and Configure](images/image11.png)
+    ![Model selected and save](images/image16.png)
 
-13. In the input use the default value of **Dynamically Fill With AI**.
+17. Select the input for Prompt as system variable **Activity.Text**.
 
-    ![Dynamically fill with AI](images/image12.png)
+    ![Select Activity.Text](images/image17.png)
 
-14. In the completion select **Write the response with Generative AI** and then click **Save**.
+    ![Activity.Text selected](images/image18.png)
 
-    ![Write response with AI](images/image13.png)
+18. Capture the output in the newly created variable. Click on the variable name and update it as `GenerativeChitChat` and make sure the scope is selected to **Topic**. Click on **X** to close the Variable Properties screen.
 
-15. Go to **Agent Overview** tab and click **Edit** to add the additional instruction to the agent instructions, then click **Save**:
+    ![Variable name](images/image19.png)
 
-    ```
-    For Contract risks related queries, get the information from Contoso Contracts Knowledge source and then use the tool "YourPromptName" to identify if there are any risks.
-    ```
+    ![Variable properties](images/image20.png)
 
-    ![Agent instructions](images/image14.png)
+19. Click on **Add Node** and select **Send A Message**.
+
+    ![Add Node - Send Message](images/image21.png)
+
+20. Click on **Insert Variable** and select **GenerativeChitChat.Text**.
+
+    ![Insert Variable](images/image22.png)
+
+21. To save the changes, click **Save**.
+
+    ![Save topic](images/image23.png)
+
+22. Click on the **Topics**.
+
+    ![Topics menu](images/image24.png)
+
+23. Turn off the topics **"Greeting"** and **"Thank You"**.
+
+    ![Turn off Greeting and Thank You](images/image25.png)
 
 ---
 
 ### Testing Lab 3A
 
-In your test window, send a message like:
+In your test window, send messages like:
 
 ```
-Perform detailed Contract assessment for Fourth Coffee
+How are you today?
 ```
+
+```
+Tell me a dad joke
+```
+
+![Test results](images/image26.png)
 
 ---
 
-### 🏅 Congratulations! You have completed Intelligent Assessments
+### 🏅 Congratulations! You have completed Chit Chat Generator
 
 ---
 
@@ -311,13 +306,7 @@ Perform detailed Contract assessment for Fourth Coffee
 
 > True learning comes from doing, questioning, and reflecting---so let's put your skills to the test.
 
-Now that you've integrated Azure AI Foundry models into Copilot Studio, take a moment to evaluate your understanding and extend your thinking:
-
-- **Understand BYOM capabilities** – Reflect on how bringing your own models extends Copilot Studio's functionality beyond default models.
-- **Recognize model selection criteria** – Consider factors like reasoning strength, latency, cost, and task specificity when choosing models.
-- **Design reusable prompt templates** – Structure prompts that can be applied across multiple scenarios and use cases.
-- **Integrate specialized AI** – Apply domain-specific or task-based models for improved accuracy and relevance.
-- **Balance simplicity and specialization** – Keep agent instructions focused while delegating complex reasoning to specialized prompts and models.
+Now that you've integrated Azure AI Foundry models into Copilot Studio, take a moment to evaluate your understanding and extend your thinking.
 
 ---
 
@@ -351,33 +340,33 @@ This section provides background on the Azure AI Foundry resource used to deploy
 
 1. Login to **Azure AI Foundry Portal** at <https://ai.azure.com/>, click on **"Create New"**.
 
-   ![Create new in Azure AI Foundry](images/image15.png)
+   ![Create new in Azure AI Foundry](images/image27.png)
 
 2. Select **Azure AI Foundry resource (recommended)**, then click **Next**.
 
-   ![Select Azure AI Foundry resource](images/image16.png)
+   ![Select Azure AI Foundry resource](images/image28.png)
 
 3. Enter the **Project Name** and **Azure AI Foundry resource name**. Select the **Subscription**, **Resource Group**, and **Region**, then click **Create**.
 
-   ![Configure Azure AI Foundry resource](images/image17.png)
+   ![Configure Azure AI Foundry resource](images/image29.png)
 
 4. Once the resource is created, you'll be redirected to the resource home page. Click **Model Catalog** in the left-hand navigation to view the list of available models in Azure AI Foundry.
 
-   ![Model Catalog](images/image18.png)
+   ![Model Catalog](images/image30.png)
 
-5. Depending on which model you want to deploy, search for it in the catalog. For example, in this lab, we'll be using the **"grok-4-fast-reasoning"** model from **xAI**.
+5. Depending on which model you want to deploy, search for it in the catalog. For example, in this lab, we'll be using the **"grok-3-mini"** model from **xAI**.
 
-   ![Search for model](images/image19.png)
+   ![Search for model](images/image31.png)
 
-6. Select the model (for example, **"grok-4-fast-reasoning"**), then click **"Use this model."**
+6. Select the model (for example, **"grok-3-mini"**), then click **"Use this model."**
 
    > [!NOTE]
    > To see the Azure AI Foundry model in Copilot Studio Prompts, the model must be of type **Chat Completion**.
 
-   ![Select model](images/image20.png)
+   ![Select model](images/image32.png)
 
 7. Enter the **deployment name**, then click **"Connect and Deploy"** to deploy the selected model.
 
-   ![Deploy model](images/image21.png)
+   ![Deploy model](images/image33.png)
 
 ---
