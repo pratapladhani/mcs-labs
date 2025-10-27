@@ -161,8 +161,8 @@ Create and configure a functional Copilot Agent with Dataverse MCP Server integr
    ![Add suggested prompts](images/step4a-suggested-prompts.png)
 
    Add the following prompts and then click **Save**:
-   - **Title:** Account Search | **Prompt:** List all accounts in [Insert Location]
-   - **Title:** Contact Search | **Prompt:** List all contacts from [Insert Account Name]
+   - **Title:** Account Search | **Prompt:** List all accounts in Redmond
+   - **Title:** Contact Search | **Prompt:** List all contacts from Coho Winery
 
    ![Suggested prompts configuration](images/step4b-suggested-prompts-search.png)
 
@@ -285,16 +285,17 @@ In this section, you'll learn how to create custom prompts that structure agent 
     > [!TIP]
     > Custom prompts allow you to standardize the information presented to users, ensuring they always receive the most relevant business data in a consistent format.
 
-20. Now we can test out our prompt. Let's go back over to our Contoso Agent and test again. In our testing pane, type `List Prompts`. We will see information on our Show Account Details Prompt.
+20. Now we can test out our prompt. Let's go back over to our Contoso Agent and test again. Got to the test pane.
 
-    ![List Prompts](images/step17a1-list-prompts.png)
+21. Let's execute this prompt to get information on an account. Type `Show Account Details for Fourth Coffee`.
 
-21. Let's execute this prompt to get information on an account. Type `Execute prompt Show Account Details for Fourth Coffee`.
-
-    ![Execute prompt with MCP enabled](images/step17a2-execute-prompt.png)
+    ![Execute prompt with MCP enabled](images/step17a2-execute-prompts.png)
+    ![alt text](image.png)
 
     > [!TIP]
     > More information: [Use prompts to make your agent perform specific tasks - Microsoft Copilot Studio | Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/prompts)
+
+<!--
 
     > [!IMPORTANT]  
     > Make sure you have turned on activity tracking and ensure that the prompt is passing in the GUID of the account if you see an error.
@@ -308,6 +309,8 @@ If you are seeing an issue while running the above prompt, please make sure to e
 Navigate to the **Power Platform admin center** → **Environments** → **Settings** → **Product** → **Features** and check: Dataverse MCP is turned **On**.
 
 ![Activate Dataverse MCP setting](images/step17c-mcp-enabled.png)
+
+-->
 
 ---
 
