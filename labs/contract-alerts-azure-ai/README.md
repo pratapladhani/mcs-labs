@@ -462,7 +462,7 @@ By the end of this module, your copilot will be able to **listen and understand 
 - **Connection name:** `SpeechtoTextConnection`
 - **Auth. Type:** `API Key`
 - **Account Key:** `[Provided in LAB Environment]`
-- **Region:** `westus`
+- **Region:** `eastus`
 
 ![Azure Speech Service connection configuration with connection name, API Key authentication, account key, and region fields](images/2c4.png)
 
