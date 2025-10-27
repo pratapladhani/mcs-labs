@@ -368,11 +368,11 @@ azure_ai_workshop_lab_orders:
   # Lab 3: BYOM Tool in Studio (40 min)
   3: "mcs-byom" # Bring Your Own Model capabilities in Copilot Studio
 
-  # Lab 4: Extend with MCP Server (70 min)
-  4: "guildhall-custom-mcp" # Build and deploy custom MCP server for extensibility
+  # Lab 4: Data Fabric Agent (45 min)
+  4: "data-fabric-agent" # Fabric Data Agents with Agent-to-Agent communication
 
-  # Lab 5: Data Fabric Agent (45 min)
-  5: "data-fabric-agent" # Fabric Data Agents with Agent-to-Agent communication
+  # Lab 5: Extend with MCP Server (70 min)
+  5: "guildhall-custom-mcp" # Build and deploy custom MCP server for extensibility
 
 # =====================================================
 # MCS IN A DAY EVENT LAB ORDERING - Specific sequence for MCS in a Day workshop
