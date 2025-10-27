@@ -1442,11 +1442,13 @@ function Normalize-TOCMarkers {
             # Generate anchor (lowercase, replace spaces/special chars with hyphens)
             # WHY: Matches GitHub/Jekyll automatic anchor generation algorithm
             # IMPORTANT: Must match Jekyll's anchor generation to prevent broken links
-            $anchor = $headingText -replace '[^\w\s-]', ''  # Remove special chars except spaces and hyphens
-            $anchor = $anchor -replace '\s+', '-'            # Replace spaces with hyphens
-            $anchor = $anchor.ToLower()                      # Lowercase
-            $anchor = $anchor -replace '-+', '-'             # Collapse multiple hyphens
-            $anchor = $anchor.Trim('-')                      # Remove leading/trailing hyphens
+            # NOTE: Emojis are converted to dashes to match Jekyll's behavior
+            $anchor = $headingText -replace '[\p{So}\p{Sk}]', '-'  # Replace emojis/symbols with dash
+            $anchor = $anchor -replace '[^\w\s-]', ''               # Remove other special chars except spaces and hyphens
+            $anchor = $anchor -replace '\s+', '-'                   # Replace spaces with hyphens
+            $anchor = $anchor.ToLower()                             # Lowercase
+            $anchor = $anchor -replace '-+', '-'                    # Collapse multiple hyphens
+            $anchor = $anchor.TrimEnd('-')                          # Remove only trailing hyphens (keep leading dash from emoji)
             
             # Create TOC entry (no indentation for H2 only)
             $tocEntry = "- [$headingText](#$anchor)"
