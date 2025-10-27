@@ -1348,18 +1348,18 @@ function Normalize-TOCMarkers {
         # (?m) = Multiline mode (^ and $ match line boundaries)
         # ^##\s+.*Table of Contents.*$ = Match the TOC H2 heading line
         # (?:\r?\n){1,2} = Match 1-2 newlines (blank line after heading)
-        # (?:[\s-].*$(?:\r?\n)?)* = Match all subsequent lines that start with:
-        #   - whitespace (indented list items)
-        #   - hyphen (list markers)
-        #   - blank lines
-        # This stops at the first line that doesn't match, preventing truncation
+        # (?:(?!^---$)[\s-].*$(?:\r?\n)?)* = Match all subsequent lines that:
+        #   - Do NOT match horizontal rule (^---$) using negative lookahead (?!^---$)
+        #   - Start with whitespace (indented list items) or hyphen (list markers)
+        # This stops at horizontal rules (---) which separate TOC from content sections
         # 
         # WHY THIS PATTERN:
-        # - Previous pattern used lookahead (?=^##\s|\r?\n---\r?\n) which matched too much content
-        # - Bug: Would match from TOC through multiple --- separators, truncating 80% of lab content
-        # - Fix: Match only list items immediately after heading, stop at non-list content
+        # - Previous pattern (?:[\s-].*$)* matched horizontal rules (---), deleting content after TOC
+        # - Bug: Horizontal rules start with '-', so pattern continued matching and deleted "Why This Matters", "Introduction", etc.
+        # - Fix: Added negative lookahead (?!^---$) to stop at horizontal rules
         # - Handles both '-' and '*' list markers, as well as indented sub-items
-        $pattern = '(?m)^##\s+.*Table of Contents.*$(?:\r?\n){1,2}(?:[\s-].*$(?:\r?\n)?)*'
+        # - Preserves all content sections that follow the TOC
+        $pattern = '(?m)^##\s+.*Table of Contents.*$(?:\r?\n){1,2}(?:(?!^---$)[\s-].*$(?:\r?\n)?)*'
         $replacement = $tocBlock + [Environment]::NewLine + [Environment]::NewLine
         $Content = $Content -replace $pattern, $replacement
         
