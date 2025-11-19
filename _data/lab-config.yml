@@ -65,6 +65,14 @@ event_configs:
     title: "⚡ MCS in a Day"
     description: "Fast-track full-day workshop introducing Microsoft Copilot Studio through hands-on labs covering declarative agents, custom agents, and autonomous AI."
     config_key: "mcs_in_a_day_lab_orders"
+  agent-buildathon-1day:
+    title: "🏗️ Agent Build-A-Thon (1 day)"
+    description: "One-day intensive agent building workshop focused on creating web-based and SharePoint-integrated AI assistants."
+    config_key: "agent_buildathon_1day_lab_orders"
+  agent-buildathon-1month:
+    title: "🚀 Agent Build-A-Thon (1 month)"
+    description: "Comprehensive month-long agent development program covering declarative agents, autonomous AI, and enterprise deployment patterns."
+    config_key: "agent_buildathon_1month_lab_orders"
 
 # =====================================================
 # JOURNEY DEFINITIONS - Learning paths with metadata
@@ -403,6 +411,40 @@ mcs_in_a_day_lab_orders:
 
   # Lab 5: Autonomous Support Agent (20 min)
   5: "autonomous-support-agent" # Autonomous Support Agent - Unlock new levels of productivity with AI automation
+
+# =====================================================
+# AGENT BUILD-A-THON (1 DAY) - EVENT LAB ORDERING
+# =====================================================
+# One-day intensive workshop focused on building web and SharePoint agents
+# Total: 2 Labs (~60 minutes)
+agent_buildathon_1day_lab_orders:
+  # Lab 1: Build web-based AI assistant
+  1: "agent-builder-web"
+  
+  # Lab 2: Create MBR Agent with SharePoint integration
+  2: "mbr-prep-sharepoint-agent"
+
+# =====================================================
+# AGENT BUILD-A-THON (1 MONTH) - EVENT LAB ORDERING
+# =====================================================
+# Comprehensive month-long agent development program
+# Total: 8 Labs (~240 minutes / 4 hours)
+agent_buildathon_1month_lab_orders:
+  # Week 1: Foundation - Declarative Agents
+  1: "agent-builder-web"
+  2: "agent-builder-sharepoint"
+  
+  # Week 2: Custom Agents
+  3: "public-website-agent"
+  4: "mbr-prep-sharepoint-agent"
+  
+  # Week 3: Multi-Agent Systems
+  5: "ask-me-anything"
+  
+  # Week 4: Autonomous AI
+  6: "autonomous-support-agent"
+  7: "autonomous-account-news"
+  8: "autonomous-cua"
 
 # =====================================================
 # LAB ORDERING - Explicit order values for navigation

@@ -122,6 +122,28 @@ layout: default
     {% endif %}
   {% endfor %}
 
+  {% comment %}Agent Build-A-Thon (1 day) labs{% endcomment %}
+  {% assign agent_buildathon_1day_lab_ids = "" %}
+  {% for order_pair in site.data.lab-config.agent_buildathon_1day_lab_orders %}
+    {% assign lab_id = order_pair[1] %}
+    {% if forloop.first %}
+      {% assign agent_buildathon_1day_lab_ids = lab_id %}
+    {% else %}
+      {% assign agent_buildathon_1day_lab_ids = agent_buildathon_1day_lab_ids | append: "," | append: lab_id %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %}Agent Build-A-Thon (1 month) labs{% endcomment %}
+  {% assign agent_buildathon_1month_lab_ids = "" %}
+  {% for order_pair in site.data.lab-config.agent_buildathon_1month_lab_orders %}
+    {% assign lab_id = order_pair[1] %}
+    {% if forloop.first %}
+      {% assign agent_buildathon_1month_lab_ids = lab_id %}
+    {% else %}
+      {% assign agent_buildathon_1month_lab_ids = agent_buildathon_1month_lab_ids | append: "," | append: lab_id %}
+    {% endif %}
+  {% endfor %}
+
   <!-- Main Lab Content -->
   <article
     class="lab-content"
@@ -137,7 +159,18 @@ layout: default
     data-event-labs-bootcamp='["{{ bootcamp_lab_ids | split: "," | join: '","' }}"]'
     data-event-labs-azure-ai-workshop='["{{ azure_ai_workshop_lab_ids | split: "," | join: '","' }}"]'
     data-event-labs-mcs-in-a-day='["{{ mcs_in_a_day_lab_ids | split: "," | join: '","' }}"]'
+    data-event-labs-agent-buildathon-1day='["{{ agent_buildathon_1day_lab_ids | split: "," | join: '","' }}"]'
+    data-event-labs-agent-buildathon-1month='["{{ agent_buildathon_1month_lab_ids | split: "," | join: '","' }}"]'
   >
+    <!-- Event Context Banner - Displayed dynamically via JavaScript when viewing lab in event context -->
+    <div class="event-context-banner" style="display: none;">
+      <div class="event-context-content">
+        <span class="event-context-icon"></span>
+        <span class="event-context-text"></span>
+        <a href="#" class="event-context-link">View All Event Labs →</a>
+      </div>
+    </div>
+
     <h1 class="lab-title">{{ page.title }}</h1>
     
     {% if page.duration %}
@@ -320,8 +353,42 @@ layout: default
     const eventConfigMap = {
       "bootcamp": "bootcamp_lab_orders",
       "azure-ai-workshop": "azure_ai_workshop_lab_orders",
-      "mcs-in-a-day": "mcs_in_a_day_lab_orders"
+      "mcs-in-a-day": "mcs_in_a_day_lab_orders",
+      "agent-buildathon-1day": "agent_buildathon_1day_lab_orders",
+      "agent-buildathon-1month": "agent_buildathon_1month_lab_orders"
     };
+
+    // Event display configuration (titles and icons for banner display)
+    const eventDisplayConfig = {
+      "bootcamp": { title: "⚔️ Architecture Bootcamp", icon: "⚔️" },
+      "azure-ai-workshop": { title: "☁️ MCS + Azure AI Workshop", icon: "☁️" },
+      "mcs-in-a-day": { title: "⚡ MCS in a Day", icon: "⚡" },
+      "agent-buildathon-1day": { title: "🏗️ Agent Build-A-Thon (1 day)", icon: "🏗️" },
+      "agent-buildathon-1month": { title: "🚀 Agent Build-A-Thon (1 month)", icon: "🚀" }
+    };
+
+    // Display event context banner if viewing lab within an event
+    if (filterEvent && eventConfigMap[filterEvent]) {
+      const eventBanner = document.querySelector(".event-context-banner");
+      const eventIcon = document.querySelector(".event-context-icon");
+      const eventText = document.querySelector(".event-context-text");
+      const eventLink = document.querySelector(".event-context-link");
+      
+      if (eventBanner && eventDisplayConfig[filterEvent]) {
+        const eventConfig = eventDisplayConfig[filterEvent];
+        // Extract just the text without emoji (remove emoji from title)
+        const titleText = eventConfig.title.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim();
+        eventIcon.textContent = eventConfig.icon;
+        eventText.textContent = "Part of " + titleText;
+        
+        // Construct event page URL
+        const eventPageUrl = "/mcs-labs/labs/" + filterEvent + "/";
+        eventLink.setAttribute("href", eventPageUrl);
+        
+        // Show the banner
+        eventBanner.style.display = "block";
+      }
+    }
 
     // Check for unified event parameter
     if (filterEvent && eventConfigMap[filterEvent]) {
@@ -527,9 +594,11 @@ layout: default
       // Event titles are centralized in lab-config.yml under event_configs
       // Map event names to their configured titles
       const eventTitles = {
-        "bootcamp": "⚔️ Bootcamp Journey",
-        "azure-ai-workshop": "☁️ Azure AI Workshop",
-        "mcs-in-a-day": "⚡ MCS in a Day"
+        "bootcamp": "⚔️ Event Navigation",
+        "azure-ai-workshop": "☁️ Event Navigation",
+        "mcs-in-a-day": "⚡ Event Navigation",
+        "agent-buildathon-1day": "🏗️ Event Navigation",
+        "agent-buildathon-1month": "🚀 Event Navigation"
       };
 
       const eventTitle = eventTitles[activeFilter] || "";
