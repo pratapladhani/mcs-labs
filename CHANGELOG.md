@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.6.0 - 2025-11-19
+
 ### Added
-- Changelog automation system with GitHub Actions and Copilot API
-- PR label configuration documentation (`.github/PR_LABELS.md`)
 - Events dropdown navigation system for improved scalability (#89)
   - Replaced flat event links with collapsible dropdown in header
   - Added support for 5 events: Bootcamp, Azure AI Workshop, MCS in a Day, Agent Build-A-Thon (1 day), Agent Build-A-Thon (1 month)
@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Event context banner system (#89)
   - Dynamic banner shows current event context when viewing labs with `?event=` parameter
   - Left navigation title changes to "Event Navigation" in event context
+- Comprehensive CHANGELOG.md documenting project history from June 2025 to present (#90)
 
 ### Changed
 - Improved button styling across all theme variants (#89)
