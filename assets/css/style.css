@@ -183,6 +183,161 @@ body.lab-page .site-content .container {
 }
 
 /* ============================================================================
+   EVENTS DROPDOWN NAVIGATION
+   
+   Scalable dropdown menu for event/workshop navigation that accommodates
+   unlimited future events without cluttering the header.
+   
+   DESIGN PRINCIPLES:
+   - Generic Classes: .events-dropdown-* pattern for reusability
+   - Theme Integration: Uses CSS custom properties for all colors
+   - Mobile-First: Touch-friendly with appropriate spacing
+   - Accessibility: Keyboard navigation and ARIA support
+   - No JavaScript for Styling: Pure CSS for visual effects
+   
+   ARCHITECTURE:
+   - Dropdown container uses relative positioning for panel anchoring
+   - Panel uses absolute positioning and transforms for smooth animations
+   - Z-index ensures dropdown appears above other content
+   - Max-height and scrolling for many events (future-proofing)
+   
+   SCALABILITY:
+   - Add new events by adding HTML items - no CSS changes needed
+   - Dropdown auto-sizes based on content
+   - Works with any number of events (includes scroll for 10+ items)
+   
+   WHY THIS APPROACH:
+   - Keeps header clean and uncluttered
+   - Industry-standard pattern (familiar to users)
+   - Works on all screen sizes (desktop, tablet, mobile)
+   - Easy to maintain and extend
+   ============================================================================ */
+
+/* Dropdown container - relative positioning for panel anchoring */
+.events-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown button - styled like other nav items with dropdown indicator */
+.events-dropdown-btn {
+    background: transparent;
+    border: none;
+    color: var(--header-text-secondary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.events-dropdown-btn:hover,
+.events-dropdown-btn:focus {
+    background-color: var(--header-hover);
+    color: var(--header-text);
+    outline: none;
+}
+
+/* Dropdown arrow indicator - rotates when open */
+.dropdown-arrow {
+    font-size: 0.7em;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.events-dropdown-btn[aria-expanded="true"] .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Dropdown panel - hidden by default, slides down when shown */
+.events-dropdown-panel {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    min-width: 220px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow);
+    padding: 0.5rem 0;
+    z-index: 1000;
+    
+    /* Hidden state */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    
+    /* Max height with scroll for many events */
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Show state - triggered by JavaScript */
+.events-dropdown-panel.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Individual event link items */
+.events-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary) !important;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.events-dropdown-item:hover,
+.events-dropdown-item:focus {
+    background-color: var(--hover-bg);
+    color: var(--accent-primary) !important;
+    outline: none;
+}
+
+/* Event icon styling */
+.event-icon {
+    font-size: 1.2em;
+    flex-shrink: 0;
+    opacity: 0.8;
+}
+
+/* Event text styling */
+.event-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: inherit;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    /* Make dropdown full-width on mobile for easier touch targets */
+    .events-dropdown-panel {
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+        min-width: 240px;
+    }
+    
+    .events-dropdown-panel.show {
+        transform: translateX(-50%) translateY(0);
+    }
+    
+    /* Larger touch targets on mobile */
+    .events-dropdown-item {
+        padding: 1rem 1.25rem;
+    }
+}
+
+/* ============================================================================
    THEME CONTROLS - Universal Styling System
    
    These controls allow users to switch between themes and light/dark modes.
@@ -660,6 +815,84 @@ body {
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     transition: all 0.3s ease;
+}
+
+/* ============================================================================
+   EVENT CONTEXT BANNER
+   ============================================================================
+   Displays when viewing a lab within an event context (e.g., ?event=bootcamp)
+   Shows which event the lab belongs to and provides link back to event page
+   ============================================================================ */
+
+.event-context-banner {
+    background: var(--bg-secondary);
+    border: 2px solid var(--accent-primary);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.event-context-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.event-context-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.event-context-text {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.event-context-link {
+    color: var(--text-primary);
+    background: var(--bg-button);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    border: none;
+}
+
+.event-context-link:hover {
+    background: var(--bg-button-hover);
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px var(--shadow);
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .event-context-banner {
+        padding: 0.875rem 1rem;
+    }
+    
+    .event-context-content {
+        gap: 0.5rem;
+    }
+    
+    .event-context-text {
+        font-size: 0.9rem;
+        min-width: 150px;
+    }
+    
+    .event-context-link {
+        padding: 0.4rem 0.875rem;
+        font-size: 0.875rem;
+    }
 }
 
 /* Lab page title - reduce top spacing */
@@ -1576,26 +1809,37 @@ body[data-lab-type="external"] .lab-downloads,
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Light mode - ensure white text on buttons */
+.pdf-download,
+.btn-secondary {
+    color: white !important;
+}
+
+.pdf-download:hover,
+.btn-secondary:hover {
+    color: white !important;
+}
+
 /* Dark mode adjustments for download buttons */
 [data-theme="dark"] .pdf-download {
     background: var(--accent-secondary);
-    color: white;
+    color: var(--text-on-accent, var(--dark-button-text)) !important;
 }
 
 [data-theme="dark"] .pdf-download:hover {
     background: var(--accent-primary);
-    color: white;
+    color: var(--text-on-accent, var(--dark-button-text)) !important;
 }
 
 /* Dark mode adjustments for secondary buttons */
 [data-theme="dark"] .btn-secondary {
     background: var(--accent-secondary);
-    color: white;
+    color: var(--text-on-accent, var(--dark-button-text)) !important;
 }
 
 [data-theme="dark"] .btn-secondary:hover {
     background: var(--accent-primary);
-    color: white;
+    color: var(--text-on-accent, var(--dark-button-text)) !important;
 }
 
 /* Dark mode adjustments for navigation buttons */
@@ -2477,9 +2721,7 @@ a:hover .external-link-icon {
 }
 
 /* Exception for buttons inside lab-content - keep button styles */
-.lab-content a.btn-primary,
-.lab-content a.btn-secondary,
-.lab-content a.pdf-download {
+.lab-content a.btn-primary {
     color: white !important;
 }
 
@@ -2489,9 +2731,7 @@ a:hover .external-link-icon {
 }
 
 /* Exception for button hovers inside lab-content */
-.lab-content a.btn-primary:hover,
-.lab-content a.btn-secondary:hover,
-.lab-content a.pdf-download:hover {
+.lab-content a.btn-primary:hover {
     color: white !important;
     text-decoration: none !important;
 }

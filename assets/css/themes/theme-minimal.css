@@ -141,6 +141,7 @@
     --accent-tertiary: var(--link-color);
     --accent-tertiary-dark: #003d82;
     --dark-button-text: white;
+    --text-on-accent: white;
 
     /* Chirpy code highlighting */
     --code-bg: #f6f8fa;
@@ -290,6 +291,7 @@
     --accent-tertiary: var(--link-color);
     --accent-tertiary-dark: rgb(108, 157, 228);
     --dark-button-text: var(--text-color);
+    --text-on-accent: #1a1a1a;
 
     /* Chirpy code highlighting - dark style */
     --code-bg: #151515;

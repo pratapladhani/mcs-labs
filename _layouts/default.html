@@ -78,22 +78,56 @@
             <!-- NAVIGATION STRUCTURE:
                  Home: Main homepage with journey cards (excludes bootcamp and events)
                  All Labs: Complete lab listing page
-                 Bootcamp: Dedicated bootcamp page with special sequencing
-                 Azure AI Workshop: Dedicated workshop page for MCS + Azure AI integration
-                 MCS in a Day: Full-day workshop introducing Microsoft Copilot Studio
+                 Events: Dropdown menu containing all event/workshop pages
                  
-                 IMPORTANT: Bootcamp and Event/Workshop URLs point to dedicated pages
-                 This provides consistent access to curated content with special
-                 numbering systems while keeping them separate from homepage journey cards -->
+                 WHY DROPDOWN NAVIGATION:
+                 - Scalable: Supports unlimited future events without navigation crowding
+                 - Clean: Keeps header uncluttered on all screen sizes
+                 - Industry Standard: Users expect dropdowns for grouped content
+                 - Mobile-Friendly: Touch interaction for tablets and phones
+                 - Future-Proof: Adding new events requires only updating dropdown list
+                 
+                 ARCHITECTURE:
+                 - Generic .events-dropdown-* CSS classes (not event-specific)
+                 - Uses CSS custom properties for theme compatibility
+                 - JavaScript handles toggle, outside clicks, keyboard (Escape)
+                 - Accessible with ARIA attributes and keyboard navigation -->
             <a href="{{ '/' | relative_url }}">Home</a>
             <a href="{{ '/labs/' | relative_url }}">All Labs</a>
-            <a href="{{ '/labs/bootcamp/' | relative_url }}">Bootcamp</a>
-            <a href="{{ '/labs/azure-ai-workshop/' | relative_url }}"
-              >Azure AI Workshop</a
-            >
-            <a href="{{ '/labs/mcs-in-a-day/' | relative_url }}"
-              >MCS in a Day</a
-            >
+            
+            <!-- Events Dropdown Menu -->
+            <div class="events-dropdown-container">
+              <button class="events-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+                Events
+                <span class="dropdown-arrow" aria-hidden="true">▾</span>
+              </button>
+              <div class="events-dropdown-panel" aria-label="Events menu">
+                <a href="{{ '/labs/bootcamp/' | relative_url }}" class="events-dropdown-item">
+                  <span class="event-icon">⚔️</span>
+                  <span class="event-text">Architecture Bootcamp</span>
+                </a>
+                <a href="{{ '/labs/azure-ai-workshop/' | relative_url }}" class="events-dropdown-item">
+                  <span class="event-icon">☁️</span>
+                  <span class="event-text">Azure AI Workshop</span>
+                </a>
+                <a href="{{ '/labs/mcs-in-a-day/' | relative_url }}" class="events-dropdown-item">
+                  <span class="event-icon">⚡</span>
+                  <span class="event-text">MCS in a Day</span>
+                </a>
+                <a href="{{ '/labs/agent-buildathon-1day/' | relative_url }}" class="events-dropdown-item">
+                  <span class="event-icon">🏗️</span>
+                  <span class="event-text">Agent Build-A-Thon (1 day)</span>
+                </a>
+                <a href="{{ '/labs/agent-buildathon-1month/' | relative_url }}" class="events-dropdown-item">
+                  <span class="event-icon">🚀</span>
+                  <span class="event-text">Agent Build-A-Thon (1 month)</span>
+                </a>
+                <!-- ADD NEW EVENTS HERE:
+                     Copy the structure above for each new event
+                     Use appropriate icon and event name
+                     No CSS changes needed - dropdown auto-sizes -->
+              </div>
+            </div>
           </nav>
           <div class="header-actions">
             <div class="theme-controls">
@@ -262,6 +296,72 @@
               "ThemeManager not found! Script may not have loaded."
             );
             return;
+          }
+
+          // ===================================================================
+          // EVENTS DROPDOWN NAVIGATION
+          // ===================================================================
+          // Handles dropdown menu interaction for events navigation
+          // 
+          // FUNCTIONALITY:
+          // - Toggle dropdown on button click
+          // - Close dropdown when clicking outside
+          // - Close dropdown on Escape key
+          // - Close dropdown when navigating to an event
+          // - Accessible with keyboard navigation (Tab, Enter, Escape)
+          // 
+          // WHY THIS APPROACH:
+          // - Vanilla JavaScript (no dependencies)
+          // - Minimal code (~40 lines)
+          // - Works with all themes
+          // - Mobile and desktop compatible
+          // - Follows accessibility best practices
+          // ===================================================================
+          
+          const dropdownBtn = document.querySelector('.events-dropdown-btn');
+          const dropdownPanel = document.querySelector('.events-dropdown-panel');
+          const dropdownContainer = document.querySelector('.events-dropdown-container');
+          
+          if (dropdownBtn && dropdownPanel) {
+            // Toggle dropdown on button click
+            dropdownBtn.addEventListener('click', function(e) {
+              e.stopPropagation(); // Prevent immediate outside click
+              const isOpen = dropdownPanel.classList.contains('show');
+              
+              if (isOpen) {
+                dropdownPanel.classList.remove('show');
+                dropdownBtn.setAttribute('aria-expanded', 'false');
+              } else {
+                dropdownPanel.classList.add('show');
+                dropdownBtn.setAttribute('aria-expanded', 'true');
+              }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+              if (!dropdownContainer.contains(e.target)) {
+                dropdownPanel.classList.remove('show');
+                dropdownBtn.setAttribute('aria-expanded', 'false');
+              }
+            });
+            
+            // Close dropdown on Escape key
+            document.addEventListener('keydown', function(e) {
+              if (e.key === 'Escape' && dropdownPanel.classList.contains('show')) {
+                dropdownPanel.classList.remove('show');
+                dropdownBtn.setAttribute('aria-expanded', 'false');
+                dropdownBtn.focus(); // Return focus to button for accessibility
+              }
+            });
+            
+            // Close dropdown when clicking an event link
+            const eventLinks = dropdownPanel.querySelectorAll('.events-dropdown-item');
+            eventLinks.forEach(function(link) {
+              link.addEventListener('click', function() {
+                dropdownPanel.classList.remove('show');
+                dropdownBtn.setAttribute('aria-expanded', 'false');
+              });
+            });
           }
 
           // Only initialize if not already done in head
