@@ -5,7 +5,7 @@ All notable changes to the Microsoft Copilot Studio Labs will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
 
 ### Added
 - Changelog automation system with GitHub Actions and Copilot API
@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Button text contrast issues across all 4 theme variants (#89)
 - Duplicate emoji display in event context banner (#89)
 
-## [2.5.0] - 2025-10-27
+## 2.5.0 - 2025-10-27
 
 ### Added
 - Guild Hall Custom MCP lab with Windows curl syntax (#54, #78, #81, #86)
@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Broken image references and Azure region updates (#82)
 - Standardized lab resource placeholders in contract-alerts-azure-ai (#87)
 
-## [2.4.0] - 2025-10-26
+## 2.4.0 - 2025-10-26
 
 ### Added
 - MCS in a Day event page with unified event system (#67)
@@ -63,14 +63,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consistent header layout between rich and minimal themes (#75)
 - Correct image filename reference in dataverse-mcp-connector lab (#75)
 
-## [2.3.0] - 2025-10-25
+## 2.3.0 - 2025-10-25
 
 ### Added
 - Bring Your Own Model (BYOM) lab (#65)
 - Contract Alerts Azure AI lab with Azure setup reference and accessibility improvements (#64)
 - Automated H2-only TOC generation with truncation bug fix (#66)
 
-## [2.2.0] - 2025-10-24
+## 2.2.0 - 2025-10-24
 
 ### Added
 - Data Fabric Agent lab with CSS improvements (#55)
@@ -81,12 +81,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added missing HTML comment opening tag in default layout (#60)
 - Updated callout wording in dataverse-mcp-connector lab (#61)
 
-## [2.1.0] - 2025-10-23
+## 2.1.0 - 2025-10-23
 
 ### Added
 - Guild Hall MCP lab (#54)
 
-## [2.0.0] - 2025-10-17
+## 2.0.0 - 2025-10-17
 
 ### Added
 - Markdown detection feature and improved fenced code block formatting (#52)
@@ -97,7 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Apostrophe spacing issues in HTML rendering (#48)
 
-## [1.9.0] - 2025-10-16
+## 1.9.0 - 2025-10-16
 
 ### Added
 - Comprehensive bootcamp navigation system with section filtering (#45)
@@ -105,7 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Enhanced lab instructions for Lab 4 and other bootcamp labs (#46, #47, #49)
 
-## [1.8.0] - 2025-10-15
+## 1.8.0 - 2025-10-15
 
 ### Added
 - Scroll-to-top button on lab pages (#42)
@@ -117,12 +117,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Hide lab numbers from both lab cards and left navigation (#44)
 
-## [1.7.0] - 2025-10-13
+## 1.7.0 - 2025-10-13
 
 ### Fixed
 - Major navigation fixes and UX improvements for lab browser (#39)
 
-## [1.6.0] - 2025-10-06
+## 1.6.0 - 2025-10-06
 
 ### Added
 - Comprehensive documentation pipeline for GitHub Pages enhancement (#37)
@@ -130,14 +130,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Markdown formatting issues in autonomous-account-news lab (#38)
 
-## [1.5.0] - 2025-10-03
+## 1.5.0 - 2025-10-03
 
 ### Changed
 - Revised Dataverse connector configuration (#36)
 - Updated autonomous lab instructions (#34, #35)
 - Revised topic addition steps in README (#33)
 
-## [1.4.0] - 2025-10-02
+## 1.4.0 - 2025-10-02
 
 ### Added
 - 30-minute version of Ask Me Anything lab (#33)
@@ -145,7 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated labs to add tips and place Teams chat as extra challenge (#32)
 
-## [1.3.0] - 2025-10-01
+## 1.3.0 - 2025-10-01
 
 ### Changed
 - Revised Nova AI setup and interaction instructions (#28)
@@ -155,40 +155,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed URLs and improved step instructions (#29)
 
-## [1.2.0] - 2025-09-29
+## 1.2.0 - 2025-09-29
 
 ### Changed
 - Updated CUA lab to use hosted browser instead of hosted machine (#24)
 - Renamed "Agent Builder" to "Copilot Studio Lite" (#23)
 
-## [1.1.0] - 2025-09-22
+## 1.1.0 - 2025-09-22
 
 ### Changed
 - Modified Excel knowledge to file upload in contract alerts lab (#22)
 - August retrospective updates for workshop agent (#21)
 
-## [1.0.0] - 2025-08-18
+## 1.0.0 - 2025-08-18
 
 ### Changed
 - Replaced poem by city in lab content (#15)
 
-## [0.4.0] - 2025-07-24
+## 0.4.0 - 2025-07-24
 
 ### Fixed
 - Documentation updates and README improvements (#13, #14)
 
-## [0.3.0] - 2025-07-15
+## 0.3.0 - 2025-07-15
 
 ### Added
 - Autonomous agents with CUA lab (#12)
 - MCP Qualify Lead lab (#11)
 
-## [0.2.0] - 2025-06-30
+## 0.2.0 - 2025-06-30
 
 ### Added
 - Standard Orchestration lab (#9)
 
-## [0.1.0] - 2025-06-20
+## 0.1.0 - 2025-06-20
 
 ### Added
 - MBR prep SharePoint agent lab (#7)
@@ -200,7 +200,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Added Microsoft SECURITY.MD (#2)
 
-## [0.0.1] - 2025-06-11
+## 0.0.1 - 2025-06-11
 
 ### Added
 - Initial repository setup with Microsoft mandatory files
@@ -215,26 +215,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PowerShell automation scripts for lab generation
 - README with project overview and setup instructions
 - LICENSE file
-
-[Unreleased]: https://github.com/microsoft/mcs-labs/compare/v2.5.0...HEAD
-[2.5.0]: https://github.com/microsoft/mcs-labs/compare/v2.4.0...v2.5.0
-[2.4.0]: https://github.com/microsoft/mcs-labs/compare/v2.3.0...v2.4.0
-[2.3.0]: https://github.com/microsoft/mcs-labs/compare/v2.2.0...v2.3.0
-[2.2.0]: https://github.com/microsoft/mcs-labs/compare/v2.1.0...v2.2.0
-[2.1.0]: https://github.com/microsoft/mcs-labs/compare/v2.0.0...v2.1.0
-[2.0.0]: https://github.com/microsoft/mcs-labs/compare/v1.9.0...v2.0.0
-[1.9.0]: https://github.com/microsoft/mcs-labs/compare/v1.8.0...v1.9.0
-[1.8.0]: https://github.com/microsoft/mcs-labs/compare/v1.7.0...v1.8.0
-[1.7.0]: https://github.com/microsoft/mcs-labs/compare/v1.6.0...v1.7.0
-[1.6.0]: https://github.com/microsoft/mcs-labs/compare/v1.5.0...v1.6.0
-[1.5.0]: https://github.com/microsoft/mcs-labs/compare/v1.4.0...v1.5.0
-[1.4.0]: https://github.com/microsoft/mcs-labs/compare/v1.3.0...v1.4.0
-[1.3.0]: https://github.com/microsoft/mcs-labs/compare/v1.2.0...v1.3.0
-[1.2.0]: https://github.com/microsoft/mcs-labs/compare/v1.1.0...v1.2.0
-[1.1.0]: https://github.com/microsoft/mcs-labs/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/microsoft/mcs-labs/compare/v0.4.0...v1.0.0
-[0.4.0]: https://github.com/microsoft/mcs-labs/compare/v0.3.0...v0.4.0
-[0.3.0]: https://github.com/microsoft/mcs-labs/compare/v0.2.0...v0.3.0
-[0.2.0]: https://github.com/microsoft/mcs-labs/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/microsoft/mcs-labs/compare/v0.0.1...v0.1.0
-[0.0.1]: https://github.com/microsoft/mcs-labs/releases/tag/v0.0.1
