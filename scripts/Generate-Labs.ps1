@@ -169,7 +169,7 @@ function Invoke-LabConfigAudit {
     Write-Host "🔍  Running Lab Configuration Audit..." -ForegroundColor Cyan
     
     # Excluded event/special folders (not expected to have local folders)
-    $excludedFolders = @("bootcamp", "azure-ai-workshop", "mcs-in-a-day")
+    $excludedFolders = @("bootcamp", "azure-ai-workshop", "mcs-in-a-day", "agent-buildathon-1day", "agent-buildathon-1month")
     
     # External labs (configured but intentionally have no local folder)
     $externalLabs = @("mcs-mcp-external")
