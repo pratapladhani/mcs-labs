@@ -1444,13 +1444,15 @@ function Normalize-TOCMarkers {
             # Generate anchor (lowercase, replace spaces/special chars with hyphens)
             # WHY: Matches GitHub/Jekyll automatic anchor generation algorithm
             # IMPORTANT: Must match Jekyll's anchor generation to prevent broken links
-            # NOTE: Emojis are converted to dashes to match Jekyll's behavior
-            $anchor = $headingText -replace '[\p{So}\p{Sk}]', '-'  # Replace emojis/symbols with dash
-            $anchor = $anchor -replace '[^\w\s-]', ''               # Remove other special chars except spaces and hyphens
-            $anchor = $anchor -replace '\s+', '-'                   # Replace spaces with hyphens
+            # Jekyll: base emoji→removed (variation selectors stay in place), special chars→dash, spaces→dash
+            $anchor = $headingText -replace '[\p{So}\p{Sk}]', ''    # Remove base emoji (keeps variation selectors like ️)
+            $anchor = $anchor -replace '[^\w\s\p{Mn}-]', '-'        # Convert special chars to dash (keep NonSpacingMarks)
+            $anchor = $anchor -replace '\s', '-'                    # Replace each space with hyphen
             $anchor = $anchor.ToLower()                             # Lowercase
-            $anchor = $anchor -replace '-+', '-'                    # Collapse multiple hyphens
-            $anchor = $anchor.TrimEnd('-')                          # Remove only trailing hyphens (keep leading dash from emoji)
+            $anchor = $anchor -replace '-{3,}', '--'                # Collapse 3+ consecutive dashes to exactly 2
+            $anchor = $anchor -replace '^-+([\p{Mn}])', '$1'        # Remove leading dashes before variation selectors
+            $anchor = $anchor -replace '^-{2,}', '-'                # Keep only single leading dash (for emojis without modifiers)
+            $anchor = $anchor.TrimEnd('-')                          # Remove trailing hyphens
             
             # Create TOC entry (no indentation for H2 only)
             $tocEntry = "- [$headingText](#$anchor)"
@@ -1681,6 +1683,37 @@ function New-RootHomepage {
         }
     }
     
+    # Calculate stats for each event
+    $eventStats = @{}
+    if ($Config.event_configs) {
+        foreach ($eventKey in $Config.event_configs.Keys) {
+            $eventConfig = $Config.event_configs[$eventKey]
+            $configKey = $eventConfig.config_key
+            
+            $labCount = 0
+            $totalDuration = 0
+            
+            # Get the event-specific lab orders (e.g., bootcamp_lab_orders)
+            if ($Config[$configKey]) {
+                $eventLabOrders = $Config[$configKey]
+                foreach ($labId in $eventLabOrders.Keys) {
+                    # Find the lab by ID in AllLabs
+                    $lab = $AllLabs | Where-Object { $_.id -eq $eventLabOrders[$labId] }
+                    if ($lab) {
+                        $labCount++
+                        $totalDuration += $lab.duration
+                    }
+                }
+            }
+            
+            $eventStats[$eventKey] = @{
+                LabCount      = $labCount
+                TotalDuration = $totalDuration
+                Hours         = [math]::Round($totalDuration / 60, 1)
+            }
+        }
+    }
+    
     # Build journey cards dynamically
     $journeyCards = @()
     if ($Config.journeys) {
@@ -1724,8 +1757,43 @@ function New-RootHomepage {
         }
     }
     
+    # Build event cards dynamically
+    $eventCards = @()
+    if ($Config.event_configs) {
+        foreach ($eventKey in $Config.event_configs.Keys) {
+            $event = $Config.event_configs[$eventKey]
+            $stats = $eventStats[$eventKey]
+            
+            $title = if ($event.title) { $event.title } else { $eventKey }
+            $description = if ($event.description) { $event.description } else { "Event for $title" }
+            
+            # Format time display
+            $timeDisplay = if ($stats.Hours -lt 1) { 
+                "$($stats.TotalDuration) mins" 
+            }
+            elseif ($stats.Hours -ge 2) { 
+                "$([math]::Floor($stats.Hours))-$([math]::Ceiling($stats.Hours)) hours" 
+            }
+            else { 
+                "$($stats.Hours) hours" 
+            }
+            
+            $eventCards += @"
+    <div class="event-card $eventKey">
+        <h3>$title</h3>
+        <p>$description</p>
+        <div class="event-meta">
+            <span>⏱️ $timeDisplay</span>
+            <span>📚 $($stats.LabCount) labs</span>
+        </div>
+        <a href="{{ '/labs/$eventKey/?event=$eventKey' | relative_url }}" class="event-btn">View Event →</a>
+    </div>
+"@
+        }
+    }
+    
     # Build the complete homepage content
-    $homepageContent = Build-RootHomepageContent -JourneyCards $journeyCards
+    $homepageContent = Build-RootHomepageContent -JourneyCards $journeyCards -EventCards $eventCards
     
     # Write to root index.md file
     $rootIndexPath = Join-Path $Paths.basePath "index.md"
@@ -1743,9 +1811,10 @@ function Build-RootHomepageContent {
     .SYNOPSIS
         Build the complete root homepage content
     #>
-    param($JourneyCards)
+    param($JourneyCards, $EventCards)
     
     $journeyCardsHtml = $JourneyCards -join "`n`n"
+    $eventCardsHtml = $EventCards -join "`n`n"
     
     return @"
 ---
@@ -1767,6 +1836,16 @@ Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. C
 
 <div class="journey-cards">
 $journeyCardsHtml
+</div>
+
+---
+
+## 📅 **Featured Events**
+
+Participate in curated workshop experiences with guided lab sequences designed for specific learning outcomes.
+
+<div class="event-cards">
+$eventCardsHtml
 </div>
 
 ---
