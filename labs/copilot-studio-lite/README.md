@@ -25,7 +25,7 @@ Master agent creation from basic web-grounded assistants to advanced SharePoint-
   - [Use Case #1: Create a web-based learning assistant](#-use-case-1-create-a-web-based-learning-assistant)
   - [Use Case #2: Build an advanced SharePoint-integrated sales assistant](#-use-case-2-build-an-advanced-sharepoint-integrated-sales-assistant)
 - [Summary of Learnings](#-summary-of-learnings)
-- [Conclusions & Recommendations](#-conclusions--recommendations)
+- [Conclusions & Recommendations](#conclusions--recommendations)
 
 ---
 
