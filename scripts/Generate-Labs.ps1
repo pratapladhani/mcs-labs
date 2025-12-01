@@ -1444,13 +1444,15 @@ function Normalize-TOCMarkers {
             # Generate anchor (lowercase, replace spaces/special chars with hyphens)
             # WHY: Matches GitHub/Jekyll automatic anchor generation algorithm
             # IMPORTANT: Must match Jekyll's anchor generation to prevent broken links
-            # NOTE: Emojis are converted to dashes to match Jekyll's behavior
-            $anchor = $headingText -replace '[\p{So}\p{Sk}]', '-'  # Replace emojis/symbols with dash
-            $anchor = $anchor -replace '[^\w\s-]', ''               # Remove other special chars except spaces and hyphens
-            $anchor = $anchor -replace '\s+', '-'                   # Replace spaces with hyphens
+            # Jekyll: base emoji→removed (variation selectors stay in place), special chars→dash, spaces→dash
+            $anchor = $headingText -replace '[\p{So}\p{Sk}]', ''    # Remove base emoji (keeps variation selectors like ️)
+            $anchor = $anchor -replace '[^\w\s\p{Mn}-]', '-'        # Convert special chars to dash (keep NonSpacingMarks)
+            $anchor = $anchor -replace '\s', '-'                    # Replace each space with hyphen
             $anchor = $anchor.ToLower()                             # Lowercase
-            $anchor = $anchor -replace '-+', '-'                    # Collapse multiple hyphens
-            $anchor = $anchor.TrimEnd('-')                          # Remove only trailing hyphens (keep leading dash from emoji)
+            $anchor = $anchor -replace '-{3,}', '--'                # Collapse 3+ consecutive dashes to exactly 2
+            $anchor = $anchor -replace '^-+([\p{Mn}])', '$1'        # Remove leading dashes before variation selectors
+            $anchor = $anchor -replace '^-{2,}', '-'                # Keep only single leading dash (for emojis without modifiers)
+            $anchor = $anchor.TrimEnd('-')                          # Remove trailing hyphens
             
             # Create TOC entry (no indentation for H2 only)
             $tocEntry = "- [$headingText](#$anchor)"
