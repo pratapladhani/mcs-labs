@@ -55,7 +55,7 @@
 event_configs:
   bootcamp:
     title: "⚔️ Architecture Bootcamp"
-    description: "Intensive hands-on bootcamp covering agent building, SharePoint integration, autonomous AI, and DevOps practices."
+    description: "Intensive hands-on bootcamp covering progressive AI assistants, ALM best practices, autonomous agents, and advanced data integration with MCP and Fabric."
     config_key: "bootcamp_lab_orders"
   azure-ai-workshop:
     title: "☁️ MCS + Azure AI Workshop"
@@ -326,31 +326,31 @@ lab_metadata:
 # BOOTCAMP LAB ORDERING - Specific sequence for bootcamp journey
 # =====================================================
 # This section provides the specific lab numbering used in the bootcamp journey
-# which uses a different numbering scheme with sub-labs (1a, 1b, 3a, 3b, 5a, 5b)
+# Updated December 2025 with new progressive curriculum
 bootcamp_lab_orders:
-  # Lab 1: Declarative Agents
-  "1a": "agent-builder-web" # M365 Copilot declarative agent
-  "1b": "agent-builder-sharepoint" # SharePoint declarative agent
+  # Lab 1: Progressive AI Assistants
+  1: "copilot-studio-lite" # Build Progressive AI Assistants with Copilot Studio Lite
 
   # Lab 2: ALM Foundation
-  2: "setup-for-success" # Setup for success with ALM
+  2: "setup-for-success" # Set yourself up for success & discover ALM best practices
 
-  # Lab 3: Custom Agents
-  "3a": "public-website-agent" # Custom Agent for web
-  "3b": "mbr-prep-sharepoint-agent" # Custom Agent for SharePoint
+  # Lab 3: Custom Agent for Website
+  3: "public-website-agent" # Give your public website chatbot a brain and make it an agent
 
   # Lab 4: Multi-Agent Systems
-  4: "ask-me-anything" # Ask me anything agent
+  4: "ask-me-anything-30-mins" # Create an 'Ask me anything' agent for your employees (30 min version)
 
-  # Lab 5: Autonomous Agents
-  "5a": "autonomous-support-agent" # Autonomous support agent
-  "5b": "autonomous-account-news" # Autonomous sales opportunity agent
+  # Lab 5: Autonomous Account News Agent
+  5: "autonomous-account-news" # Build an Autonomous Account News Assistant Agent
 
-  # Lab 6: DevOps & Deployment
-  6: "pipelines-and-source-control" # Pipelines & source control + ALM gotchas
+  # Lab 6: Dataverse MCP Integration
+  6: "dataverse-mcp-connector" # Contoso Agent and Dataverse MCP Connector - Build an AI Agent with Live Data Integration
 
-  # Lab 7: Quality & Testing
-  7: "copilot-studio-kit" # Copilot Studio Kit
+  # Lab 7: Computer-Using Agents
+  7: "autonomous-cua" # Autonomous Portfolio Lookup Agent with Computer-Using Agents (CUA)
+
+  # Lab 8: Data Fabric Integration
+  8: "data-fabric-agent" # Connecting Fabric Data Agents with Microsoft Copilot Studio
 
 # =====================================================
 # AZURE AI WORKSHOP LAB ORDERING - Specific sequence for Azure AI workshop
