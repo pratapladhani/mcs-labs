@@ -1994,6 +1994,90 @@ body[data-lab-type="external"] .lab-downloads,
     margin-bottom: 3rem;
 }
 
+/* Event cards - similar to journey cards */
+.event-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.event-card {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 4px solid;
+    border: 1px solid var(--border-color);
+}
+
+.event-card.bootcamp {
+    border-left-color: var(--border-red);
+}
+
+.event-card.azure-ai-workshop {
+    border-left-color: var(--border-blue);
+}
+
+.event-card.mcs-in-a-day {
+    border-left-color: var(--border-dark-orange);
+}
+
+.event-card.agent-buildathon-1day {
+    border-left-color: var(--border-dark-green);
+}
+
+.event-card.agent-buildathon-1month {
+    border-left-color: var(--border-purple);
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--shadow-hover);
+}
+
+.event-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+}
+
+.event-card p {
+    color: var(--text-secondary);
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+}
+
+.event-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.event-btn {
+    display: inline-block;
+    background: var(--accent-primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.event-btn:hover {
+    background: var(--accent-primary-hover);
+    text-decoration: none;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
 /* Filter and lab management styles */
 .current-filter-display {
     background: var(--bg-secondary);

@@ -1683,6 +1683,37 @@ function New-RootHomepage {
         }
     }
     
+    # Calculate stats for each event
+    $eventStats = @{}
+    if ($Config.event_configs) {
+        foreach ($eventKey in $Config.event_configs.Keys) {
+            $eventConfig = $Config.event_configs[$eventKey]
+            $configKey = $eventConfig.config_key
+            
+            $labCount = 0
+            $totalDuration = 0
+            
+            # Get the event-specific lab orders (e.g., bootcamp_lab_orders)
+            if ($Config[$configKey]) {
+                $eventLabOrders = $Config[$configKey]
+                foreach ($labId in $eventLabOrders.Keys) {
+                    # Find the lab by ID in AllLabs
+                    $lab = $AllLabs | Where-Object { $_.id -eq $eventLabOrders[$labId] }
+                    if ($lab) {
+                        $labCount++
+                        $totalDuration += $lab.duration
+                    }
+                }
+            }
+            
+            $eventStats[$eventKey] = @{
+                LabCount      = $labCount
+                TotalDuration = $totalDuration
+                Hours         = [math]::Round($totalDuration / 60, 1)
+            }
+        }
+    }
+    
     # Build journey cards dynamically
     $journeyCards = @()
     if ($Config.journeys) {
@@ -1726,8 +1757,43 @@ function New-RootHomepage {
         }
     }
     
+    # Build event cards dynamically
+    $eventCards = @()
+    if ($Config.event_configs) {
+        foreach ($eventKey in $Config.event_configs.Keys) {
+            $event = $Config.event_configs[$eventKey]
+            $stats = $eventStats[$eventKey]
+            
+            $title = if ($event.title) { $event.title } else { $eventKey }
+            $description = if ($event.description) { $event.description } else { "Event for $title" }
+            
+            # Format time display
+            $timeDisplay = if ($stats.Hours -lt 1) { 
+                "$($stats.TotalDuration) mins" 
+            }
+            elseif ($stats.Hours -ge 2) { 
+                "$([math]::Floor($stats.Hours))-$([math]::Ceiling($stats.Hours)) hours" 
+            }
+            else { 
+                "$($stats.Hours) hours" 
+            }
+            
+            $eventCards += @"
+    <div class="event-card $eventKey">
+        <h3>$title</h3>
+        <p>$description</p>
+        <div class="event-meta">
+            <span>⏱️ $timeDisplay</span>
+            <span>📚 $($stats.LabCount) labs</span>
+        </div>
+        <a href="{{ '/labs/$eventKey/?event=$eventKey' | relative_url }}" class="event-btn">View Event →</a>
+    </div>
+"@
+        }
+    }
+    
     # Build the complete homepage content
-    $homepageContent = Build-RootHomepageContent -JourneyCards $journeyCards
+    $homepageContent = Build-RootHomepageContent -JourneyCards $journeyCards -EventCards $eventCards
     
     # Write to root index.md file
     $rootIndexPath = Join-Path $Paths.basePath "index.md"
@@ -1745,9 +1811,10 @@ function Build-RootHomepageContent {
     .SYNOPSIS
         Build the complete root homepage content
     #>
-    param($JourneyCards)
+    param($JourneyCards, $EventCards)
     
     $journeyCardsHtml = $JourneyCards -join "`n`n"
+    $eventCardsHtml = $EventCards -join "`n`n"
     
     return @"
 ---
@@ -1769,6 +1836,16 @@ Welcome to hands-on labs for building AI agents with Microsoft Copilot Studio. C
 
 <div class="journey-cards">
 $journeyCardsHtml
+</div>
+
+---
+
+## 📅 **Featured Events**
+
+Participate in curated workshop experiences with guided lab sequences designed for specific learning outcomes.
+
+<div class="event-cards">
+$eventCardsHtml
 </div>
 
 ---
