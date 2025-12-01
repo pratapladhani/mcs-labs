@@ -7,10 +7,12 @@ This document contains essential context for GitHub Copilot when working on the 
 **What This Is**: A Jekyll-based static site hosting hands-on labs for Microsoft Copilot Studio. Features include:
 
 - Journey-based navigation (Quick Start, Business User, Developer, Autonomous AI)
-- Bootcamp system with curated sequences
+- Event system (Bootcamp, Azure AI Workshop, MCS in a Day, Agent Build-A-Thon 1 day, Agent Build-A-Thon 1 month)
 - Multi-theme system (Rich/Minimal × Light/Dark)
 - Automated PDF generation from markdown
+- Automated Table of Contents generation (H2 headings only)
 - Responsive mobile design with floating TOC
+- Configuration audit system (Check-LabConfigs.ps1)
 
 ## 🚦 MANDATORY Workflow - Always Enforce
 
@@ -197,6 +199,13 @@ before we implement. [presents detailed plan] Does this approach work for you?"
 - ❌ `labs/index.md` (labs listing)
 - ❌ `_labs/*.md` (individual lab files)
 
+**Auto-generated content within labs**:
+- ❌ **Table of Contents sections** - Automatically generated from H2 headings
+  - Lab authors only need to include `## 📚 Table of Contents` heading
+  - Script auto-generates all TOC links from H2 headings in the lab
+  - H2 headings only (### subsections not included in TOC)
+  - See `docs/LAB_AUTHORING_GUIDE.md` for details
+
 **How to make changes:**
 
 1. Edit `lab-config.yml` (journeys, metadata)
@@ -207,19 +216,19 @@ before we implement. [presents detailed plan] Does this approach work for you?"
 **⚠️ CRITICAL: When adding a NEW LAB:**
 
 1. **Create lab folder**: `labs/your-lab-name/` with `README.md` and `images/`
-2. **Update lab-config.yml** (MANDATORY - 5 sections to update):
+2. **Update lab-config.yml** (MANDATORY - at least 3 sections, up to 6 if event labs):
    - `lab_metadata`: Add entry with id, title, difficulty, duration, section
    - `lab_orders`: Assign display order number (check existing numbers to avoid conflicts)
    - `lab_journeys`: Assign to one or more journeys (quick-start, business-user, developer, autonomous-ai)
-   - Event-specific orders: Add to `bootcamp_lab_orders`, `azure_ai_workshop_lab_orders`, `mcs_in_a_day_lab_orders` if applicable
+   - Event-specific orders (if applicable): Add to `bootcamp_lab_orders`, `azure_ai_workshop_lab_orders`, `mcs_in_a_day_lab_orders`, `agent_buildathon_1day_lab_orders`, `agent_buildathon_1month_lab_orders`
 3. **Run generation**: `.\scripts\Generate-Labs.ps1 -SkipPDFs` (automatically runs config audit first)
 4. **Test locally**: `docker-compose up -d` and verify at http://localhost:4000/mcs-labs/
 5. **Generate PDFs**: `.\scripts\Generate-Labs.ps1 -GeneratePDFs` (before committing)
 
-**Built-in Safety**: Generate-Labs.ps1 automatically runs a configuration audit before generation. It will fail fast if:
+**Built-in Safety**: Generate-Labs.ps1 automatically runs Check-LabConfigs.ps1 before generation. It will fail fast if:
 
 - Lab folders exist without config entries
-- Config entries exist without lab folders (except external labs)
+- Config entries exist without lab folders (except external labs like `mcs-mcp-external`)
 - This prevents accidental generation with incomplete configuration
 
 **Common mistake**: Adding lab folder without updating lab-config.yml → Caught by automated audit!
@@ -232,6 +241,7 @@ before we implement. [presents detailed plan] Does this approach work for you?"
 - ✅ Lab navigation works (prev/next buttons)
 - ✅ PDF generates successfully
 - ✅ Lab appears in event pages if assigned to events
+- ✅ Table of Contents is auto-generated (H2 headings only)
 
 ### 4. Local/CI Parity - Test Before Push (ADR-006)
 
@@ -260,6 +270,70 @@ before we implement. [presents detailed plan] Does this approach work for you?"
 - `_data/lab-config.yml` = auto-synced copy (don't edit manually)
 - Script copies root → \_data automatically
 - **Don't use symlinks** (fails in GitHub Actions)
+
+### 7. Event System Architecture
+
+**Events are separate from journeys**:
+- **Journeys**: Homepage cards for self-paced learning paths (Quick Start, Business User, Developer, Autonomous AI)
+- **Events**: Dedicated curated workshop experiences (Bootcamp, Azure AI Workshop, MCS in a Day, Agent Build-A-Thon variants)
+
+**Key Event System Features**:
+- **Unified URL Pattern**: All events use `?event=<event-name>` parameter
+- **Generic CSS Classes**: Shared `.event-*` styling across all events (no event-specific classes like `bootcamp-*` or `workshop-*`)
+- **Centralized Config**: All event metadata in `event_configs` section of `lab-config.yml`
+- **Event-Specific Ordering**: Each event has its own lab sequence (e.g., `bootcamp_lab_orders`, `azure_ai_workshop_lab_orders`)
+- **Homepage Exclusion**: Events NOT in `lab_journeys` to keep them off homepage journey cards
+- **Top Navigation Access**: Events accessible via header navigation dropdown
+
+**Event Configuration Pattern**:
+```yaml
+event_configs:
+  event-name:
+    title: "🎯 Event Title"
+    description: "Event description"
+    config_key: "event_name_lab_orders"
+
+event_name_lab_orders:
+  lab-id-1: "1"      # or special numbering like "1a", "1b"
+  lab-id-2: "2"
+```
+
+**When Adding New Labs to Events**:
+1. Lab must exist in `lab_metadata` and `lab_orders`
+2. Add to specific event's `_lab_orders` section
+3. **Do NOT** add to `lab_journeys` if it's event-only
+4. Use generic `.event-*` CSS classes (never event-specific like `bootcamp-*`)
+
+See `docs/EVENT_SYSTEM.md` for complete architecture details.
+
+### 8. Configuration Audit System
+
+**Automated safety checks** to prevent configuration mistakes:
+
+- **Script**: `scripts/Check-LabConfigs.ps1`
+- **Auto-runs**: Before every `Generate-Labs.ps1` execution
+- **Purpose**: Validates lab folders match configuration entries
+
+**What it checks**:
+- ✅ All lab folders have corresponding config entries in `lab-config.yml`
+- ✅ All config entries have corresponding lab folders (except known external labs)
+- ✅ Reports missing configs and orphaned configs
+- ❌ Fails fast if mismatches found, preventing incomplete generation
+
+**Excluded folders**: `bootcamp`, `azure-ai-workshop`, `mcs-in-a-day`, `agent-buildathon-1day`, `agent-buildathon-1month` (event pages, not labs)
+
+**External labs**: `mcs-mcp-external` (configured but hosted externally)
+
+**Usage**:
+```powershell
+# Manual audit
+.\scripts\Check-LabConfigs.ps1
+
+# Verbose output with lab titles
+.\scripts\Check-LabConfigs.ps1 -Verbose
+```
+
+**Why this matters**: Prevents silent failures where labs exist but don't appear on the site, or config references labs that don't exist.
 
 ## 🚀 Common Workflows
 
@@ -428,9 +502,17 @@ docker-compose up -d
 - `README.md` - Project overview, setup, structure
 - `docs/DEVELOPMENT.md` - Comprehensive dev guide, PowerShell notes
 - `docs/LOCAL_PDF_GENERATION.md` - PDF generation details, parity
-- `docs/ADR.md` - Architecture decisions (ADR-001 through ADR-009)
-- `docs/THEME_SYSTEM.md` - Theme architecture
+- `docs/ADR.md` - Architecture decisions (ADR-001 through ADR-011)
+- `docs/THEME_SYSTEM.md` - Theme architecture and Mermaid diagram theming
 - `docs/QUICK_START.md` - Fast onboarding
+- `docs/NEW_LAB_CHECKLIST.md` - Complete checklist for adding new labs
+- `docs/EVENT_SYSTEM.md` - Event system architecture and implementation
+- `docs/LAB_AUTHORING_GUIDE.md` - Lab authoring standards and best practices
+- `docs/BOOTCAMP.md` - Bootcamp event details
+- `docs/AZURE_AI_WORKSHOP.md` - Azure AI Workshop event details
+- `docs/MCS_IN_A_DAY.md` - MCS in a Day event details
+- `CHANGELOG.md` - Complete project history from June 2025 onwards
+- `scripts/Check-LabConfigs.ps1` - Automated lab configuration audit
 
 ## 🎯 When Helping Users
 
@@ -463,9 +545,15 @@ rm -rf _site
 
 - ADR-001: Why Docker is required
 - ADR-002: Why no inline CSS
+- ADR-003: CSS Custom Properties for theme system
+- ADR-004: PowerShell-based content generation
+- ADR-005: Force polling for file watching
 - ADR-006: Why test PDFs locally
 - ADR-007: Why lab-config.yml is source of truth
 - ADR-008: Why no symlinks (use automatic copy)
+- ADR-009: Theme loading optimization
+- ADR-010: Mermaid diagram rendering strategy
+- ADR-011: Component-based architecture (proposed)
 
 ## 🔍 Quick Reference
 
@@ -493,5 +581,5 @@ rm -rf _site
 
 ---
 
-**Last Updated**: October 2025  
+**Last Updated**: December 2025  
 **For Full Details**: See `docs/DEVELOPMENT.md`, `docs/ADR.md`, `docs/LOCAL_PDF_GENERATION.md`
