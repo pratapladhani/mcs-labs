@@ -296,18 +296,61 @@ sections:
 
 event_configs:
   agent-buildathon-1day:
+    config_key: agent_buildathon_1day_lab_orders
     description: One-day intensive agent building workshop focused on creating web-based and SharePoint-integrated AI assistants.
     title: 🏗️ Agent Build-A-Thon (1 day)
   agent-buildathon-1month:
+    config_key: agent_buildathon_1month_lab_orders
     description: Comprehensive month-long agent development program covering declarative agents, autonomous AI, and enterprise deployment patterns.
     title: 🚀 Agent Build-A-Thon (1 month)
   azure-ai-workshop:
+    config_key: azure_ai_workshop_lab_orders
     description: Comprehensive hands-on workshop combining Microsoft Copilot Studio with Azure AI services for building intelligent, enterprise-grade AI solutions.
     title: ☁️ MCS + Azure AI Workshop
   bootcamp:
+    config_key: bootcamp_lab_orders
     description: Intensive hands-on bootcamp covering progressive AI assistants, ALM best practices, autonomous agents, and advanced data integration with MCP and Fabric.
     title: ⚔️ Architecture Bootcamp
   mcs-in-a-day:
+    config_key: mcs_in_a_day_lab_orders
     description: Fast-track full-day workshop introducing Microsoft Copilot Studio through hands-on labs covering declarative agents, custom agents, and autonomous AI.
     title: ⚡ MCS in a Day
+
+mcs_in_a_day_lab_orders:
+  1: agent-builder-m365
+  2: public-website-agent
+  3: mbr-prep-sharepoint-agent
+  4: ask-me-anything-30-mins
+  5: autonomous-support-agent
+
+azure_ai_workshop_lab_orders:
+  1: dataverse-mcp-connector
+  2: contract-alerts-azure-ai
+  3: mcs-byom
+  4: data-fabric-agent
+  5: guildhall-custom-mcp
+
+agent_buildathon_1day_lab_orders:
+  1: agent-builder-web
+  2: mbr-prep-sharepoint-agent
+
+bootcamp_lab_orders:
+  1: agent-builder-m365
+  2: setup-for-success
+  3: public-website-agent
+  4: ask-me-anything-30-mins
+  5: autonomous-account-news
+  6: dataverse-mcp-connector
+  7: autonomous-cua
+  8: data-fabric-agent
+
+agent_buildathon_1month_lab_orders:
+  1: agent-builder-web
+  2: agent-builder-sharepoint
+  3: public-website-agent
+  4: mbr-prep-sharepoint-agent
+  5: ask-me-anything
+  6: autonomous-support-agent
+  7: autonomous-account-news
+  8: autonomous-cua
 

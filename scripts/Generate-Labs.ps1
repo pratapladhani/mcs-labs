@@ -400,14 +400,30 @@ function Convert-SimplifiedConfig {
         }
     }
     
-    # Merge event_configs from events section
+    # Merge event_configs from events section and build event lab_orders hashes
     $event_configs = @{}
+    $event_lab_orders_hashes = @{}  # Will hold bootcamp_lab_orders, azure_ai_workshop_lab_orders, etc.
+    
     if ($Config.events) {
         foreach ($eventKey in $Config.events.Keys) {
             $event = $Config.events[$eventKey]
+            $configKeyName = ($eventKey -replace '-', '_') + "_lab_orders"
+            
             $event_configs[$eventKey] = @{
                 title       = $event.title
                 description = $event.description
+                config_key  = $configKeyName
+            }
+            
+            # Build the lab_orders hash for this event: { "1": "lab-id", "2": "lab-id", ... }
+            if ($event.lab_order) {
+                $eventLabOrders = [ordered]@{}
+                $orderNum = 1
+                foreach ($labId in $event.lab_order) {
+                    $eventLabOrders["$orderNum"] = $labId
+                    $orderNum++
+                }
+                $event_lab_orders_hashes[$configKeyName] = $eventLabOrders
             }
         }
     }
@@ -424,6 +440,11 @@ function Convert-SimplifiedConfig {
         external_labs     = $external_labs         # Derived
         legacy_lab_orders = $legacy_lab_orders   # Derived
         lab_orders        = $lab_orders            # Derived
+    }
+    
+    # Add individual event lab_orders hashes to the config
+    foreach ($key in $event_lab_orders_hashes.Keys) {
+        $updatedConfig[$key] = $event_lab_orders_hashes[$key]
     }
     
     Write-Host "✅  Config conversion complete: $($Config.labs.Keys.Count) labs processed" -ForegroundColor Green
@@ -554,7 +575,7 @@ function Export-ConfigAsYaml {
     $yaml += "# ====================================="
     $yaml += ""
     
-    # Write each top-level section
+    # Write each top-level section (known sections first)
     $topLevelOrder = @('lab_metadata', 'lab_journeys', 'legacy_lab_orders', 'lab_orders', 'external_labs', 'sections', 'event_configs')
     
     foreach ($section in $topLevelOrder) {
@@ -572,6 +593,18 @@ function Export-ConfigAsYaml {
                 $yaml += Write-YamlObject $value 1
             }
             $yaml += ""
+        }
+    }
+    
+    # Write any remaining keys (e.g., bootcamp_lab_orders, azure_ai_workshop_lab_orders, etc.)
+    foreach ($key in $Config.Keys) {
+        if ($topLevelOrder -notcontains $key -and @('labs', 'journeys', 'events') -notcontains $key) {
+            $value = $Config[$key]
+            if ($null -ne $value) {
+                $yaml += "${key}:"
+                $yaml += Write-YamlObject $value 1
+                $yaml += ""
+            }
         }
     }
     
