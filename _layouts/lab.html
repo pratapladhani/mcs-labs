@@ -21,16 +21,18 @@ layout: default
       </div>
 
       <nav class="journey-labs" id="journey-labs-nav">
-        {% comment %} Show ALL labs - JavaScript will filter based on URL params (journey, workshop, section, bootcamp) {% endcomment %}
-        {% assign all_labs = site.labs | where_exp: "lab", "lab.lab_type != 'external'" | sort: "order" %}
+        {% comment %} Show ALL labs including external labs - JavaScript will filter based on URL params (journey, workshop, section, bootcamp) {% endcomment %}
+        {% assign all_labs = site.labs | sort: "order" %}
         {% for lab in all_labs %}
         <a
-          href="{{ lab.url | relative_url }}"
-          class="lab-nav-item {% if lab.url == page.url %}current{% endif %}"
+          href="{% if lab.lab_type == 'external' %}{{ lab.external_url }}{% else %}{{ lab.url | relative_url }}{% endif %}"
+          class="lab-nav-item {% if lab.url == page.url %}current{% endif %}{% if lab.lab_type == 'external' %} external-lab-link{% endif %}"
           title="{{ lab.title }}"
           data-journeys="{{ lab.journeys | join: ',' }}"
           data-section="{{ lab.section }}"
           data-order="{{ lab.order }}"
+          data-lab-id="{{ lab.slug }}"
+          {% if lab.lab_type == 'external' %}target="_blank" rel="noopener"{% endif %}
           {%
           if
           lab.bootcamp_order
@@ -88,79 +90,85 @@ layout: default
     </div>
   </aside>
 
-  {% comment %}Build event lab IDs arrays for all events{% endcomment %}
-  {% comment %}Bootcamp labs{% endcomment %}
-  {% assign bootcamp_lab_ids = "" %}
-  {% for order_pair in site.data.lab-config.bootcamp_lab_orders %}
-    {% assign lab_id = order_pair[1] %}
-    {% if forloop.first %}
-      {% assign bootcamp_lab_ids = lab_id %}
-    {% else %}
-      {% assign bootcamp_lab_ids = bootcamp_lab_ids | append: "," | append: lab_id %}
-    {% endif %}
-  {% endfor %}
+  {% comment %}
+  =====================================================
+  BUILD UNIFIED LAB ORDERS OBJECT (New 3-digit structure)
+  All filter types (journeys, events, sections) use lab_orders section
+  Format: { 'type:name': ['lab-id-1', 'lab-id-2', ...] }
+  =====================================================
+  {% endcomment %}
 
-  {% comment %}Azure AI Workshop labs{% endcomment %}
-  {% assign azure_ai_workshop_lab_ids = "" %}
-  {% for order_pair in site.data.lab-config.azure_ai_workshop_lab_orders %}
-    {% assign lab_id = order_pair[1] %}
-    {% if forloop.first %}
-      {% assign azure_ai_workshop_lab_ids = lab_id %}
-    {% else %}
-      {% assign azure_ai_workshop_lab_ids = azure_ai_workshop_lab_ids | append: "," | append: lab_id %}
+  {% comment %}Build a lookup map from 3-digit order number to lab ID{% endcomment %}
+  {% assign order_to_id_map = "" %}
+  {% for meta_entry in site.data.lab-config.lab_metadata %}
+    {% assign order_num = meta_entry[0] %}
+    {% assign meta_data = meta_entry[1] %}
+    {% if meta_data.id %}
+      {% capture map_entry %}{{ order_num }}:{{ meta_data.id }}{% endcapture %}
+      {% if order_to_id_map == "" %}
+        {% assign order_to_id_map = map_entry %}
+      {% else %}
+        {% assign order_to_id_map = order_to_id_map | append: "|" | append: map_entry %}
+      {% endif %}
     {% endif %}
   {% endfor %}
+  {% assign order_id_pairs = order_to_id_map | split: "|" %}
 
-  {% comment %}MCS in a Day labs{% endcomment %}
-  {% assign mcs_in_a_day_lab_ids = "" %}
-  {% for order_pair in site.data.lab-config.mcs_in_a_day_lab_orders %}
-    {% assign lab_id = order_pair[1] %}
-    {% if forloop.first %}
-      {% assign mcs_in_a_day_lab_ids = lab_id %}
-    {% else %}
-      {% assign mcs_in_a_day_lab_ids = mcs_in_a_day_lab_ids | append: "," | append: lab_id %}
-    {% endif %}
-  {% endfor %}
+  <!-- Unified Lab Orders - Single source for all filter ordering -->
+  <script id="lab-orders-data" type="application/json">
+  {
+    {% comment %}Journey orders from lab_orders.journey{% endcomment %}
+    {% for journey in site.data.lab-config.lab_orders.journey %}
+      {% assign journey_key = journey[0] %}
+      {% assign journey_labs = journey[1] %}
+      "journey:{{ journey_key }}": [
+        {% for lab_order in journey_labs %}
+          {% assign lab_order_str = lab_order | append: "" %}
+          {% for pair in order_id_pairs %}
+            {% assign pair_parts = pair | split: ":" %}
+            {% if pair_parts[0] == lab_order_str %}"{{ pair_parts[1] }}"{% unless forloop.parentloop.last %},{% endunless %}{% break %}{% endif %}
+          {% endfor %}
+        {% endfor %}
+      ]{% unless forloop.last %},{% endunless %}
+    {% endfor %},
 
-  {% comment %}Agent Build-A-Thon (1 day) labs{% endcomment %}
-  {% assign agent_buildathon_1day_lab_ids = "" %}
-  {% for order_pair in site.data.lab-config.agent_buildathon_1day_lab_orders %}
-    {% assign lab_id = order_pair[1] %}
-    {% if forloop.first %}
-      {% assign agent_buildathon_1day_lab_ids = lab_id %}
-    {% else %}
-      {% assign agent_buildathon_1day_lab_ids = agent_buildathon_1day_lab_ids | append: "," | append: lab_id %}
-    {% endif %}
-  {% endfor %}
+    {% comment %}Event orders from lab_orders.event{% endcomment %}
+    {% for event in site.data.lab-config.lab_orders.event %}
+      {% assign event_key = event[0] %}
+      {% assign event_labs = event[1] %}
+      "event:{{ event_key }}": [
+        {% for lab_order in event_labs %}
+          {% assign lab_order_str = lab_order | append: "" %}
+          {% for pair in order_id_pairs %}
+            {% assign pair_parts = pair | split: ":" %}
+            {% if pair_parts[0] == lab_order_str %}"{{ pair_parts[1] }}"{% unless forloop.parentloop.last %},{% endunless %}{% break %}{% endif %}
+          {% endfor %}
+        {% endfor %}
+      ]{% unless forloop.last %},{% endunless %}
+    {% endfor %},
 
-  {% comment %}Agent Build-A-Thon (1 month) labs{% endcomment %}
-  {% assign agent_buildathon_1month_lab_ids = "" %}
-  {% for order_pair in site.data.lab-config.agent_buildathon_1month_lab_orders %}
-    {% assign lab_id = order_pair[1] %}
-    {% if forloop.first %}
-      {% assign agent_buildathon_1month_lab_ids = lab_id %}
-    {% else %}
-      {% assign agent_buildathon_1month_lab_ids = agent_buildathon_1month_lab_ids | append: "," | append: lab_id %}
-    {% endif %}
-  {% endfor %}
+    {% comment %}Section orders from lab_orders.section{% endcomment %}
+    {% for section in site.data.lab-config.lab_orders.section %}
+      {% assign section_key = section[0] %}
+      {% assign section_labs = section[1] %}
+      "section:{{ section_key }}": [
+        {% for lab_order in section_labs %}
+          {% assign lab_order_str = lab_order | append: "" %}
+          {% for pair in order_id_pairs %}
+            {% assign pair_parts = pair | split: ":" %}
+            {% if pair_parts[0] == lab_order_str %}"{{ pair_parts[1] }}"{% unless forloop.parentloop.last %},{% endunless %}{% break %}{% endif %}
+          {% endfor %}
+        {% endfor %}
+      ]{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  }
+  </script>
 
   <!-- Main Lab Content -->
   <article
     class="lab-content"
     data-journeys="{{ page.journeys | jsonify | escape }}"
     data-section="{{ page.section | escape }}"
-    {%
-    if
-    page.bootcamp_order
-    %}data-bootcamp-order="{{ page.bootcamp_order }}"
-    {%
-    endif
-    %}
-    data-event-labs-bootcamp='["{{ bootcamp_lab_ids | split: "," | join: '","' }}"]'
-    data-event-labs-azure-ai-workshop='["{{ azure_ai_workshop_lab_ids | split: "," | join: '","' }}"]'
-    data-event-labs-mcs-in-a-day='["{{ mcs_in_a_day_lab_ids | split: "," | join: '","' }}"]'
-    data-event-labs-agent-buildathon-1day='["{{ agent_buildathon_1day_lab_ids | split: "," | join: '","' }}"]'
-    data-event-labs-agent-buildathon-1month='["{{ agent_buildathon_1month_lab_ids | split: "," | join: '","' }}"]'
   >
     <!-- Event Context Banner - Displayed dynamically via JavaScript when viewing lab in event context -->
     <div class="event-context-banner" style="display: none;">
@@ -433,51 +441,56 @@ layout: default
     // Get all lab navigation items
     const navItems = Array.from(document.querySelectorAll(".lab-nav-item"));
 
-    // For events, we need to get the event lab IDs from page data attributes
-    let eventLabIds = [];
-    if (activeFilterType === "event") {
-      // Map event name to data attribute name
-      // e.g., "bootcamp" → "data-event-labs-bootcamp"
-      const eventDataAttr = "data-event-labs-" + activeFilter;
-      const eventData = labContent.getAttribute(eventDataAttr);
-      if (eventData) {
-        try {
-          eventLabIds = JSON.parse(eventData);
-        } catch (e) {
-          console.error("Failed to parse event data for " + activeFilter + ":", e);
+    // Load unified lab orders from embedded JSON
+    let labOrders = {};
+    const labOrdersScript = document.getElementById('lab-orders-data');
+    if (labOrdersScript) {
+      try {
+        labOrders = JSON.parse(labOrdersScript.textContent);
+      } catch (e) {
+        console.error("Failed to parse lab orders data:", e);
+      }
+    }
+
+    // Get ordered lab IDs for current filter (generic for all filter types)
+    const orderKey = activeFilterType + ':' + activeFilter;
+    const orderedLabIds = labOrders[orderKey] || [];
+
+    // Helper function to extract lab ID from nav item
+    function getLabIdFromNavItem(item) {
+      // First try data-lab-id attribute
+      if (item.dataset.labId) {
+        return item.dataset.labId;
+      }
+      // Fall back to extracting from URL
+      const labUrl = item.getAttribute("href");
+      if (labUrl) {
+        // Handle both internal (/labs/lab-name/) and external URLs
+        const labIdMatch = labUrl.match(/\/labs\/([^\/\?]+)/);
+        if (labIdMatch) {
+          return labIdMatch[1];
         }
       }
+      return null;
     }
 
     // First pass: filter items based on active filter
     const filteredItems = [];
     navItems.forEach(function (item) {
       let shouldShow = false;
+      const labId = getLabIdFromNavItem(item);
 
-      if (activeFilterType === "event") {
-        // For events, check if the lab's slug is in the event configuration
-        const labUrl = item.getAttribute("href");
-        if (labUrl && eventLabIds.length > 0) {
-          // Extract lab ID from URL (e.g., /labs/agent-builder-web/ -> agent-builder-web)
-          const labIdMatch = labUrl.match(/\/labs\/([^\/\?]+)/);
-          if (labIdMatch) {
-            const labId = labIdMatch[1];
-            shouldShow = eventLabIds.includes(labId);
-          }
-        }
+      if (orderedLabIds.length > 0) {
+        // If we have ordered lab IDs, use them for filtering
+        shouldShow = labId && orderedLabIds.includes(labId);
       } else if (activeFilterType === "journey") {
-        if (activeFilter === "bootcamp") {
-          // For bootcamp, filter by labs that have bootcamp_order
-          shouldShow =
-            item.dataset.bootcampOrder && item.dataset.bootcampOrder !== "";
-        } else {
-          // For other journeys, filter by journey membership
-          const itemJourneys = item.dataset.journeys
-            ? item.dataset.journeys.split(",").map((j) => j.trim())
-            : [];
-          shouldShow = itemJourneys.includes(activeFilter);
-        }
+        // Fall back to journey membership if no specific order defined
+        const itemJourneys = item.dataset.journeys
+          ? item.dataset.journeys.split(",").map((j) => j.trim())
+          : [];
+        shouldShow = itemJourneys.includes(activeFilter);
       } else if (activeFilterType === "section") {
+        // Fall back to section membership
         shouldShow = item.dataset.section === activeFilter;
       }
 
@@ -486,49 +499,27 @@ layout: default
       }
     });
 
-    // Sort filtered items numerically by order (or bootcamp_order for bootcamp journey)
+    // Sort filtered items by position in ordered list, or by default order
     filteredItems.sort((a, b) => {
-      if (activeFilterType === "journey" && activeFilter === "bootcamp") {
-        // For bootcamp, sort by bootcamp_order if available, otherwise by regular order
-        const getBootcampSortValue = (order) => {
-          if (!order) return 999;
-          // Convert "1a" to 1.1, "1b" to 1.2, "2" to 2.0, "3a" to 3.1, etc.
-          const match = order.match(/^(\d+)([ab]?)$/);
-          if (match) {
-            const num = parseInt(match[1]);
-            const suffix = match[2];
-            if (suffix === "a") return num + 0.1;
-            if (suffix === "b") return num + 0.2;
-            return num;
-          }
-          return 999;
-        };
-
-        const orderA = a.dataset.bootcampOrder
-          ? getBootcampSortValue(a.dataset.bootcampOrder)
-          : parseInt(a.dataset.order) || 999;
-        const orderB = b.dataset.bootcampOrder
-          ? getBootcampSortValue(b.dataset.bootcampOrder)
-          : parseInt(a.dataset.order) || 999;
-        return orderA - orderB;
-      } else if (activeFilterType === "event" && eventLabIds.length > 0) {
-        // For events, sort by position in event configuration array
-        const labUrlA = a.getAttribute("href");
-        const labUrlB = b.getAttribute("href");
-        const labIdMatchA = labUrlA ? labUrlA.match(/\/labs\/([^\/\?]+)/) : null;
-        const labIdMatchB = labUrlB ? labUrlB.match(/\/labs\/([^\/\?]+)/) : null;
-        const labIdA = labIdMatchA ? labIdMatchA[1] : null;
-        const labIdB = labIdMatchB ? labIdMatchB[1] : null;
-        
-        const indexA = labIdA ? eventLabIds.indexOf(labIdA) : 999;
-        const indexB = labIdB ? eventLabIds.indexOf(labIdB) : 999;
-        return indexA - indexB;
-      } else {
-        // For other journeys, sort by regular order
-        const orderA = parseInt(a.dataset.order) || 999;
-        const orderB = parseInt(b.dataset.order) || 999;
-        return orderA - orderB;
+      const labIdA = getLabIdFromNavItem(a);
+      const labIdB = getLabIdFromNavItem(b);
+      
+      if (orderedLabIds.length > 0) {
+        // Sort by position in ordered list
+        const indexA = labIdA ? orderedLabIds.indexOf(labIdA) : 999;
+        const indexB = labIdB ? orderedLabIds.indexOf(labIdB) : 999;
+        // If both found in list, sort by position; otherwise by default order
+        if (indexA !== -1 && indexB !== -1) {
+          return indexA - indexB;
+        }
+        if (indexA !== -1) return -1;
+        if (indexB !== -1) return 1;
       }
+      
+      // Fall back to default order
+      const orderA = parseInt(a.dataset.order) || 999;
+      const orderB = parseInt(b.dataset.order) || 999;
+      return orderA - orderB;
     });
 
     // Hide all items first
@@ -547,17 +538,7 @@ layout: default
     filteredItems.forEach(function (item) {
       const orderSpan = item.querySelector("[data-lab-order]");
       if (orderSpan) {
-        // Check if we're in bootcamp journey and this lab has bootcamp ordering
-        const bootcampOrder = item.dataset.bootcampOrder;
-        if (
-          activeFilterType === "journey" &&
-          activeFilter === "bootcamp" &&
-          bootcampOrder
-        ) {
-          orderSpan.textContent = bootcampOrder;
-        } else {
-          orderSpan.textContent = sequenceNumber;
-        }
+        orderSpan.textContent = sequenceNumber;
         sequenceNumber++;
       }
       item.style.display = "block";
@@ -736,75 +717,66 @@ layout: default
       // Get all lab items from hidden data container
       const labItems = Array.from(labData.querySelectorAll(".lab-item"));
 
-      // FILTERING LOGIC: Context-aware lab filtering
-      // Priority order ensures events are handled before general journey logic
-      let filteredLabs = labItems;
-      if (activeFilterType === "event") {
-        // EVENT FILTERING: Labs assigned to specific event
-        // Uses event configuration from data attributes
-        if (eventLabIds.length > 0) {
-          filteredLabs = labItems.filter((item) => {
-            const labUrl = item.getAttribute("data-url");
-            if (labUrl) {
-              const labIdMatch = labUrl.match(/\/labs\/([^\/\?]+)/);
-              if (labIdMatch) {
-                const labId = labIdMatch[1];
-                return eventLabIds.includes(labId);
-              }
-            }
-            return false;
-          });
+      // Load unified lab orders from embedded JSON
+      let labOrders = {};
+      const labOrdersScript = document.getElementById('lab-orders-data');
+      if (labOrdersScript) {
+        try {
+          labOrders = JSON.parse(labOrdersScript.textContent);
+        } catch (e) {
+          console.error("Failed to parse lab orders data:", e);
         }
+      }
+
+      // Get ordered lab IDs for current filter (generic for all filter types)
+      const orderKey = activeFilterType + ':' + activeFilter;
+      const orderedLabIds = labOrders[orderKey] || [];
+
+      // Helper function to extract lab ID from URL
+      function getLabIdFromUrl(url) {
+        if (url) {
+          const labIdMatch = url.match(/\/labs\/([^\/\?]+)/);
+          if (labIdMatch) {
+            return labIdMatch[1];
+          }
+        }
+        return null;
+      }
+
+      // FILTERING LOGIC: Generic context-aware lab filtering
+      let filteredLabs = labItems;
+      if (orderedLabIds.length > 0) {
+        // Use ordered list for filtering
+        filteredLabs = labItems.filter((item) => {
+          const labUrl = item.getAttribute("data-url");
+          const labId = getLabIdFromUrl(labUrl);
+          return labId && orderedLabIds.includes(labId);
+        });
       } else if (activeFilterType === "journey" && activeFilter) {
-        // JOURNEY FILTERING: Labs assigned to specific journey
-        // Uses journey array from lab frontmatter (e.g., ["quick-start", "business-user"])
+        // JOURNEY FILTERING fallback: Labs assigned to specific journey
         filteredLabs = labItems.filter((item) => {
           const labJourneys = item.getAttribute("data-journeys").split(",");
           return labJourneys.includes(activeFilter);
         });
       }
 
-      // SORTING LOGIC: Different ordering systems for different contexts
-      if (activeFilterType === "event" && activeFilter === "bootcamp") {
-        // BOOTCAMP EVENT SORTING: Alphanumeric ordering (1a, 1b, 2, 3a, 3b, 4, 5a, 5b, 6, 7)
+      // SORTING LOGIC: Generic ordering by position in ordered list
+      if (orderedLabIds.length > 0) {
         filteredLabs.sort((a, b) => {
-          const aOrder = a.getAttribute("data-bootcamp-order");
-          const bOrder = b.getAttribute("data-bootcamp-order");
-
-          // ALPHANUMERIC PARSER: Handles "1a", "1b", "2", "3a" format
-          // Splits into numeric part (1, 2, 3) and letter part (a, b, empty)
-          const parseBootcampOrder = (order) => {
-            if (!order) return [0, ""];
-            const match = order.match(/^(\d+)([a-z]?)$/);
-            if (match) {
-              return [parseInt(match[1]), match[2] || ""];
-            }
-            return [0, order];
-          };
-
-          const [aNum, aLetter] = parseBootcampOrder(aOrder);
-          const [bNum, bLetter] = parseBootcampOrder(bOrder);
-
-          if (aNum !== bNum) return aNum - bNum;
-          return aLetter.localeCompare(bLetter);
-        });
-      } else if (activeFilterType === "event" && eventLabIds.length > 0) {
-        // EVENT SORTING: Sort by position in event configuration array
-        filteredLabs.sort((a, b) => {
-          const labUrlA = a.getAttribute("data-url");
-          const labUrlB = b.getAttribute("data-url");
-          const labIdMatchA = labUrlA ? labUrlA.match(/\/labs\/([^\/\?]+)/) : null;
-          const labIdMatchB = labUrlB ? labUrlB.match(/\/labs\/([^\/\?]+)/) : null;
-          const labIdA = labIdMatchA ? labIdMatchA[1] : null;
-          const labIdB = labIdMatchB ? labIdMatchB[1] : null;
-          
-          const indexA = labIdA ? eventLabIds.indexOf(labIdA) : 999;
-          const indexB = labIdB ? eventLabIds.indexOf(labIdB) : 999;
-          return indexA - indexB;
+          const labIdA = getLabIdFromUrl(a.getAttribute("data-url"));
+          const labIdB = getLabIdFromUrl(b.getAttribute("data-url"));
+          const indexA = labIdA ? orderedLabIds.indexOf(labIdA) : 999;
+          const indexB = labIdB ? orderedLabIds.indexOf(labIdB) : 999;
+          if (indexA !== -1 && indexB !== -1) {
+            return indexA - indexB;
+          }
+          if (indexA !== -1) return -1;
+          if (indexB !== -1) return 1;
+          // Fall back to default order
+          return parseInt(a.getAttribute("data-order")) - parseInt(b.getAttribute("data-order"));
         });
       } else {
-        // REGULAR JOURNEY SORTING: Simple numeric ordering
-        // Uses standard lab order field for sequential navigation
+        // REGULAR SORTING fallback: Simple numeric ordering
         filteredLabs.sort((a, b) => {
           return (
             parseInt(a.getAttribute("data-order")) -

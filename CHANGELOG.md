@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Simplified single-source configuration format (ADR-012)
+  - Labs now defined once in `labs:` section with all properties (title, difficulty, duration, section, order, journeys, events)
+  - Adding a new lab requires ONE entry instead of 3-6
+  - Automatic conversion layer maintains backward compatibility with Jekyll templates
+- Enhanced configuration audit in Check-LabConfigs.ps1
+  - Duplicate lab ID detection
+  - Journey card vs left navigation count validation
+  - Multi-line YAML array parsing support
+- Agent Academy external lab integration
+  - Links to microsoft/agent-academy Recruit Level curriculum
+  - 13-lesson curriculum covering agents, LLMs, and deployment
+- YAML export function in Generate-Labs.ps1
+  - Serializes converted config to `_data/` for Jekyll templates
+  - Handles PowerShell hashtables, arrays, and List types
+
+### Changed
+- **Rebranded "Copilot Studio Lite" to "Agent Builder in Microsoft 365"**
+  - Renamed lab folder `copilot-studio-lite` → `agent-builder-m365`
+  - Updated all lab titles, descriptions, and references across the codebase
+  - Updated Microsoft docs links to new URL slugs
+- Generate-Labs.ps1 now calls Check-LabConfigs.ps1 directly instead of embedding audit logic
+- Order numbering scheme updated to 100-699 range (all 3-digit)
+- NEW_LAB_CHECKLIST.md simplified to reflect single-entry workflow
+
+### Fixed
+- Duplicate lab counting in card vs nav validation (reset currentLab after section exit)
+- List type serialization in YAML export (handles System.Collections.Generic.List)
+- External lab order not being applied (was always 999, now reads from config)
+
 ## 2.6.0 - 2025-11-19
 
 ### Added

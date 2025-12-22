@@ -159,82 +159,39 @@ function Initialize-Environment {
 function Invoke-LabConfigAudit {
     <#
     .SYNOPSIS
-        Run lab configuration audit to verify all labs have proper config entries
+        Run lab configuration audit by calling Check-LabConfigs.ps1
     .DESCRIPTION
-        Checks for labs missing config entries and orphaned configs
-        Ensures configuration integrity before generation
+        Invokes the Check-LabConfigs.ps1 script which validates:
+        - Labs have proper config entries
+        - No orphaned configs without lab folders  
+        - No duplicate lab IDs
+        - Journey cards match left nav counts
     #>
     
     Write-Host ""
     Write-Host "🔍  Running Lab Configuration Audit..." -ForegroundColor Cyan
     
-    # Excluded event/special folders (not expected to have local folders)
-    $excludedFolders = @("bootcamp", "azure-ai-workshop", "mcs-in-a-day", "agent-buildathon-1day", "agent-buildathon-1month")
+    $scriptPath = Join-Path $PSScriptRoot "Check-LabConfigs.ps1"
     
-    # External labs (configured but intentionally have no local folder)
-    $externalLabs = @("mcs-mcp-external")
-    
-    # Get all lab folders
-    $labFolders = Get-ChildItem -Path "labs\" -Directory -ErrorAction SilentlyContinue | 
-    Where-Object { $_.Name -notin $excludedFolders } |
-    Select-Object -ExpandProperty Name
-    
-    if (-not $labFolders) {
-        Write-Host "⚠️  No lab folders found in labs/ directory" -ForegroundColor Yellow
+    if (-not (Test-Path $scriptPath)) {
+        Write-Host "⚠️  Check-LabConfigs.ps1 not found at: $scriptPath" -ForegroundColor Yellow
+        Write-Host "    Skipping audit validation" -ForegroundColor Yellow
         return
     }
     
-    # Extract lab IDs from lab-config.yml
-    $configContent = Get-Content -Path "lab-config.yml" -Raw
-    $configIds = [regex]::Matches($configContent, 'id:\s*"([^"]+)"') | 
-    ForEach-Object { $_.Groups[1].Value } |
-    Select-Object -Unique
+    # Run the audit script and capture exit code
+    & $scriptPath
+    $exitCode = $LASTEXITCODE
     
-    # Check for missing configurations
-    $missingConfigs = $labFolders | Where-Object { $_ -notin $configIds }
-    $orphanedConfigs = $configIds | Where-Object { $_ -notin $labFolders -and $_ -notin $externalLabs }
-    
-    # Report results
-    $hasIssues = $false
-    
-    if ($missingConfigs.Count -gt 0) {
-        $hasIssues = $true
-        Write-Host ""
-        Write-Host "❌  LABS MISSING CONFIG ENTRIES:" -ForegroundColor Red
-        Write-Host "    ================================" -ForegroundColor Red
-        foreach ($lab in $missingConfigs) {
-            Write-Host "    • $lab" -ForegroundColor Yellow
-        }
-        Write-Host ""
-        Write-Host "    Please update lab-config.yml with entries for:" -ForegroundColor Yellow
-        Write-Host "    1. lab_metadata" -ForegroundColor Yellow
-        Write-Host "    2. lab_orders" -ForegroundColor Yellow
-        Write-Host "    3. lab_journeys (or event orders)" -ForegroundColor Yellow
-        Write-Host "    See docs/NEW_LAB_CHECKLIST.md for details" -ForegroundColor Cyan
-    }
-    
-    if ($orphanedConfigs.Count -gt 0) {
-        $hasIssues = $true
-        Write-Host ""
-        Write-Host "⚠️  CONFIGS WITHOUT MATCHING FOLDERS:" -ForegroundColor Yellow
-        Write-Host "    =====================================" -ForegroundColor Yellow
-        foreach ($config in $orphanedConfigs) {
-            Write-Host "    • $config (config exists but no labs/$config/ folder)" -ForegroundColor Yellow
-        }
-        Write-Host ""
-        Write-Host "    Either create the lab folder or remove from config" -ForegroundColor Yellow
-    }
-    
-    if ($hasIssues) {
+    if ($exitCode -ne 0) {
         Write-Host ""
         Write-Host "❌  Lab configuration audit FAILED" -ForegroundColor Red
         Write-Host "    Configuration issues must be resolved before generation" -ForegroundColor Yellow
-        Write-Host "    Run: .\scripts\Check-LabConfigs.ps1 -Verbose for details" -ForegroundColor Cyan
         Write-Host ""
         exit 1
     }
     
-    Write-Host "✅  Lab configuration audit passed ($($labFolders.Count) labs, $($configIds.Count) configs)" -ForegroundColor Green
+    Write-Host "✅  Lab configuration audit passed" -ForegroundColor Green
 }
 
 function Get-Configuration {
@@ -310,6 +267,349 @@ function Get-Paths {
         outputPath = $outputPath
         indexPath  = $indexPath
     }
+}
+
+function Convert-SimplifiedConfig {
+    <#
+    .SYNOPSIS
+        Converts simplified lab-config format to legacy format for backward compatibility
+    .DESCRIPTION
+        The simplified config uses a single 'labs' section as source of truth.
+        This function transforms it into the legacy format (lab_metadata, lab_journeys, 
+        external_labs, lab_orders) so existing code continues to work.
+    #>
+    param([Parameter(Mandatory)]$Config)
+    
+    # Check if this is the new simplified format (has 'labs' section, no 'lab_metadata')
+    if (-not $Config.labs) {
+        # Already in legacy format, return as-is
+        return $Config
+    }
+    
+    Write-Host "🔄  Converting simplified config format..." -ForegroundColor Cyan
+    
+    # Build legacy structures from simplified 'labs' section
+    $lab_metadata = @{}
+    $lab_journeys = @{}
+    $external_labs = @()
+    $legacy_lab_orders = @{}
+    
+    # Also build lab_orders structure for journey/event/section ordering
+    $lab_orders = @{
+        journey = @{}
+        event   = @{}
+        section = @{}
+    }
+    
+    # Build section groupings
+    $sectionGroups = @{}
+    
+    foreach ($labId in $Config.labs.Keys) {
+        $lab = $Config.labs[$labId]
+        $order = if ($lab.order) { [int]$lab.order } else { 999 }
+        $orderKey = "{0:D3}" -f $order
+        
+        # Build lab_metadata entry
+        $lab_metadata[$orderKey] = @{
+            id         = $labId
+            title      = $lab.title
+            difficulty = $lab.difficulty
+            duration   = $lab.duration
+            section    = $lab.section
+        }
+        
+        # Build legacy_lab_orders
+        $legacy_lab_orders[$labId] = $order
+        
+        # Build lab_journeys (convert List to array for proper serialization)
+        if ($lab.journeys) {
+            $lab_journeys[$labId] = @($lab.journeys)
+        }
+        
+        # Build external_labs list
+        if ($lab.external) {
+            $external_labs += @{
+                id          = $labId
+                title       = $lab.title
+                duration    = $lab.duration
+                difficulty  = $lab.difficulty
+                description = $lab.external.description
+                url         = $lab.external.url
+                repository  = $lab.external.repository
+                journeys    = $lab.journeys
+                section     = $lab.section
+            }
+        }
+        
+        # Group labs by section for section ordering
+        $sectionKey = if ($lab.section) { $lab.section } else { "core" }
+        if (-not $sectionGroups.ContainsKey($sectionKey)) {
+            $sectionGroups[$sectionKey] = @()
+        }
+        $sectionGroups[$sectionKey] += @{ id = $labId; order = $order }
+    }
+    
+    # Build section orders from grouped labs (sorted by order)
+    foreach ($sectionKey in $sectionGroups.Keys) {
+        $sortedLabs = $sectionGroups[$sectionKey] | Sort-Object -Property order
+        $lab_orders.section[$sectionKey] = @($sortedLabs | ForEach-Object { $_.order })
+    }
+    
+    # Build journey orders from journey.lab_order arrays or derive from labs
+    if ($Config.journeys) {
+        foreach ($journeyKey in $Config.journeys.Keys) {
+            $journey = $Config.journeys[$journeyKey]
+            if ($journey.lab_order) {
+                # Use explicit lab_order array (contains lab IDs)
+                $orderNumbers = @()
+                foreach ($labId in $journey.lab_order) {
+                    if ($legacy_lab_orders.ContainsKey($labId)) {
+                        $orderNumbers += $legacy_lab_orders[$labId]
+                    }
+                }
+                $lab_orders.journey[$journeyKey] = $orderNumbers
+            }
+            else {
+                # Derive from labs that have this journey, sorted by order
+                $journeyLabs = @()
+                foreach ($labId in $Config.labs.Keys) {
+                    $lab = $Config.labs[$labId]
+                    if ($lab.journeys -contains $journeyKey) {
+                        $journeyLabs += @{ id = $labId; order = if ($lab.order) { [int]$lab.order } else { 999 } }
+                    }
+                }
+                $sortedLabs = $journeyLabs | Sort-Object -Property order
+                $lab_orders.journey[$journeyKey] = @($sortedLabs | ForEach-Object { $_.order })
+            }
+        }
+    }
+    
+    # Build event orders from events.*.lab_order arrays
+    if ($Config.events) {
+        foreach ($eventKey in $Config.events.Keys) {
+            $event = $Config.events[$eventKey]
+            if ($event.lab_order) {
+                $orderNumbers = @()
+                foreach ($labId in $event.lab_order) {
+                    if ($legacy_lab_orders.ContainsKey($labId)) {
+                        $orderNumbers += $legacy_lab_orders[$labId]
+                    }
+                }
+                $lab_orders.event[$eventKey] = $orderNumbers
+            }
+        }
+    }
+    
+    # Merge event_configs from events section and build event lab_orders hashes
+    $event_configs = @{}
+    $event_lab_orders_hashes = @{}  # Will hold bootcamp_lab_orders, azure_ai_workshop_lab_orders, etc.
+    
+    if ($Config.events) {
+        foreach ($eventKey in $Config.events.Keys) {
+            $event = $Config.events[$eventKey]
+            $configKeyName = ($eventKey -replace '-', '_') + "_lab_orders"
+            
+            $event_configs[$eventKey] = @{
+                title       = $event.title
+                description = $event.description
+                config_key  = $configKeyName
+            }
+            
+            # Build the lab_orders hash for this event: { "1": "lab-id", "2": "lab-id", ... }
+            if ($event.lab_order) {
+                $eventLabOrders = [ordered]@{}
+                $orderNum = 1
+                foreach ($labId in $event.lab_order) {
+                    $eventLabOrders["$orderNum"] = $labId
+                    $orderNum++
+                }
+                $event_lab_orders_hashes[$configKeyName] = $eventLabOrders
+            }
+        }
+    }
+    
+    # Create updated config with legacy structures
+    $updatedConfig = @{
+        labs              = $Config.labs           # Keep original
+        journeys          = $Config.journeys       # Keep original
+        events            = $Config.events         # Keep original
+        sections          = $Config.sections       # Keep original
+        event_configs     = $event_configs         # Derived
+        lab_metadata      = $lab_metadata          # Derived
+        lab_journeys      = $lab_journeys          # Derived
+        external_labs     = $external_labs         # Derived
+        legacy_lab_orders = $legacy_lab_orders   # Derived
+        lab_orders        = $lab_orders            # Derived
+    }
+    
+    # Add individual event lab_orders hashes to the config
+    foreach ($key in $event_lab_orders_hashes.Keys) {
+        $updatedConfig[$key] = $event_lab_orders_hashes[$key]
+    }
+    
+    Write-Host "✅  Config conversion complete: $($Config.labs.Keys.Count) labs processed" -ForegroundColor Green
+    return $updatedConfig
+}
+
+function Export-ConfigAsYaml {
+    <#
+    .SYNOPSIS
+        Exports the converted config to YAML format for Jekyll to consume
+    .DESCRIPTION
+        Serializes the PowerShell hashtable to YAML format so that Jekyll's Liquid
+        templates can access the legacy structures (lab_metadata, lab_orders, etc.)
+    #>
+    param(
+        [Parameter(Mandatory)]$Config,
+        [Parameter(Mandatory)][string]$OutputPath
+    )
+    
+    $yaml = @()
+    
+    # Helper function to convert value to YAML string
+    function ConvertTo-YamlValue {
+        param($Value, [int]$Indent = 0)
+        
+        $indentStr = "  " * $Indent
+        
+        if ($null -eq $Value) {
+            return "null"
+        }
+        elseif ($Value -is [string]) {
+            # Quote strings that might need it
+            if ($Value -match '[:#\[\]{}|>]' -or $Value -match '^\s' -or $Value -match '\s$' -or $Value -eq "") {
+                return "`"$($Value -replace '"', '\"')`""
+            }
+            return $Value
+        }
+        elseif ($Value -is [bool]) {
+            return $Value.ToString().ToLower()
+        }
+        elseif ($Value -is [int] -or $Value -is [long] -or $Value -is [double]) {
+            return $Value.ToString()
+        }
+        elseif ($Value -is [System.Collections.IEnumerable] -and -not ($Value -is [string]) -and -not ($Value -is [hashtable])) {
+            # Handle arrays and List<T> types
+            $arr = @($Value)  # Convert to array
+            if ($arr.Count -eq 0) { return "[]" }
+            # Check if simple array (all primitives)
+            $allPrimitive = $true
+            foreach ($item in $arr) {
+                if ($item -is [hashtable] -or $item -is [System.Collections.IEnumerable] -and -not ($item -is [string])) {
+                    $allPrimitive = $false
+                    break
+                }
+            }
+            if ($allPrimitive -and $arr.Count -le 6) {
+                $items = $arr | ForEach-Object { ConvertTo-YamlValue $_ }
+                return "[" + ($items -join ", ") + "]"
+            }
+            return $null  # Will be handled as multi-line
+        }
+        elseif ($Value -is [hashtable] -or $Value -is [System.Collections.Specialized.OrderedDictionary]) {
+            return $null  # Always multi-line
+        }
+        return $Value.ToString()
+    }
+    
+    # Recursive function to write YAML
+    function Write-YamlObject {
+        param($Object, [int]$Indent = 0, [string]$ParentKey = "")
+        
+        $lines = @()
+        $indentStr = "  " * $Indent
+        
+        if ($Object -is [hashtable] -or $Object -is [System.Collections.Specialized.OrderedDictionary]) {
+            $keys = if ($Object -is [System.Collections.Specialized.OrderedDictionary]) { $Object.Keys } else { $Object.Keys | Sort-Object }
+            foreach ($key in $keys) {
+                $value = $Object[$key]
+                $yamlValue = ConvertTo-YamlValue $value $Indent
+                
+                if ($null -ne $yamlValue) {
+                    $lines += "$indentStr${key}: $yamlValue"
+                }
+                else {
+                    # Complex value - recurse
+                    # Handle arrays and List<T> types
+                    $isEnumerable = $value -is [System.Collections.IEnumerable] -and -not ($value -is [string]) -and -not ($value -is [hashtable])
+                    if ($isEnumerable) {
+                        $arr = @($value)  # Convert to array
+                        if ($arr.Count -gt 0) {
+                            $lines += "$indentStr${key}:"
+                            foreach ($item in $arr) {
+                                if ($item -is [hashtable] -or $item -is [System.Collections.Specialized.OrderedDictionary]) {
+                                    $subLines = Write-YamlObject $item ($Indent + 1)
+                                    $firstLine = $true
+                                    foreach ($subLine in $subLines) {
+                                        if ($firstLine) {
+                                            $lines += "$("  " * ($Indent + 1))- " + $subLine.TrimStart()
+                                            $firstLine = $false
+                                        }
+                                        else {
+                                            $lines += "  " + $subLine
+                                        }
+                                    }
+                                }
+                                else {
+                                    $lines += "$("  " * ($Indent + 1))- $(ConvertTo-YamlValue $item)"
+                                }
+                            }
+                        }
+                    }
+                    elseif ($value -is [hashtable] -or $value -is [System.Collections.Specialized.OrderedDictionary]) {
+                        $lines += "$indentStr${key}:"
+                        $lines += Write-YamlObject $value ($Indent + 1)
+                    }
+                }
+            }
+        }
+        
+        return $lines
+    }
+    
+    # Add header comment
+    $yaml += "# ====================================="
+    $yaml += "# AUTO-GENERATED - DO NOT EDIT"
+    $yaml += "# Generated by Generate-Labs.ps1"
+    $yaml += "# Edit lab-config.yml in root instead"
+    $yaml += "# ====================================="
+    $yaml += ""
+    
+    # Write each top-level section (known sections first)
+    $topLevelOrder = @('lab_metadata', 'lab_journeys', 'legacy_lab_orders', 'lab_orders', 'external_labs', 'sections', 'event_configs')
+    
+    foreach ($section in $topLevelOrder) {
+        if ($Config.ContainsKey($section) -and $null -ne $Config[$section]) {
+            $value = $Config[$section]
+            
+            if ($value -is [array] -and $value.Count -eq 0) {
+                $yaml += "${section}: []"
+            }
+            elseif ($value -is [hashtable] -and $value.Keys.Count -eq 0) {
+                $yaml += "${section}: {}"
+            }
+            else {
+                $yaml += "${section}:"
+                $yaml += Write-YamlObject $value 1
+            }
+            $yaml += ""
+        }
+    }
+    
+    # Write any remaining keys (e.g., bootcamp_lab_orders, azure_ai_workshop_lab_orders, etc.)
+    foreach ($key in $Config.Keys) {
+        if ($topLevelOrder -notcontains $key -and @('labs', 'journeys', 'events') -notcontains $key) {
+            $value = $Config[$key]
+            if ($null -ne $value) {
+                $yaml += "${key}:"
+                $yaml += Write-YamlObject $value 1
+                $yaml += ""
+            }
+        }
+    }
+    
+    # Write to file
+    $yaml | Out-File -FilePath $OutputPath -Encoding UTF8 -Force
 }
 
 function Get-LabJourneyAssignments {
@@ -989,9 +1289,11 @@ function Get-AllLabsFromFolders {
             # Override duration and difficulty with config values if they exist
             # This allows lab-config.yml to be the source of truth for metadata
             if ($Config.lab_metadata) {
-                foreach ($order in $Config.lab_metadata.Keys) {
-                    $configLab = $Config.lab_metadata[$order]
+                foreach ($orderKey in $Config.lab_metadata.Keys) {
+                    $configLab = $Config.lab_metadata[$orderKey]
                     if ($configLab.id -eq $folder.Name) {
+                        # Set order from the key (which is the order number)
+                        $lab.order = [int]$orderKey
                         # Extract numeric difficulty from config (e.g., "Intermediate (Level 200)" -> 200)
                         if ($configLab.difficulty -match '(\d+)') {
                             $lab.difficulty = [int]$matches[1]
@@ -1009,6 +1311,16 @@ function Get-AllLabsFromFolders {
                 }
             }
             
+            # If order wasn't set from lab_metadata, try legacy_lab_orders
+            if (-not $lab.order -and $Config.legacy_lab_orders -and $Config.legacy_lab_orders.ContainsKey($folder.Name)) {
+                $lab.order = $Config.legacy_lab_orders[$folder.Name]
+            }
+            
+            # Default order if still not set
+            if (-not $lab.order) {
+                $lab.order = 999
+            }
+            
             # Assign journeys from config or auto-assign
             if ($LabJourneys.ContainsKey($folder.Name)) {
                 $lab.journeys = $LabJourneys[$folder.Name]
@@ -1020,7 +1332,7 @@ function Get-AllLabsFromFolders {
             }
             
             $discoveredLabs += $lab
-            Write-Host "  ✅  Discovered: $($folder.Name)" -ForegroundColor Green
+            Write-Host "  ✅  Discovered: $($folder.Name) (order: $($lab.order))" -ForegroundColor Green
         }
         else {
             Write-Host "  ⚠️   Failed to parse: $($folder.Name)" -ForegroundColor Yellow
@@ -1031,6 +1343,12 @@ function Get-AllLabsFromFolders {
     if ($Config.external_labs) {
         Write-Host "🌐  Adding external labs from config..." -ForegroundColor Cyan
         foreach ($externalLab in $Config.external_labs) {
+            # Look up order from legacy_lab_orders (built during config processing)
+            $order = if ($Config.legacy_lab_orders -and $Config.legacy_lab_orders.ContainsKey($externalLab.id)) {
+                $Config.legacy_lab_orders[$externalLab.id]
+            }
+            else { 999 }
+            
             $lab = @{
                 id          = $externalLab.id
                 slug        = $externalLab.id  # Use the lab id as the slug
@@ -1042,9 +1360,10 @@ function Get-AllLabsFromFolders {
                 section     = if ($externalLab.section) { $externalLab.section } else { "external_labs" }
                 url         = $externalLab.url
                 repository  = $externalLab.repository
+                order       = $order
             }
             $discoveredLabs += $lab
-            Write-Host "  ✅  Added external lab: $($externalLab.id)" -ForegroundColor Green
+            Write-Host "  ✅  Added external lab: $($externalLab.id) (order: $order)" -ForegroundColor Green
         }
     }
     
@@ -1227,7 +1546,7 @@ section: $SectionName
     if ($IsExternal) {
         $frontMatter += "`nexternal: true"
         if ($Lab.url) {
-            $frontMatter += "`nurl: `"$($Lab.url)`""
+            $frontMatter += "`nexternal_url: `"$($Lab.url)`""
         }
         if ($Lab.repository) {
             $frontMatter += "`nrepository: `"$($Lab.repository)`""
@@ -1358,7 +1677,7 @@ function Normalize-TOCMarkers {
                 
                 # Rebuild: before + heading + new TOC + rest
                 $Content = $beforeTOC[0] + $tocHeading + [Environment]::NewLine + [Environment]::NewLine + 
-                           $tocContent + [Environment]::NewLine + [Environment]::NewLine + $restOfContent
+                $tocContent + [Environment]::NewLine + [Environment]::NewLine + $restOfContent
                 
                 Write-Host "    📋  TOC detected ($tocType): $($tocHeading.Trim())" -ForegroundColor DarkGray
             }
@@ -1638,8 +1957,62 @@ function New-IndexPage {
         }
     }
     
+    # Build lab orders for journey-specific ordering
+    # This maps journey names to ordered arrays of lab IDs
+    # Uses new unified lab_orders.journey section
+    # NOTE: YAML parses array values as integers, stripping leading zeros
+    # We pad to 3 digits to match lab_metadata keys (e.g., 10 -> "010")
+    $labOrdersJs = @()
+    if ($Config.lab_orders -and $Config.lab_orders.journey) {
+        foreach ($journeyKey in $Config.lab_orders.journey.Keys) {
+            $labNumbers = $Config.lab_orders.journey[$journeyKey]
+            # Map lab numbers to lab IDs using lab_metadata
+            $labIds = @()
+            foreach ($labNum in $labNumbers) {
+                # Pad to 3 digits to match lab_metadata keys (010, 100, etc.)
+                $labNumStr = "{0:D3}" -f [int]$labNum
+                if ($Config.lab_metadata -and $Config.lab_metadata[$labNumStr]) {
+                    $labIds += "'" + $Config.lab_metadata[$labNumStr].id + "'"
+                }
+            }
+            $labOrdersJs += "    'journey:$journeyKey': [" + ($labIds -join ", ") + "]"
+        }
+    }
+    
+    # Add event orders from unified lab_orders.event section
+    if ($Config.lab_orders -and $Config.lab_orders.event) {
+        foreach ($eventKey in $Config.lab_orders.event.Keys) {
+            $labNumbers = $Config.lab_orders.event[$eventKey]
+            $labIds = @()
+            foreach ($labNum in $labNumbers) {
+                # Pad to 3 digits to match lab_metadata keys
+                $labNumStr = "{0:D3}" -f [int]$labNum
+                if ($Config.lab_metadata -and $Config.lab_metadata[$labNumStr]) {
+                    $labIds += "'" + $Config.lab_metadata[$labNumStr].id + "'"
+                }
+            }
+            $labOrdersJs += "    'event:$eventKey': [" + ($labIds -join ", ") + "]"
+        }
+    }
+    
+    # Add section orders from unified lab_orders.section
+    if ($Config.lab_orders -and $Config.lab_orders.section) {
+        foreach ($sectionKey in $Config.lab_orders.section.Keys) {
+            $labNumbers = $Config.lab_orders.section[$sectionKey]
+            $labIds = @()
+            foreach ($labNum in $labNumbers) {
+                # Pad to 3 digits to match lab_metadata keys
+                $labNumStr = "{0:D3}" -f [int]$labNum
+                if ($Config.lab_metadata -and $Config.lab_metadata[$labNumStr]) {
+                    $labIds += "'" + $Config.lab_metadata[$labNumStr].id + "'"
+                }
+            }
+            $labOrdersJs += "    'section:$sectionKey': [" + ($labIds -join ", ") + "]"
+        }
+    }
+    
     # Generate the complete index.md content
-    $indexContent = Build-IndexPageContent -JourneyButtons $journeyButtons -JourneyDefinitions $journeyDefinitions -SectionButtons $sectionButtons
+    $indexContent = Build-IndexPageContent -JourneyButtons $journeyButtons -JourneyDefinitions $journeyDefinitions -SectionButtons $sectionButtons -LabOrders $labOrdersJs
     
     # Write to index.md file
     $indexPath = Join-Path $Paths.basePath "labs/index.md"
@@ -1683,25 +2056,26 @@ function New-RootHomepage {
         }
     }
     
-    # Calculate stats for each event
+    # Calculate stats for each event using unified lab_orders.event structure
     $eventStats = @{}
     if ($Config.event_configs) {
         foreach ($eventKey in $Config.event_configs.Keys) {
-            $eventConfig = $Config.event_configs[$eventKey]
-            $configKey = $eventConfig.config_key
-            
             $labCount = 0
             $totalDuration = 0
             
-            # Get the event-specific lab orders (e.g., bootcamp_lab_orders)
-            if ($Config[$configKey]) {
-                $eventLabOrders = $Config[$configKey]
-                foreach ($labId in $eventLabOrders.Keys) {
-                    # Find the lab by ID in AllLabs
-                    $lab = $AllLabs | Where-Object { $_.id -eq $eventLabOrders[$labId] }
-                    if ($lab) {
-                        $labCount++
-                        $totalDuration += $lab.duration
+            # Get the event-specific lab orders from lab_orders.event section
+            if ($Config.lab_orders -and $Config.lab_orders.event -and $Config.lab_orders.event[$eventKey]) {
+                $eventLabNumbers = $Config.lab_orders.event[$eventKey]
+                foreach ($labNum in $eventLabNumbers) {
+                    # Find the lab by looking up the 3-digit number in lab_metadata
+                    $labNumStr = [string]$labNum
+                    if ($Config.lab_metadata -and $Config.lab_metadata[$labNumStr]) {
+                        $labId = $Config.lab_metadata[$labNumStr].id
+                        $lab = $AllLabs | Where-Object { $_.id -eq $labId }
+                        if ($lab) {
+                            $labCount++
+                            $totalDuration += $lab.duration
+                        }
                     }
                 }
             }
@@ -1873,11 +2247,12 @@ function Build-IndexPageContent {
     .SYNOPSIS
         Build the complete index.md page content
     #>
-    param($JourneyButtons, $JourneyDefinitions, $SectionButtons)
+    param($JourneyButtons, $JourneyDefinitions, $SectionButtons, $LabOrders)
     
     $journeyButtonsHtml = $JourneyButtons -join "`n"
     $journeyDefinitionsJs = $JourneyDefinitions -join ",`n"
     $sectionButtonsHtml = $SectionButtons -join "`n"
+    $labOrdersJs = $LabOrders -join ",`n"
     
     return @"
 ---
@@ -1936,7 +2311,7 @@ $sectionButtonsHtml
 
 <div class="labs-grid" id="labs-container">
 {% for lab in site.labs %}
-  <div class="lab-card" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}" data-section="{{ lab.section }}" data-order="{{ lab.order }}">
+  <div class="lab-card" data-lab-id="{{ lab.slug }}" data-difficulty="{{ lab.difficulty }}" data-duration="{{ lab.duration }}" data-journeys="{{ lab.journeys | join: ',' }}" data-section="{{ lab.section }}" data-order="{{ lab.order }}">
     <div class="lab-sequence">
       <span class="sequence-number"></span>
     </div>
@@ -1985,6 +2360,49 @@ const sections = {
   'optional_labs': { title: '🔧 Optional Labs', description: 'Supplementary labs that provide additional knowledge and alternative approaches for specific use cases.', difficulty: 'Varies', icon: '🔧' },
   'specialized_labs': { title: '⚡ Specialized Labs', description: 'Focused labs covering specific tools, integrations, and specialized workflows for particular scenarios.', difficulty: 'Intermediate to Advanced', icon: '⚡' }
 };
+
+// Lab ordering for journeys and events (dynamically generated from config)
+// Format: 'type:name' => [ordered lab IDs]
+const labOrders = {
+$labOrdersJs
+};
+
+// Generic function to reorder cards based on filter type and value
+function reorderCardsForFilter(filterType, filterValue) {
+  const orderKey = filterType + ':' + filterValue;
+  const orderedLabIds = labOrders[orderKey];
+  
+  if (!orderedLabIds || orderedLabIds.length === 0) {
+    // No specific order defined, use default order
+    sortLabCardsByOrder();
+    return;
+  }
+  
+  const container = document.getElementById('labs-container');
+  const cards = Array.from(container.querySelectorAll('.lab-card'));
+  
+  // Sort cards: ordered labs first (in specified order), then remaining by default order
+  cards.sort((a, b) => {
+    const idA = a.dataset.labId;
+    const idB = b.dataset.labId;
+    const indexA = orderedLabIds.indexOf(idA);
+    const indexB = orderedLabIds.indexOf(idB);
+    
+    // Both in ordered list: sort by position in list
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB;
+    }
+    // Only A in ordered list: A comes first
+    if (indexA !== -1) return -1;
+    // Only B in ordered list: B comes first
+    if (indexB !== -1) return 1;
+    // Neither in ordered list: sort by default order
+    return (parseInt(a.dataset.order) || 999) - (parseInt(b.dataset.order) || 999);
+  });
+  
+  // Reorder DOM elements
+  cards.forEach(card => container.appendChild(card));
+}
 
 function updateSequenceNumbers() {
   const cards = document.querySelectorAll('.lab-card');
@@ -2107,6 +2525,9 @@ function filterByJourney(journeyName) {
     '<strong>Difficulty Level:</strong> ' + journey.difficulty + '<br>' +
     '<strong>Estimated Time:</strong> ' + journey.estimatedTime + '<br>' +
     '<strong>Total Labs:</strong> ' + labCount + ' labs (' + totalDuration + ' minutes)';
+  
+  // Reorder cards based on journey-specific ordering
+  reorderCardsForFilter('journey', journeyName);
   
   // Update sequence numbers
   updateSequenceNumbers();
@@ -2271,6 +2692,10 @@ function Invoke-LabGeneration {
         
         # Load configuration and set up paths
         $config = Get-Configuration
+        
+        # Convert simplified config format to legacy format if needed
+        $config = Convert-SimplifiedConfig -Config $config
+        
         $paths = Get-Paths
         $labJourneys = Get-LabJourneyAssignments -Config $config
         
@@ -2311,7 +2736,7 @@ function Invoke-LabGeneration {
         
         # Show final statistics
         $processingTime = (Get-Date) - $startTime
-        Show-FinalStatistics -Results $pdfResults -AllLabs $allLabs -ProcessingTime $processingTime
+        Show-FinalStatistics -Results $pdfResults -AllLabs $allLabs -ProcessingTime $processingTime -Config $config -Paths $paths
         
     }
     catch {
@@ -2344,15 +2769,8 @@ function Invoke-JekyllGeneration {
         foreach ($lab in $sectionLabs) {
             $labType = if ($lab.url) { "external" } else { "local" }
             
-            # Get the configured order from lab_orders, fallback to sequential if not found
-            $labSlug = $lab.slug
-            $order = if ($labSlug -and $Config.lab_orders -and $Config.lab_orders.ContainsKey($labSlug)) {
-                $Config.lab_orders[$labSlug]
-            }
-            else {
-                # Fallback: use a high number (999) for unconfigured labs to sort them last
-                999
-            }
+            # Get order directly from lab object (set during config processing)
+            $order = if ($lab.order) { [int]$lab.order } else { 999 }
             
             $success = ConvertTo-JekyllLab -Lab $lab -Order $order -SectionName $section.Name -LabType $labType -Paths $Paths
             
@@ -2370,7 +2788,7 @@ function Show-FinalStatistics {
     .SYNOPSIS
         Display final processing statistics
     #>
-    param($Results, $AllLabs, $ProcessingTime)
+    param($Results, $AllLabs, $ProcessingTime, $Config, $Paths)
     
     Write-Host "`n" + "="*80 -ForegroundColor Cyan
     Write-Host "📊  PROCESSING COMPLETE - FINAL STATISTICS" -ForegroundColor Cyan
@@ -2410,14 +2828,23 @@ function Show-FinalStatistics {
     Write-Host "    ⏱️   Total Processing Time: $([math]::Round($ProcessingTime.TotalSeconds, 2)) seconds" -ForegroundColor Cyan
     Write-Host "    🏭  Labs per Second: $([math]::Round($AllLabs.Count / $ProcessingTime.TotalSeconds, 2))" -ForegroundColor Cyan
     
-    # Sync lab-config.yml to _data directory for Jekyll
-    Write-Host "`n📋  Syncing configuration..." -ForegroundColor Yellow
-    $rootPath = if (Test-Path "./labs") { "." } else { ".." }
-    $sourceConfig = Join-Path $rootPath "lab-config.yml"
+    # Export converted config to _data directory for Jekyll (includes legacy structures)
+    Write-Host "`n📋  Exporting configuration for Jekyll..." -ForegroundColor Yellow
+    $rootPath = if ($Paths) { $Paths.basePath } elseif (Test-Path "./labs") { "." } else { ".." }
     $destConfig = Join-Path $rootPath "_data/lab-config.yml"
-    if (Test-Path $sourceConfig) {
-        Copy-Item -Path $sourceConfig -Destination $destConfig -Force
-        Write-Host "✅  Synced lab-config.yml to _data/ directory" -ForegroundColor Green
+    
+    if ($Config -and $Config.lab_metadata) {
+        # Config has been converted - export with legacy structures
+        Export-ConfigAsYaml -Config $Config -OutputPath $destConfig
+        Write-Host "✅  Exported converted config to _data/ directory" -ForegroundColor Green
+    }
+    else {
+        # Fallback to simple copy for legacy configs
+        $sourceConfig = Join-Path $rootPath "lab-config.yml"
+        if (Test-Path $sourceConfig) {
+            Copy-Item -Path $sourceConfig -Destination $destConfig -Force
+            Write-Host "✅  Synced lab-config.yml to _data/ directory" -ForegroundColor Green
+        }
     }
     
     Write-Host "="*80 -ForegroundColor Cyan
