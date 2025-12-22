@@ -208,7 +208,7 @@ before we implement. [presents detailed plan] Does this approach work for you?"
 
 **How to make changes:**
 
-1. Edit `lab-config.yml` (journeys, metadata)
+1. Edit `lab-config.yml` (single `labs:` section for all lab properties)
 2. Edit `labs/*/README.md` (lab content)
 3. Run `.\scripts\Generate-Labs.ps1 -SkipPDFs`
 4. Script generates all `_labs/*.md` and index files
@@ -216,11 +216,18 @@ before we implement. [presents detailed plan] Does this approach work for you?"
 **⚠️ CRITICAL: When adding a NEW LAB:**
 
 1. **Create lab folder**: `labs/your-lab-name/` with `README.md` and `images/`
-2. **Update lab-config.yml** (MANDATORY - at least 3 sections, up to 6 if event labs):
-   - `lab_metadata`: Add entry with id, title, difficulty, duration, section
-   - `lab_orders`: Assign display order number (check existing numbers to avoid conflicts)
-   - `lab_journeys`: Assign to one or more journeys (quick-start, business-user, developer, autonomous-ai)
-   - Event-specific orders (if applicable): Add to `bootcamp_lab_orders`, `azure_ai_workshop_lab_orders`, `mcs_in_a_day_lab_orders`, `agent_buildathon_1day_lab_orders`, `agent_buildathon_1month_lab_orders`
+2. **Add ONE entry to lab-config.yml** in the `labs:` section:
+   ```yaml
+   labs:
+     your-lab-name:                    # Must match folder name
+       title: "Your Lab Title"
+       difficulty: "Intermediate"      # Beginner, Intermediate, Advanced
+       duration: 45                     # Minutes
+       section: intermediate            # core, intermediate, advanced, specialized, optional
+       order: 225                       # Pick between existing labs (100-699)
+       journeys: [developer]            # Learning paths to include lab
+       events: [bootcamp]               # Optional: event pages to include lab
+   ```
 3. **Run generation**: `.\scripts\Generate-Labs.ps1 -SkipPDFs` (automatically runs config audit first)
 4. **Test locally**: `docker-compose up -d` and verify at http://localhost:4000/mcs-labs/
 5. **Generate PDFs**: `.\scripts\Generate-Labs.ps1 -GeneratePDFs` (before committing)
@@ -228,7 +235,9 @@ before we implement. [presents detailed plan] Does this approach work for you?"
 **Built-in Safety**: Generate-Labs.ps1 automatically runs Check-LabConfigs.ps1 before generation. It will fail fast if:
 
 - Lab folders exist without config entries
-- Config entries exist without lab folders (except external labs like `mcs-mcp-external`)
+- Config entries exist without lab folders (except external labs)
+- Duplicate lab IDs exist in configuration
+- Journey card counts don't match left navigation counts
 - This prevents accidental generation with incomplete configuration
 
 **Common mistake**: Adding lab folder without updating lab-config.yml → Caught by automated audit!
@@ -299,9 +308,9 @@ event_name_lab_orders:
 ```
 
 **When Adding New Labs to Events**:
-1. Lab must exist in `lab_metadata` and `lab_orders`
-2. Add to specific event's `_lab_orders` section
-3. **Do NOT** add to `lab_journeys` if it's event-only
+1. Lab must exist in `labs:` section with all properties
+2. Add `events: [event-name]` property to the lab
+3. OR add lab ID to the event's `lab_order` in `journeys:` section
 4. Use generic `.event-*` CSS classes (never event-specific like `bootcamp-*`)
 
 See `docs/EVENT_SYSTEM.md` for complete architecture details.
@@ -316,24 +325,26 @@ See `docs/EVENT_SYSTEM.md` for complete architecture details.
 
 **What it checks**:
 - ✅ All lab folders have corresponding config entries in `lab-config.yml`
-- ✅ All config entries have corresponding lab folders (except known external labs)
-- ✅ Reports missing configs and orphaned configs
-- ❌ Fails fast if mismatches found, preventing incomplete generation
+- ✅ All config entries have corresponding lab folders (except external labs)
+- ✅ No duplicate lab IDs in configuration
+- ✅ Journey card counts match left navigation counts
+- ✅ Journey lab_order arrays only reference valid labs
+- ❌ Fails fast if critical issues found, preventing incomplete generation
 
 **Excluded folders**: `bootcamp`, `azure-ai-workshop`, `mcs-in-a-day`, `agent-buildathon-1day`, `agent-buildathon-1month` (event pages, not labs)
 
-**External labs**: `mcs-mcp-external` (configured but hosted externally)
+**External labs**: Labs with `external:` property (configured but hosted elsewhere)
 
 **Usage**:
 ```powershell
 # Manual audit
 .\scripts\Check-LabConfigs.ps1
 
-# Verbose output with lab titles
+# Verbose output with journey counts
 .\scripts\Check-LabConfigs.ps1 -Verbose
 ```
 
-**Why this matters**: Prevents silent failures where labs exist but don't appear on the site, or config references labs that don't exist.
+**Why this matters**: Prevents silent failures where labs exist but don't appear on the site, duplicate IDs cause confusion, or card/nav counts mismatch.
 
 ## 🚀 Common Workflows
 
@@ -554,6 +565,7 @@ rm -rf _site
 - ADR-009: Theme loading optimization
 - ADR-010: Mermaid diagram rendering strategy
 - ADR-011: Component-based architecture (proposed)
+- ADR-012: Simplified single-source configuration format
 
 ## 🔍 Quick Reference
 
