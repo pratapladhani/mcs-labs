@@ -199,9 +199,11 @@ When editing `scripts/Generate-Labs.ps1`:
 2. **Test generation**: Always run the script after changes
 3. **Clean architecture**: HTML structure only, styling in CSS only
 
-## 🆕 Adding New Labs - Complete Checklist
+## 🆕 Adding New Labs - Simple Process
 
-**⚠️ CRITICAL**: When adding a new lab to the project, you MUST update `lab-config.yml` in FIVE places or the lab will not appear anywhere on the site!
+**🎉 Good News**: Adding a lab now requires just ONE config entry!
+
+With the simplified `lab-config.yml` format, all lab properties are defined in a single `labs:` section.
 
 ### Step-by-Step Process:
 
@@ -212,72 +214,53 @@ mkdir labs/your-lab-name
 mkdir labs/your-lab-name/images
 
 # Create README.md with lab content
-# Ensure frontmatter includes: title, description, duration, difficulty
+# Include the ## 📚 Table of Contents heading (TOC auto-generated)
 ```
 
-#### 2. Update lab-config.yml - lab_metadata Section
+#### 2. Add ONE Entry to lab-config.yml
 ```yaml
-lab_metadata:
-  # ... existing entries ...
-  6:  # Use next available number
-    id: "your-lab-name"  # MUST match folder name
+labs:
+  # ... existing labs ...
+  
+  your-lab-name:                    # Must match folder name in labs/
     title: "Your Lab Title"
-    difficulty: "Beginner (Level 100)" # or Level 200, 300, etc.
-    duration: 40  # minutes
-    section: "core_learning_path"  # or advanced_topics
+    difficulty: "Intermediate"      # Beginner, Intermediate, Advanced
+    duration: 45                    # Minutes
+    section: intermediate           # core, intermediate, advanced, specialized, optional
+    order: 225                      # Pick a number between existing labs (100-699)
+    journeys: [developer]           # Learning paths to include this lab
+    events: [bootcamp]              # Optional: event pages to include this lab
 ```
 
-#### 3. Update lab-config.yml - lab_orders Section
-```yaml
-lab_orders:
-  # ... existing entries ...
-  your-lab-name: 5  # Set display order (check existing to avoid conflicts)
-```
+**Order Numbering Scheme**:
+- 100-199: Core Learning Path (beginner essentials)
+- 200-299: Intermediate Labs
+- 300-399: Advanced Labs
+- 400-499: Specialized Labs
+- 500-599: Optional Labs
+- 600-699: External Labs (hosted elsewhere)
 
-#### 4. Update lab-config.yml - lab_journeys Section
-```yaml
-lab_journeys:
-  quick-start:
-    - "your-lab-name"  # Add to appropriate journey(s)
-  developer:
-    - "your-lab-name"  # Can be in multiple journeys
-```
-
-#### 5. Update Event-Specific Orders (if applicable)
-```yaml
-# Only if lab should appear in events
-bootcamp_lab_orders:
-  1: "your-lab-name"  # Set event-specific order
-
-azure_ai_workshop_lab_orders:
-  1: "your-lab-name"
-
-mcs_in_a_day_lab_orders:
-  1: "your-lab-name"
-```
-
-#### 6. Generate and Test
+#### 3. Generate and Test
 ```powershell
-# Generate lab files
+# Generate lab files (audit runs automatically)
 .\scripts\Generate-Labs.ps1 -SkipPDFs
 
 # Start/restart Docker
-docker-compose down
-docker-compose up -d
+docker-compose restart jekyll-dev
 
-# Test locally
-# Navigate to: http://localhost:4000/mcs-labs/
+# Test locally at: http://localhost:4000/mcs-labs/
 ```
 
-#### 7. Verification Checklist
+#### 4. Verification Checklist
 - ✅ Lab appears in "All Labs" page
 - ✅ Lab appears in assigned journey(s) homepage card
 - ✅ Lab has correct metadata (title, duration, difficulty)
 - ✅ Lab navigation works (prev/next buttons)
 - ✅ Lab images display correctly
 - ✅ Lab appears in event pages (if assigned)
+- ✅ Table of Contents auto-generated (H2 headings only)
 
-#### 8. Generate PDFs (Before Committing)
+#### 5. Generate PDFs (Before Committing)
 ```powershell
 # Generate PDFs for final verification
 .\scripts\Generate-Labs.ps1 -GeneratePDFs
@@ -285,29 +268,20 @@ docker-compose up -d
 # Verify PDF in assets/pdfs/your-lab-name.pdf
 ```
 
-### Common Mistakes to Avoid:
+### Built-in Safety Checks
 
-❌ **Creating lab folder without updating lab-config.yml**
-   - Result: Lab won't appear anywhere
-
-❌ **Adding to lab_metadata but forgetting lab_orders**
-   - Result: Lab appears but has broken navigation
-
-❌ **Adding to lab_journeys but not lab_metadata**
-   - Result: Jekyll build errors, lab won't render
-
-❌ **Using different id in metadata vs folder name**
-   - Result: Lab won't be found, broken links
-
-❌ **Not testing locally before pushing**
-   - Result: CI failures, broken production site
+The `Check-LabConfigs.ps1` script runs automatically before generation and catches:
+- ❌ Lab folders without config entries
+- ❌ Config entries without lab folders (except external labs)
+- ❌ Duplicate lab IDs
+- ❌ Journey card/nav count mismatches
 
 ### Pro Tips:
 
 💡 **Check existing lab configs for examples**:
 ```powershell
-# Search for existing lab in config
-Select-String -Path "lab-config.yml" -Pattern "agent-builder-web"
+# View all lab entries with their order numbers
+Select-String -Path "lab-config.yml" -Pattern "order:" | Select-Object Line
 ```
 
 💡 **Use single lab PDF generation for testing**:
@@ -315,20 +289,24 @@ Select-String -Path "lab-config.yml" -Pattern "agent-builder-web"
 .\scripts\Generate-Labs.ps1 -SingleLabPDF "your-lab-name" -GeneratePDFs
 ```
 
-💡 **Verify lab folder name matches config id**:
+💡 **Run manual audit anytime**:
 ```powershell
-# List all lab folders
-Get-ChildItem -Path "labs\" -Directory | Select-Object Name
-
-# Compare with lab_metadata ids in config
+.\scripts\Check-LabConfigs.ps1 -Verbose
 ```
 
-💡 **Regular audit of labs vs config**:
-```powershell
-# Check for labs without config entries
-$folders = (Get-ChildItem -Path "labs\" -Directory).Name
-$configIds = (Select-String -Path "lab-config.yml" -Pattern 'id: "([^"]+)"' -AllMatches).Matches | ForEach-Object { $_.Groups[1].Value }
-$folders | Where-Object { $_ -notin $configIds -and $_ -ne "bootcamp" -and $_ -ne "azure-ai-workshop" -and $_ -ne "mcs-in-a-day" }
+💡 **External labs (hosted elsewhere)**:
+```yaml
+  my-external-lab:
+    title: "External Lab Title"
+    difficulty: "Advanced"
+    duration: 90
+    section: external
+    order: 600
+    journeys: [developer]
+    external:
+      url: "https://github.com/org/repo"
+      repository: "org/repo"
+      description: "Lab hosted in external repository"
 ```
 
 

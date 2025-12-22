@@ -1,82 +1,261 @@
-# Simplified Lab Configuration - Auto-Discovery Based
-# Only contains journey definitions and optional section customizations
-# Labs are automatically discovered from folders and README files
+# =====================================================
+# MCS LABS CONFIGURATION - Simplified Single Source of Truth
+# =====================================================
 #
-# IMPORTANT CONFIGURATION NOTES:
-# =================================
+# ADDING A NEW LAB IS EASY!
+# Just add ONE entry to the 'labs' section:
 #
-# ⚠️ CRITICAL: When adding a NEW LAB to the labs/ folder:
-# 1. Create the lab folder and README.md in labs/
-# 2. Add an entry to lab_metadata section (assign a number and metadata)
-# 3. Add an entry to lab_orders section (set the display order)
-# 4. Add to lab_journeys section (assign to one or more journeys)
-# 5. Add to event-specific lab_orders if needed (bootcamp, workshop, etc.)
-# 6. Run Generate-Labs.ps1 to generate the Jekyll files
-# 7. Test locally before committing
+#   my-new-lab:                          # Must match folder name in labs/
+#     title: "My Amazing New Lab"
+#     difficulty: "Intermediate"
+#     duration: 45                        # Minutes
+#     section: intermediate               # core, intermediate, advanced, specialized, optional, external
+#     order: 225                          # Determines sort order (pick between existing labs)
+#     journeys: [developer]               # Which learning paths include this lab
 #
-# JOURNEY SYSTEM:
-# - The 'journeys' section defines journey cards displayed on the homepage
-# - Only journeys listed here will appear as cards on the main page
-# - Events (Bootcamp, Workshops) are intentionally EXCLUDED from homepage display
+# That's it! Run .\scripts\Generate-Labs.ps1 -SkipPDFs and you're done.
 #
-# EVENT SYSTEM (Bootcamp & Workshops):
-# - Events have dedicated pages with custom numbering and lab sequences
-# - Event configuration: event_configs section centralizes titles and metadata
-# - Event lab orders: <event_name>_lab_orders defines lab sequence per event
-# - Event navigation: Links hardcoded in _layouts/default.html header
-# - Event context: All events use unified ?event=<event-name> parameter
+# OPTIONAL FIELDS:
+#   events: [bootcamp, mcs-in-a-day]     # Include in specific events
+#   external:                             # For labs hosted elsewhere
+#     url: "https://..."
+#     repository: "org/repo"
+#     description: "..."
 #
-# LAB ASSIGNMENT SYSTEM:
-# - lab_journeys section assigns individual labs to their respective journeys
-# - Labs can be assigned to multiple journeys for cross-journey visibility
-# - Event labs are NOT assigned here to prevent homepage appearance
-#
-# NAVIGATION ARCHITECTURE:
-# - Homepage: Shows journey cards (excludes events)
-# - Top Navigation: Home | All Labs | Bootcamp | Azure AI Workshop | MCS in a Day
-# - Event Pages: Use <event_name>_lab_orders for custom sequencing
-# - All Labs Page: Shows all labs regardless of journey/event assignment
+# =====================================================
 
 # =====================================================
-# EVENT CONFIGURATIONS - Centralized event metadata
+# LABS - Single source of truth for all lab information
 # =====================================================
-# This section provides metadata for all events (Bootcamp, Workshops, etc.)
-# Used by JavaScript in _layouts/lab.html for dynamic navigation and filtering
+# Each lab is defined once with all its properties.
+# The key (e.g., "agent-builder-web") must match the folder name in labs/
 #
-# Event URL Pattern: /labs/<lab-id>/?event=<event-name>
-# JavaScript Detection: Reads ?event= parameter and looks up config_key
-# Lab Ordering: Each event has corresponding <config_key> section below
+# ORDER NUMBERING SCHEME:
+#   100-199: Core Learning Path (beginner essentials) - Featured labs go here too
+#   200-299: Intermediate Labs
+#   300-399: Advanced Labs
+#   400-499: Specialized Labs
+#   500-599: Optional Labs
+#   600-699: External Labs (hosted elsewhere)
 #
-# WHY THIS EXISTS:
-# - Single source of truth for event titles and icons
-# - Enables JavaScript to map ?event=bootcamp → bootcamp_lab_orders
-# - Simplifies adding new events (add entry here + create lab_orders section)
-# - Maintains consistency across event pages and navigation
-event_configs:
-  bootcamp:
-    title: "⚔️ Architecture Bootcamp"
-    description: "Intensive hands-on bootcamp covering progressive AI assistants, ALM best practices, autonomous agents, and advanced data integration with MCP and Fabric."
-    config_key: "bootcamp_lab_orders"
-  azure-ai-workshop:
-    title: "☁️ MCS + Azure AI Workshop"
-    description: "Comprehensive hands-on workshop combining Microsoft Copilot Studio with Azure AI services for building intelligent, enterprise-grade AI solutions."
-    config_key: "azure_ai_workshop_lab_orders"
-  mcs-in-a-day:
-    title: "⚡ MCS in a Day"
-    description: "Fast-track full-day workshop introducing Microsoft Copilot Studio through hands-on labs covering declarative agents, custom agents, and autonomous AI."
-    config_key: "mcs_in_a_day_lab_orders"
-  agent-buildathon-1day:
-    title: "🏗️ Agent Build-A-Thon (1 day)"
-    description: "One-day intensive agent building workshop focused on creating web-based and SharePoint-integrated AI assistants."
-    config_key: "agent_buildathon_1day_lab_orders"
-  agent-buildathon-1month:
-    title: "🚀 Agent Build-A-Thon (1 month)"
-    description: "Comprehensive month-long agent development program covering declarative agents, autonomous AI, and enterprise deployment patterns."
-    config_key: "agent_buildathon_1month_lab_orders"
+labs:
+  # === FEATURED/CORE LEARNING PATH (100-199) ===
+  agent-builder-web:
+    title: "Create your own web-based AI assistant with Agent Builder in Microsoft 365"
+    difficulty: "Beginner"
+    duration: 15
+    section: core
+    order: 100
+    journeys: [quick-start, business-user]
+
+  public-website-agent:
+    title: "Give your public website chatbot a brain and make it an agent"
+    difficulty: "Beginner"
+    duration: 25
+    section: core
+    order: 110
+    journeys: [quick-start, business-user]
+
+  mbr-prep-sharepoint-agent:
+    title: "Create a Monthly Business Review (MBR) Agent"
+    difficulty: "Beginner"
+    duration: 20
+    section: core
+    order: 120
+    journeys: [quick-start, business-user, developer]
+
+  standard-orchestrator:
+    title: "Create AI Solutions with Standard Orchestrator in Copilot Studio"
+    difficulty: "Beginner"
+    duration: 40
+    section: core
+    order: 130
+    journeys: [quick-start, developer]
+
+  agent-builder-m365:
+    title: "Build Progressive AI Assistants with Agent Builder in Microsoft 365"
+    difficulty: "Beginner to Intermediate"
+    duration: 40
+    section: core
+    order: 140
+    journeys: [quick-start, business-user]
+    events: [bootcamp, mcs-in-a-day]
+
+  contract-alerts-azure-ai:
+    title: "Proactive Contract Alerts in Teams with Azure AI Search and Speech-to-Text"
+    difficulty: "Intermediate"
+    duration: 70
+    section: core
+    order: 150
+    journeys: [business-user]
+    events: [azure-ai-workshop]
+
+  agent-academy-recruit:
+    title: "Copilot Studio Agent Academy - Recruit Level"
+    difficulty: "Beginner to Intermediate"
+    duration: 240
+    section: external
+    order: 160
+    journeys: [quick-start, business-user]
+    external:
+      url: "https://microsoft.github.io/agent-academy/recruit/"
+      repository: "microsoft/agent-academy"
+      description: "Comprehensive 13-lesson curriculum covering agents, LLMs, declarative & custom agents, Topics, Adaptive Cards, Agent Flows, and deployment to Teams and Microsoft 365 Copilot"
+
+  # === INTERMEDIATE LABS (200-299) ===
+  setup-for-success:
+    title: "Set yourself up for success & discover ALM best practices"
+    difficulty: "Intermediate"
+    duration: 35
+    section: intermediate
+    order: 200
+    journeys: [business-user, developer]
+    events: [bootcamp]
+
+  agent-builder-sharepoint:
+    title: "Create your own SharePoint-based AI assistant with Agent Builder in Microsoft 365"
+    difficulty: "Intermediate"
+    duration: 20
+    section: intermediate
+    order: 210
+    journeys: [business-user, developer]
+    events: [agent-buildathon-1month]
+
+  ask-me-anything:
+    title: "Create an 'Ask me anything' agent for your employees"
+    difficulty: "Intermediate"
+    duration: 40
+    section: intermediate
+    order: 220
+    journeys: [business-user, developer]
+    events: [agent-buildathon-1month]
+
+  mcs-byom:
+    title: "Bring Your Own Model (BYOM) to Copilot Studio"
+    difficulty: "Intermediate"
+    duration: 40
+    section: intermediate
+    order: 230
+    journeys: [business-user]
+    events: [azure-ai-workshop]
+
+  # === ADVANCED LABS (300-399) ===
+  autonomous-cua:
+    title: "Build an autonomous agent that uses Computer Use to retrieve data from legacy systems that lack API connectivity"
+    difficulty: "Advanced"
+    duration: 30
+    section: advanced
+    order: 300
+    journeys: [autonomous-ai, developer]
+    events: [bootcamp, agent-buildathon-1month]
+
+  autonomous-account-news:
+    title: "Build an Autonomous Account News Assistant Agent"
+    difficulty: "Advanced"
+    duration: 30
+    section: advanced
+    order: 310
+    journeys: [autonomous-ai, developer]
+    events: [bootcamp, agent-buildathon-1month]
+
+  autonomous-support-agent:
+    title: "Create an autonomous support agent and unlock new levels of productivity with AI automation"
+    difficulty: "Advanced"
+    duration: 20
+    section: advanced
+    order: 320
+    journeys: [autonomous-ai, developer]
+    events: [mcs-in-a-day, agent-buildathon-1month]
+
+  data-fabric-agent:
+    title: "Build a Data Fabric Agent"
+    difficulty: "Advanced"
+    duration: 20
+    section: advanced
+    order: 330
+    journeys: [business-user]
+    events: [bootcamp, azure-ai-workshop]
+
+  # === SPECIALIZED LABS (400-499) ===
+  measure-success:
+    title: "Measure Success & Analytics"
+    difficulty: "Intermediate"
+    duration: 60
+    section: specialized
+    order: 400
+    journeys: [developer]
+
+  pipelines-and-source-control:
+    title: "Source control and deploy your agents"
+    difficulty: "Intermediate"
+    duration: 30
+    section: specialized
+    order: 410
+    journeys: [developer]
+
+  copilot-studio-kit:
+    title: "Copilot Studio Kit"
+    difficulty: "Intermediate"
+    duration: 30
+    section: specialized
+    order: 420
+    journeys: [developer]
+
+  mcp-qualify-lead:
+    title: "MCP Qualify Lead"
+    difficulty: "Intermediate"
+    duration: 15
+    section: specialized
+    order: 430
+    journeys: [developer]
+
+  guildhall-custom-mcp:
+    title: "Build and Connect Your Guild's Custom MCP Server"
+    difficulty: "Intermediate"
+    duration: 65
+    section: specialized
+    order: 440
+    journeys: [business-user, developer]
+    events: [azure-ai-workshop]
+
+  dataverse-mcp-connector:
+    title: "Dataverse MCP Connector"
+    difficulty: "Beginner"
+    duration: 30
+    section: specialized
+    order: 450
+    journeys: [quick-start, business-user, developer]
+    events: [bootcamp, azure-ai-workshop]
+
+  # === OPTIONAL LABS (500-599) ===
+  ask-me-anything-30-mins:
+    title: "Create an 'Ask me anything' agent for your employees (30 min version)"
+    difficulty: "Intermediate"
+    duration: 30
+    section: optional
+    order: 500
+    journeys: [business-user]
+    events: [bootcamp, mcs-in-a-day]
+
+  # === EXTERNAL LABS (600-699) ===
+  mcs-mcp-external:
+    title: "Model Context Protocol (MCP) & Copilot Studio"
+    difficulty: "Advanced"
+    duration: 90
+    section: external
+    order: 600
+    journeys: [developer]
+    external:
+      url: "https://github.com/microsoft/mcsmcp"
+      repository: "microsoft/mcsmcp"
+      description: "Learn to deploy an MCP Server and integrate it with Microsoft Copilot Studio"
 
 # =====================================================
-# JOURNEY DEFINITIONS - Learning paths with metadata
+# JOURNEYS - Learning path definitions
 # =====================================================
+# Labs are automatically included based on their 'journeys' field above.
+# The 'lab_order' array specifies display order (by lab id, not number).
+# If not specified, labs are sorted by their 'order' field.
 journeys:
   quick-start:
     title: "Quick Start Journey"
@@ -84,7 +263,17 @@ journeys:
     icon: "🚀"
     difficulty: "Beginner"
     estimated_time: "3-4 hours"
-    labs: [1, 2, 3, 4] # Essential foundation labs
+    # Optional: Override default order (by 'order' field) with specific sequence
+    lab_order:
+      [
+        agent-builder-web,
+        public-website-agent,
+        mbr-prep-sharepoint-agent,
+        standard-orchestrator,
+        agent-builder-m365,
+        dataverse-mcp-connector,
+        agent-academy-recruit,
+      ]
 
   business-user:
     title: "Business User Journey"
@@ -92,7 +281,23 @@ journeys:
     icon: "💼"
     difficulty: "Beginner to Intermediate"
     estimated_time: "8-12 hours"
-    labs: [1, 2, 3, 11, 12, 13, 41] # Business-focused labs with optional short version
+    lab_order:
+      [
+        agent-builder-web,
+        public-website-agent,
+        mbr-prep-sharepoint-agent,
+        agent-builder-m365,
+        agent-academy-recruit,
+        contract-alerts-azure-ai,
+        setup-for-success,
+        agent-builder-sharepoint,
+        ask-me-anything,
+        mcs-byom,
+        data-fabric-agent,
+        guildhall-custom-mcp,
+        dataverse-mcp-connector,
+        ask-me-anything-30-mins,
+      ]
 
   developer:
     title: "Developer Journey"
@@ -100,7 +305,24 @@ journeys:
     icon: "🔧"
     difficulty: "Intermediate to Advanced"
     estimated_time: "10-15 hours"
-    labs: [3, 4, 11, 12, 13, 21, 22, 23, 31, 32, 33, 34, 51] # Technical depth and DevOps
+    lab_order:
+      [
+        mbr-prep-sharepoint-agent,
+        standard-orchestrator,
+        setup-for-success,
+        agent-builder-sharepoint,
+        ask-me-anything,
+        autonomous-cua,
+        autonomous-account-news,
+        autonomous-support-agent,
+        measure-success,
+        pipelines-and-source-control,
+        copilot-studio-kit,
+        mcp-qualify-lead,
+        guildhall-custom-mcp,
+        dataverse-mcp-connector,
+        mcs-mcp-external,
+      ]
 
   autonomous-ai:
     title: "Autonomous AI Journey"
@@ -108,656 +330,101 @@ journeys:
     icon: "🤖"
     difficulty: "Advanced"
     estimated_time: "6-8 hours"
-    labs: [21, 22, 23] # Advanced autonomous agent labs
+    lab_order:
+      [autonomous-cua, autonomous-account-news, autonomous-support-agent]
 
 # =====================================================
-# SECTION DEFINITIONS - Optional display customization
+# EVENTS - Workshop and bootcamp configurations
 # =====================================================
+# Labs are included if they have this event in their 'events' field.
+# 'lab_order' specifies the custom sequence for the event.
+events:
+  bootcamp:
+    title: "⚔️ Architecture Bootcamp"
+    description: "Intensive hands-on bootcamp covering progressive AI assistants, ALM best practices, autonomous agents, and advanced data integration with MCP and Fabric."
+    lab_order:
+      [
+        agent-builder-m365,
+        setup-for-success,
+        public-website-agent,
+        ask-me-anything-30-mins,
+        autonomous-account-news,
+        dataverse-mcp-connector,
+        autonomous-cua,
+        data-fabric-agent,
+      ]
+
+  azure-ai-workshop:
+    title: "☁️ MCS + Azure AI Workshop"
+    description: "Comprehensive hands-on workshop combining Microsoft Copilot Studio with Azure AI services for building intelligent, enterprise-grade AI solutions."
+    lab_order:
+      [
+        dataverse-mcp-connector,
+        contract-alerts-azure-ai,
+        mcs-byom,
+        data-fabric-agent,
+        guildhall-custom-mcp,
+      ]
+
+  mcs-in-a-day:
+    title: "⚡ MCS in a Day"
+    description: "Fast-track full-day workshop introducing Microsoft Copilot Studio through hands-on labs covering declarative agents, custom agents, and autonomous AI."
+    lab_order:
+      [
+        agent-builder-m365,
+        public-website-agent,
+        mbr-prep-sharepoint-agent,
+        ask-me-anything-30-mins,
+        autonomous-support-agent,
+      ]
+
+  agent-buildathon-1day:
+    title: "🏗️ Agent Build-A-Thon (1 day)"
+    description: "One-day intensive agent building workshop focused on creating web-based and SharePoint-integrated AI assistants."
+    lab_order: [agent-builder-web, mbr-prep-sharepoint-agent]
+
+  agent-buildathon-1month:
+    title: "🚀 Agent Build-A-Thon (1 month)"
+    description: "Comprehensive month-long agent development program covering declarative agents, autonomous AI, and enterprise deployment patterns."
+    lab_order:
+      [
+        agent-builder-web,
+        agent-builder-sharepoint,
+        public-website-agent,
+        mbr-prep-sharepoint-agent,
+        ask-me-anything,
+        autonomous-support-agent,
+        autonomous-account-news,
+        autonomous-cua,
+      ]
+
+# =====================================================
+# SECTIONS - Display metadata for lab groupings
+# =====================================================
+# Sections are used to group labs visually on the "All Labs" page.
+# Labs are assigned to sections via their 'section' field.
 sections:
-  core_learning_path:
+  core:
     title: "Core Learning Path"
     icon: "📚"
-    slug: "core"
-    type: "main"
     description: "Essential foundation labs - start here first!"
-
-  intermediate_labs:
+  intermediate:
     title: "Intermediate Labs"
     icon: "🎯"
-    slug: "intermediate"
-    type: "main"
     description: "Build on core concepts with practical applications"
-
-  advanced_labs:
+  advanced:
     title: "Advanced Labs"
     icon: "🚀"
-    slug: "advanced"
-    type: "main"
     description: "Complex scenarios and autonomous agents"
-
-  specialized_labs:
+  specialized:
     title: "Specialized Labs"
     icon: "⚡"
-    slug: "specialized"
-    type: "main"
     description: "Development tools and success measurement"
-
-  optional_labs:
+  optional:
     title: "Optional Labs"
     icon: "🔧"
-    slug: "optional"
-    type: "optional"
     description: "Alternative versions and shorter formats"
-
-  external_labs:
+  external:
     title: "External Labs"
     icon: "🌐"
-    slug: "external"
-    type: "external"
     description: "Labs hosted in external repositories"
-
-# =====================================================
-# LAB METADATA - Complete lab information with numbers
-# =====================================================
-# This section provides a comprehensive view of all labs with their assigned
-# numbers, titles, and key metadata for easy reference and management.
-lab_metadata:
-  # === CORE LEARNING PATH (1-10) ===
-  1:
-    id: "agent-builder-web"
-    title: "Create your own web-based AI assistant with lite experience of Copilot Studio in Microsoft 365 Copilot"
-    difficulty: "Beginner (Level 100)"
-    duration: 15
-    section: "core_learning_path"
-
-  2:
-    id: "public-website-agent"
-    title: "Give your public website chatbot a brain and make it an agent"
-    difficulty: "Beginner (Level 100)"
-    duration: 25
-    section: "core_learning_path"
-
-  3:
-    id: "mbr-prep-sharepoint-agent"
-    title: "Create a Monthly Business Review (MBR) Agent"
-    difficulty: "Beginner (Level 100)"
-    duration: 20
-    section: "core_learning_path"
-
-  4:
-    id: "standard-orchestrator"
-    title: "Create your own SharePoint-based AI assistant with the lite experience of Copilot Studio in Microsoft 365 Copilot"
-    difficulty: "Beginner (Level 100)"
-    duration: 40
-    section: "core_learning_path"
-
-  5:
-    id: "contract-alerts-azure-ai"
-    title: "Proactive Contract Alerts in Teams with Azure AI Search and Speech-to-Text"
-    difficulty: "Intermediate (Level 200)"
-    duration: 70
-    section: "core_learning_path"
-
-  6:
-    id: "copilot-studio-lite"
-    title: "Build Progressive AI Assistants with Copilot Studio Lite in Microsoft 365 Copilot"
-    difficulty: "Beginner to Intermediate (Level 100-200)"
-    duration: 40
-    section: "core_learning_path"
-
-  # === INTERMEDIATE LABS (11-20) ===
-  11:
-    id: "setup-for-success"
-    title: "Set yourself up for success & discover ALM best practices"
-    difficulty: "Intermediate (Level 200)"
-    duration: 35
-    section: "intermediate_labs"
-
-  12:
-    id: "agent-builder-sharepoint"
-    title: "Create your own SharePoint-based AI assistant with the lite experience of Copilot Studio in Microsoft 365 Copilot"
-    difficulty: "Intermediate (Level 200)"
-    duration: 20
-    section: "intermediate_labs"
-
-  13:
-    id: "ask-me-anything"
-    title: "Create an 'Ask me anything' agent for your employees"
-    difficulty: "Intermediate (Level 200)"
-    duration: 40
-    section: "intermediate_labs"
-
-  14:
-    id: "mcs-byom"
-    title: "Bring Your Own Model (BYOM) to Copilot Studio"
-    difficulty: "Intermediate (Level 200)"
-    duration: 40
-    section: "intermediate_labs"
-
-  # === ADVANCED LABS (21-30) ===
-  21:
-    id: "autonomous-cua"
-    title: "Build an autonomous agent that uses Computer Use to retrieve data from legacy systems that lack API connectivity"
-    difficulty: "Intermediate (Level 200)"
-    duration: 30
-    section: "advanced_labs"
-
-  22:
-    id: "autonomous-account-news"
-    title: "Build an Autonomous Account News Assistant Agent"
-    difficulty: "Intermediate (Level 200)"
-    duration: 30
-    section: "advanced_labs"
-
-  23:
-    id: "autonomous-support-agent"
-    title: "Create an autonomous support agent and unlock new levels of productivity with AI automation"
-    difficulty: "Intermediate (Level 200)"
-    duration: 20
-    section: "advanced_labs"
-
-  24:
-    id: "data-fabric-agent"
-    title: "Build a Data Fabric Agent"
-    difficulty: "Intermediate (Level 200)"
-    duration: 20
-    section: "advanced_labs"
-
-  # === SPECIALIZED LABS (31-40) ===
-  31:
-    id: "measure-success"
-    title: "Measure Success & Analytics"
-    difficulty: "Advanced (Level 300)"
-    duration: 60
-    section: "specialized_labs"
-
-  32:
-    id: "pipelines-and-source-control"
-    title: "Source control and deploy your agents"
-    difficulty: "Advanced (Level 300)"
-    duration: 30
-    section: "specialized_labs"
-
-  33:
-    id: "copilot-studio-kit"
-    title: "Copilot Studio Kit"
-    difficulty: "Intermediate (Level 200)"
-    duration: 30
-    section: "specialized_labs"
-
-  34:
-    id: "mcp-qualify-lead"
-    title: "MCP Qualify Lead"
-    difficulty: "Intermediate (Level 200)"
-    duration: 15
-    section: "specialized_labs"
-
-  35:
-    id: "guildhall-custom-mcp"
-    title: "Build and Connect Your Guild's Custom MCP Server"
-    difficulty: "Intermediate (Level 200)"
-    duration: 65
-    section: "specialized_labs"
-
-  36:
-    id: "dataverse-mcp-connector"
-    title: "Dataverse MCP Connector"
-    difficulty: "Beginner (Level 100)"
-    duration: 30
-    section: "specialized_labs"
-
-  # === OPTIONAL LABS (41-50) ===
-  41:
-    id: "ask-me-anything-30-mins"
-    title: "Create an 'Ask me anything' agent for your employees (30 min version)"
-    difficulty: "Intermediate (Level 200)"
-    duration: 30
-    section: "optional_labs"
-
-  # === EXTERNAL LABS (51-60) ===
-  51:
-    id: "mcs-mcp-external"
-    title: "Model Context Protocol (MCP) & Copilot Studio"
-    difficulty: "Advanced (Level 300)"
-    duration: 90
-    section: "external_labs"
-
-# =====================================================
-# BOOTCAMP LAB ORDERING - Specific sequence for bootcamp journey
-# =====================================================
-# This section provides the specific lab numbering used in the bootcamp journey
-# Updated December 2025 with new progressive curriculum
-bootcamp_lab_orders:
-  # Lab 1: Progressive AI Assistants
-  1: "copilot-studio-lite" # Build Progressive AI Assistants with Copilot Studio Lite
-
-  # Lab 2: ALM Foundation
-  2: "setup-for-success" # Set yourself up for success & discover ALM best practices
-
-  # Lab 3: Custom Agent for Website
-  3: "public-website-agent" # Give your public website chatbot a brain and make it an agent
-
-  # Lab 4: Multi-Agent Systems
-  4: "ask-me-anything-30-mins" # Create an 'Ask me anything' agent for your employees (30 min version)
-
-  # Lab 5: Autonomous Account News Agent
-  5: "autonomous-account-news" # Build an Autonomous Account News Assistant Agent
-
-  # Lab 6: Dataverse MCP Integration
-  6: "dataverse-mcp-connector" # Contoso Agent and Dataverse MCP Connector - Build an AI Agent with Live Data Integration
-
-  # Lab 7: Computer-Using Agents
-  7: "autonomous-cua" # Autonomous Portfolio Lookup Agent with Computer-Using Agents (CUA)
-
-  # Lab 8: Data Fabric Integration
-  8: "data-fabric-agent" # Connecting Fabric Data Agents with Microsoft Copilot Studio
-
-# =====================================================
-# AZURE AI WORKSHOP LAB ORDERING - Specific sequence for Azure AI workshop
-# =====================================================
-# This section provides the specific lab numbering used in the Azure AI Workshop
-# which focuses on integrating Microsoft Copilot Studio with Azure AI services.
-# The workshop is designed as a focused 5-lab curriculum covering data integration,
-# AI services, BYOM capabilities, MCP extensibility, and data fabric patterns.
-#
-# Workshop Structure: 5 Labs (285 minutes / ~4.75 hours)
-# - Lab 1: Dataverse MCP integration for live data access (40 min)
-# - Lab 2: Azure AI Search and Speech-to-Text integration (60 min)
-# - Lab 3: BYOM (Bring Your Own Model) Tool in Studio (40 min)
-# - Lab 4: Build and deploy custom MCP server (Guild Hall) (70 min)
-# - Lab 5: Data Fabric Agent with A2A Communication (45 min)
-azure_ai_workshop_lab_orders:
-  # Lab 1: Dataverse MCP Connector (40 min)
-  1: "dataverse-mcp-connector" # Contoso Agent + Dataverse MCP integration for live data access
-
-  # Lab 2: Azure AI Services Integration (60 min)
-  2: "contract-alerts-azure-ai" # Proactive Contract Alerts + Azure AI Search + Speech-to-Text
-
-  # Lab 3: BYOM Tool in Studio (40 min)
-  3: "mcs-byom" # Bring Your Own Model capabilities in Copilot Studio
-
-  # Lab 4: Data Fabric Agent (45 min)
-  4: "data-fabric-agent" # Fabric Data Agents with Agent-to-Agent communication
-
-  # Lab 5: Extend with MCP Server (70 min)
-  5: "guildhall-custom-mcp" # Build and deploy custom MCP server for extensibility
-
-# =====================================================
-# MCS IN A DAY EVENT LAB ORDERING - Specific sequence for MCS in a Day workshop
-# =====================================================
-# This section provides the specific lab numbering used in the MCS in a Day event.
-# This is a full-day workshop (9:00-16:15) designed to provide hands-on experience
-# with Microsoft Copilot Studio, covering declarative agents, custom agents,
-# advanced multi-agent systems, and autonomous agents.
-#
-# Workshop Structure: 5 Labs (135 minutes / ~2.25 hours)
-# - Lab 1: Build Progressive AI Assistants with Copilot Studio Lite (40 min)
-# - Lab 2: Give your public website chatbot a brain and make it an agent (25 min)
-# - Lab 3: Create a Monthly Business Review (MBR) Agent (20 min)
-# - Lab 4: Create an 'Ask me anything' agent for your employees (30 min)
-# - Lab 5: Autonomous Support Agent - Unlock productivity with AI automation (20 min)
-mcs_in_a_day_lab_orders:
-  # Lab 1: Build Progressive AI Assistants with Copilot Studio Lite (15 min)
-  1: "copilot-studio-lite" # Build Progressive AI Assistants with Copilot Studio Lite in M365 Copilot
-
-  # Lab 2: Custom Agent for Website (25 min)
-  2: "public-website-agent" # Give your public website chatbot a brain and make it an agent
-
-  # Lab 3: MBR Agent (20 min)
-  3: "mbr-prep-sharepoint-agent" # Create a Monthly Business Review (MBR) Agent
-
-  # Lab 4: Ask Me Anything Agent (30 min)
-  4: "ask-me-anything-30-mins" # Create an 'Ask me anything' agent for your employees (30 min version)
-
-  # Lab 5: Autonomous Support Agent (20 min)
-  5: "autonomous-support-agent" # Autonomous Support Agent - Unlock new levels of productivity with AI automation
-
-# =====================================================
-# AGENT BUILD-A-THON (1 DAY) - EVENT LAB ORDERING
-# =====================================================
-# One-day intensive workshop focused on building web and SharePoint agents
-# Total: 2 Labs (~60 minutes)
-agent_buildathon_1day_lab_orders:
-  # Lab 1: Build web-based AI assistant
-  1: "agent-builder-web"
-  
-  # Lab 2: Create MBR Agent with SharePoint integration
-  2: "mbr-prep-sharepoint-agent"
-
-# =====================================================
-# AGENT BUILD-A-THON (1 MONTH) - EVENT LAB ORDERING
-# =====================================================
-# Comprehensive month-long agent development program
-# Total: 8 Labs (~240 minutes / 4 hours)
-agent_buildathon_1month_lab_orders:
-  # Week 1: Foundation - Declarative Agents
-  1: "agent-builder-web"
-  2: "agent-builder-sharepoint"
-  
-  # Week 2: Custom Agents
-  3: "public-website-agent"
-  4: "mbr-prep-sharepoint-agent"
-  
-  # Week 3: Multi-Agent Systems
-  5: "ask-me-anything"
-  
-  # Week 4: Autonomous AI
-  6: "autonomous-support-agent"
-  7: "autonomous-account-news"
-  8: "autonomous-cua"
-
-# =====================================================
-# LAB ORDERING - Explicit order values for navigation
-# =====================================================
-# This section provides explicit ordering for all labs. The numbers determine
-# the sequence in which labs appear in navigation and lab cards.
-# Lower numbers appear first, higher numbers appear later.
-lab_orders:
-  # Core Learning Path (1-10) - Foundation labs for everyone
-  agent-builder-web: 1
-  public-website-agent: 2
-  mbr-prep-sharepoint-agent: 3
-  standard-orchestrator: 4
-  copilot-studio-lite: 5
-
-  # Intermediate Labs (11-20) - Building on basics
-  setup-for-success: 11
-  agent-builder-sharepoint: 12
-  ask-me-anything: 13
-
-  # Advanced Labs (21-30) - Complex scenarios and autonomous agents
-  autonomous-cua: 21
-  autonomous-account-news: 22
-  autonomous-support-agent: 23
-
-  # Specialized Labs (31-40) - Development tools and success measurement
-  measure-success: 31
-  pipelines-and-source-control: 32
-  copilot-studio-kit: 33
-  mcp-qualify-lead: 34
-
-  # Optional Labs (41-50) - Alternative versions and shorter formats
-  ask-me-anything-30-mins: 41
-
-  # External Labs (51-60) - Labs hosted in external repositories
-  mcs-mcp-external: 51
-
-# =====================================================
-# JOURNEY LAB SEQUENCES - Detailed lab progression for each journey
-# =====================================================
-# This section provides the explicit lab sequences for each journey with
-# detailed information about progression and learning objectives.
-journey_sequences:
-  quick-start:
-    description: "Essential foundation for newcomers to Copilot Studio"
-    sequence:
-      - lab_number: 1
-        lab_id: "agent-builder-web"
-        title: "Create your first web-based AI assistant"
-        why_included: "Introduction to basic agent building concepts"
-
-      - lab_number: 2
-        lab_id: "public-website-agent"
-        title: "Give your website chatbot intelligence"
-        why_included: "Learn to enhance existing bots with AI capabilities"
-
-      - lab_number: 3
-        lab_id: "mbr-prep-sharepoint-agent"
-        title: "Build a business-focused MBR agent"
-        why_included: "Apply skills to real business scenarios"
-
-      - lab_number: 4
-        lab_id: "standard-orchestrator"
-        title: "Master SharePoint integration"
-        why_included: "Complete foundation with enterprise integration"
-
-  bootcamp:
-    description: "Comprehensive hands-on bootcamp training sequence"
-    sequence:
-      - lab_number: "1a"
-        lab_id: "agent-builder-web"
-        title: "M365 Copilot declarative agent: Create your own web-based AI assistant"
-        why_included: "Introduction to declarative agents in M365 Copilot"
-
-      - lab_number: "1b"
-        lab_id: "agent-builder-sharepoint"
-        title: "SharePoint declarative agent: Create your own SharePoint-based AI assistant"
-        why_included: "Learn SharePoint integration with declarative agents"
-
-      - lab_number: 2
-        lab_id: "setup-for-success"
-        title: "Setup for success with ALM: Set yourself up for success & discover ALM best practices"
-        why_included: "Essential ALM practices for professional development"
-
-      - lab_number: "3a"
-        lab_id: "public-website-agent"
-        title: "Custom Agent for web: Give your public website chatbot a brain and make it an agent"
-        why_included: "Advanced custom agent development for web scenarios"
-
-      - lab_number: "3b"
-        lab_id: "mbr-prep-sharepoint-agent"
-        title: "Custom Agent for SharePoint: Create a Monthly Business Review (MBR) Agent"
-        why_included: "Business-focused custom agent for SharePoint scenarios"
-
-      - lab_number: 4
-        lab_id: "ask-me-anything"
-        title: "Ask me anything agent: Create an 'Ask me anything' agent for your employees"
-        why_included: "Complex multi-agent system with intelligent routing"
-
-      - lab_number: "5a"
-        lab_id: "autonomous-support-agent"
-        title: "Autonomous support agent: Unlock new levels of productivity with AI automation"
-        why_included: "Introduction to autonomous agent capabilities"
-
-      - lab_number: "5b"
-        lab_id: "autonomous-account-news"
-        title: "Autonomous sales opportunity agent: Build an Autonomous Account News Assistant Agent"
-        why_included: "Real-world autonomous agent for sales scenarios"
-
-      - lab_number: 6
-        lab_id: "pipelines-and-source-control"
-        title: "Pipelines & source control + ALM gotchas: Deploy with confidence"
-        why_included: "Professional deployment practices and ALM best practices"
-
-      - lab_number: 7
-        lab_id: "copilot-studio-kit"
-        title: "Copilot Studio Kit: Deliver high-quality, scalable agents"
-        why_included: "Quality assurance and testing framework for enterprise deployment"
-
-  business-user:
-    description: "Business-focused journey with minimal technical complexity"
-    sequence:
-      - lab_number: 1
-        lab_id: "agent-builder-web"
-        title: "Start Simple: Basic agent creation"
-        why_included: "Easy entry point for business users"
-
-      - lab_number: 2
-        lab_id: "public-website-agent"
-        title: "Practical Application: Website enhancement"
-        why_included: "Immediate business value"
-
-      - lab_number: 3
-        lab_id: "mbr-prep-sharepoint-agent"
-        title: "Business Process: MBR automation"
-        why_included: "Common business use case"
-
-      - lab_number: 11
-        lab_id: "setup-for-success"
-        title: "Professional Practices: ALM basics"
-        why_included: "Essential professional habits"
-
-      - lab_number: 12
-        lab_id: "agent-builder-sharepoint"
-        title: "Enterprise Tools: SharePoint integration"
-        why_included: "Common enterprise scenario"
-
-      - lab_number: 13
-        lab_id: "ask-me-anything"
-        title: "Advanced Application: IT support agent"
-        why_included: "Complex but business-relevant scenario"
-
-      - lab_number: 41
-        lab_id: "ask-me-anything-30-mins"
-        title: "Quick Alternative: Simplified IT support"
-        why_included: "Time-efficient alternative for busy users"
-
-  developer:
-    description: "Technical deep-dive with advanced integrations and DevOps"
-    sequence:
-      - lab_number: 3
-        lab_id: "mbr-prep-sharepoint-agent"
-        title: "Business Context: MBR agent"
-        why_included: "Understand business requirements"
-
-      - lab_number: 4
-        lab_id: "standard-orchestrator"
-        title: "Technical Foundation: SharePoint orchestration"
-        why_included: "Core technical integration skills"
-
-      - lab_number: 11
-        lab_id: "setup-for-success"
-        title: "DevOps Foundation: ALM best practices"
-        why_included: "Essential development practices"
-
-      - lab_number: 12
-        lab_id: "agent-builder-sharepoint"
-        title: "Advanced Integration: SharePoint agents"
-        why_included: "Complex integration scenarios"
-
-      - lab_number: 13
-        lab_id: "ask-me-anything"
-        title: "Multi-Agent Architecture: IT support system"
-        why_included: "Advanced architectural patterns"
-
-      - lab_number: 21
-        lab_id: "autonomous-cua"
-        title: "Cutting-Edge: Computer Use automation"
-        why_included: "Latest autonomous AI capabilities"
-
-      - lab_number: 22
-        lab_id: "autonomous-account-news"
-        title: "Production Autonomous: Account news system"
-        why_included: "Real-world autonomous deployment"
-
-      - lab_number: 23
-        lab_id: "autonomous-support-agent"
-        title: "Enterprise Autonomous: Support automation"
-        why_included: "Enterprise-grade autonomous solutions"
-
-      - lab_number: 31
-        lab_id: "measure-success"
-        title: "Analytics: Success measurement"
-        why_included: "Data-driven optimization"
-
-      - lab_number: 32
-        lab_id: "pipelines-and-source-control"
-        title: "Advanced DevOps: CI/CD pipelines"
-        why_included: "Professional deployment automation"
-
-      - lab_number: 33
-        lab_id: "copilot-studio-kit"
-        title: "Quality Engineering: Testing framework"
-        why_included: "Enterprise testing and governance"
-
-      - lab_number: 34
-        lab_id: "mcp-qualify-lead"
-        title: "Specialized Integration: MCP lead qualification"
-        why_included: "Advanced integration patterns"
-
-      - lab_number: 51
-        lab_id: "mcs-mcp-external"
-        title: "External Integration: Model Context Protocol"
-        why_included: "Advanced external system integration"
-
-  autonomous-ai:
-    description: "Focused on cutting-edge autonomous agent capabilities"
-    sequence:
-      - lab_number: 21
-        lab_id: "autonomous-cua"
-        title: "Computer Use: Legacy system automation"
-        why_included: "Revolutionary computer automation capabilities"
-
-      - lab_number: 22
-        lab_id: "autonomous-account-news"
-        title: "Information Gathering: Automated news analysis"
-        why_included: "Autonomous information processing and analysis"
-
-      - lab_number: 23
-        lab_id: "autonomous-support-agent"
-        title: "Support Automation: Fully autonomous help desk"
-        why_included: "Complete end-to-end autonomous workflows"
-
-# =====================================================
-# LAB JOURNEY ASSIGNMENTS - Explicit journey mapping
-# =====================================================
-# This section provides explicit control over which journeys each lab belongs to.
-# If a lab is listed here, it will use these exact journey assignments.
-# If a lab is NOT listed here, the script will auto-assign journeys based on
-# difficulty levels and content analysis (fallback behavior).
-#
-# Format: lab-folder-name: ["journey1", "journey2", ...]
-# Available journeys: quick-start, business-user, developer, autonomous-ai
-lab_journeys:
-  # Core Learning Path - Foundation labs for everyone
-  agent-builder-web: ["quick-start", "business-user"]
-  mbr-prep-sharepoint-agent: ["quick-start", "business-user", "developer"]
-  public-website-agent: ["quick-start", "business-user"]
-  standard-orchestrator: ["quick-start", "developer"]
-
-  # Intermediate Labs - Building on basics
-  setup-for-success: ["business-user", "developer"]
-  agent-builder-sharepoint: ["business-user", "developer"]
-  ask-me-anything: ["business-user", "developer"]
-
-  # Advanced Labs - Complex scenarios
-  autonomous-cua: ["autonomous-ai", "developer"]
-  autonomous-account-news: ["autonomous-ai", "developer"]
-  autonomous-support-agent: ["autonomous-ai", "developer"]
-
-  # Specialized Labs - Technical depth
-  measure-success: ["developer"]
-  pipelines-and-source-control: ["developer"]
-  copilot-studio-kit: ["developer"]
-  mcp-qualify-lead: ["developer"]
-
-  # Optional Labs - Alternative approaches
-  ask-me-anything-30-mins: ["business-user"]
-
-  # External Labs - External repositories
-  mcs-mcp-external: ["developer"]
-
-# =====================================================
-# EXTERNAL LABS - Labs not hosted in this repository
-# =====================================================
-external_labs:
-  - id: mcs-mcp-external
-    title: "Model Context Protocol (MCP) & Copilot Studio"
-    duration: 90
-    difficulty: "Advanced"
-    description: "Learn to deploy an MCP Server and integrate it with Microsoft Copilot Studio"
-    url: "https://github.com/microsoft/mcsmcp"
-    repository: "microsoft/mcsmcp"
-    journeys: ["developer"]
-    section: "external_labs"
-# =====================================================
-# AUTO-DISCOVERY RULES (Optional - for documentation)
-# =====================================================
-# The system automatically:
-# 1. Scans labs/ folders for README.md files
-# 2. Extracts metadata from lab details tables
-# 3. Auto-assigns sections based on:
-#    - Difficulty levels (100=core, 200=intermediate, 300+=advanced)
-#    - Folder name patterns (autonomous=advanced, 30-mins=optional, etc.)
-# 4. Auto-assigns journeys based on:
-#    - Difficulty and content analysis
-#    - Keywords in titles and descriptions
-# 5. Uses intelligent defaults for missing metadata
-
-# To override auto-assignment, add YAML front matter to lab README files:
-# ---
-# journeys: ["custom-journey"]
-# section: "custom_section"
-# difficulty: 150
-# duration: 45
-# ---# Force trigger

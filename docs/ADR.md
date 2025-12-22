@@ -356,6 +356,69 @@ html.theme-ready body {
 
 ---
 
+## ADR-012: Simplified Single-Source Configuration Format
+
+**Status**: Accepted  
+**Date**: December 2025  
+**Context**: Lab configuration was fragmented across multiple YAML sections (`lab_metadata`, `lab_orders`, `lab_journeys`, and per-event `*_lab_orders`). Adding a new lab required updating 3-6 different places, leading to errors and inconsistencies.
+
+**Decision**: Consolidate all lab configuration into a single `labs:` section where each lab is defined once with all its properties (title, difficulty, duration, section, order, journeys, events).
+
+**Consequences**:
+- ✅ Adding a lab requires ONE entry instead of 3-6
+- ✅ All lab properties visible in one place
+- ✅ Eliminates sync issues between metadata and orders
+- ✅ Simpler onboarding for new contributors
+- ✅ Easier to audit and validate configuration
+- ❌ Requires migration from legacy format (one-time)
+- ❌ Scripts need conversion layer for backward compatibility
+
+**Implementation Details**:
+
+**New Simplified Format**:
+```yaml
+labs:
+  my-lab-name:                    # Must match folder name in labs/
+    title: "My Lab Title"
+    difficulty: "Intermediate"    # Beginner, Intermediate, Advanced
+    duration: 45                  # Minutes
+    section: intermediate         # core, intermediate, advanced, specialized, optional, external
+    order: 225                    # Sort order (100-699 range)
+    journeys: [developer]         # Learning paths
+    events: [bootcamp]            # Optional: event pages
+    external:                     # Optional: for external labs
+      url: "https://..."
+      repository: "org/repo"
+```
+
+**Order Numbering Scheme**:
+- 100-199: Core Learning Path (beginner essentials)
+- 200-299: Intermediate Labs
+- 300-399: Advanced Labs
+- 400-499: Specialized Labs
+- 500-599: Optional Labs
+- 600-699: External Labs
+
+**Conversion Layer**:
+- `Convert-SimplifiedConfig` function in Generate-Labs.ps1 transforms new format to legacy structures
+- `Export-ConfigAsYaml` serializes converted config for Jekyll templates
+- Jekyll templates continue working without modification
+
+**Enhanced Audit**:
+- Check-LabConfigs.ps1 now validates:
+  - Missing/orphaned config entries
+  - Duplicate lab IDs
+  - Card vs navigation count mismatches
+  - Invalid journey references
+
+**Related Files**:
+- `lab-config.yml` (simplified format)
+- `scripts/Generate-Labs.ps1` (conversion and YAML export)
+- `scripts/Check-LabConfigs.ps1` (enhanced validation)
+- `docs/NEW_LAB_CHECKLIST.md` (simplified instructions)
+
+---
+
 **Template for New ADRs**:
 
 ```markdown
