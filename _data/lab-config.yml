@@ -196,10 +196,9 @@ legacy_lab_orders:
 
 lab_orders:
   event:
-    agent-buildathon-1day: [100, 120]
+    agent-buildathon-1day: [140, 120]
     agent-buildathon-1month:
-      - 100
-      - 210
+      - 140
       - 110
       - 120
       - 220
@@ -323,16 +322,16 @@ mcs_in_a_day_lab_orders:
   4: ask-me-anything-30-mins
   5: autonomous-support-agent
 
+agent_buildathon_1day_lab_orders:
+  1: agent-builder-m365
+  2: mbr-prep-sharepoint-agent
+
 azure_ai_workshop_lab_orders:
   1: dataverse-mcp-connector
   2: contract-alerts-azure-ai
   3: mcs-byom
   4: data-fabric-agent
   5: guildhall-custom-mcp
-
-agent_buildathon_1day_lab_orders:
-  1: agent-builder-web
-  2: mbr-prep-sharepoint-agent
 
 bootcamp_lab_orders:
   1: agent-builder-m365
@@ -345,12 +344,11 @@ bootcamp_lab_orders:
   8: data-fabric-agent
 
 agent_buildathon_1month_lab_orders:
-  1: agent-builder-web
-  2: agent-builder-sharepoint
-  3: public-website-agent
-  4: mbr-prep-sharepoint-agent
-  5: ask-me-anything
-  6: autonomous-support-agent
-  7: autonomous-account-news
-  8: autonomous-cua
+  1: agent-builder-m365
+  2: public-website-agent
+  3: mbr-prep-sharepoint-agent
+  4: ask-me-anything
+  5: autonomous-support-agent
+  6: autonomous-account-news
+  7: autonomous-cua
 
