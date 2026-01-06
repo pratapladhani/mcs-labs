@@ -381,15 +381,14 @@ events:
   agent-buildathon-1day:
     title: "🏗️ Agent Build-A-Thon (1 day)"
     description: "One-day intensive agent building workshop focused on creating web-based and SharePoint-integrated AI assistants."
-    lab_order: [agent-builder-web, mbr-prep-sharepoint-agent]
+    lab_order: [agent-builder-m365, mbr-prep-sharepoint-agent]
 
   agent-buildathon-1month:
     title: "🚀 Agent Build-A-Thon (1 month)"
     description: "Comprehensive month-long agent development program covering declarative agents, autonomous AI, and enterprise deployment patterns."
     lab_order:
       [
-        agent-builder-web,
-        agent-builder-sharepoint,
+        agent-builder-m365,
         public-website-agent,
         mbr-prep-sharepoint-agent,
         ask-me-anything,
