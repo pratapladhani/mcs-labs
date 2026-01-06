@@ -552,7 +552,7 @@ This use case demonstrates **agent scoping** principles:
 
       ```
       Use this agent for queries related to IT (e.g., knowledge base frequently asked questions, incident updates, etc.) 
-      The agent can multiple multiple questions and queries at once.
+      The agent can multiple questions and queries at once.
       ```
 
     - Its **Instructions** to:
