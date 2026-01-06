@@ -10,6 +10,18 @@
 name: 🚀 Build and Deploy Labs
 
 # =============================================================================
+# CONCURRENCY CONTROL
+# =============================================================================
+# Prevents multiple GitHub Pages deployments from running simultaneously
+# - Only one deployment per group runs at a time
+# - Newer deployments automatically cancel any in-progress older deployments
+# - Prevents race conditions and deployment conflicts
+# =============================================================================
+concurrency:
+  group: github-pages-deployment
+  cancel-in-progress: true
+
+# =============================================================================
 # WORKFLOW TRIGGERS
 # =============================================================================
 on:
