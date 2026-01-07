@@ -110,7 +110,7 @@ labs:
     section: intermediate
     order: 200
     journeys: [business-user, developer]
-    events: [bootcamp]
+    events: [bootcamp, agent-buildathon-1month]
 
   agent-builder-sharepoint:
     title: "Create your own SharePoint-based AI assistant with Agent Builder in Microsoft 365"
@@ -389,6 +389,7 @@ events:
     lab_order:
       [
         agent-builder-m365,
+        setup-for-success,
         public-website-agent,
         mbr-prep-sharepoint-agent,
         ask-me-anything,
