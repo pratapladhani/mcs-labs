@@ -199,6 +199,7 @@ lab_orders:
     agent-buildathon-1day: [140, 120]
     agent-buildathon-1month:
       - 140
+      - 200
       - 110
       - 120
       - 220
@@ -315,24 +316,6 @@ event_configs:
     description: Fast-track full-day workshop introducing Microsoft Copilot Studio through hands-on labs covering declarative agents, custom agents, and autonomous AI.
     title: ⚡ MCS in a Day
 
-mcs_in_a_day_lab_orders:
-  1: agent-builder-m365
-  2: public-website-agent
-  3: mbr-prep-sharepoint-agent
-  4: ask-me-anything-30-mins
-  5: autonomous-support-agent
-
-agent_buildathon_1day_lab_orders:
-  1: agent-builder-m365
-  2: mbr-prep-sharepoint-agent
-
-azure_ai_workshop_lab_orders:
-  1: dataverse-mcp-connector
-  2: contract-alerts-azure-ai
-  3: mcs-byom
-  4: data-fabric-agent
-  5: guildhall-custom-mcp
-
 bootcamp_lab_orders:
   1: agent-builder-m365
   2: setup-for-success
@@ -343,12 +326,31 @@ bootcamp_lab_orders:
   7: autonomous-cua
   8: data-fabric-agent
 
+agent_buildathon_1day_lab_orders:
+  1: agent-builder-m365
+  2: mbr-prep-sharepoint-agent
+
 agent_buildathon_1month_lab_orders:
+  1: agent-builder-m365
+  2: setup-for-success
+  3: public-website-agent
+  4: mbr-prep-sharepoint-agent
+  5: ask-me-anything
+  6: autonomous-support-agent
+  7: autonomous-account-news
+  8: autonomous-cua
+
+mcs_in_a_day_lab_orders:
   1: agent-builder-m365
   2: public-website-agent
   3: mbr-prep-sharepoint-agent
-  4: ask-me-anything
+  4: ask-me-anything-30-mins
   5: autonomous-support-agent
-  6: autonomous-account-news
-  7: autonomous-cua
+
+azure_ai_workshop_lab_orders:
+  1: dataverse-mcp-connector
+  2: contract-alerts-azure-ai
+  3: mcs-byom
+  4: data-fabric-agent
+  5: guildhall-custom-mcp
 
