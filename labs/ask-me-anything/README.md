@@ -169,6 +169,10 @@ Create a new agent with SharePoint knowledge integration that provides grounded,
 
 10. Choose **Add**  
 
+> [!TIP]
+> - If an error appears after adding the SharePoint URL, click "Browse items" and then "Confirm selection".
+
+
 11. Test your agent with this question: 
 
 ``` 
