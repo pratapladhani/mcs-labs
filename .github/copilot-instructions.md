@@ -61,20 +61,41 @@ This document contains essential context for GitHub Copilot when working on the 
    Remove-Item pr-body.md
    ```
 
-6. **PR Merge Verification**: ALWAYS verify PR is merged before branch cleanup
+6. **Post-PR Workflow**: When user says "PR merged", follow this complete workflow
 
-   - **STOP if**: User wants to delete feature branch or switch away
-   - **Action**: Ask "Has the PR been merged to upstream? Let me verify first."
-   - **Verification**: Check PR status before any cleanup operations
-   - **Why**: Prevents accidental loss of work if PR hasn't been merged yet
-   - **Safe to delete**: Only after confirming PR is merged to upstream/main
-
+   **Step 1: Verify PR is Actually Merged**
+   - **CRITICAL**: Never trust user statement alone - always verify!
+   - Check PR status using GitHub CLI
+   
    ```powershell
-   # Verify PR status before cleanup
+   # Verify PR is merged to upstream
    gh pr view <PR-number> --repo microsoft/mcs-labs
-
-   # Only proceed with cleanup if status shows "MERGED"
+   
+   # Look for status: MERGED
    ```
+
+   **Step 2: Clean Up Feature Branch (only if MERGED confirmed)**
+   ```powershell
+   # Delete local feature branch
+   git branch -d feature/branch-name
+   
+   # Delete remote feature branch
+   git push origin --delete feature/branch-name
+   ```
+
+   **Step 3: Sync with Upstream**
+   ```powershell
+   # Fetch latest changes from upstream
+   git fetch upstream
+   
+   # Merge upstream into local main (always provide merge message to avoid editor)
+   git merge upstream/main -m "Sync with upstream/main"
+   ```
+
+   **Why This Order Matters**:
+   - Verification first prevents accidental loss if PR wasn't actually merged
+   - Cleanup before sync keeps branch list clean
+   - Sync last ensures local repo matches upstream exactly
 
 ### Quality Gates - Enforce Before Commit
 
