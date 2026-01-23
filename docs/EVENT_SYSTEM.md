@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document explains the unified event system architecture for MCS Labs, which provides a consistent framework for hosting curated workshop experiences (Bootcamp, Azure AI Workshop, MCS in a Day) separate from the main journey-based navigation.
+This document is the **single source of truth** for all event-related documentation in MCS Labs. It explains the unified event system architecture which provides a consistent framework for hosting curated workshop experiences (Bootcamp, Azure AI Workshop, MCS in a Day, Agent Build-A-Thon variants) separate from the main journey-based navigation.
+
+> **Note**: Event-specific lab lists and ordering are maintained in `lab-config.yml`. This document covers architecture and implementation only - see the config file for current event content.
 
 **Key Features:**
 - **Unified URL Parameters**: Consistent `?event=` parameter for all event filtering
@@ -331,11 +333,6 @@ When viewing labs within an event:
 
 ## Related Documentation
 
-- **Event-Specific Guides**:
-  - [Bootcamp Event](./BOOTCAMP.md) - Bootcamp-specific schedule and numbering
-  - [Azure AI Workshop](./AZURE_AI_WORKSHOP.md) - Workshop modules and labs
-  - [MCS in a Day](./MCS_IN_A_DAY.md) - Day event schedule and facilitation
-
 - **Development Guides**:
   - [Development Guide](./DEVELOPMENT.md) - General development workflow
   - [Lab Authoring Guide](./LAB_AUTHORING_GUIDE.md) - Creating new labs
@@ -347,6 +344,6 @@ When viewing labs within an event:
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: October 2025  
+**Document Version**: 2.0  
+**Last Updated**: January 2026  
 **Maintainer**: MCS Labs Team

@@ -538,11 +538,8 @@ docker-compose up -d
 - `docs/THEME_SYSTEM.md` - Theme architecture and Mermaid diagram theming
 - `docs/QUICK_START.md` - Fast onboarding
 - `docs/NEW_LAB_CHECKLIST.md` - Complete checklist for adding new labs
-- `docs/EVENT_SYSTEM.md` - Event system architecture and implementation
+- `docs/EVENT_SYSTEM.md` - Event system architecture and implementation (covers all events)
 - `docs/LAB_AUTHORING_GUIDE.md` - Lab authoring standards and best practices
-- `docs/BOOTCAMP.md` - Bootcamp event details
-- `docs/AZURE_AI_WORKSHOP.md` - Azure AI Workshop event details
-- `docs/MCS_IN_A_DAY.md` - MCS in a Day event details
 - `CHANGELOG.md` - Complete project history from June 2025 onwards
 - `scripts/Check-LabConfigs.ps1` - Automated lab configuration audit
 
