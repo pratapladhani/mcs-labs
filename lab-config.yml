@@ -139,6 +139,15 @@ labs:
     journeys: [business-user]
     events: [azure-ai-workshop]
 
+  human-in-the-loop:
+    title: "Expense Claims Agent with Approvals (Human-in-the-Loop)"
+    difficulty: "Intermediate"
+    duration: 45
+    section: intermediate
+    order: 240
+    journeys: [business-user, developer]
+    events: [bootcamp]
+
   # === ADVANCED LABS (300-399) ===
   autonomous-cua:
     title: "Build an autonomous agent that uses Computer Use to retrieve data from legacy systems that lack API connectivity"
@@ -292,6 +301,7 @@ journeys:
         setup-for-success,
         agent-builder-sharepoint,
         ask-me-anything,
+        human-in-the-loop,
         mcs-byom,
         data-fabric-agent,
         guildhall-custom-mcp,
@@ -312,6 +322,7 @@ journeys:
         setup-for-success,
         agent-builder-sharepoint,
         ask-me-anything,
+        human-in-the-loop,
         autonomous-cua,
         autonomous-account-news,
         autonomous-support-agent,
@@ -352,6 +363,7 @@ events:
         dataverse-mcp-connector,
         autonomous-cua,
         data-fabric-agent,
+        human-in-the-loop,
       ]
 
   azure-ai-workshop:
